@@ -1,0 +1,17 @@
+# .github/workflows/notify-main-repo.yml
+name: Notify main repo
+on:
+  push:
+    branches: [main]
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger build in main repo
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/chargetrip/developers-v3/dispatches \
+            -d '{"event_type":"content-updated"}'
