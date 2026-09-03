@@ -1,0 +1,22 @@
+---
+slug: route
+---
+# newRoute > createRoute
+Migration Guide
+
+This guide is intended for developers migrating from Chargetrip’s legacy Route service to the latest version of the Route service. If you  have any additional questions, please contact our support team.
+
+The new Route service delivers key improvements, including a streamlined  and reorganized schema, per-country operator preferences, faster route  computation, and greater maintainability. The legacy service will remain available until May 2026, after which all legacy operations will be  removed from the schema.
+
+### Introduction
+
+This guide is intended for developers migrating from Chargetrip’s legacy Route service to the latest version of the Route service. If you  have any additional questions, please contact our support team.
+
+The new Route service delivers key improvements, including a streamlined  and reorganized schema, per-country operator preferences, faster route  computation, and greater maintainability. The legacy service will remain available until May 2026, after which all legacy operations will be  removed from the schema.
+
+| Operation    | Old               | New            |
+| ------------ | ----------------- | -------------- |
+| Mutation     | `newRoute`        | `ranking_levels` |
+| Subscription | `routeUpdatedById`| `route`        |
+| Query        | `route`           | `getRoute`     |
+
