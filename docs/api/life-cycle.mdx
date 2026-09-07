@@ -16,7 +16,7 @@ A non-breaking change is a modification that is safe and backward-compatible. Be
 - Making a previously required input field optional.
 - Adding a new value to an existing enum type.
 
-> [!TIP]
+> [!TIP] Label
 > `enum` types are not exhaustive. New values will be introduced to the existing enum types over time as new features are added. Always implement a catch-all case in the application's logic to gracefully handle new enum values.
 
 ## Breaking changes
@@ -41,14 +41,14 @@ When an API functionality is deprecated, it continues to work normally for at le
 - Deprecated fields marked with `@deprecated` in the GraphQL schema.
 - Deprecated fields flagged on the deprecations portal.
 
-> [!TIP]
+> [!TIP] Label
 > To prevent errors and service disruption, migrations must be completed before the scheduled removal date.
 
 ## Beta / alpha features
 
 Chargetrip uses an alpha and beta program to introduce and validate impactful new functionalities before they become part of the stable API. Unlike changes to stable features, any changes to alpha or beta features are exempt from the deprecation process. This means that fields or operations marked as alpha or beta may be changed or removed at any time without prior notice.
 
-> [!NOTE]
+> [!NOTE] Label
 >
 > - For help understanding a deprecation or planning a migration, contact [Chargetrip's support team]().
 > - For the latest API updates and announcements, visit [release notes]() and [deprecations]().
