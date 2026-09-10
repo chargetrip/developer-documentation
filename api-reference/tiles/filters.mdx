@@ -17,7 +17,7 @@ When a request includes filters, the Tile service performs two distinct operatio
 
 Filter parameters can be appended to the request URL as query strings to any of the Tile Service endpoints (MVT or JSON or Count). If no filters are applied, all available charging stations are returned, and no data transformations are done.
 
-```bash title="Tile URL"
+```bash title="Tile / Filter / Example"
 https://api.chargetrip.io/v2/station/..../?{filter_1}&{filter_2}&{filter_n}
 ```
 
@@ -43,7 +43,7 @@ Filters that evaluate the station's global attributes. These filters are exclusi
 
 ### EVSE level
 
-Filters that evaluate the station’s specific charging capabilities. These filters perform exclusion and [transformation](/): non-matching stations are excluded, and matching stations have their dynamic fields recalculated.
+Filters that evaluate the station’s specific charging capabilities. These filters perform exclusion and [transformation](/api-reference/tiles/filters#data-transformation-examples): non-matching stations are excluded, and matching stations have their dynamic fields recalculated.
 
 `connectors` · `enum` · [Show example url](tip:https://api.chargetrip.io/v2/station?preferred_operators=true;;true)
 : Filter to include only stations that have EVSEs with the specified connector types. Accepts an array of strings with any OCPI 2.2.1 connector values.
@@ -111,5 +111,4 @@ These “dynamic” output fields are `connector_maximum_power` and `evse_status
         "evse_status_available": 1,
     }
     ```
-
 </details>

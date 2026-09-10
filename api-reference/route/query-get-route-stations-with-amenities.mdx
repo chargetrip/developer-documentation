@@ -1,6 +1,11 @@
 ---
-title: Get route stations with amenities
+title: Route amenity stop
 schemaName: getRouteStationsWithAmenities
 schemaType: Query
 ---
 
+Search for charging stations with amenities at a certain point along a route by using the getRouteStationsWithAmenities query. This is useful when you want to plan a charging stop near restaurants, shops, or other amenities.
+
+## Query
+
+A `route_id`, `route_details_id`, `time_window`, and `amenity_types` are required to search for stations along a route. Both ids can be obtained through the [getRoute query](/api-reference/route/query-get-route). Use the `filter` argument to narrow the results down based on specific criteria, and the `first` and `after` arguments to [paginate](/docs/pagination) through them.

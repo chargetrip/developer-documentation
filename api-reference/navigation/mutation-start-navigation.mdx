@@ -4,3 +4,11 @@ schemaName: startNavigation
 schemaType: Mutation
 ---
 
+Start a new navigation session on top of an existing route by using the startNavigation mutation. This is useful when a driver begins following a calculated route.
+
+> [!NOTE] Session duration
+> A navigation session is automatically finished after 48 hours of inactivity.
+
+## Mutation
+
+A `route_id`, `route_details_id`, and `current_location` are required to start a navigation session. Both route ids can be obtained through the [getRoute query](/api-reference/route/query-get-route). The mutation returns a navigation session `id`, which can be used to retrieve, update, or finish the session.

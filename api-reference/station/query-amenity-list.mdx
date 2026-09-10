@@ -4,3 +4,9 @@ schemaName: amenityList
 schemaType: Query
 ---
 
+Get a list of amenities available around a specific station by using the amenityList query. This is useful when you want to display nearby restaurants, shops, or other facilities while a vehicle is charging.
+
+## Query
+
+A station `id` is required to get its amenities. The `id` can be obtained through either a [route](/api-reference/route/query-get-route), the [tile service](/api-reference/tiles/mvt), or the [station around query](/api-reference/station/query-station-around). Use the `filter` argument to narrow the results down based on specific criteria, and the `size` and `page` arguments to [paginate](/docs/pagination) through them.
+
