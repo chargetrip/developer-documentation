@@ -4,3 +4,9 @@ schemaName: finishNavigation
 schemaType: Mutation
 ---
 
+End an active navigation session by using the finishNavigation mutation. This is useful when a driver reaches their destination or the trip is cancelled.
+
+## Mutation
+
+A navigation session `id` and `current_location` are required to finish it. The `id` can be obtained through the [startNavigation mutation](/api-reference/navigation/mutation-start-navigation).
+

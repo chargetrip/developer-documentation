@@ -1,7 +1,5 @@
 ---
 title: Selectors
-schemaName: vehicleList
-schemaType: Query
 ---
 
 To optimize response time and size, by default, the MVT and JSON API return a minimized response. This approach ensures peak performance and reduces tile payload sizes, which is critical for smooth map interactions. By using selectors, you can include the additional data points your application specifically requires.
@@ -62,7 +60,7 @@ Any field listed in the station properties for MVT and JSON tiles can be used as
 
 To request specific properties, append `station_properties[]` query parameter to the tile request URL.
 
-```bash title="URL Structure"
+```bash title="Tile / Selectors / Example"
 https://api.chargetrip.io/v2/station/.../?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
 ```
 
