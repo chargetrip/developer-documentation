@@ -2,4 +2,65 @@
 title: Overview
 slug: overview
 ---
-Content
+
+GraphQL is a query language for APIs. It lets you request exactly the data you need in a single call, instead of working through many fixed REST endpoints.
+
+The Chargetrip API is built on GraphQL. Every resource, such as vehicles, stations, routes, and navigation sessions, is available from a single endpoint as a query, mutation, or subscription.
+
+If you're new to GraphQL, the [official GraphQL documentation](https://graphql.org/learn/) is a good place to start.
+
+## Resources
+
+Browse the API by resource. Each section below links to its queries, mutations, and subscriptions.
+
+[Vehicle](/api-reference/vehicle/query-vehicles)
+: Look up EV specs, consumption models, and premium pricing data.
+
+[Connected vehicle](/api-reference/connected-vehicle/query-connected-vehicle-list)
+: Connect a vehicle to a connectivity provider and retrieve its live data.
+
+[Station](/api-reference/station/query-station-details)
+: Look up individual charge stations, nearby stations, and amenities.
+
+[Station review](/api-reference/review/query-user-review-list)
+: Read, add, and remove user reviews for a charge station.
+
+[Station tariff](/api-reference/tariff/query-tariff-list)
+: Look up the cost of charging at a station.
+
+[Station operator](/api-reference/operator/query-operator-list)
+: Look up details about a station's charge point operator.
+
+[Tiles](/api-reference/tiles/mvt)
+: Access station data as vector or JSON map tiles for rendering on a map.
+
+[Route](/api-reference/route/mutation-create-route)
+: Calculate an EV route with charging stops, energy consumption, and drive time.
+
+[Truck route](/api-reference/truck-route/mutation-create-truck-route)
+: Calculate an e-truck route accounting for vehicle weight and dimensions.
+
+[Navigation](/api-reference/navigation/mutation-start-navigation)
+: Track a vehicle's progress along a route and receive real-time updates.
+
+[Emissions](/api-reference/emissions/query-emissions)
+: Calculate the emissions saved by taking a route.
+
+[Isoline](/api-reference/isoline/mutation-create-isoline)
+: Visualize the area a vehicle can reach from a point given its state of charge.
+
+### Authentication
+
+Every request is authenticated with the `x-client-id` and `x-app-id` headers. See [Authorization](/docs/api/authorization) for how to obtain and send them.
+
+### Pagination
+
+List queries accept `size` and `page` arguments to [paginate](/docs/pagination) through large result sets. Requests are also subject to rate limiting.
+
+### Beta and alpha features
+
+Some resources are still evolving. [Connected vehicle](/api-reference/connected-vehicle/query-connected-vehicle-list) and [Navigation](/api-reference/navigation/mutation-start-navigation) are in beta, and [Truck route](/api-reference/truck-route/mutation-create-truck-route) is in alpha. Expect their contracts to change as we stabilize them.
+
+### Lifecycle
+
+Chargetrip uses a single, evolving API rather than versioned releases. See [Lifecycle](/docs/api/life-cycle) for how we handle breaking and non-breaking changes.
