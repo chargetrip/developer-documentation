@@ -1,0 +1,26 @@
+---
+title: Set up your account
+---
+
+To start using the API, create an account. Once your account is set up, you can start using the API directly against the production environment.
+
+## Set up your environment
+
+The dashboard is organized into three levels, from broadest to most specific.
+
+1. **Workspace**
+   A workspace lets your team members work together on the same projects, for example when a country manager needs to manage operator preferences and a developer needs access to the API keys. A workspace is also the billable relationship with us, so multiple workspaces means multiple contracts.
+2. **Project**
+   Within a workspace, set up a project. Projects are created based on operator preferences, station database, and vehicle selections. If you have use cases that need a different setup, create a separate project for each.
+3. **App**
+   If you share these settings but still want separate analytics or security measures, for example when you build an iOS and an Android app, create different apps within a project.
+
+See [send requests](/docs/getting-started/api-request) for how to use your project and app ids to authenticate requests.
+
+## Keep your account safe
+
+After you set up your account, you'll want to keep it safe. Here are our recommendations:
+
+- **Protect your credentials**: Never commit an API key to source control, store it in a secrets vault instead, and scope it to only the access it needs since our keys can be restricted.
+- **Pick a password you don't reuse elsewhere**: A password shared across services means a breach on another site can be used to break into this one too. Update your password from your account settings in the dashboard whenever needed.
+- **Grant access through team members instead of sharing logins**: Invite colleagues to your workspace with only the access they need, rather than handing out your own credentials.

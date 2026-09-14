@@ -8,7 +8,7 @@ Charging prices can be shown at two levels: directly on a map through the Tile s
 
 The Tile service exposes `minimum_station_price` and `maximum_station_price` as both a filter and a response field.
 
-- As a [filter](/api-reference/tiles/filters), pass `minimum_station_price` and `maximum_station_price` to only include stations whose price falls within that range. Stations are included or excluded dynamically as the values change.
+- As a [filter](/api-reference/tiles/filters), pass `minimum_station_price` and `maximum_station_price`, along with `price_currency` to convert the range to the correct currency, to dynamically include or exclude stations whose price falls within that range.
 - As a [selector](/api-reference/tiles/selectors), request `minimum_station_price` and `maximum_station_price` to render each station's price range directly on the map.
 
 ## Station pricing

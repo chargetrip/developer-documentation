@@ -1,34 +1,34 @@
 ---
-title: Authorization
+title: Send your first request
 ---
 
-The API uses special HTTP headers to authenticate requests. You can view and manage your credentials in the dashboard.
+Once all credentials are configured inside the dashboard, start making requests using the base URL and authorization headers.
 
 ## The setup
 
-Once all credentials are configured inside the dashboard, use the following base URL to start making requests.
+The API is a GraphQL API that uses the following base URL. You can find more information about the API in the [GraphQL API reference](/api-reference).
 
 ```bash title="Base URL"
 https://api.chargetrip.io/graphql
 ```
 
-### Authorization headers
+## Authorization headers
 
-After obtaining the base URL, add the following headers to each request.
+After obtaining the base URL, add one or more of the following headers to each request.
 
 `x-client-id` · <span class="text-accent">required</span>
-: A project id that contains the project configuration
+: A project id that contains the project configuration.
 
 `x-app-id` · <span class="text-accent">required</span>
-: An app id for security and splitting up analytics
+: An app id for security and splitting up analytics.
 
 `x-app-identifier`
-: An iOS or Android bundle identifier
+: An iOS or Android bundle identifier.
 
 `x-app-fingerprint`
-: An Android SHA fingerprint
+: An Android SHA fingerprint.
 
-### Sending an authorized request
+## Sending an authorized request
 
 To communicate with the API, you must authenticate each request with the headers `x-client-id` and `x-app-id`. By default, a unique `x-app-id` is generated for each project.
 
