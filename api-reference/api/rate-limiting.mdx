@@ -1,5 +1,6 @@
 ---
 title: Rate limiting
+tag: API
 ---
 
 The API rate limits requests using a <a href="https://en.wikipedia.org/wiki/Leaky_bucket" target="_blank" rel="noopener noreferrer">leaky bucket algorithm</a>. Each request costs a number of units, and those units leak out of the bucket at a constant rate. This keeps traffic flowing at a steady rate while still allowing short bursts.
@@ -15,7 +16,7 @@ Rate limiting for the GraphQL API is based on the cost of each request, rather t
 - List queries return up to 100 records per page, but a larger page costs more than a smaller one. Fetching 100 records in one request costs more than fetching 10, so request fewer records rather than more. See [pagination](/api-reference/api/pagination) for details.
 - If a request is rejected with a `429` error, your bucket is full. Stop sending requests and only make new requests once the time given by `reset` has passed.
 
-### Rate limit metadata
+### Rate limit
 
 To protect the API from queries that are too complex or resource intensive, each request is assigned a cost based on the amount of requested data. Every response to a valid request, or a request that fails business validation, includes an `extensions.cost` object with the cost of the request and the state of your rate limit. It is omitted entirely when a request fails GraphQL schema validation.
 
@@ -36,7 +37,7 @@ To protect the API from queries that are too complex or resource intensive, each
 
 ## REST API
 
-Rate limiting for the REST API applies to the [tile service](/api-reference/tiles/mvt) and the search endpoint. Unlike the GraphQL API, rate limit status is returned through HTTP response headers, and each request has a fixed cost of 1 unit. These headers are returned on every request, including failed ones.
+Rate limiting for the REST API applies to the [tile service](/api-reference/tiles/mvt). Unlike the GraphQL API, rate limit status is returned through HTTP response headers, and each request has a fixed cost of 1 unit. These headers are returned on every request, including failed ones.
 
 `x-ratelimit-cost` · <span class="text-muted">Integer</span>
 : The cost, in units, of the current request. Always `1` for REST requests.
