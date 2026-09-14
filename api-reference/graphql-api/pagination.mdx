@@ -2,21 +2,21 @@
 title: Pagination
 ---
 
-To keep the Chargetrip API fast and responsive, list queries limit how much data is returned in a single request. Two pagination types are used across the API:
+To keep the API fast and responsive, list queries limit how much data is returned in a single request. Two pagination types are used across the API:
 
 - Cursor-based (current): used by newly developed list queries.
 - Offset-based (legacy): used by most existing list queries. These will eventually be replaced by cursor-based versions.
 
 ## Cursor-based pagination
 
-Cursor-based pagination is our current standard. It lets you define the starting point of a request using a cursor, a unique identifier for a position in the result set.
+Cursor-based pagination is the current standard. It lets you define the starting point of a request using a cursor, a unique identifier for a position in the result set.
 
 ### Arguments
 
-`first`
+`first` · <span class="text-muted">Integer</span>
 : The number of items to return.
 
-`after`
+`after` · <span class="text-muted">String</span>
 : The cursor to start from. Omit this argument, or set it to `null`, to fetch the first page. For later pages, use the `page_info.end_cursor` value from the previous response.
 
 > [!NOTE] Limits
@@ -26,34 +26,34 @@ Cursor-based pagination is our current standard. It lets you define the starting
 
 The response returns results directly through a `nodes` array, along with pagination metadata.
 
-`nodes`
+`nodes` · <span class="text-muted">Array</span>
 : The list of data objects for the current page.
 
-`total_count`
+`total_count` · <span class="text-muted">Integer</span>
 : The total number of items matching the query, across all pages.
 
-`page_info.has_next_page`
+`page_info.has_next_page` · <span class="text-muted">Boolean</span>
 : Whether more results are available after the current page.
 
-`page_info.has_previous_page`
+`page_info.has_previous_page` · <span class="text-muted">Boolean</span>
 : Whether more results are available before the current page.
 
-`page_info.start_cursor`
+`page_info.start_cursor` · <span class="text-muted">String</span>
 : The cursor of the first node in `nodes`.
 
-`page_info.end_cursor`
+`page_info.end_cursor` · <span class="text-muted">String</span>
 : The cursor of the last node in `nodes`. Use this value as the `after` argument in your next query.
 
 ## Offset-based pagination (legacy)
 
-Offset-based pagination is our legacy standard, still used by most list queries. It uses `page` to skip a set number of records and `size` to return a fixed window of results.
+Offset-based pagination is the legacy standard, still used by most list queries. It uses `page` to skip a set number of records and `size` to return a fixed window of results.
 
 ### Arguments
 
-`size`
+`size` · <span class="text-muted">Integer</span>
 : The number of items to return per page.
 
-`page`
+`page` · <span class="text-muted">Integer</span>
 : The page number to fetch. Omit this argument, or set it to `0`, to fetch the first page.
 
 > [!NOTE] Limits

@@ -2,7 +2,7 @@
 title: Authorization
 ---
 
-The Chargetrip API uses special HTTP headers to authenticate requests. You can view and manage your credentials in the dashboard.
+The API uses special HTTP headers to authenticate requests. You can view and manage your credentials in the dashboard.
 
 ## The setup
 
@@ -30,7 +30,7 @@ After obtaining the base URL, add the following headers to each request.
 
 ### Sending an authorized request
 
-To communicate with the Chargetrip API, you must authenticate each request with the headers `x-client-id` and `x-app-id`. By default, a unique `x-app-id` is generated for each project.
+To communicate with the API, you must authenticate each request with the headers `x-client-id` and `x-app-id`. By default, a unique `x-app-id` is generated for each project.
 
 ```bash title="Example request"
 curl -X POST \
