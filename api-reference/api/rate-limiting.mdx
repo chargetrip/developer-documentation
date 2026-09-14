@@ -12,7 +12,8 @@ Rate limiting for the GraphQL API is based on the cost of each request, rather t
 
 - Use subscriptions instead of polling by using queries to know when data changes.
 - Query only the fields you need, and use `filter` to narrow down list queries.
-- List queries return up to 100 records per page. See [Pagination](/api-reference/graphql-api/pagination) for details.
+- List queries return up to 100 records per page, but a larger page costs more than a smaller one. Fetching 100 records in one request costs more than fetching 10, so request fewer records rather than more. See [Pagination](/api-reference/api/pagination) for details.
+- If a request is rejected with a `429` error, your bucket is full. Stop sending requests and only make new requests once the time given by `reset` has passed.
 
 ### Rate limit metadata
 

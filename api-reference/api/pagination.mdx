@@ -7,6 +7,9 @@ To keep the API fast and responsive, list queries limit how much data is returne
 - Cursor-based (current): used by newly developed list queries.
 - Offset-based (legacy): used by most existing list queries. These will eventually be replaced by cursor-based versions.
 
+> [!NOTE] Limits
+> Regardless of the pagination type, list queries return at most 100 items per page, except for the `getRouteStationsWithAmenities` query, which is limited to 10.
+
 ## Cursor-based pagination
 
 Cursor-based pagination is the current standard. It lets you define the starting point of a request using a cursor, a unique identifier for a position in the result set.
@@ -18,9 +21,6 @@ Cursor-based pagination is the current standard. It lets you define the starting
 
 `after` · <span class="text-muted">String</span>
 : The cursor to start from. Omit this argument, or set it to `null`, to fetch the first page. For later pages, use the `page_info.end_cursor` value from the previous response.
-
-> [!NOTE] Limits
-> `first` cannot exceed 100, except for the `getRouteStationsWithAmenities` query, which is limited to 10.
 
 ### Response
 
@@ -55,9 +55,6 @@ Offset-based pagination is the legacy standard, still used by most list queries.
 
 `page` · <span class="text-muted">Integer</span>
 : The page number to fetch. Omit this argument, or set it to `0`, to fetch the first page.
-
-> [!NOTE] Limits
-> `size` cannot exceed 100. Requests that exceed this limit return an error.
 
 ### Response
 
