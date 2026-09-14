@@ -1,0 +1,64 @@
+---
+title: Pagination
+---
+
+To keep the Chargetrip API fast and responsive, list queries limit how much data is returned in a single request. Two pagination types are used across the API:
+
+- Cursor-based (current): used by newly developed list queries.
+- Offset-based (legacy): used by most existing list queries. These will eventually be replaced by cursor-based versions.
+
+## Cursor-based pagination
+
+Cursor-based pagination is our current standard. It lets you define the starting point of a request using a cursor, a unique identifier for a position in the result set.
+
+### Arguments
+
+`first`
+: The number of items to return.
+
+`after`
+: The cursor to start from. Omit this argument, or set it to `null`, to fetch the first page. For later pages, use the `page_info.end_cursor` value from the previous response.
+
+> [!NOTE] Limits
+> `first` cannot exceed 100, except for the `getRouteStationsWithAmenities` query, which is limited to 10.
+
+### Response
+
+The response returns results directly through a `nodes` array, along with pagination metadata.
+
+`nodes`
+: The list of data objects for the current page.
+
+`total_count`
+: The total number of items matching the query, across all pages.
+
+`page_info.has_next_page`
+: Whether more results are available after the current page.
+
+`page_info.has_previous_page`
+: Whether more results are available before the current page.
+
+`page_info.start_cursor`
+: The cursor of the first node in `nodes`.
+
+`page_info.end_cursor`
+: The cursor of the last node in `nodes`. Use this value as the `after` argument in your next query.
+
+## Offset-based pagination (legacy)
+
+Offset-based pagination is our legacy standard, still used by most list queries. It uses `page` to skip a set number of records and `size` to return a fixed window of results.
+
+### Arguments
+
+`size`
+: The number of items to return per page.
+
+`page`
+: The page number to fetch. Omit this argument, or set it to `0`, to fetch the first page.
+
+> [!NOTE] Limits
+> `size` cannot exceed 100. Requests that exceed this limit return an error.
+
+### Response
+
+The response returns a list of data objects directly, limited by the `size` value.
