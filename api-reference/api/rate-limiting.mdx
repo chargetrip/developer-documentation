@@ -2,7 +2,7 @@
 title: Rate limiting
 ---
 
-The API rate limits requests using a [leaky bucket algorithm](https://en.wikipedia.org/wiki/Leaky_bucket). Each request costs a number of units, and those units leak out of the bucket at a constant rate. This keeps traffic flowing at a steady rate while still allowing short bursts.
+The API rate limits requests using a <a href="https://en.wikipedia.org/wiki/Leaky_bucket" target="_blank" rel="noopener noreferrer">leaky bucket algorithm</a>. Each request costs a number of units, and those units leak out of the bucket at a constant rate. This keeps traffic flowing at a steady rate while still allowing short bursts.
 
 ## GraphQL API
 
@@ -12,7 +12,7 @@ Rate limiting for the GraphQL API is based on the cost of each request, rather t
 
 - Use subscriptions instead of polling by using queries to know when data changes.
 - Query only the fields you need, and use `filter` to narrow down list queries.
-- List queries return up to 100 records per page, but a larger page costs more than a smaller one. Fetching 100 records in one request costs more than fetching 10, so request fewer records rather than more. See [Pagination](/api-reference/api/pagination) for details.
+- List queries return up to 100 records per page, but a larger page costs more than a smaller one. Fetching 100 records in one request costs more than fetching 10, so request fewer records rather than more. See [pagination](/api-reference/api/pagination) for details.
 - If a request is rejected with a `429` error, your bucket is full. Stop sending requests and only make new requests once the time given by `reset` has passed.
 
 ### Rate limit metadata
