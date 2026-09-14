@@ -1,6 +1,5 @@
 ---
 title: Rate limiting
-tag: API
 ---
 
 The API rate limits requests using a <a href="https://en.wikipedia.org/wiki/Leaky_bucket" target="_blank" rel="noopener noreferrer">leaky bucket algorithm</a>. Each request costs a number of units, and those units leak out of the bucket at a constant rate. This keeps traffic flowing at a steady rate while still allowing short bursts.
