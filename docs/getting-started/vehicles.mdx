@@ -1,3 +1,27 @@
 ---
 title: "Vehicles"
 ---
+
+A comprehensive vehicle database is essential for any EV application. Vehicle data allows end-users to understand their vehicle better and find charging stations that are suitable for them. It's also essential to routing, since the most optimal route will be radically different based on the vehicle driven.
+
+## Database
+
+Instead of having to provide all the data and details about a vehicle, which is customary for most EV routing APIs, the vehicle database contains over 2,200 BEV (battery electric vehicle), PHEV (plug-in hybrid electric vehicle), HEV (hybrid electric vehicle), and EREV (extended range electric vehicle) models. All BEVs and EREVs come with their own validated consumption model.
+
+The consumption models take into account properties like drag coefficient and rolling resistance in relation to speed, elevation, charging speed, charging temperature, battery temperature, and many more.
+
+Additionally, all vehicles come with detailed vehicle specifications and images that can be used in front ends. New models are continuously added as they're released to market.
+
+### Premium data
+
+If you need additional information beyond the standard vehicle data, [vehiclePremium](/api-reference/vehicle/query-vehicle-premium) is available as an add-on. It contains extended data about the battery, the body of the vehicle, availability, pricing, efficiency, safety, and more. [Contact sales](https://www.chargetrip.com/contact/sales) to upgrade to premium vehicle data.
+
+### Images
+
+Rights-cleared vehicle images are also available as an add-on, just like `vehiclePremium`. These images are higher quality than the default images provided with the vehicle database. [Contact sales](https://www.chargetrip.com/contact/sales) to enable this for your project.
+
+## Implementation
+
+Access the complete vehicle database through the [vehicleList](/api-reference/vehicle/query-vehicles) query, and fetch more detailed information using the [vehicle](/api-reference/vehicle/query-vehicle-details) query.
+
+Any [route](/docs/getting-started/route) or isoline mutation requires a vehicle `id`, which can be obtained through the `vehicleList` query.

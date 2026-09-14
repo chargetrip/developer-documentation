@@ -1,0 +1,33 @@
+---
+title: "Station pricing"
+---
+
+Charging prices can be shown at two levels: directly on a map through the Tile service, or in full detail through a connector's pricing.
+
+## Tile service
+
+The Tile service exposes `minimum_station_price` and `maximum_station_price` as both a filter and a response field.
+
+- As a [filter](/api-reference/tiles/filters), pass `minimum_station_price` and `maximum_station_price` to only include stations whose price falls within that range. Stations are included or excluded dynamically as the values change.
+- As a [selector](/api-reference/tiles/selectors), request `minimum_station_price` and `maximum_station_price` to render each station's price range directly on the map.
+
+## Station pricing
+
+Where pricing details come from depends on the station database behind a station.
+
+- If Ecomovement is used, pricing can be found on the pricing object of a station's connectors, at `evses[].connectors[].prices`.
+- For any other station database, use the dedicated [tariffList](/api-reference/tariff/query-tariff-list) and [tariff](/api-reference/tariff/query-tariff) queries instead.
+
+A connector can have several price elements active at different times. Work through them in order to render the correct price.
+
+1. **Find the active price element**
+   Each price element has `restrictions`, such as `day_of_week`, `start_time`/`end_time`, or minimum and maximum kWh, power, or duration. Use these to determine which price element applies right now.
+2. **Display all price components**
+   A price element can combine several components at once. An `energy` component gives you the price per kWh. A `time` component gives you the price per interval, billed in blocks defined by its `step_size`. For example, a `step_size` of `300` on a `time` component bills in blocks of 5 minutes. A `flat` component adds a fixed amount to the session, independent of energy used or time spent.
+3. **Account for the overstay fee**
+   A `parking_time` component charges an idle fee for staying connected after charging has finished, since nobody else can use the connector in the meantime. It applies once the connector's overstay restrictions, such as `overstay_time` or `overstay_battery_percentage`, are met.
+
+Each connector can have its own price, and prices can be changed dynamically by the operator at any time.
+
+> [!NOTE] Rely on `last_updated`
+> Since prices can change at any time, always check a price object's `last_updated` field before caching or reusing a price, rather than assuming it stays valid.
