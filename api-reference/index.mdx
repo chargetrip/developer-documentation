@@ -55,7 +55,7 @@ Every request is authenticated with the `x-client-id` and `x-app-id` headers. Se
 
 ### Pagination
 
-List queries accept `size` and `page` arguments to [paginate](/docs/pagination) through large result sets. Requests are also subject to rate limiting.
+List queries accept `size` and `page` arguments, or `first` and `after` arguments for cursor-based pagination, depending on which query you use. See [Pagination](/docs/pagination) for details. Requests are also subject to rate limiting.
 
 ### Beta and alpha features
 
