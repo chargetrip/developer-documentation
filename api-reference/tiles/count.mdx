@@ -12,5 +12,9 @@ To retrieve the station count, make a `GET` request to the following URL:
 https://api.chargetrip.io/v2/station/count/
 ```
 
+### Bounding box
+Use the `bbox` query parameter to narrow the station count to the specified bounding box. The bounding box must respect the format `?bbox={min_lon},{min_lat},{max_lon},{max_lat}`.
+
+
 ### Filtering
 Use the `filter` query parameter to narrow the count down based on specific criteria. See the [filters documentation](/api-reference/tiles/filters) for more information.
