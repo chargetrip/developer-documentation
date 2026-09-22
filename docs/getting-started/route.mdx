@@ -71,7 +71,7 @@ You can categorize operators into four behavioral levels:
 | **Ranked** - preferred | **Favor ranked:** Actively routes via your ranked tiers (high, medium, low), but falls back to standard public networks when needed to prevent stranding. |
 | **Ranked** - required | **Strict network lock:** Only routes via stations in your ranked tiers (high, medium, low). Route calculation fails (`status: not_found`) if an unranked station is needed. |
 
-> [!NOTE] Dashboard Ranked Operators
+> [!WARNING] Dashboard Ranked Operators
 > In your **Dashboard**, you can assign operators to tiers (`high`, `medium`, `low`), but **you cannot choose the enforcement setting** (`preferred` vs. `required`) there.  
 > Because of this, **dashboard ranked tiers stay dormant by default** until you activate them in your API request by passing `operators.ranking.type: preferred` or `required`.
 
