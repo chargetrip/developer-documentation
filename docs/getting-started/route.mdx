@@ -17,8 +17,8 @@ To ensure high performance, the Route API operates asynchronously. Creating and 
    Subscribe to the `route` subscription using the `id` from the previous step. While the route is being calculated, the subscription pushes status updates you can use to drive an async loading state in your UI.
 3. **Render the result**
    Once the route's `status` resolves to `done`, `error`, or `not_found`, render the corresponding UI for that outcome.
-4. **Re-fetch a finished route**
-   A route that has reached a final status is already precomputed. If you need to display it again later, for example after navigating back to it, use the `getRoute` query instead of opening a new subscription.
+4. **Re-fetch on demand**
+   A route that has reached a final status is stored with its complete details. If you need to display it again later, for example after navigating back to it, use the `getRoute` query instead of opening a new subscription.
 
 > [!WARNING] Hybrid vehicles
 > Hybrid and plug-in hybrid vehicles don't rely solely on their battery, so their routes don't include charging stops.
