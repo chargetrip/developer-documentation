@@ -7,7 +7,7 @@ To keep the API fast and responsive, list queries limit how much data is returne
 - Cursor-based (current): used by newly developed list queries.
 - Offset-based (legacy): used by most existing list queries. These will eventually be replaced by cursor-based versions.
 
-> [!NOTE] Limits
+> [!WARNING] Pagination limits
 > Regardless of the pagination type, list queries return at most 100 items per page, except for the `getRouteStationsWithAmenities` query, which is limited to 10.
 
 ## Cursor-based pagination

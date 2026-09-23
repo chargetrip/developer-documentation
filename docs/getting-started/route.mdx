@@ -1,5 +1,6 @@
 ---
-title: "Route"
+title: Route
+tag: Guide
 ---
 
 Planning routes for EVs comes with unique challenges. Battery capacity, real-world energy consumption, topography, weather, and charging network availability all determine whether a vehicle will reach its destination.
@@ -8,7 +9,7 @@ The Route API considers all these variables to find optimal EV routes. Using a w
 
 ## How it works
 
-To ensure high performance, the Route API operates asynchronously. Creating and retrieving a route happen in separate steps.
+To ensure high performance, the Route API operates asynchronously, following the same [async pattern](/api-reference/api/async-operations) used across the API. Creating and retrieving a route happen in separate steps.
 
 1. **Create a route**
    Call the `createRoute` mutation with at least a `vehicle`, `origin`, and `destination`. The mutation returns a route `id` right away, which you'll use in the next step to track and retrieve the route. Many more customization options are available, see [customize your route](#customize-your-route) below.

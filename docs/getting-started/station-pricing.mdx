@@ -1,5 +1,5 @@
 ---
-title: "Station pricing"
+title: Station pricing
 ---
 
 Charging prices can be shown at two levels: directly on a map through the Tile service, or in full detail through a connector's pricing.
@@ -29,5 +29,5 @@ A connector can have several price elements active at different times. Work thro
 
 Each connector can have its own price, and prices can be changed dynamically by the operator at any time.
 
-> [!NOTE] Rely on `last_updated`
+> [!WARNING] Rely on last_updated
 > Since prices can change at any time, always check a price object's `last_updated` field before caching or reusing a price, rather than assuming it stays valid.
