@@ -9,7 +9,7 @@ Once all credentials are configured inside the dashboard, start making requests 
 
 The API is a GraphQL API that uses the following base URL. You can find more information about the API in the [GraphQL API reference](/api-reference).
 
-```bash title="Base URL"
+```bash Base URL
 https://api.chargetrip.io/graphql
 ```
 
@@ -33,7 +33,7 @@ After obtaining the base URL, add one or more of the following headers to each r
 
 To communicate with the API, you must authenticate each request with the headers `x-client-id` and `x-app-id`. By default, a unique `x-app-id` is generated for each project.
 
-```bash title="Example request"
+```bash Example request
 curl -X POST \
   -H "Content-Type: application/json" \
   -H "x-client-id: 5e8c22366f9c5f23ab0eff39" \

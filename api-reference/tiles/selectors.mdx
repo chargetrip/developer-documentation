@@ -61,7 +61,7 @@ Any field listed in the station properties for MVT and JSON tiles can be used as
 
 To request specific properties, append `station_properties[]` query parameter to the tile request URL.
 
-```bash title="Tile / Selectors / Example"
+```bash Tile / Selectors / Example
 https://api.chargetrip.io/v2/station/.../?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
 ```
 
@@ -73,7 +73,7 @@ When selectors are provided, the request returns only the specified fields.
 
 In the GeoJSON endpoint, the mandatory GeoJSON fields (`type` and `geometry` and `id`) are always returned regardless of the selectors chosen.
 
-```json title="JSON Selectors example"
+```json JSON Selectors example
 {
   "type": "FeatureCollection",
   "features": [
@@ -112,7 +112,7 @@ In the GeoJSON endpoint, the mandatory GeoJSON fields (`type` and `geometry` and
 
 In MVT endpoint, only the parameters explicitly selected are returned as there are no mandatory fields.
 
-```json title="MVT Selectors example"
+```json MVT Selectors example
 // Station feature
 // 'count' is missing because it wasn't provided as a selector.
 {

@@ -18,7 +18,7 @@ When a request includes filters, the Tile service performs two distinct operatio
 
 Filter parameters can be appended to the request URL as query strings to any of the Tile Service endpoints (MVT or JSON or Count). If no filters are applied, all available charging stations are returned, and no data transformations are done.
 
-```bash title="Tile / Filter / Example"
+```bash Tile / Filter / Example
 https://api.chargetrip.io/v2/station/..../?{filter_1}&{filter_2}&{filter_n}
 ```
 
@@ -63,7 +63,7 @@ Filters can exist on two levels. EVSE level or station level. Each with their ow
 
 <details>
   <summary>Same filter type, different values</summary>
-  ```bash title="Example URL"
+  ```bash Example URL
   https://api.chargetrip.io/v2/station?connectors[]=IEC_62196_T1_COMBO&connectors[]=CHADEMO
   ```
 
@@ -76,7 +76,7 @@ Filters can exist on two levels. EVSE level or station level. Each with their ow
 
 <details>
   <summary>Multiple different filter types</summary>
-  ```bash title="Example URL"
+  ```bash Example URL
   https://api.chargetrip.io/v2/station?minimum_power=120&evse_statuses[]=AVAILABLE&connectors[]=IEC_62196_T1_COMBO
   ```
   | Station | Properties                                                                            | Matches                                                                |
@@ -95,11 +95,11 @@ These “dynamic” output fields are `connector_maximum_power` and `evse_status
     <summary>Same filter type, different values</summary>
     The request includes CHADEMO connector filter. The station is included because it has a CHADEMO connector, but the dynamic fields are transformed to ignore the Combo Type 1  chargers.
 
-    ```bash title="Example URL"
+    ```bash Example URL
     https://api.chargetrip.io/v2/station?connectors[]=IEC_62196_T1_COMBO&connectors[]=CHADEMO
     ```
 
-    ```json title="Response"
+    ```json Response
     {
         "id": "station_a",
         // Static: Remains 150 kW (This represents the station maximum power across all conectors)
