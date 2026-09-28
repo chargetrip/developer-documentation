@@ -1,22 +1,130 @@
 ---
 slug: route
+title: Route migration guide
+migrateBefore: 01-01-2027
 ---
-# newRoute > createRoute
-Migration Guide
 
-This guide is intended for developers migrating from Chargetrip’s legacy Route service to the latest version of the Route service. If you  have any additional questions, please contact our support team.
+# Create route
 
-The new Route service delivers key improvements, including a streamlined  and reorganized schema, per-country operator preferences, faster route  computation, and greater maintainability. The legacy service will remain available until May 2026, after which all legacy operations will be  removed from the schema.
+Migrate from the legacy Route service to the latest version. The new service delivers a reorganized schema, per-country operator preferences, faster route computation, and greater maintainability.
 
-### Introduction
+## Operations
 
-This guide is intended for developers migrating from Chargetrip’s legacy Route service to the latest version of the Route service. If you  have any additional questions, please contact our support team.
+| Old               | New                                                             |
+| ----------------- | ----------------------------------------------------------------|
+| `newRoute`        | [`createRoute`](/api-reference/route/mutation-create-route)     |
 
-The new Route service delivers key improvements, including a streamlined  and reorganized schema, per-country operator preferences, faster route  computation, and greater maintainability. The legacy service will remain available until May 2026, after which all legacy operations will be  removed from the schema.
+## General schema changes
 
-| Operation    | Old               | New            |
-| ------------ | ----------------- | -------------- |
-| Mutation     | `newRoute`        | `ranking_levels` |
-| Subscription | `routeUpdatedById`| `route`        |
-| Query        | `route`           | `getRoute`     |
+- **Explicit typing**: previously flexible JSON fields are now explicitly typed in the schema to improve structure and validation.
+- **Naming conventions**: fields now use `snake_case` instead of `camelCase`.
+- **Unit support**: numeric inputs now support different unit types, expressed as an object with `value`, `type`, and an optional `source` (`manual`, `telemetry`, or `default`).
 
+## Mutation changes
+
+The `input` argument on `createRoute` has been reorganized and simplified.
+
+### routeRequest
+
+At the root level, the following fields have been removed. Operator-related fields are now covered by [operator preferences](#operator-preferences), and amenity-related fields have moved to their own dedicated [amenity query](/api-reference/route/query-get-route-stations-with-amenities).
+
+| Field                  | Moved to                              |
+| ---------------------- | -------------------------------------- |
+| `operatorIds`          | Removed                                |
+| `amenities`            | Removed                                |
+| `amenity_preferences`  | Removed                                |
+| `operatorRequired`     | Removed                                |
+| `operatorPrefer`       | Removed                                |
+
+### EV
+
+At the EV level, most top-level fields have moved into a dedicated `vehicle` object.
+
+| Field             | Moved to                              |
+| ----------------- | -------------------------------------- |
+| `ev.id`           | `vehicle.id`                     |
+| `battery`         | `vehicle`                        |
+| `climate`         | `vehicle`                        |
+| `heat_pump`       | `vehicle`                        |
+| `plugs`           | `vehicle.charging.connectors`    |
+| `safeRiskMargin`       | `vehicle.charging.risk_margin`   |
+| `chargeMode`           | `vehicle.charging.mode`          |
+| `bmsConsumption`  | Removed                                |
+
+### Vehicle load
+
+Vehicle load properties are no longer set in a single place. They're now specified per `origin` and `via` point, giving more granular control over occupant and cargo weight per leg. They live under `properties.vehicle` on each location, and their field names change as follows:
+
+| Field       | Moved to             |
+| ----------- | --------------------- |
+| `occupants` | Unchanged              |
+| `cargo`     | `total_cargo_weight`  |
+
+### Telemetry
+
+The following telemetry data has moved from the root level into the `vehicle` object.
+
+| Field                 | Moved to        |
+| --------------------- | ---------------- |
+| `heading`             | `vehicle`  |
+| `motor_rpm`           | `vehicle`  |
+| `odometer`            | `vehicle`  |
+| `outside_temperature` | `vehicle`  |
+| `tire_pressure`       | `vehicle`  |
+| `vehicle_speed`       | `vehicle`  |
+
+## Highlighted changes
+
+A few fields on the `input` argument now have new, more structured shapes. These are covered in more detail below.
+
+### Operator preferences
+
+Operator preferences are simplified to three levels: `high`, `medium`, and `low`. Each entry — whether ranked, excluded, or avoided — can be scoped to specific countries via the `countries` field. If omitted, all countries are considered.
+
+```graphql Operator preferences {{ mark: [6,9,12] }}
+input: {
+  operators: {
+    ranking: {
+      type: preferred
+      levels: {
+        high: [
+          {
+            id: "op1"
+            countries: [NL]
+          }
+        ]
+        low: [
+          {
+            id: "op3"
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+### Total occupant weight
+
+A new `total_occupant_weight` field lets you override the default occupant weight, expressed with the new unit object.
+
+```graphql Total occupant weight {{ mark: [6,7,8,9,10] }}
+input: {
+  origin: {
+    properties: {
+      vehicle: {
+        occupants: 3
+        total_occupant_weight: {
+          value: 160
+          type: kilogram
+          source: manual
+        }
+      }
+    }
+  }
+}
+```
+
+## Deprecated features
+
+- **[`routePath`](/api-reference/route/query-route-path) query**: the route's path is now already included in the `getRoute` response as `recommended.path_plot`, so a separate query to fetch it is no longer needed.
