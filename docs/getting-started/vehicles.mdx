@@ -7,35 +7,27 @@ A comprehensive vehicle database is essential for any EV application. Vehicle da
 
 ## Introduction
 
+A quick primer on EVs and why vehicle data matters for routing.
+
 ### Electric vs. internal combustion engines
 
-EV and ICE (internal combustion engine) vehicles both consume energy. An ICE vehicle ignites and combusts fossil fuel to operate, while an EV is powered by electricity and recharged by plugging it into a charger.
+An ICE (internal combustion engine) vehicle burns fossil fuel to run. An EV runs on electricity and recharges by plugging into a charger.
 
 ### Charging an electric vehicle
 
-The battery of an EV must be charged for the vehicle to drive. EV drivers charge their vehicles at charging stations, often found at gas stations or car parks.
-
-There are multiple types of plugs used for electric vehicles, meaning not every vehicle can charge at every charger. Therefore, it is important for EV driver apps to have data on which vehicle a driver is using and which plug types each charger supports.
-
-In addition to plug types, there are also different charge speeds. These are classified into level 1, level 2, and level 3 charging. Level 1 is the slowest, requiring at least an overnight charge to reach 80% from near empty. Level 2 charging is faster but still takes multiple hours to charge to 80%. Level 3 charging (often referred to as "fast charging") can charge an EV in less than an hour, sometimes as quickly as 30 minutes.
-
-Charging stations use either AC (alternating current) or DC (direct current) to charge EVs. AC charging is typically slower and is used for level 1 and level 2 charging. DC charging, used in level 3 fast chargers, allows for much quicker charging times, providing a significant boost in a short period. The Chargetrip API takes into account the distinct charge curve for every EV profile.
-
-Paying for EV charging is not as simple or standardized as paying for petrol. In Europe, payment is generally done with charge cards (subscriptions purchased by the driver that give access to charging). In North America, it is more common to pay directly with a credit card. Payment options vary widely based on the operator of a charge station, and Chargetrip exposes the options for each location.
+EVs charge at charging stations using one of several plug types, so knowing a driver's vehicle and a charger's supported plugs matters. Charging speed comes in three levels: level 1 and 2 use AC and take hours, while level 3 "fast charging" uses DC and can charge a vehicle in under an hour. The Chargetrip API accounts for each vehicle's charge curve, and exposes the available payment options per location, since these vary by region and operator.
 
 ### Impact factors of a battery
 
-The battery of an EV is affected by numerous variables. Just like how a phone battery works differently in the cold, an EV battery is similarly impacted. Variables such as weather, air conditioning use, and vehicle specifications influence battery performance. These variables make it challenging to estimate how far a vehicle can drive on a single charge. At Chargetrip, all of these factors are considered to calculate highly accurate range estimations for EVs.
+Battery performance is affected by weather, climate control use, and vehicle specifications, similar to how phone batteries behave differently in the cold. Chargetrip accounts for these factors to produce accurate range estimations.
 
 ### Routing for EVs
 
-EV drivers often experience range anxiety: the fear that they will run out of battery before reaching their destination or a charge station. This anxiety can be overcome by using a route planning application that shows if and where charging will be necessary along the journey.
+Range anxiety, the fear of running out of charge before reaching a destination or charger, can be addressed with route planning that shows if and where charging is needed along the way.
 
 ### Range predictions
 
-To provide accurate route plans to EV drivers, an application must predict how much energy a given EV will use to travel from point A to point B. Understanding energy consumption allows the application to recommend ideal charging stops along any journey, ensuring drivers can travel confidently and efficiently.
-
-You can use Chargetrip to create isolines for each vehicle given configurable circumstances and preferences.
+Accurate routing depends on predicting how much energy a vehicle will use between two points, which lets an application recommend charging stops along the journey. Use isolines to visualize the area a vehicle can reach under given conditions and preferences.
 
 ## Database
 
