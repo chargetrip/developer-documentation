@@ -1,0 +1,111 @@
+---
+title: Experimental features
+---
+
+Chargetrip introduces significant new capabilities through a structured experimental program. It gives you early access to evaluate upcoming features and influence their design before schemas and contracts become permanent.
+ 
+> [!WARNING] Exemption from the 12-month deprecation policy
+> Features in Alpha and Beta are exempt from the [12-month deprecation policy](/docs/api/lifecycle#deprecation-timeline) and can change or be retired earlier.
+
+
+## Types of Experimental Features
+
+* **New operations**: Entirely new queries, mutations, or subscriptions.
+
+* **Extensions to existing operations**: New optional arguments or output fields added to existing stable operations.
+
+---
+
+## Experimental Feature Phases (Alpha vs. Beta)
+
+| Dimension | ALPHA | BETA | 
+ | ----- | ----- | ----- | 
+| **Purpose** | Early feasibility testing and initial integration trials. | Real-world validation and operational performance verification. | 
+| **Production Readiness** | Strictly not recommended for production environments. | Suitable for controlled pilots. Not recommended for mission-critical flows. | 
+| **Activation** | Disabled by default. Requires explicit opt-in in the Dashboard. | Enabled by default for all clients. | 
+| **Schema Stability** | Unstable. Schema may change without notice. | High stability. Core logic is mature; active customers are contacted directly about changes. | 
+| **Schema Indicator** | Tagged with `[ALPHA]` in schema field descriptions. | Tagged with `[BETA]` in schema field descriptions. | 
+| **Discontinuation Notice** | None. Subject to immediate modification or retirement. | Proactive direct outreach to actively integrating customers. | 
+
+For what Stable features guarantee, see [API lifecycle](/docs/api/lifecycle#stable-api).
+
+---
+
+## Best Practices
+
+- **Do not use Alpha features in production:** Use them for sandbox evaluation, proofs of concept, and feedback. If you ship one anyway, you receive no notice or compatibility protection when it changes.
+
+- **Label Beta features in your UI:** If you expose Beta capabilities to end users, show a "Beta" badge so they know the capability is still stabilizing.
+
+---
+
+## Graduation Lifecycle
+
+1. **ALPHA ➔ BETA** When the functionality and schema achieve enough maturity, the feature is graduated to Beta. The description tag updates from `[ALPHA]` to `[BETA]`, access is enabled by default for all customers, and changes are announced in the Release Notes.
+
+2. **BETA ➔ Stable** When reliability and maturity are validated across multiple clients, the `[BETA]` description tag and runtime warnings are removed and the feature graduates to the [stable lifecycle](/docs/api/lifecycle).
+
+
+---
+
+## Pricing
+
+- **Experimental operations**: Requests to operations tagged as experimental are **free of charge**.
+
+- **Experimental fields on stable operations**: Requests made to stable endpoints that include optional experimental input arguments or output fields are **charged** in accordance with your subscription plan.
+
+---
+
+## Programmatic Warnings
+
+To keep your development team aware of experimental dependencies in active traffic, API responses using Alpha or Beta capabilities return warning metadata in the GraphQL `extensions` block:
+
+
+
+<details>
+  <summary>Example warning of a alpha feature</summary>
+  ```Graphql Example request and response 
+  {
+  "data": {
+    "getTruckRoute": {
+      "id": "dd07b4d0-6b79-11f0-bf8f-e6b813282ac3",
+      "status": "done"
+    }
+  },
+  "extensions": {
+    "warnings": [
+      {
+        "code": "ALPHA_FEATURE",
+        "path": ["getTruckRoute"],
+        "message": "This feature is currently in ALPHA. Visit https://developers.chargetrip.com/api-reference for more information."
+      }
+    ]
+  }
+}
+
+  ```
+</details>
+
+
+<details>
+  <summary>Example warning of a beta feature</summary>
+  ```Graphql Example request and response 
+  {
+  "data": {
+    "vehicleMakes": {
+      "name": "Opel"
+    }
+  },
+  "extensions": {
+    "warnings": [
+      {
+        "code": "BETA_FEATURE",
+        "path": ["vehicleMakes"],
+        "message": "This feature is currently in BETA. Visit https://developers.chargetrip.com/api-reference for more information."
+      }
+    ]
+  }
+}
+
+  ```
+</details>
