@@ -1,0 +1,12 @@
+---
+title: Create route
+schemaName: createRoute
+schemaType: Mutation
+---
+
+Create a new route by using the createRoute mutation. This is useful when you want to calculate charging stops, energy consumption, and drive time between an origin and a destination.
+
+## Mutation
+
+A `vehicle`, `origin`, and `destination` are required to create a route. Optionally add `via` points, `operators`, `weather`, or other preferences to refine the calculation. The mutation returns a route `id`, which can be used to retrieve route details, emissions, or amenities along the way.
+

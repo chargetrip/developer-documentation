@@ -1,0 +1,26 @@
+---
+title: Async operations
+---
+
+Some operations, like creating a route or a matched route, run asynchronously to keep the API responsive. Rather than waiting for a mutation to return the full result, you get an `id` right away and follow up to track and retrieve it.
+
+## How it works
+
+1. **Create**
+   Call the mutation. It returns an `id` right away, which you use in the next step to track and retrieve the result.
+2. **Open a subscription**
+   Subscribe using the `id` from the previous step. While the result is being calculated, the subscription pushes status updates you can use to drive an async loading state in your UI.
+3. **Render the result**
+   Once `status` resolves to a final value, usually `done`, `error`, or `not_found`, render the corresponding UI for that outcome.
+4. **Re-fetch a finished result**
+   Once a result reaches a final status, it's already precomputed. If you need it again later, for example after navigating back to it, use the matching query instead of opening a new subscription.
+
+## Where this applies
+
+| Feature | Mutation | Subscription | Query |
+| --- | --- | --- | --- |
+| [Route](/docs/getting-started/route) | `createRoute` | `route` | `getRoute` |
+| [Matched route](/api-reference/matched-route/mutation-create-matched-route) | `createMatchedRoute` | `matchedRoute` | `getMatchedRoute` |
+| [Isoline](/api-reference/isoline/mutation-create-isoline) | `createIsoline` | `isoline` | `isoline` |
+| [Truck route](/api-reference/truck-route/mutation-create-truck-route) | `createTruckRoute` | `truckRoute` | `getTruckRoute` |
+| [Navigation](/api-reference/navigation/mutation-start-navigation) | `startNavigation` | `navigation` | `navigation` |
