@@ -3,7 +3,7 @@ title: Count
 tag: Rest
 ---
 
-The station count endpoint returns the total number of charging stations, either globally or by a bounding box or filtered by specific criteria.
+The station count endpoint returns the total number of charging stations.
 
 ## Setup
 To retrieve the station count, make a `GET` request to the following URL:
@@ -11,9 +11,6 @@ To retrieve the station count, make a `GET` request to the following URL:
 ```bash title="Count / Base URL"
 https://api.chargetrip.io/v2/station/count
 ```
-
-### Bounding box
-Use the `bbox` query parameter to narrow the station count to the specified bounding box. The bounding box must respect the format `?bbox={min_lon},{min_lat},{max_lon},{max_lat}`.
 
 
 ### Filtering

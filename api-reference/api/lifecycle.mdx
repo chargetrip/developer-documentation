@@ -2,57 +2,141 @@
 title: Lifecycle
 ---
 
-The API is built around a single, evolving GraphQL endpoint. This way, the latest features and improvements are always available without managing multiple API versions. A single-endpoint approach simplifies integration, but it also requires a clear strategy for managing changes. This page outlines the approach to API evolution and provides guidelines for building integrations that remain stable as the API evolves.
+The API is built around a single, evolving GraphQL endpoint. This architecture ensures that new capabilities and performance improvements are delivered continuously without requiring migration between API versions.
 
-## Non-breaking changes
+To maintain predictability and long-term stability, Chargetrip distinguishes between two distinct lifecycles:
 
-A non-breaking change is a modification that is safe and backward-compatible. Because these changes won't disrupt existing integrations, they are introduced without a formal announcement.
+- **Stable API Lifecycle**: Governed by strict backward-compatibility rules and a guaranteed 12-month deprecation policy.
 
-### What this includes
+- **Experimental Feature Lifecycle**: Governed by pre-release stages (ALPHA and BETA) designed for testing and feedback prior to formal graduation. These features do not follow a deprecation policy.
+
+## Stable API
+Stable functionalities represent the production-ready core of the API. Changes are classified into two categories:
+
+### Non-breaking changes
+
+Backward-compatible additions that do not disrupt existing integrations. These are released continuously without advance notice:
 
 - Adding a new query, mutation, or subscription.
-- Adding a new optional input.
-- Adding a new field to an output.
-- Making required fields optional.
+- Adding a new optional argument to an existing operation.
+- Adding a new field to the output of an existing operation.
+- Changing a required argument to optional.
 - Adding a new value to an existing enum type.
 
 > [!TIP] Handle new enum values
 > `enum` types are not exhaustive. New values are introduced to existing enum types over time as new features are added. Always implement a catch-all case in your application's logic to gracefully handle new enum values.
 
-## Breaking changes
+### Breaking changes and deprecations
 
-A breaking change is a modification that could cause an existing integration to stop working. Because such changes can be disruptive, any breaking change follows a formal deprecation process to give you time to adapt.
+A breaking change could break active existing integrations. As consequence, any breaking change must first pass through a 12-month deprecation process.
 
-### What this includes
+Breaking changes include:
 
-- Removing or renaming an existing query, mutation, or subscription.
+- Removing or renaming an existing query, mutation, subscription, field, or argument.
 - Removing or renaming an existing field.
 - Removing or renaming enum values.
-- Changing the type of a field.
-- Making an optional input field required.
-- Changing the core behavior of an existing field.
-- Making a non-null field nullable.
+- Changing the data type of an existing field or argument.
+- Adding a new required argument.
+- Changing  a previously optional input argument to required.
+- Altering the fundamental business logic or calculation behavior of an existing field.
+- Changing a non-nullable output field to nullable.
 
 
+#### Deprecation timeline 
 
-## Deprecations
+When a breaking change requires removing or replacing a stable capability, it follows a strict three-phase timeline:
 
-When a functionality is deprecated, it continues to work normally for at least 12 months. After this notice period, the deprecated functionality is removed, and requests using it return GraphQL errors.
+1. **Deprecation Announcement**
+    The functionality is tagged with the `@deprecated` directive in the GraphQL schema, and announced simultaneously across [three monitoring channels](#tracking-deprecations). 
+2. **Active Notice Window (Months 1–12)**
+    The deprecated functionality remains fully operational. Whenever a replacement field is introduced, integrators should update their applications and adopt the new field during this 12-month window.
+3. **Sunset and Permanent Removal**
+    The functionality is permanently removed from the GraphQL schema. Any subsequent requests using the functionality will fail schema validation with a GraphQL error.
 
-### How to track deprecations
 
-Track deprecations deprecations through:
+#### Tracking Deprecations
 
-- `@deprecated` in the GraphQL schema.
-- [Deprecations portal](/deprecations).
-- Programmatic Warnings. Chargetrip’s GraphQL API returns in every request using deprecated fields in  `extensions.warnings[]` the code `DEPRECATED_FEATURE` and path of each used deprecated field.
+Identify and track upcoming retirements across three channels:
+
+- GraphQL Schema Introspection:
+    Inspect `@deprecated(reason: "...")` directives in your schema tooling.
+- [Deprecations portal](/deprecations): 
+    Review sunset dates and migration guides.
+- Response Warnings: 
+    Monitor automated `DEPRECATED_FEATURE` warnings returned directly in API responses under `extensions.warnings[]`.
 
 > [!TIP] Plan migrations early
 > To prevent errors and service disruption, complete your migrations before the scheduled removal date.
 
+
 ## Experimental features
 
-Chargetrip uses a experimental feature program to introduce and validate impactful new functionalities before they become part of the stable API. Unlike changes to stable features, changes to experimental features are exempt from the regular deprecation process. This means that fields or operations marked as BETA or ALPHA may be changed or removed at any time without prior notice.
+Chargetrip introduces substantial new features through a structured experimental program. This allows partners to explore upcoming capabilities, conduct feasibility studies, and provide early feedback before schemas and behaviors become permanent.
 
-Visit the experimental features page (/experimental-features) to learn how these features work and what to expect from them.
+> [!WARNING] Exemption from the 12-Month Deprecation Policy
+> Experimental features (ALPHA and BETA) are **exempt from the standard 12-month deprecation process**. Fields and arguments tagged as experimental may be altered, optimized, or removed without formal advance notice.
 
+
+### Types of experimental features
+
+- New operations: Entirely new queries, mutations, or subscriptions.
+- Extensions to existing operations: New optional arguments or output fields that add capabilities to existing operations.
+
+
+### Experimental features phases (ALPHA and BETA)
+
+| Dimension | ALPHA | BETA |
+| :--- | :--- | :--- |
+| **Primary Purpose** | Early feasibility testing and initial integration trials. | Real-world validation and operational performance verification. |
+| **Production Readiness** | Strictly not recommended for production environments. | Not recommended for production-critical flows; suitable for controlled pilots. |
+| **Activation** | Disabled by default. Requires explicit activation in the Dashboard. | Enabled by default. Accessible to all projects automatically. |
+| **Schema Stability** | Immature. Subject to rapid adjustments and breaking changes without notice. | High stability. Underlying logic is mature, but adjustments may still occur. |
+| **Schema Indicator** | Tagged with `[ALPHA]` in schema field descriptions. | Tagged with `[BETA]` in schema field descriptions. |
+
+Best Practices:
+
+- **Flag Beta Features to End Users:** If exposing a BETA feature in your application, clearly label it with a "Beta" badge so users understand it can be unstable.
+
+- **Never use ALPHA features in production:** Never use a ALPHA feature in production. 
+
+
+###  Graduation Lifecycle
+
+1. **ALPHA ➔ BETA**
+    Core algorithms and schema structures achieve baseline maturity. The schema tag updates from `[ALPHA]` to `[BETA]`, access is enabled by default, and changes are announced in the Release Notes.
+
+2. **BETA ➔ Stable:**
+eliability and performance are verified under production traffic. The `[BETA]` tag and runtime warnings are removed, and the feature officially enters into the  stable API lifecycle.
+
+---
+
+### Pricing for Experimental Features
+
+- Experimental operations: Requests to operations tagged as experimental are **free of charge**.
+- Experimental fields on stable operations:  Requests made to stable endpoints that include optional experimental input arguments or output fields are **charged** in accordance to your  subscription plan.
+
+---
+
+### Programmatic Warnings
+
+When using an experimental feature, the response payload returns the codes `ALPHA_FEATURE` or `BETA_FEATURE` in warning metadata.
+
+```json
+{
+  "data": {
+    "getTruckRoute": {
+      "id": "dd07b4d0-6b79-11f0-bf8f-e6b813282ac3",
+      "status": "done"
+    }
+  },
+  "extensions": {
+    "warnings": [
+      {
+        "code": "ALPHA_FEATURE",
+        "path": ["getTruckRoute"],
+        "message": "This feature is currently in ALPHA. Visit https://developers.chargetrip.com/api-reference for more information."
+      }
+    ]
+  }
+}
+```

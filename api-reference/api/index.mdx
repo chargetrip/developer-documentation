@@ -9,13 +9,22 @@ The API is built on GraphQL. Every resource, such as vehicles, stations, routes,
 
 If you're new to GraphQL, the [official GraphQL documentation](https://graphql.org/learn/) is a good place to start.
 
-## Authentication
+## GraphQL Endpoints
 
-Every request needs a base URL and the `x-client-id` and `x-app-id` headers to authenticate. See [send your first request](/docs/getting-started/api-request) for the full list of headers and an example request.
+All standard queries, mutations, and real-time subscriptions are accessible through dedicated endpoints. See [send your first request](/docs/getting-started/api-request) for the full list details and examples of requests.
 
-```bash title="Base URL"
+For queries and mutations use:
+
+```bash Mutation and Query URL
 https://api.chargetrip.io/graphql
 ```
+
+For subscriptions use: 
+```bash Subscriptions URL
+wss://api.chargetrip.io/subscription
+```
+
+
 
 ## Resources
 
