@@ -5,7 +5,7 @@ title: Lifecycle
 The API is built around a single, evolving GraphQL endpoint. This architecture ensures that new capabilities and performance improvements are delivered continuously without requiring migration between API versions.
 
  
-This page outlines the different stability levels across the API, the stability guarantees of the stable API, the types of changes (breaking vs. non-breaking), and how deprecations are managed. For features currently in preview, see [Experimental features](/docs/api/experimental-features).
+This page outlines the different stability levels across the API, the stability guarantees of the stable API, the types of changes (breaking vs. non-breaking), and how deprecations are managed. For features currently in preview, see [Experimental features](/api-reference/api/experimental-features).
 
 ## Feature lifecycle
  
@@ -13,8 +13,8 @@ Every feature sits at one of three stability levels: Alpha, Beta, or Stable. Mos
  
 ```text
 [ ALPHA ] ──> [ BETA ] ──> [ STABLE ] ──> [ DEPRECATED ] ──> [ REMOVED ]
- Opt-in        Enabled                      12+ month          Fails schema
-               by default                   notice window      validation
+ Opt-in        Enabled                      12+ month          
+               by default                   notice window     
 ```
  
 
@@ -31,6 +31,9 @@ Non-Breaking changes include:
 - Adding a new field to the output of an existing operation.
 - Changing a required intput argument to optional.
 - Adding a new value to an existing enum type.
+
+
+**Build resilient applications**
 
 
 Non-breaking changes can still affect clients that make rigid assumptions. To keep integrations resilient:

@@ -38,7 +38,7 @@ Specifying operators ids in the `createRoute` request replaces only the correspo
 ### 3. Implementation Examples
 
 <details>
-Applies dashboard excluded and avoided operator configurations. Dashboard ranked tiers remain inactive because no `input.operators.ranking.type` is specified.  <summary> Use Dashboard Exclusions and Avoidances (Default) </summary>
+Applies excluded and avoided operator configurations set in Dashboard. Dashboard ranked settings are inactive because no `input.operators.ranking.type` is specified.  <summary> Use Dashboard exclusions and avoidances only</summary>
     ```Graphql Example request
     createRoute(
     input: {
@@ -55,7 +55,7 @@ Applies dashboard excluded and avoided operator configurations. Dashboard ranked
 
 
 <details>
-Applies dashboard excluded and avoided operator configurations, and prefers stations that belong to the dashboard ranking tiers.  <summary>Use Dashboard Ranked operators as "Preferred"</summary>
+Applies dashboard excluded and avoided operator configurations, and prefers stations that belong to the dashboard ranking tiers.  <summary>Use Dashboard ranked operators as "Preferred"</summary>
   ```Graphql Example request {{ mark: [12] }}
     createRoute(
     input: {
@@ -76,7 +76,7 @@ Applies dashboard excluded and avoided operator configurations, and prefers stat
 
 <details>
 Restricts the route to charge exclusively at stations belonging to operators configured in dashboard ranking tiers.
-  <summary>Use Dashboard Ranked operators as "Required"</summary>
+  <summary>Use Dashboard ranked operators as "Required"</summary>
   ```Graphql Example request {{ mark: [12] }}
     createRoute(
     input: {
@@ -100,7 +100,7 @@ Restricts the route to charge exclusively at stations belonging to operators con
 <details>
 Provide full operator configurations directly in the API call. Any specified field (ranking, avoid, or exclude) overrides the corresponding dashboard configuration for that request.
 
-  <summary>Define custom preferences and override dashboard settings</summary>
+  <summary>Define custom preferences and override Dashboard settings</summary>
   ```Graphql Example request  {{ mark: [11,12,13,14,15,16,17] }}
     createRoute(
     input: {

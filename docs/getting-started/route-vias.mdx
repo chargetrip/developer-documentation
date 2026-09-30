@@ -1,0 +1,159 @@
+---
+title: "Route with intermediate stops"
+---
+
+When calculating an EV route with the Chargetrip Route API, you can add intermediate stops between the origin and destination using `via`. 
+
+Vias allow you to customize routing for real-world travel scenarios—such as charging at a preferred charge station, picking up passengers or stopping at a restaurant.
+
+
+## Types of Vias
+
+Chargetrip supports two types of intermediate stops:
+
+| Via Type | Charging Occurs? |  Activation / Field | Purpose | 
+| :--- | :--- | :--- | :--- | 
+| **Non-Charging  (Location Via)** | No |  Use `input.via.geometry`| Geographic stop (pick-up, delivery, scenic detour, coffee break). 
+| **Charging (Station Via)** | Yes | Use `input.via.properties.station.station_id`| Explicitly selected charging station. 
+
+
+## Stop Duration
+
+You can configure the duration of the stop on every via. Depending on the type of stop (charging or non-charging), the `stop_duration` is configured in different locations and has different behaviours:
+
+### 1. In non-charging vias
+
+The stop duration is configured at `input.via.properties.location.stop_duration`. This duration represents the **exact stop duration** and is added directly to the total trip duration without affecting the vehicle charging or driving time.
+
+### 2. In charging vias
+
+The stop duration is configured at `input.via.properties.station.stop_duration`, this value represents **the minimum stop duration**. The vehicle remains at the station for at least this long, but the route planner may extend the stop depending on the configured `charge_mode`:
+
+  * `ALWAYS_TO_MAX_CHARGE`: Extends charging time if needed to reach the maximum configured SoC. If the requested `stop_duration` exceeds the time required to reach the maximum SoC, the remaining time is logged as idle stopover.
+
+  * `OPTIMIZE_TRAVEL_TIME`: Extends the stay beyond `stop_duration` only if doing so reduces overall trip time (for example, by eliminating a subsequent charging stop). Otherwise, charges for the exact requested duration. If the requested `stop_duration` exceeds the time required to reach the maximum SoC, the remaining time is logged as idle stopover.
+
+If no value is provided, the planner optimizes charging duration purely based on the route's `charge_mode`.
+
+
+## Examples
+
+<details>
+  <summary>Calculate a route with a 30-minute non-charging stop. </summary>
+  ```Graphql Example request 
+mutation CreateRouteWithWaypoint {
+  createRoute(
+    input: {
+         vehicle: { id: "60b8d5a2f1c8e9001b9e2831", 
+                   charging:  {
+           mode: OPTIMIZE_TRAVEL_TIME
+        } }
+      origin: {
+        type: Point
+        coordinates: [4.9041, 52.3676] 
+      }
+      destination: {
+        type: Point
+        coordinates: [6.9583, 50.9375] 
+      }
+      via: [
+        {
+          geometry: {
+            type: Point
+            coordinates: [5.1214, 52.0907] # Utrecht
+          }
+          properties: {
+            location: {
+              name: "Utrecht Central"
+              stop_duration: 1800 # 30 minutes in seconds
+            }
+          }
+        }
+      ]
+    }
+  ) {
+    id
+    status
+  }
+}
+
+
+  ```
+</details>
+
+
+<details>
+  <summary> Calculate a route with a charging stop of a minimum 30 minutes. </summary>
+  ```Graphql Example request 
+mutation CreateRouteWithChargingVia {
+  createRoute(
+    input: {
+         vehicle: { id: "60b8d5a2f1c8e9001b9e2831", 
+                   charging:  {
+           mode: OPTIMIZE_TRAVEL_TIME
+        } }
+      origin: {
+        type: Point
+        coordinates: [4.9041, 52.3676]
+      }
+      destination: {
+        type: Point
+        coordinates: [6.9583, 50.9375]
+      }
+      vias: [
+        {
+          properties: {
+            station: {
+              station_id: "5e849ea2837bc43df65d19a2"
+              stop_duration: 1800 # 30 minutes minimum stop duration
+            }
+          }
+        }
+      ]
+    }
+  ) {
+    id
+    status
+  }
+}
+  ```
+</details>
+
+
+<details>
+  <summary> Calculate a route with a charging stop without a minimum stop duration. </summary>
+  ```Graphql Example request 
+mutation CreateRouteWithChargingVia {
+  createRoute(
+    input: {
+      vehicle: { id: "60b8d5a2f1c8e9001b9e2831", 
+                   charging:  {
+           mode: OPTIMIZE_TRAVEL_TIME
+        } }
+      origin: {
+        type: Point
+        coordinates: [4.9041, 52.3676]
+      }
+      destination: {
+        type: Point
+        coordinates: [6.9583, 50.9375]
+      }
+      via: [
+        {
+          properties: {
+            station: {
+              station_id: "5e849ea2837bc43df65d19a2"
+              # stop_duration is omitted: the planner calculates optimal charging time based on charging mode. 
+            }
+          }
+        }
+      ]
+    }
+  ) {
+    id
+    status
+  }
+}
+  ```
+</details>
+

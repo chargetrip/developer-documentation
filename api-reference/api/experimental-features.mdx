@@ -5,7 +5,7 @@ title: Experimental features
 Chargetrip introduces significant new capabilities through a structured experimental program. It gives you early access to evaluate upcoming features and influence their design before schemas and contracts become permanent.
  
 > [!WARNING] Exemption from the 12-month deprecation policy
-> Features in Alpha and Beta are exempt from the [12-month deprecation policy](/docs/api/lifecycle#deprecation-timeline) and can change or be retired earlier.
+> Features in Alpha and Beta are exempt from the [12-month deprecation policy](/api-reference/api/lifecycle#deprecation-timeline) and can change or be retired earlier.
 
 
 ## Types of Experimental Features
@@ -14,22 +14,20 @@ Chargetrip introduces significant new capabilities through a structured experime
 
 * **Extensions to existing operations**: New optional arguments or output fields added to existing stable operations.
 
----
 
-## Experimental Feature Phases (Alpha vs. Beta)
+
+## Experimental Feature Phases 
 
 | Dimension | ALPHA | BETA | 
  | ----- | ----- | ----- | 
-| **Purpose** | Early feasibility testing and initial integration trials. | Real-world validation and operational performance verification. | 
 | **Production Readiness** | Strictly not recommended for production environments. | Suitable for controlled pilots. Not recommended for mission-critical flows. | 
 | **Activation** | Disabled by default. Requires explicit opt-in in the Dashboard. | Enabled by default for all clients. | 
-| **Schema Stability** | Unstable. Schema may change without notice. | High stability. Core logic is mature; active customers are contacted directly about changes. | 
+| **Stability** | Stable but subject to frequent schema changes.| Stable. Can have minor schema changes. | 
 | **Schema Indicator** | Tagged with `[ALPHA]` in schema field descriptions. | Tagged with `[BETA]` in schema field descriptions. | 
 | **Discontinuation Notice** | None. Subject to immediate modification or retirement. | Proactive direct outreach to actively integrating customers. | 
 
-For what Stable features guarantee, see [API lifecycle](/docs/api/lifecycle#stable-api).
+For what Stable features guarantee, see [API lifecycle](/api-reference/api/lifecycle).
 
----
 
 ## Best Practices
 
@@ -37,16 +35,15 @@ For what Stable features guarantee, see [API lifecycle](/docs/api/lifecycle#stab
 
 - **Label Beta features in your UI:** If you expose Beta capabilities to end users, show a "Beta" badge so they know the capability is still stabilizing.
 
----
 
 ## Graduation Lifecycle
 
 1. **ALPHA ➔ BETA** When the functionality and schema achieve enough maturity, the feature is graduated to Beta. The description tag updates from `[ALPHA]` to `[BETA]`, access is enabled by default for all customers, and changes are announced in the Release Notes.
 
-2. **BETA ➔ Stable** When reliability and maturity are validated across multiple clients, the `[BETA]` description tag and runtime warnings are removed and the feature graduates to the [stable lifecycle](/docs/api/lifecycle).
+2. **BETA ➔ Stable** When reliability and maturity are validated across multiple clients, the `[BETA]` description tag and runtime warnings are removed and the feature graduates to the [stable lifecycle](/api-reference/api/lifecycle).
 
 
----
+
 
 ## Pricing
 
@@ -54,7 +51,7 @@ For what Stable features guarantee, see [API lifecycle](/docs/api/lifecycle#stab
 
 - **Experimental fields on stable operations**: Requests made to stable endpoints that include optional experimental input arguments or output fields are **charged** in accordance with your subscription plan.
 
----
+
 
 ## Programmatic Warnings
 
