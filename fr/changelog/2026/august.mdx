@@ -1,0 +1,31 @@
+---
+title: Subscriptions v2
+date: 01-08-2026
+---
+
+## Subscriptions v2
+
+![Station boosting](../../../../assets/changelog/2026/august.jpg)
+
+We have launched a new subscription service hosted under a dedicated domain (`subscription.chargetrip.io`), delivering enhanced reliability, standard subprotocols, and new transport choices.
+
+- Connect via WebSocket over `wss://subscription.chargetrip.io/ws` using the modern `graphql-transport-ws` protocol;
+- Stream subscriptions over HTTP using Server-Sent Events via `https://subscription.chargetrip.io/sse`;
+- Active subscription connections automatically close when a resource reaches its final state (such as `done`, `error`, or `not_found` for routes/isolines, and `finished` or `error` for navigation);
+- Error payloads now follow consistent GraphQL error conventions with structured extensions metadata.
+
+### Station boosting groups on station queries
+
+We extended station queries to provide visibility into whether a station belongs to an active boosting group.
+
+- Added the `boosting_group_ids` field to the `Station` type across `station`, `stationList`, and `stationAround` queries;
+- Returns an array of active boosting group IDs configured for your project, returning an empty list (`[]`) if the station is not currently boosted.
+
+
+
+<details>
+  <summary>Fixes</summary>
+  
+  - Fixed an issue where routes with multiple ferry connections could result in routes to arrive at charging stations with a negative State of Charge.
+  - Fixed an issue where calculating routes between origin and destination points located very close to each other produced an invalid line string error and failed with a 404 response.
+</details>
