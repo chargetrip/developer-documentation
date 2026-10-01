@@ -1,0 +1,12 @@
+---
+slug: query-emissions
+title: Emissions migration guide
+migrateBefore: 01-01-2027
+---
+
+# Route emissions
+Migrate from the legacy Emissions service to the latest version. The new service is built as its own dedicated query, better aligned with scalability and future updates.
+
+## Query changes
+
+Emissions data has moved out of the route response and into its own dedicated `getRouteEmissions` query, so it can be requested independently of a route calculation.

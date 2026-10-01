@@ -1,0 +1,14 @@
+---
+title: Navigation updated by ID
+schemaName: navigation
+schemaType: Subscription
+---
+
+Once you have a navigation session `id` from the [startNavigation mutation](/api-reference/navigation/mutation-start-navigation), subscribe to it to receive real-time status and update details as the driver progresses along the route.
+
+> [!TIP] Stay subscribed
+> Use this subscription at all times to avoid missing navigation session updates.
+
+## Subscription
+
+A navigation session `id` is required to subscribe to its updates. The `id` can be obtained through the [startNavigation mutation](/api-reference/navigation/mutation-start-navigation). Use `last_change.type` to see why a session updated, for example `route_updated` or `next_station_availability_updated`. `meta.updated_at` changes whenever the route needs to be re-rendered, such as after a [recalculateNavigation mutation](/api-reference/navigation/mutation-recalculate-navigation) call.

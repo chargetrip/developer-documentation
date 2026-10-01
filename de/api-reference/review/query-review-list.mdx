@@ -1,0 +1,11 @@
+---
+title: Review list
+schemaName: reviewList
+schemaType: Query
+---
+
+Every station can be accompanied by user reviews. Query for properties such as rating and message, or receive data about the EV that was used to charge. Reviews are scoped to a single station database and can't be used across different projects.
+
+## Query
+
+A station `id` is required to get its reviews. The `id` can be obtained through either a [route](/api-reference/route/query-get-route), the [tile service](/api-reference/tiles/mvt), or the [station around query](/api-reference/station/query-station-around). Use the `size` and `page` arguments to [paginate](/docs/pagination) through them.
