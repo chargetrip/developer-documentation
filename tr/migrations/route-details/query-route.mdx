@@ -1,0 +1,118 @@
+---
+slug: route-details
+title: Route details migration guide
+migrateBefore: 01-01-2027
+---
+
+# Route details
+
+Migrate from the legacy Route service to the latest version. The new service delivers a reorganized schema, per-country operator preferences, faster route computation, and greater maintainability.
+
+## Operations
+
+| Old                | New                                                   |
+| ------------------ | ------------------------------------------------------|
+| `route`            | [`getRoute`](/api-reference/route/query-get-route)     |
+| `routeUpdatedById`  | [`route`](/api-reference/route/subscription-route)     |
+
+## General schema changes
+
+- **Explicit typing**: previously flexible JSON fields are now explicitly typed in the schema to improve structure and validation.
+- **Naming conventions**: fields now use `snake_case` instead of `camelCase`.
+- **Unit support**: numeric inputs now support different unit types, expressed as an object with `value`, `type`, and an optional `source` (`manual`, `telemetry`, or `default`).
+
+## Query and subscription changes
+
+Field naming and grouping have been revised, and redundant fields have been removed. The response now includes the original input enriched with defaults, so it can be reused for future route recalculations.
+
+### Top level
+
+At the top level, most fields move under `recommended`, and the `ev`, `telemetry`, and `routeRequest` inputs are folded into a single `request_input` object.
+
+| Field          | Moved to               |
+| -------------- | ---------------------- |
+| `route`        | `recommended`          |
+| `alternatives` | Removed                |
+| `ev`           | `request_input`        |
+| `telemetry`    | `request_input`        |
+| `routeRequest` | `request_input`        |
+| `app`          | `meta.app_id`          |
+| `status`       | Unchanged              |
+
+### Route
+
+At the route level, most fields move under `recommended`, keeping their own names, alongside a few explicit renames.
+
+| Field                 | Moved to                             |
+| --------------------- | ------------------------------------ |
+| `rangeStart*`         | `range_at_origin`                    |
+| `rangeEnd*`           | `range_at_destination`               |
+| `charges`             | `recommended.charges`                |
+| `distance`            | `recommended.distance`               |
+| `consumption`         | `recommended.consumption`            |
+| `chargeTime`          | `recommended.durations.charging`     |
+| `polyline`            | `recommended.polyline`               |
+| `pathPlot`            | `recommended.path_plot`              |
+| `legs`                | `recommended.legs`                   |
+| `tags`                | `recommended.tags`                   |
+| `instructions`        | Removed                              |
+| `amenityRanking`      | Removed                              |
+| `stationsAlongRoute`  | `recommended.alternative_stations`   |
+
+### Legs
+
+At the leg level, ranges follow the same renaming as the route, and occupant and cargo details move onto each leg's `origin` and `via` location properties.
+
+| Field         | Moved to                               |
+| ------------- | --------------------------------------- |
+| `rangeStart*` | `range_at_origin`                       |
+| `rangeEnd*`   | `range_at_destination`                  |
+| `steps`       | `sections`                              |
+| `stationId`   | `recommended.legs.station.station_id`   |
+
+Legs also gain a new `range_after_charge` field.
+
+## Highlighted changes
+
+The response also introduces a new, more structured shape for route sections. It's covered in more detail below.
+
+### Sections
+
+Steps have been replaced with sections, which provide more granular information, including origin and destination details for each section.
+
+```graphql Sections {{ mark: [1,13,14,26,27] }}
+sections {
+  type
+  tags
+  polyline(decimals: five)
+  distance(unit: meter)
+  duration
+  consumption
+  origin {
+    id
+    type
+    properties {
+      occupants
+      total_occupant_weight
+      total_cargo_weight
+    }
+    geometry {
+      type
+      coordinates
+    }
+  }
+  destination {
+    id
+    type
+    properties {
+      occupants
+      total_occupant_weight
+      total_cargo_weight
+    }
+    geometry {
+      coordinates
+      type
+    }
+  }
+}
+```

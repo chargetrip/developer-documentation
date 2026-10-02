@@ -1,0 +1,28 @@
+---
+title: Security
+---
+
+Headers sent with a request, including `x-app-id`, are visible to anyone who inspects network traffic. To prevent unauthorized use of your applications, apply a restriction that limits which platform or origin can use it.
+
+> [!WARNING] One restriction per application
+> Only one restriction can be applied per application. To combine restrictions — for example a web and a mobile client — create a separate application for each.
+
+## Restriction types
+
+Four restriction types are available, each suited to a different platform or communication pattern.
+
+### Web
+
+Restrict a web application via HTTP referrer, applied to the `x-app-id` header. Multiple URLs can be added to a single application.
+
+### Machine-to-machine (M2M)
+
+Restrict server-to-server communication via IP address (IPv4 and IPv6 are supported), configured in the app dashboard. This is the most secure option, since credentials never reach a browser or device.
+
+### Android
+
+Restrict an Android application using the `x-app-identifier` and `x-app-fingerprint` headers, sent with every request.
+
+### iOS
+
+Restrict an iOS application using the `x-app-identifier` header, carrying the app's bundle identifier.

@@ -1,0 +1,39 @@
+---
+title: Traffic
+date: 01-03-2026
+---
+
+## Traffic
+
+![Traffic support](../../../../assets/changelog/2026/march.jpg)
+
+Enable traffic-aware routing for global traffic impact when calculating routes. Accounting for traffic and incidents while optimizing for charging has long been seen as the holy grail of EV route optimization. When enabled, the route response includes:
+
+- **Segments** of the route affected by traffic;
+- **Level of congestion** on those segments;
+- **Delay** added to the total route duration.
+
+This provides a more realistic estimate of travel time when traffic conditions affect the route and allows you to give globally optimized routes to your customers ready for turn-by-turn navigation.
+
+### Route warnings
+
+Routing is often a best-effort process. Sometimes the routing engine cannot fully satisfy all requested conditions. Warnings help explain why a route may differ from the original request. Examples include:
+
+- **Unavailable operators**: stations with preferred charging operators are not available for this route leg.
+- **Constraints**: the requested final state of charge could not be achieved.
+
+Warnings allow front-end teams to surface useful feedback to drivers or give engineers deeper insight into routing behavior. This makes it easier to understand routing results and troubleshoot edge cases.
+
+
+
+<details>
+    <summary>Improvements</summary>
+
+    - Relaxed operator ranking validation in createRoute : if operator preferences (preferred or required) are requested without levels provided in the request or configured in project settings, route calculation now succeeds without operator prioritization and returns a non-breaking `OPERATOR_PREFERENCES_NOT_FOUND` warning in getRoute (also documented via /public/warnings).
+</details>
+
+<details>
+  <summary>Fixes</summary>
+
+  - Fixed an issue where searching or filtering the vehicle list (vehicleList) by strings containing parentheses (such as vehicle make or model names) caused query parsing failures and returned an internal server error.
+</details>

@@ -1,0 +1,19 @@
+---
+title: Truck routing
+date: 01-06-2026
+---
+
+## Truck routing
+
+![Truck routing](../../../../assets/changelog/2026/june.jpg)
+
+We have officially launched our dedicated truck routing engine on the backend. Accessible via a brand-new set of queries and mutations, this standalone API feature factors in weight limits, height clearances, and truck-specific energy consumption models to build dependable commercial routes for heavy electric vehicles.
+
+
+
+<details>
+  <summary>Fixes</summary>
+
+  - Fixed an issue where routes that retraced their path could end up with a negative state of charge.
+  - Fixed an issue where the charging time at the final stop was calculated incorrectly when using the `OPTIMIZE_TRAVEL_TIME` charging mode combined with a custom final state of charge.
+</details>

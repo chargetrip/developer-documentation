@@ -1,0 +1,32 @@
+---
+title: Traffic
+date: 01-05-2026
+release: alpha
+---
+
+## Experimental and deprecation API warnings
+
+![Experimental API](../../../../assets/changelog/2026/may.jpg)
+
+We have introduced lifecycle warnings in GraphQL response extensions to inform developers whenever a requested operation or field is in Alpha, Beta, or scheduled for deprecation. This provides direct visibility into feature maturity and upcoming deprecations without disrupting API responses.
+
+What’s new:
+
+- **Lifecycle notifications**: Receive structured alerts under `extensions.warnings` whenever your request touches schema elements marked with `@experimental(stage: "alpha")`, `@experimental(stage: "beta")`, or `@chargetripdeprecated`;
+- **Consistent delivery**: Warnings are included across all responses regardless of whether the operation succeeds or returns errors.
+
+
+
+<details>
+    <summary>Improvements</summary>
+
+    - Extended `createIsoline` to support custom weather conditions (`temperature`, `air_pressure`, and `solar_irradiance`) alongside standard presets (`summer`, `winter`, `actual`) via the new `weather` input, deprecating the `season` input.
+    - Added station operating status warnings at the route leg level (`station_closed`, `station_closing_soon`, and `station_unknown_open_hours`) and refined `station_limited_open_hours` to warn drivers when a station on their route may be closed or have limited/unknown operating hours upon arrival.
+    - Standardized schema annotations by replacing hardcoded `[BETA]` text descriptions with the formal `@experimental(stage: "beta")` directive across the Isoline, Routing V2, and Navigation GraphQL schemas.
+</details>
+
+<details>
+    <summary>Fixes</summary>
+
+    - Fixed an issue in getRoute where savings.money returned null instead of 0 on BEV routes when no monetary savings were accrued.
+</details>

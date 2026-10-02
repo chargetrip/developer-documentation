@@ -1,0 +1,49 @@
+---
+title: Lifecycle
+---
+
+The API is built around a single, evolving GraphQL endpoint. This way, the latest features and improvements are always available without managing multiple API versions. A single-endpoint approach simplifies integration, but it also requires a clear strategy for managing changes. This page outlines the approach to API evolution and provides guidelines for building integrations that remain stable as the API evolves.
+
+## Non-breaking changes
+
+A non-breaking change is a modification that is safe and backward-compatible. Because these changes won't disrupt existing integrations, they are introduced without a formal announcement.
+
+### What this includes
+
+- Adding a new query, mutation, or subscription.
+- Adding a new optional input.
+- Adding a new field to an output.
+- Making a previously required input field optional.
+- Adding a new value to an existing enum type.
+
+> [!TIP] Handle new enum values
+> `enum` types are not exhaustive. New values are introduced to existing enum types over time as new features are added. Always implement a catch-all case in your application's logic to gracefully handle new enum values.
+
+## Breaking changes
+
+A breaking change is a modification that could cause an existing integration to stop working. Because such changes can be disruptive, any breaking change follows a formal deprecation process to give you time to adapt.
+
+### What this includes
+
+- Removing or renaming an existing query, mutation, or subscription.
+- Removing or renaming an existing field.
+- Removing a value from an existing enum type.
+- Changing the type of a field.
+- Making an optional input field required.
+- Changing the core behavior of an existing field.
+
+## Deprecations
+
+When a functionality is deprecated, it continues to work normally for at least 12 months. After this notice period, the deprecated functionality is removed, and requests using it return GraphQL errors.
+
+### What this includes
+
+- Deprecated fields marked with `@deprecated` in the GraphQL schema.
+- Deprecated fields flagged on the deprecations portal.
+
+> [!TIP] Plan migrations early
+> To prevent errors and service disruption, complete your migrations before the scheduled removal date.
+
+## Beta and alpha features
+
+Chargetrip uses an alpha and beta program to introduce and validate impactful new functionality before it becomes part of the stable API. Unlike changes to stable features, changes to alpha or beta features are exempt from the deprecation process. Fields or operations marked as alpha or beta may change or be removed at any time without prior notice.

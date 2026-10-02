@@ -1,0 +1,52 @@
+---
+title: Vehicles
+tag: Guide
+---
+
+A comprehensive vehicle database is essential for any EV application. Vehicle data allows end-users to understand their vehicle better and find charging stations that are suitable for them. It's also essential to routing, since the most optimal route will be radically different based on the vehicle driven.
+
+## Introduction
+
+A quick primer on EVs and why vehicle data matters for routing.
+
+### Electric vs. internal combustion engines
+
+An ICE (internal combustion engine) vehicle burns fossil fuel to run. An EV runs on electricity and recharges by plugging into a charger.
+
+### Charging an electric vehicle
+
+EVs charge at charging stations using one of several plug types, so knowing a driver's vehicle and a charger's supported plugs matters. Charging speed comes in three levels: level 1 and 2 use AC and take hours, while level 3 "fast charging" uses DC and can charge a vehicle in under an hour. The Chargetrip API accounts for each vehicle's charge curve, and exposes the available payment options per location, since these vary by region and operator.
+
+### Impact factors of a battery
+
+Battery performance is affected by weather, climate control use, and vehicle specifications, similar to how phone batteries behave differently in the cold. Chargetrip accounts for these factors to produce accurate range estimations.
+
+### Routing for EVs
+
+Range anxiety, the fear of running out of charge before reaching a destination or charger, can be addressed with route planning that shows if and where charging is needed along the way.
+
+### Range predictions
+
+Accurate routing depends on predicting how much energy a vehicle will use between two points, which lets an application recommend charging stops along the journey. Use isolines to visualize the area a vehicle can reach under given conditions and preferences.
+
+## Database
+
+Instead of having to provide all the data and details about a vehicle, which is customary for most EV routing APIs, the vehicle database contains over 2,200 BEV (battery electric vehicle), PHEV (plug-in hybrid electric vehicle), HEV (hybrid electric vehicle), and EREV (extended range electric vehicle) models. All BEVs and EREVs come with their own validated consumption model.
+
+The consumption models take into account properties like drag coefficient and rolling resistance in relation to speed, elevation, charging speed, charging temperature, battery temperature, and many more.
+
+Additionally, all vehicles come with detailed vehicle specifications and images that can be used in front ends. New models are continuously added as they're released to market.
+
+### Premium data
+
+If you need additional information beyond the standard vehicle data, [vehiclePremium](/api-reference/vehicle/query-vehicle-premium) is available as an add-on. It contains extended data about the battery, the body of the vehicle, availability, pricing, efficiency, safety, and more. [Contact sales](https://www.chargetrip.com/contact/sales) to upgrade to premium vehicle data.
+
+### Images
+
+Rights-cleared vehicle images are also available as an add-on, just like `vehiclePremium`. These images are higher quality than the default images provided with the vehicle database. [Contact sales](https://www.chargetrip.com/contact/sales) to enable this for your project.
+
+## Implementation
+
+Access the complete vehicle database through the [vehicleList](/api-reference/vehicle/query-vehicles) query, and fetch more detailed information using the [vehicle](/api-reference/vehicle/query-vehicle-details) query.
+
+Any [route](/docs/getting-started/route) or isoline mutation requires a vehicle `id`, which can be obtained through the `vehicleList` query.

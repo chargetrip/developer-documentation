@@ -1,0 +1,28 @@
+---
+title: MVT
+tag: Rest
+---
+
+The MVT (Mapbox Vector Tile) service provides access to station-related geographic data in a tile-based format. Vector tiles are encoded as Protocol Buffers (PBF), allowing for efficient serialization of structured data.
+
+## Setup
+
+To access the station data in MVT format, send a request to the following endpoint:
+
+```bash Tile / MVT / Base URL
+https://api.chargetrip.io/v2/station/{z}/{x}/{y}/tile.mvt
+```
+
+The MVT URL uses the following path parameters:
+
+- `z`: The zoom level of the tile.
+- `x`: The x-coordinate of the tile.
+- `y`: The y-coordinate of the tile.
+
+Most map providers have built-in methods to convert latitude and longitude to pixel coordinates. To manually convert latitude and longitude coordinates to x and y use the [Web Mercator Projection](https://en.wikipedia.org/wiki/Web_Mercator_projection).
+
+### Filtering
+Use the `filter` query parameter to filter the stations returned based on specific criteria. See the [filters documentation](/api-reference/tiles/filters) for more information.
+
+### Selectors
+Use the `station_properties[]` query parameter to specify the fields returned for each station feature. See the [selectors documentation](/api-reference/tiles/selectors) for more information.
