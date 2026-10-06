@@ -1,0 +1,150 @@
+---
+title: "Operator preferred routing"
+---
+Operator preferences allow you to control which charging networks the routing service prefers when calculating an EV route.
+
+You can configure preferences in two places:
+- [Chargetrip dashboard](https://account.chargetrip.io/projects): Set global operator preferences configuration for your project under project / advanced / station operator preferences.
+- [Create Route request](/api-reference/route/mutation-create-route#arg-input-operators): Define preferences dynamically or override dashboard operator preferences configuration per request using the `input.operators` field in `createRoute` mutation.
+
+---
+
+### 1. Preference Types & Route Behavior
+
+
+Operator preferences come in four types, and each can be scoped to specific countries:
+
+| Preference | Routing Behavior |
+|:---|:---|
+| Excluded | Stations from these operators are strictly excluded under all circumstances. |
+| Avoided  |  Stations from these operators are avoided unless no better alternative exists. |
+| Preferred | Stations from these operators are prioritized according to their ranking (high, medium, low). The higher the tier, the more likely the station is to be selected. The route will still use unranked or avoided stations if no better alternative exists.|
+| Required  | Only stations from these operators are used. Within this allowed pool, ranking tiers still apply, meaning high-ranked operators are preferred over medium- and low-ranked operators. If the vehicle cannot reach the destination using only ranked stations, route calculation fails.|
+
+
+---
+
+### 2. How dashboard-level preferences are applied
+
+Understanding how request-level inputs interact with dashboard settings ensures predictable routing behavior:
+
+- **Dashboard Excluded and Avoided operators apply automatically**: 
+Operators configured as Excluded or Avoided in the dashboard apply to every route calculation without requiring any parameters in your `createRoute` request.
+- **Dashboard ranked tiers remain inactive without a ranking type**: 
+Operators configured in ranking tiers must be activated by setting `input.operators.ranking.type` in your `createRoute` request, otherwise they do not affect station selection. 
+- **Request-level operators replace respective dashboard preferences**: 
+Specifying operator IDs in the `createRoute` request replaces only the corresponding configuration from the dashboard. For example, providing `input.operators.exclude[]` replaces the entire dashboard's excluded operators configuration, while dashboard-level avoid operators continue to apply.
+---
+### 3. Implementation Examples
+
+<details>
+Applies excluded and avoided operator configurations set in Dashboard. Dashboard ranked settings are inactive because no `input.operators.ranking.type` is specified.  <summary> Use Dashboard exclusions and avoidances only</summary>
+    ```graphql Example request
+    createRoute(
+    input: {
+      vehicle: { id: "607823b2c246f9001b97b1a2"}
+      origin: {
+        type: Feature
+        geometry: { type: Point, coordinates: [4.895168, 52.370216] }}
+      destination: {
+        type: Feature
+        geometry: { type: Point, coordinates: [2.352222, 48.856614] }}
+        })
+  ```
+</details>
+
+
+<details>
+Applies dashboard excluded and avoided operator configurations, and prefers stations that belong to the dashboard ranking tiers.  <summary>Use Dashboard ranked operators as "Preferred"</summary>
+  ```graphql Example request {{ mark: [12] }}
+    createRoute(
+    input: {
+      vehicle: { id: "607823b2c246f9001b97b1a2"}
+      origin: {
+        type: Feature
+        geometry: { type: Point, coordinates: [4.895168, 52.370216] }}
+      destination: {
+        type: Feature
+        geometry: { type: Point, coordinates: [2.352222, 48.856614] }}
+      operators: {
+        ranking: {
+          type: preferred }}
+          })
+  ```
+</details>
+
+
+<details>
+Restricts the route to charge exclusively at stations belonging to operators configured in dashboard ranking tiers.
+  <summary>Use Dashboard ranked operators as "Required"</summary>
+  ```graphql Example request {{ mark: [12] }}
+    createRoute(
+    input: {
+      vehicle: { id: "607823b2c246f9001b97b1a2"}
+      origin: {
+        type: Feature
+        geometry: { type: Point, coordinates: [4.895168, 52.370216] }}
+      destination: {
+        type: Feature
+        geometry: { type: Point, coordinates: [2.352222, 48.856614] }}
+      operators: {
+        ranking: {
+          type: required }}
+          })
+  ```
+</details>
+
+
+
+
+<details>
+Provide full operator configurations directly in the API call. Any specified field (ranking, avoid, or exclude) overrides the corresponding dashboard configuration for that request.
+
+  <summary>Define custom preferences and override Dashboard settings</summary>
+  ```graphql Example request  {{ mark: [11,12,13,14,15,16,17] }}
+    createRoute(
+    input: {
+      vehicle: { id: "607823b2c246f9001b97b1a2"}
+      origin: {
+        type: Feature
+        geometry: { type: Point, coordinates: [4.895168, 52.370216] }}
+      destination: {
+        type: Feature
+        geometry: { type: Point, coordinates: [2.352222, 48.856614] }}
+      operators: {
+        ranking: {
+          type: preferred
+          level: {
+            high: [{ id: "5e8c22366f9c5f23ab0eff01" }] 
+            medium: [{ id: "5e8c22366f9c5f23ab0eff02" }] }} 
+        avoid: [{ id: "5e8c22366f9c5f23ab0eff03" }]
+        exclude: [{ id: "5e8c22366f9c5f23ab0eff04" }]}
+        })
+  ```
+  </details>
+
+  <details>
+Provide full operator configurations directly in the API call. Any specified field (ranking, avoid, or exclude) overrides the corresponding dashboard configuration for that request.
+
+  <summary>Define custom preferences to specific countries</summary>
+  ```graphql Example request  {{ mark: [11,12,13,14,15,16,17] }}
+    createRoute(
+    input: {
+      vehicle: { id: "607823b2c246f9001b97b1a2"}
+      origin: {
+        type: Feature
+        geometry: { type: Point, coordinates: [4.895168, 52.370216] }}
+      destination: {
+        type: Feature
+        geometry: { type: Point, coordinates: [2.352222, 48.856614] }}
+      operators: {
+        ranking: {
+          type: preferred
+          level: {
+            high: [{ id: "5e8c22366f9c5f23ab0eff01", countries: ["NL", "DE"] }] 
+            medium: [{ id: "5e8c22366f9c5f23ab0eff01" countries: ["FR"] }] }} 
+        avoid: [{ id: "5e8c22366f9c5f23ab0eff03" , countries: ["AT"]}] 
+        exclude: [{ id: "5e8c22366f9c5f23ab0eff04" }]}
+        })
+  ```
+  </details>

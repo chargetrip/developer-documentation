@@ -11,7 +11,7 @@ Some operations, like creating a route or a matched route, run asynchronously to
 2. **Open a subscription**
    Subscribe using the `id` from the previous step. While the result is being calculated, the subscription pushes status updates you can use to drive an async loading state in your UI.
 3. **Render the result**
-   Once `status` resolves to a final value, usually `done`, `error`, or `not_found`, render the corresponding UI for that outcome.
+   Once `status` resolves to a final value to render the corresponding UI for that outcome.
 4. **Re-fetch a finished result**
    Once a result reaches a final status, it's already precomputed. If you need it again later, for example after navigating back to it, use the matching query instead of opening a new subscription.
 

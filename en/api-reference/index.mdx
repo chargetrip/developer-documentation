@@ -5,16 +5,24 @@ slug: overview
 
 GraphQL is a query language for APIs. It lets you request exactly the data you need in a single call, instead of working through many fixed REST endpoints.
 
-The API is built on GraphQL. Every resource, such as vehicles, stations, routes, and navigation sessions, is available from a single endpoint as a query, mutation, or subscription.
+The API is built on GraphQL. Every resource, such as vehicles, stations, routes, and navigation sessions, is available through one GraphQL API. You can access each one as a query, mutation, or subscription.
 
 If you're new to GraphQL, the [official GraphQL documentation](https://graphql.org/learn/) is a good place to start.
 
-## Authentication
+## GraphQL Endpoints
 
-Every request needs a base URL and the `x-client-id` and `x-app-id` headers to authenticate. See [send your first request](/docs/getting-started/api-request) for the full list of headers and an example request.
+Queries, mutations, and subscriptions are available at the endpoints below. See [send your first request](/docs/getting-started/api-request) for an example.
 
-```bash Base URL
+For queries and mutations, use:
+
+```bash Mutation and Query URL
 https://api.chargetrip.io/graphql
+```
+
+For subscriptions, use:
+
+```bash Subscriptions URL
+wss://api.chargetrip.io/subscription
 ```
 
 ## Resources
@@ -38,16 +46,16 @@ Browse the API by resource. Each section below links to its queries, mutations, 
 
 ### Authentication
 
-Every request is authenticated with the `x-client-id` and `x-app-id` headers. See [Authorization](/docs/api/authorization) for how to obtain and send them.
+Every request is authenticated with the `x-client-id` and `x-app-id` headers. See [authorization](/docs/api/authorization) for how to obtain and send them.
 
 ### Pagination
 
-List queries accept `size` and `page` arguments, or `first` and `after` arguments for cursor-based pagination, depending on which query you use. See [Pagination](/docs/pagination) for details. Requests are also subject to rate limiting.
+List queries use either `size` and `page` arguments or, for cursor-based pagination, `first` and `after` arguments. See [pagination](/docs/pagination) for details.
 
-### Beta and alpha features
+### Rate limiting
 
-Some resources are still evolving. [Connected vehicle](/api-reference/connected-vehicle/query-connected-vehicle-list) and [Navigation](/api-reference/navigation/mutation-start-navigation) are in beta, and [Truck route](/api-reference/truck-route/mutation-create-truck-route) is in alpha. Expect their contracts to change as we stabilize them.
+Requests are subject to rate limiting.
 
 ### Lifecycle
 
-Chargetrip uses a single, evolving API rather than versioned releases. See [Lifecycle](/docs/api/life-cycle) for how we handle breaking and non-breaking changes.
+Chargetrip uses a single, evolving GraphQL API rather than versioned releases. See [lifecycle](/api-reference/life-cycle) for how we handle breaking and non-breaking changes.
