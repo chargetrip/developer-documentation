@@ -63,9 +63,10 @@ Filters can exist on two levels. EVSE level or station level. Each with their ow
 
 <details>
   <summary>Same filter type, different values</summary>
-  ```bash Example URL
-  https://api.chargetrip.io/v2/station?connectors[]=IEC_62196_T1_COMBO&connectors[]=CHADEMO
-  ```
+
+```bash Example URL
+https://api.chargetrip.io/v2/station?connectors[]=IEC_62196_T1_COMBO&connectors[]=CHADEMO
+```
 
   | Station | Properties                                                                            | Matches                                                                |
   |---------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------|
@@ -76,9 +77,10 @@ Filters can exist on two levels. EVSE level or station level. Each with their ow
 
 <details>
   <summary>Multiple different filter types</summary>
-  ```bash Example URL
-  https://api.chargetrip.io/v2/station?minimum_power=120&evse_statuses[]=AVAILABLE&connectors[]=IEC_62196_T1_COMBO
-  ```
+
+```bash Example URL
+https://api.chargetrip.io/v2/station?minimum_power=120&evse_statuses[]=AVAILABLE&connectors[]=IEC_62196_T1_COMBO
+```
   | Station | Properties                                                                            | Matches                                                                |
   |---------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------|
   | A       | 2x `IEC_62196_T1_COMBO` <br /> 1x `CHAdeMO` <br /> 1x `TOILET` <br /> 1x `RESTAURANT` | [true](tip:Title;;The description text;;optional-copy-value)           |
@@ -92,24 +94,24 @@ Some outputs are recalculated when EVSE-Level filters are applied. These fields 
 These “dynamic” output fields are `connector_maximum_power` and `evse_status_*`.
 
 <details>
-    <summary>Same filter type, different values</summary>
-    The request includes CHADEMO connector filter. The station is included because it has a CHADEMO connector, but the dynamic fields are transformed to ignore the Combo Type 1  chargers.
+  <summary>Same filter type, different values</summary>
+  The request includes CHADEMO connector filter. The station is included because it has a CHADEMO connector, but the dynamic fields are transformed to ignore the Combo Type 1  chargers.
 
-    ```bash Example URL
-    https://api.chargetrip.io/v2/station?connectors[]=IEC_62196_T1_COMBO&connectors[]=CHADEMO
-    ```
+```bash Example URL
+https://api.chargetrip.io/v2/station?connectors[]=IEC_62196_T1_COMBO&connectors[]=CHADEMO
+```
 
-    ```json Response
-    {
-        "id": "station_a",
-        // Static: Remains 150 kW (This represents the station maximum power across all conectors)
-        "station_maximum_power": 150,
-        // Dynamic: Adjusted to 100 kW (Max power of the CHADEMO connector)
-        "connector_maximum_power": 100,
-        // Dynamic: Counts the 1 CHADEMO chargers
-        "evse_status_out_of_order": 0
-        // Dynamic: 0, because the charging Type 1 plugs are filtered out
-        "evse_status_available": 1,
-    }
-    ```
+```json Response
+{
+  "id": "station_a",
+  // Static: Remains 150 kW (This represents the station maximum power across all conectors)
+  "station_maximum_power": 150,
+  // Dynamic: Adjusted to 100 kW (Max power of the CHADEMO connector)
+  "connector_maximum_power": 100,
+  // Dynamic: Counts the 1 CHADEMO chargers
+  "evse_status_out_of_order": 0,
+  // Dynamic: 0, because the charging Type 1 plugs are filtered out
+  "evse_status_available": 1
+}
+```
 </details>

@@ -38,113 +38,138 @@ Specifying operator IDs in the `createRoute` request replaces only the correspon
 ### 3. Implementation Examples
 
 <details>
-Applies excluded and avoided operator configurations set in Dashboard. Dashboard ranked settings are inactive because no `input.operators.ranking.type` is specified.  <summary> Use Dashboard exclusions and avoidances only</summary>
-    ```graphql Example request
-    createRoute(
-    input: {
-      vehicle: { id: "607823b2c246f9001b97b1a2"}
-      origin: {
-        type: Feature
-        geometry: { type: Point, coordinates: [4.895168, 52.370216] }}
-      destination: {
-        type: Feature
-        geometry: { type: Point, coordinates: [2.352222, 48.856614] }}
-        })
-  ```
+  <summary>Use Dashboard exclusions and avoidances only</summary>
+  Applies excluded and avoided operator configurations set in Dashboard. Dashboard ranked settings are inactive because no `input.operators.ranking.type` is specified.
+
+```graphql Example request
+createRoute(
+  input: {
+    vehicle: { id: "607823b2c246f9001b97b1a2" }
+    origin: {
+      type: Feature
+      geometry: { type: Point, coordinates: [4.895168, 52.370216] }
+    }
+    destination: {
+      type: Feature
+      geometry: { type: Point, coordinates: [2.352222, 48.856614] }
+    }
+  }
+)
+```
 </details>
 
-
 <details>
-Applies dashboard excluded and avoided operator configurations, and prefers stations that belong to the dashboard ranking tiers.  <summary>Use Dashboard ranked operators as "Preferred"</summary>
-  ```graphql Example request {{ mark: [12] }}
-    createRoute(
-    input: {
-      vehicle: { id: "607823b2c246f9001b97b1a2"}
-      origin: {
-        type: Feature
-        geometry: { type: Point, coordinates: [4.895168, 52.370216] }}
-      destination: {
-        type: Feature
-        geometry: { type: Point, coordinates: [2.352222, 48.856614] }}
-      operators: {
-        ranking: {
-          type: preferred }}
-          })
-  ```
+  <summary>Use Dashboard ranked operators as "Preferred"</summary>
+  Applies dashboard excluded and avoided operator configurations, and prefers stations that belong to the dashboard ranking tiers.
+
+```graphql Example request {{ mark: [14] }}
+createRoute(
+  input: {
+    vehicle: { id: "607823b2c246f9001b97b1a2" }
+    origin: {
+      type: Feature
+      geometry: { type: Point, coordinates: [4.895168, 52.370216] }
+    }
+    destination: {
+      type: Feature
+      geometry: { type: Point, coordinates: [2.352222, 48.856614] }
+    }
+    operators: {
+      ranking: {
+        type: preferred
+      }
+    }
+  }
+)
+```
 </details>
 
-
 <details>
-Restricts the route to charge exclusively at stations belonging to operators configured in dashboard ranking tiers.
   <summary>Use Dashboard ranked operators as "Required"</summary>
-  ```graphql Example request {{ mark: [12] }}
-    createRoute(
-    input: {
-      vehicle: { id: "607823b2c246f9001b97b1a2"}
-      origin: {
-        type: Feature
-        geometry: { type: Point, coordinates: [4.895168, 52.370216] }}
-      destination: {
-        type: Feature
-        geometry: { type: Point, coordinates: [2.352222, 48.856614] }}
-      operators: {
-        ranking: {
-          type: required }}
-          })
-  ```
+  Restricts the route to charge exclusively at stations belonging to operators configured in dashboard ranking tiers.
+
+```graphql Example request {{ mark: [14] }}
+createRoute(
+  input: {
+    vehicle: { id: "607823b2c246f9001b97b1a2" }
+    origin: {
+      type: Feature
+      geometry: { type: Point, coordinates: [4.895168, 52.370216] }
+    }
+    destination: {
+      type: Feature
+      geometry: { type: Point, coordinates: [2.352222, 48.856614] }
+    }
+    operators: {
+      ranking: {
+        type: required
+      }
+    }
+  }
+)
+```
 </details>
 
+<details>
+  <summary>Define custom preferences and override Dashboard settings</summary>
+  Provide full operator configurations directly in the API call. Any specified field (ranking, avoid, or exclude) overrides the corresponding dashboard configuration for that request.
 
-
+```graphql Example request  {{ mark: [13,14,15,16,17,18,19,20,21] }}
+createRoute(
+  input: {
+    vehicle: { id: "607823b2c246f9001b97b1a2" }
+    origin: {
+      type: Feature
+      geometry: { type: Point, coordinates: [4.895168, 52.370216] }
+    }
+    destination: {
+      type: Feature
+      geometry: { type: Point, coordinates: [2.352222, 48.856614] }
+    }
+    operators: {
+      ranking: {
+        type: preferred
+        level: {
+          high: [{ id: "5e8c22366f9c5f23ab0eff01" }]
+          medium: [{ id: "5e8c22366f9c5f23ab0eff02" }]
+        }
+      }
+      avoid: [{ id: "5e8c22366f9c5f23ab0eff03" }]
+      exclude: [{ id: "5e8c22366f9c5f23ab0eff04" }]
+    }
+  }
+)
+```
+</details>
 
 <details>
-Provide full operator configurations directly in the API call. Any specified field (ranking, avoid, or exclude) overrides the corresponding dashboard configuration for that request.
-
-  <summary>Define custom preferences and override Dashboard settings</summary>
-  ```graphql Example request  {{ mark: [11,12,13,14,15,16,17] }}
-    createRoute(
-    input: {
-      vehicle: { id: "607823b2c246f9001b97b1a2"}
-      origin: {
-        type: Feature
-        geometry: { type: Point, coordinates: [4.895168, 52.370216] }}
-      destination: {
-        type: Feature
-        geometry: { type: Point, coordinates: [2.352222, 48.856614] }}
-      operators: {
-        ranking: {
-          type: preferred
-          level: {
-            high: [{ id: "5e8c22366f9c5f23ab0eff01" }] 
-            medium: [{ id: "5e8c22366f9c5f23ab0eff02" }] }} 
-        avoid: [{ id: "5e8c22366f9c5f23ab0eff03" }]
-        exclude: [{ id: "5e8c22366f9c5f23ab0eff04" }]}
-        })
-  ```
-  </details>
-
-  <details>
-Provide full operator configurations directly in the API call. Any specified field (ranking, avoid, or exclude) overrides the corresponding dashboard configuration for that request.
-
   <summary>Define custom preferences to specific countries</summary>
-  ```graphql Example request  {{ mark: [11,12,13,14,15,16,17] }}
-    createRoute(
-    input: {
-      vehicle: { id: "607823b2c246f9001b97b1a2"}
-      origin: {
-        type: Feature
-        geometry: { type: Point, coordinates: [4.895168, 52.370216] }}
-      destination: {
-        type: Feature
-        geometry: { type: Point, coordinates: [2.352222, 48.856614] }}
-      operators: {
-        ranking: {
-          type: preferred
-          level: {
-            high: [{ id: "5e8c22366f9c5f23ab0eff01", countries: ["NL", "DE"] }] 
-            medium: [{ id: "5e8c22366f9c5f23ab0eff01" countries: ["FR"] }] }} 
-        avoid: [{ id: "5e8c22366f9c5f23ab0eff03" , countries: ["AT"]}] 
-        exclude: [{ id: "5e8c22366f9c5f23ab0eff04" }]}
-        })
-  ```
-  </details>
+  Provide full operator configurations directly in the API call. Any specified field (ranking, avoid, or exclude) overrides the corresponding dashboard configuration for that request.
+
+```graphql Example request  {{ mark: [13,14,15,16,17,18,19,20,21] }}
+createRoute(
+  input: {
+    vehicle: { id: "607823b2c246f9001b97b1a2" }
+    origin: {
+      type: Feature
+      geometry: { type: Point, coordinates: [4.895168, 52.370216] }
+    }
+    destination: {
+      type: Feature
+      geometry: { type: Point, coordinates: [2.352222, 48.856614] }
+    }
+    operators: {
+      ranking: {
+        type: preferred
+        level: {
+          high: [{ id: "5e8c22366f9c5f23ab0eff01", countries: ["NL", "DE"] }]
+          medium: [{ id: "5e8c22366f9c5f23ab0eff01", countries: ["FR"] }]
+        }
+      }
+      avoid: [{ id: "5e8c22366f9c5f23ab0eff03", countries: ["AT"] }]
+      exclude: [{ id: "5e8c22366f9c5f23ab0eff04" }]
+    }
+  }
+)
+```
+</details>

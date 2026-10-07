@@ -12,7 +12,7 @@ You can now request geographically different alternative routes alongside the re
 
 
 <details>
-    <summary>Fixes</summary>
+  <summary>Fixes</summary>
 
     - Fixed an issue where providing empty `via` waypoints without geometry, location, or station IDs in `createRoute` failed silently with a `not_found` status instead of returning a `ROUTE_VIA_LOCATION_MISSING` validation error.
     - Fixed an issue in `operatorList` where queries using ranking filters returned empty results if the project had no excluded countries configured, ensuring operators matching ranking preferences are returned correctly.
