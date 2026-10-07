@@ -7,10 +7,10 @@ To optimize response time and size, by default, the MVT and JSON API return a mi
 
 ## Available selectors
 
-Any field listed in the station properties for MVT and JSON tiles can be used as a selector in its respective service, with the exception of the mandatory GeoJSON fields returned in JSON endpoint.
+Any field listed in the station properties for MVT and JSON tiles can be used as a selector in its respective service, with the exception of the mandatory GeoJSON fields returned in the JSON endpoint.
 
 `count` · `integer` · <span class="text-accent">default</span>
-: The count of stations within a cluster count of 1 means a Station feature, where count greater than 1 means a Cluster feature
+: The count of stations within a cluster. A count of 1 means a Station feature, whereas a count greater than 1 means a Cluster feature.
 
 `expansion_zoom` · `integer` · <span class="text-accent">default</span>
 : The zoom level at which a cluster splits into multiple smaller clusters or stations.
@@ -31,7 +31,7 @@ Any field listed in the station properties for MVT and JSON tiles can be used as
 : The maximum charging power (in kW) available from the connectors matching the `connectors[]` filter. If no filter is provided, all connectors are considered and it matches `station_maximum_power`.
 
 `preferred_operator` · `boolean`
-: Indicates if the operator of a station is as a preferred operator. Preferred operators can be managed on project level in the Dashboard.
+: Indicates if the operator of a station is a preferred operator. Preferred operators can be managed on project level in the Dashboard.
 
 `evse_status_blocked` · `integer`
 : The number of EVSEs in blocked status. If a `connectors[]` filter is provided, it only counts blocked EVSEs that match the selected connector types.
@@ -40,13 +40,13 @@ Any field listed in the station properties for MVT and JSON tiles can be used as
 : Number of EVSEs in planned status. If a `connectors[]` filter is provided, it only counts planned EVSEs that have at least one of selected connector types.
 
 `evse_status_available` · `integer`
-: Number of EVSEs in status available. If a `connectors[]` filter is provided, it only counts planned EVSEs that have at least one of selected connector types.
+: Number of EVSEs in status available. If a `connectors[]` filter is provided, it only counts available EVSEs that have at least one of selected connector types.
 
 `evse_status_charging` · `integer`
-: Number of EVSEs in status charging. If a `connectors[]` filter is provided, it only counts planned EVSEs that have at least one of selected connector types.
+: Number of EVSEs in status charging. If a `connectors[]` filter is provided, it only counts charging EVSEs that have at least one of selected connector types.
 
 `evse_status_unknown` · `integer`
-: Number of EVSEs in status unknown. If a `connectors[]` filter is provided, it only counts planned EVSEs that have at least one of selected connector types.
+: Number of EVSEs in status unknown. If a `connectors[]` filter is provided, it only counts unknown EVSEs that have at least one of selected connector types.
 
 `evse_status_reserved` · `integer`
 : Number of EVSEs in status reserved. If a `connectors[]` filter is provided, it only counts reserved EVSEs that have at least one of selected connector types.
@@ -65,7 +65,7 @@ To request specific properties, append `station_properties[]` query parameter to
 https://api.chargetrip.io/v2/station/.../?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
 ```
 
-## Behaviour examples
+## Behavior examples
 
 When selectors are provided, the request returns only the specified fields.
 
@@ -110,7 +110,7 @@ In the GeoJSON endpoint, the mandatory GeoJSON fields (`type` and `geometry` and
 
 ### MVT
 
-In MVT endpoint, only the parameters explicitly selected are returned as there are no mandatory fields.
+In the MVT endpoint, only the parameters explicitly selected are returned as there are no mandatory fields.
 
 ```json MVT Selectors example
 // Station feature
@@ -125,6 +125,6 @@ In MVT endpoint, only the parameters explicitly selected are returned as there a
 // Cluster feature is not modified, as it's not affected by the selectors.
 {
   "count": 3,
-  "expansion_zoom":32
+  "expansion_zoom": 32
 }
 ```

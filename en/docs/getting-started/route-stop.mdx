@@ -2,7 +2,7 @@
 title: "Route with stops"
 ---
 
-When calculating an EV route with the Chargetrip Route API, you can add intermediate stops between the origin and destination using `via`. 
+When calculating an EV route with the Chargetrip Route API, you can add intermediate stops between the origin and destination using `via`.
 
 Stops allow you to customize routing for real-world travel scenarios—such as charging at a preferred charge station, picking up passengers or stopping at a restaurant.
 
@@ -11,10 +11,10 @@ Stops allow you to customize routing for real-world travel scenarios—such as c
 
 Chargetrip supports two types of intermediate stops:
 
-| Stop | Charging |  Input field | Purpose | 
-| :--- | :--- | :--- | :--- | 
-| **Location** | No |  `via.geometry`| Geographic stop (pick-up, delivery, scenic detour, coffee break). 
-| **Station** | Yes | `via.properties.station.station_id`| Explicitly selected charging station. 
+| Stop | Charging |  Input field | Purpose |
+| :--- | :--- | :--- | :--- |
+| **Location** | No |  `via.geometry`| Geographic stop (pick-up, delivery, scenic detour, coffee break).
+| **Station** | Yes | `via.properties.station.station_id`| Explicitly selected charging station.
 
 
 ## Stop duration
@@ -124,7 +124,7 @@ mutation CreateRouteWithChargingVia {
 
 <details>
   <summary>Calculate a route with a charging stop without a minimum stop duration.</summary>
-  On this stop, `stop_duration` is omitted: the planner calculates optimal charging time based on charging mode. 
+  On this stop, `stop_duration` is omitted: the planner calculates optimal charging time based on charging mode.
 
 ```graphql Example request
 mutation CreateRouteWithChargingVia {

@@ -10,7 +10,7 @@ Rate limiting for the GraphQL API is based on the cost of each request, rather t
 
 ### Best practices
 
-- Use subscriptions instead of polling by using queries to know when data changes.
+- Use subscriptions instead of polling with queries to know when data changes.
 - Query only the fields you need, and use `filter` to narrow down list queries.
 - List queries return up to 100 records per page, but a larger page costs more than a smaller one. Fetching 100 records in one request costs more than fetching 10, so request fewer records rather than more. See [pagination](/api-reference/api/pagination) for details.
 - If a request is rejected with a `429` error, your bucket is full. Stop sending requests and only make new requests once the time given by `reset` has passed.
@@ -55,7 +55,7 @@ Rate limiting for the REST API applies to the [tile service](/api-reference/tile
 
 ## Current limits
 
-Rate limits are applied per customer, on a one minute window. There is no default limit in place yet. Limits are configured individually per customer until default limits are introduced in 2027.
+Rate limits are applied per customer, on a one-minute window. There is no default limit in place yet. Limits are configured individually per customer until default limits are introduced in 2027.
 
 Some queries and mutations also have individual limits that are lower than your overall limit. These are set on a per product basis, and sometimes on a per request basis, rather than globally.
 

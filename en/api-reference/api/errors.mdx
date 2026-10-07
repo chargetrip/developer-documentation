@@ -12,7 +12,7 @@ The API returns errors as part of a normal response, alongside any data that was
 Each error is returned in the top-level `errors` array, alongside `data`.
 
 `message` · <span class="text-muted">String</span>
-: A human readable description of the error.
+: A human-readable description of the error.
 
 `locations` · <span class="text-muted">Array</span>
 : The line and column in the request where the error occurred.
@@ -21,13 +21,13 @@ Each error is returned in the top-level `errors` array, alongside `data`.
 : The path to the field that caused the error, for example `["vehicleList"]`.
 
 `extensions.exception.code` · <span class="text-muted">String</span>
-: A machine readable error code. Use this field to handle errors programmatically, rather than matching on `message`.
+: A machine-readable error code. Use this field to handle errors programmatically, rather than matching on `message`.
 
 `extensions.exception.status` · <span class="text-muted">Integer</span>
 : The HTTP status code that corresponds to the error, for example `403`.
 
 `extensions.exception.message` · <span class="text-muted">String</span>
-: A human readable description of the error, matching the top-level `message` field.
+: A human-readable description of the error, matching the top-level `message` field.
 
 `extensions.exception.response` · <span class="text-muted">String</span>
 : The response body of the underlying exception, often the same as `message`.

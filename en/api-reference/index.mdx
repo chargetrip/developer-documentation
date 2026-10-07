@@ -46,16 +46,16 @@ Browse the API by resource. Each section below links to its queries, mutations, 
 
 ### Authentication
 
-Every request is authenticated with the `x-client-id` and `x-app-id` headers. See [authorization](/docs/api/authorization) for how to obtain and send them.
+Every request is authenticated with the `x-client-id` and `x-app-id` headers. See [authorization](/docs/getting-started/api-request#authorization-headers) for how to obtain and send them.
 
 ### Pagination
 
-List queries use either `size` and `page` arguments or, for cursor-based pagination, `first` and `after` arguments. See [pagination](/docs/pagination) for details.
+List queries use either `size` and `page` arguments or, for cursor-based pagination, `first` and `after` arguments. See [pagination](/api-reference/api/pagination) for details.
 
 ### Rate limiting
 
-Requests are subject to rate limiting.
+Requests are subject to [rate limiting](/api-reference/api/rate-limiting).
 
 ### Lifecycle
 
-Chargetrip uses a single, evolving GraphQL API rather than versioned releases. See [lifecycle](/api-reference/life-cycle) for how we handle breaking and non-breaking changes.
+Chargetrip uses a single, evolving GraphQL API rather than versioned releases. See [lifecycle](/api-reference/api/lifecycle) for how we handle breaking and non-breaking changes.

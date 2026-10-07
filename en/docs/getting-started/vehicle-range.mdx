@@ -90,7 +90,7 @@ In this request:
 | [Battery level](/api-reference/isoline/mutation-create-isoline#arg-input-state_of_charge) | Set the starting battery with `state_of_charge`, as a percentage, kilowatt hours, kilometers or miles. Defaults to the vehicle's usable battery capacity. |
 | [Minimum final charge](/api-reference/isoline/mutation-create-isoline#arg-input-final_state_of_charge) | Keep a reserve with `final_state_of_charge`. The isoline only includes points the vehicle can reach while staying above it. Defaults to 0. |
 | [Polygon count](/api-reference/isoline/mutation-create-isoline#arg-input-polygon_count) | Choose the number of polygons, up to 20. |
-| [Round trip](/api-reference/isoline/mutation-create-isoline#arg-input-round_trip) | Only include points the vehicle can also drive back from to the origin, using `round_trip`. |
+| [Round trip](/api-reference/isoline/mutation-create-isoline#arg-input-round_trip) | Only include points the vehicle can also drive back to the origin from, using `round_trip`. |
 | [Quality](/api-reference/isoline/mutation-create-isoline#arg-input-quality) | Trade precision for speed with `quality`, set to `high` or `low`. |
 | [Ferry connections](/api-reference/isoline/mutation-create-isoline#arg-input-ferry_connections) | Include ferries with `ferry_connections`, set to `none` or `single`. Ferries increase the calculation time and the number of polygons. |
 | [Weather](/api-reference/isoline/mutation-create-isoline#arg-input-weather) | Apply a `summer`, `winter`, or `actual` weather preset, or custom conditions. Defaults to real-time weather data. |

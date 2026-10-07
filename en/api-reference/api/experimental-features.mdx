@@ -3,47 +3,47 @@ title: Experimental features
 ---
 
 Chargetrip introduces significant new capabilities through a structured experimental program. It gives you early access to evaluate upcoming features and influence their design before schemas and contracts become permanent.
- 
-> [!WARNING] Exemption from the 12-month deprecation policy
-> Features in Alpha and Beta are exempt from the [12-month deprecation policy](/api-reference/api/lifecycle#deprecation-timeline) and can change or be retired earlier.
 
-## Types of Experimental Features
+> [!WARNING] Exemption from the 12-month deprecation policy
+> Features in alpha and beta are exempt from the [12-month deprecation policy](/api-reference/api/lifecycle#deprecation-timeline) and can change or be retired earlier.
+
+## Types of experimental features
 
 - New operations: Entirely new queries, mutations, or subscriptions.
 - Extensions to existing operations: New optional arguments or output fields added to existing stable operations.
 
-## Experimental Feature Phases 
+## Experimental feature phases
 
-| Dimension | ALPHA | BETA | 
- | ----- | ----- | ----- | 
-| **Production Readiness** | Strictly not recommended for production environments. | Suitable for controlled pilots. Not recommended for mission-critical flows. | 
-| **Activation** | Disabled by default. Requires explicit opt-in in the Dashboard. | Enabled by default for all clients. | 
-| **Stability** | Stable but subject to frequent schema changes.| Stable. Can have minor schema changes. | 
-| **Schema Indicator** | Tagged with `[ALPHA]` in schema field descriptions. | Tagged with `[BETA]` in schema field descriptions. | 
-| **Discontinuation Notice** | None. Subject to immediate modification or retirement. | Proactive direct outreach to actively integrating customers. | 
+| Dimension | Alpha | Beta |
+ | ----- | ----- | ----- |
+| **Production readiness** | Strictly not recommended for production environments. | Suitable for controlled pilots. Not recommended for mission-critical flows. |
+| **Activation** | Disabled by default. Requires explicit opt-in in the Dashboard. | Enabled by default for all clients. |
+| **Stability** | Stable but subject to frequent schema changes.| Stable. Can have minor schema changes. |
+| **Schema indicator** | Tagged with `[ALPHA]` in schema field descriptions. | Tagged with `[BETA]` in schema field descriptions. |
+| **Discontinuation notice** | None. Subject to immediate modification or retirement. | Proactive direct outreach to actively integrating customers. |
 
-For what Stable features guarantee, see [API lifecycle](/api-reference/api/lifecycle).
+For what stable features guarantee, see [API lifecycle](/api-reference/api/lifecycle).
 
 
-## Best Practices
+## Best practices
 
  - Use alpha features for sandbox evaluation, proofs of concept, and feedback. If you ship one anyway, you receive no notice or compatibility protection when it changes.
- - If you expose Beta capabilities to end users, show a "Beta" badge so they know the capability is still stabilizing.
+ - If you expose beta capabilities to end users, show a "beta" badge so they know the capability is still stabilizing.
 
 
-## Graduation Lifecycle
+## Graduation lifecycle
 
-1. **ALPHA ➔ BETA** When the functionality and schema achieve enough maturity, the feature is graduated to Beta. The description tag updates from `[ALPHA]` to `[BETA]`, access is enabled by default for all customers, and changes are announced in the Release Notes.
+1. **Alpha ➔ beta** When the functionality and schema achieve enough maturity, the feature is graduated to beta. The description tag updates from `[ALPHA]` to `[BETA]`, access is enabled by default for all customers, and changes are announced in the Release Notes.
 
-2. **BETA ➔ Stable** When reliability and maturity are validated across multiple clients, the `[BETA]` description tag and runtime warnings are removed and the feature graduates to the [stable lifecycle](/api-reference/api/lifecycle).
+2. **Beta ➔ stable** When reliability and maturity are validated across multiple clients, the `[BETA]` description tag and runtime warnings are removed and the feature graduates to the [stable lifecycle](/api-reference/api/lifecycle).
 
 
 ## Pricing
 - Requests to operations tagged as experimental are **free of charge**.
 - Requests made to stable endpoints that include optional experimental input arguments or output fields are **charged** in accordance with your subscription plan.
 
-## Programmatic Warnings
-To keep your development team aware of experimental dependencies in active traffic, API responses using Alpha or Beta capabilities return warning metadata in the GraphQL `extensions` block:
+## Programmatic warnings
+To keep your development team aware of experimental dependencies in active traffic, API responses using alpha or beta capabilities return warning metadata in the GraphQL `extensions` block:
 
 <details>
   <summary>Example warning of an alpha feature</summary>

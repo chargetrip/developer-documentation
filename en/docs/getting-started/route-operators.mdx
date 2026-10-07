@@ -28,11 +28,11 @@ Operator preferences come in four types, and each can be scoped to specific coun
 
 Understanding how request-level inputs interact with dashboard settings ensures predictable routing behavior:
 
-- **Dashboard Excluded and Avoided operators apply automatically**: 
+- **Dashboard Excluded and Avoided operators apply automatically**:
 Operators configured as Excluded or Avoided in the dashboard apply to every route calculation without requiring any parameters in your `createRoute` request.
-- **Dashboard ranked tiers remain inactive without a ranking type**: 
-Operators configured in ranking tiers must be activated by setting `input.operators.ranking.type` in your `createRoute` request, otherwise they do not affect station selection. 
-- **Request-level operators replace respective dashboard preferences**: 
+- **Dashboard ranked tiers remain inactive without a ranking type**:
+Operators configured in ranking tiers must be activated by setting `input.operators.ranking.type` in your `createRoute` request, otherwise they do not affect station selection.
+- **Request-level operators replace respective dashboard preferences**:
 Specifying operator IDs in the `createRoute` request replaces only the corresponding configuration from the dashboard. For example, providing `input.operators.exclude[]` replaces the entire dashboard's excluded operators configuration, while dashboard-level avoid operators continue to apply.
 ---
 ### 3. Implementation Examples

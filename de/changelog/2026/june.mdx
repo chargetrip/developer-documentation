@@ -12,8 +12,16 @@ We have officially launched our dedicated truck routing engine on the backend. A
 
 
 <details>
+  <summary>Improvements</summary>
+
+  - Improved validation and diagnostic error reporting when specifying via charging stations in createRoute, returning explicit error codes (`ROUTE_STATION_OUT_OF_SERVICE`, `ROUTE_STATION_INVALID_CHARGER`, and refined `ROUTE_STATION_INVALID_SPEED`) when charging is not possible, and introducing the via_station_below_minimum_power leg warning when available connectors fall below the requested minimum_power threshold.
+</details>
+
+<details>
   <summary>Fixes</summary>
 
-  - Fixed an issue where routes that retraced their path could end up with a negative state of charge.
-  - Fixed an issue where the charging time at the final stop was calculated incorrectly when using the `OPTIMIZE_TRAVEL_TIME` charging mode combined with a custom final state of charge.
+  - Fixed an issue where total driving and trip durations (`durations.driving` and `durations.total`) on recommended and alternative routes omitted congestion delays when `traffic_aware` was enabled.
+  - Fixed an issue where routes ending at a charging station recorded an erroneous charging duration on the final leg and added an extra charge stop to the route's total `charges` count.
+  - Fixed an issue where filtering `vehicleList` by `make` or `model` strings containing special characters (such as `Lynk&Co`, `e.GO`, `ID.7`, or `N°4 E-Tense`) returned empty results.
+  - Fixed an issue in `amenityList` where filtered POI search results did not match the station's total amenity count.
 </details>

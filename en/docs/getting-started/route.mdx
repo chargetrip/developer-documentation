@@ -12,13 +12,13 @@ The Route API considers all these variables to find optimal EV routes. Using a w
 To ensure high performance, the Route API operates asynchronously, following the same [async pattern](/api-reference/api/async-operations) used across the API. Creating and retrieving a route happen in separate steps.
 
 1. **Create a route**
-   Call the `createRoute` mutation with at least a `vehicle`, `origin`, and `destination`. The mutation returns a route `id` right away, which you'll use in the next step to track and retrieve the route. Many more customization options are available, see [customize your route](#customize-your-route) below.
+   Call the `createRoute` mutation with at least a `vehicle`, `origin`, and `destination`. The mutation returns a route `id` right away, which you'll use in the next step to track and retrieve the route. Many more customization options are available; see [customize your route](#customize-your-route) below.
 2. **Open a subscription**
    Subscribe to the `route` subscription using the `id` from the previous step. While the route is being calculated, the subscription pushes status updates you can use to drive an async loading state in your UI.
 3. **Render the result**
    Once the route's `status` resolves to `done`, `error`, or `not_found`, render the corresponding UI for that outcome.
 4. **Re-fetch on demand**
-   A route that has reached a final status that is succesful is stored with its complete details. If you need to display it again later, for example after navigating back to it, use the `getRoute` query instead of opening a new subscription.
+   A route that has reached a final status that is successful is stored with its complete details. If you need to display it again later, for example after navigating back to it, use the `getRoute` query instead of opening a new subscription.
 
 > [!WARNING] Hybrid vehicles
 > Hybrid and plug-in hybrid vehicles don't rely solely on their battery, so their routes don't include charging stops.

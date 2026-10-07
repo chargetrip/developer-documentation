@@ -10,7 +10,7 @@ Once your credentials are created in the Chargetrip dashboard, you can start mak
 
 The Chargetrip API uses two distinct endpoints depending on the operation type: an HTTPS URL for queries and mutations, and a WebSocket (WSS) URL for subscriptions. You can find more information about the API in the [GraphQL API reference](/api-reference).
 
-### Query and mutations
+### Queries and mutations
 Queries and mutations are executed via HTTP POST requests to the main GraphQL endpoint.
 
 
@@ -32,7 +32,7 @@ wss://api.chargetrip.io/subscription
 
 ## Authorization headers
 
-After obtaining the base URL, add one or more of the following headers to each request.
+After obtaining the base URL, add the following headers to each request. Headers marked required must always be sent.
 
 `x-client-id` · <span class="text-accent">required</span>
 : A project id that contains the project configuration.
