@@ -1,11 +1,11 @@
 ---
-title: Advance navigation leg
+title: 推进导航路段
 schemaName: advanceNavigationLeg
 schemaType: Mutation
 ---
 
-Advance an active navigation session to the next route leg by using the advanceNavigationLeg mutation. This is useful when a driver completes a leg, such as finishing a charging stop, and continues to the next one.
+使用 advanceNavigationLeg 变更将进行中的导航会话推进到下一路线路段。当驾驶员完成某一路段（例如结束充电停靠）并继续前往下一路段时，此操作非常有用。
 
-## Mutation
+## 变更
 
-A navigation session `id` and `current_location` are required to advance to the next leg. Optionally include `state_of_charge` to specify the vehicle's charge level at the current location. The `id` can be obtained through the [startNavigation mutation](/api-reference/navigation/mutation-start-navigation).
+推进到下一路段需要导航会话的 `id` 和 `current_location`。您还可以包含 `state_of_charge`，以指定车辆在当前位置的电量。`id` 可通过 [startNavigation 变更](/api-reference/navigation/mutation-start-navigation)获取。

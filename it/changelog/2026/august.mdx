@@ -1,31 +1,31 @@
 ---
-title: Subscriptions v2
+title: Subscription v2
 date: 01-08-2026
 ---
 
-## Subscriptions v2
+## Subscription v2
 
-![Station boosting](../../../assets/changelog/2026/august.jpg)
+![Subscription](../../../assets/changelog/2026/august.jpg)
 
-We have launched a new subscription service hosted under a dedicated domain (`subscription.chargetrip.io`), delivering enhanced reliability, standard subprotocols, and new transport choices.
+Abbiamo lanciato un nuovo servizio di subscription ospitato su un dominio dedicato (`subscription.chargetrip.io`), che offre maggiore affidabilità, sottoprotocolli standard e nuove opzioni di trasporto.
 
-- Connect via WebSocket over `wss://subscription.chargetrip.io/ws` using the modern `graphql-transport-ws` protocol;
-- Stream subscriptions over HTTP using Server-Sent Events via `https://subscription.chargetrip.io/sse`;
-- Active subscription connections automatically close when a resource reaches its final state (such as `done`, `error`, or `not_found` for routes/isolines, and `finished` or `error` for navigation);
-- Error payloads now follow consistent GraphQL error conventions with structured extensions metadata.
+- Connettiti tramite WebSocket su `wss://subscription.chargetrip.io/ws` usando il moderno protocollo `graphql-transport-ws`;
+- Ricevi le subscription in streaming via HTTP usando Server-Sent Events tramite `https://subscription.chargetrip.io/sse`;
+- Le connessioni di subscription attive si chiudono automaticamente quando una risorsa raggiunge il suo stato finale (come `done`, `error` o `not_found` per percorsi/isoline, e `finished` o `error` per la navigazione);
+- I payload di errore ora seguono convenzioni coerenti per gli errori GraphQL, con metadati di estensione strutturati.
 
-### Station boosting groups on station queries
+### Gruppi di boosting delle stazioni nelle query delle stazioni
 
-We extended station queries to provide visibility into whether a station belongs to an active boosting group.
+Abbiamo esteso le query delle stazioni per offrire visibilità sull'appartenenza di una stazione a un gruppo di boosting attivo.
 
-- Added the `boosting_group_ids` field to the `Station` type across `station`, `stationList`, and `stationAround` queries;
-- Returns an array of active boosting group IDs configured for your project, returning an empty list (`[]`) if the station is not currently boosted.
+- Aggiunto il campo `boosting_group_ids` al tipo `Station` nelle query `station`, `stationList` e `stationAround`;
+- Restituisce un array di ID dei gruppi di boosting attivi configurati per il tuo progetto, oppure una lista vuota (`[]`) se la stazione non è attualmente in boosting.
 
 
 
 <details>
-  <summary>Fixes</summary>
+  <summary>Correzioni</summary>
   
-  - Fixed an issue where routes with multiple ferry connections could result in routes to arrive at charging stations with a negative State of Charge.
-  - Fixed an issue where calculating routes between origin and destination points located very close to each other produced an invalid line string error and failed with a 404 response.
+  - Risolto un problema per cui i percorsi con più collegamenti in traghetto potevano portare ad arrivare alle stazioni di ricarica con uno stato di carica (State of Charge) negativo.
+  - Risolto un problema per cui il calcolo di percorsi tra punti di origine e destinazione molto vicini tra loro produceva un errore di line string non valida e falliva con una risposta 404.
 </details>

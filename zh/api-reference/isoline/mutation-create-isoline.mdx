@@ -1,11 +1,11 @@
 ---
-title: Create isoline
+title: 创建等值线
 schemaName: createIsoline
 schemaType: Mutation
 ---
 
-Create a consumption-based isoline by using the createIsoline mutation. This is useful when you want to visualize the area a vehicle can reach from a given point.
+使用 createIsoline 变更创建基于能耗的等值线。当您想可视化车辆从某一给定点出发可到达的区域时，此操作非常有用。
 
-## Mutation
+## 变更
 
-A `vehicle_id` and `origin` are required to create an isoline. Optionally add `state_of_charge`, `polygon_count`, or other preferences to refine the calculation. The mutation returns an isoline `id`, which can be used to retrieve isoline details or subscribe to updates.
+创建等值线需要 `vehicle_id` 和 `origin`。您还可以添加 `state_of_charge`、`polygon_count` 或其他偏好设置来优化计算。该变更会返回等值线的 `id`，可用于获取等值线详情或订阅更新。

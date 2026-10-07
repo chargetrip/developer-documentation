@@ -1,11 +1,11 @@
 ---
-title: Station around
+title: Yakındaki istasyonlar
 schemaName: stationAround
 schemaType: Query
 ---
 
-With the stationAround query you can fetch the stations within a specific radius of a GEOJSON point. This can be useful when a station is busy, or when you want to provide several charging options.
+stationAround sorgusuyla bir GeoJSON noktasının belirli bir yarıçapı içindeki istasyonları getirebilirsiniz. Bu, bir istasyon yoğun olduğunda veya birkaç şarj seçeneği sunmak istediğinizde kullanışlı olabilir.
 
-## Query
+## Sorgu
 
-A `location` (GeoJSON point) and `distance` in meters are required to search for stations around a point. Use the `filter` and `search` arguments to narrow down the results, and the `size` and `page` arguments to [paginate](/docs/pagination) through them.
+Bir noktanın çevresindeki istasyonları aramak için bir `location` (GeoJSON noktası) ve metre cinsinden `distance` gereklidir. Sonuçları daraltmak için `filter` ve `search` argümanlarını, bunlar arasında [sayfalandırma](/api-reference/api/pagination) yapmak için ise `size` ve `page` argümanlarını kullanın.

@@ -1,28 +1,28 @@
 ---
-title: Route matching
+title: 路线匹配
 date: 01-09-2026
 ---
 
-## Route matching
+## 路线匹配
 
-![Route matching](../../../assets/changelog/2026/september.jpg)
+![路线匹配](../../../assets/changelog/2026/september.jpg)
 
-We have introduced Route Matching operations, allowing you to map-match external GPS traces and run them through our Routing Engine to calculate energy consumption and insert optimal charging stops.
+我们引入了路线匹配（Route Matching）操作，让您可以对外部 GPS 轨迹进行地图匹配，并将其送入我们的路线引擎，以计算能耗并插入最优的充电停靠点。
 
-- Calculate matched routes from coordinate sequences using the new `createMatchedRoute` mutation;
-- Designate intermediate stopovers using `vias` defined by coordinate array index (`via.index`), with support for updating vehicle passenger counts and cargo weight dynamically along the journey;
-- Enable `plan_charging_stops: true` to evaluate vehicle energy consumption along the pre-determined path and automatically insert compatible charging stops when needed;
-- Query full CO₂ emissions profiles for completed matched routes using `getRouteEmissions`.
+- 使用新的 `createMatchedRoute` mutation，根据坐标序列计算匹配路线；
+- 使用按坐标数组索引定义的 `vias`（`via.index`）指定中途停靠点，并支持在行程中动态更新车辆乘客数量和载货重量；
+- 启用 `plan_charging_stops: true`，评估车辆沿预定路径的能耗，并在需要时自动插入兼容的充电停靠点；
+- 使用 `getRouteEmissions` 查询已完成的匹配路线的完整 CO₂ 排放概况。
 
 <details>
-    <summary>Improvements</summary>
+  <summary>改进</summary>
 
-    - Updated the operator query to accept an external_id next to the internal id.
+    - 更新了 operator 查询，除内部 id 外，还接受 external_id。
 </details>
 
 <details>
-    <summary>Fixes</summary>
+  <summary>修复</summary>
 
-    - Fixed an issue where signing up to the dashboard with an email address containing uppercase letters prevented pending workspace invitations from being displayed upon login.
-    - Fixed a calculation and rounding discrepancy where the sum of leg section driving durations did not match total driving durations (`durations.driving`) in route details.
+    - 修复了使用包含大写字母的电子邮箱地址注册 dashboard 后，登录时无法显示待处理的工作区邀请的问题。
+    - 修复了路线详情中各路段分段行驶时长之和与总行驶时长（`durations.driving`）不一致的计算和舍入差异问题。
 </details>

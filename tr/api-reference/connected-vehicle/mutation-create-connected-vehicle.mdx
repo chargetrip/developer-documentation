@@ -1,11 +1,11 @@
 ---
-title: Create connected vehicle
+title: Bağlı araç oluştur
 schemaName: createConnectedVehicle
 schemaType: Mutation
 ---
 
-Connect a vehicle to a connectivity provider by using the createConnectedVehicle mutation. This is useful when you want to retrieve live vehicle data directly from the vehicle instead of a route calculation.
+createConnectedVehicle mutasyonunu kullanarak bir aracı bağlantı sağlayıcısına bağlayın. Bu, canlı araç verilerini bir rota hesaplaması yerine doğrudan araçtan almak istediğinizde kullanışlıdır.
 
-## Mutation
+## Mutasyon
 
-A `vehicle_id` and `provider` are required to create a connected vehicle, along with provider-specific `options`. The mutation returns a connected vehicle `id` and an `authorization_url`, which can be used to complete authorization through the [authorizeConnectedVehicle mutation](/api-reference/connected-vehicle/mutation-authorize-connected-vehicle).
+Bağlı bir araç oluşturmak için sağlayıcıya özel `options` ile birlikte bir `vehicle_id` ve `provider` gereklidir. Mutasyon, bir bağlı araç `id` ve yetkilendirmeyi [authorizeConnectedVehicle mutasyonu](/api-reference/connected-vehicle/mutation-authorize-connected-vehicle) ile tamamlamak için kullanılabilecek bir `authorization_url` döndürür.

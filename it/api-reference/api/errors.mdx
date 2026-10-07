@@ -1,37 +1,37 @@
 ---
-title: Error handling
+title: Gestione degli errori
 ---
 
-The API returns errors as part of a normal response, alongside any data that was still resolved. A request can partially succeed, so checking the HTTP status code alone is not enough to detect an error.
+L'API restituisce gli errori come parte di una normale risposta, insieme ai dati che sono stati comunque risolti. Una richiesta può avere successo solo in parte, quindi controllare soltanto il codice di stato HTTP non basta per rilevare un errore.
 
-> [!WARNING] Partial responses
-> The API returns HTTP 200 for most requests, even when they include errors. Always check the response body for an `errors` array, rather than relying on the HTTP status code, since `data` and `errors` can be returned together.
+> [!WARNING] Risposte parziali
+> L'API restituisce HTTP 200 per la maggior parte delle richieste, anche quando includono errori. Controlla sempre il corpo della risposta per cercare un array `errors`, anziché affidarti al codice di stato HTTP, poiché `data` ed `errors` possono essere restituiti insieme.
 
-## Errors
+## Errori
 
-Each error is returned in the top-level `errors` array, alongside `data`.
+Ogni errore viene restituito nell'array `errors` di primo livello, insieme a `data`.
 
 `message` · <span class="text-muted">String</span>
-: A human readable description of the error.
+: Una descrizione leggibile dell'errore.
 
 `locations` · <span class="text-muted">Array</span>
-: The line and column in the request where the error occurred.
+: La riga e la colonna della richiesta in cui si è verificato l'errore.
 
 `path` · <span class="text-muted">Array</span>
-: The path to the field that caused the error, for example `["vehicleList"]`.
+: Il percorso del campo che ha causato l'errore, ad esempio `["vehicleList"]`.
 
 `extensions.exception.code` · <span class="text-muted">String</span>
-: A machine readable error code. Use this field to handle errors programmatically, rather than matching on `message`.
+: Un codice di errore leggibile dalle macchine. Usa questo campo per gestire gli errori a livello di codice, anziché basarti su `message`.
 
 `extensions.exception.status` · <span class="text-muted">Integer</span>
-: The HTTP status code that corresponds to the error, for example `403`.
+: Il codice di stato HTTP che corrisponde all'errore, ad esempio `403`.
 
 `extensions.exception.message` · <span class="text-muted">String</span>
-: A human readable description of the error, matching the top-level `message` field.
+: Una descrizione leggibile dell'errore, corrispondente al campo `message` di primo livello.
 
 `extensions.exception.response` · <span class="text-muted">String</span>
-: The response body of the underlying exception, often the same as `message`.
+: Il corpo della risposta dell'eccezione sottostante, spesso uguale a `message`.
 
-### Localization
+### Localizzazione
 
-To properly handle and localize error messages, use `extensions.exception.code` rather than `message`. For a description of what each code means, see the operation's page in the API reference. `message` should only be used for developer context, not shown to end users.
+Per gestire e localizzare correttamente i messaggi di errore, usa `extensions.exception.code` anziché `message`. Per una descrizione del significato di ogni codice, consulta la pagina dell'operazione nel riferimento API. `message` dovrebbe essere usato solo come contesto per gli sviluppatori e non mostrato agli utenti finali.

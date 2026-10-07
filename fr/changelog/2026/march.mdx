@@ -1,39 +1,39 @@
 ---
-title: Traffic
+title: Trafic
 date: 01-03-2026
 ---
 
-## Traffic
+## Trafic
 
-![Traffic support](../../../assets/changelog/2026/march.jpg)
+![Prise en charge du trafic](../../../assets/changelog/2026/march.jpg)
 
-Enable traffic-aware routing for global traffic impact when calculating routes. Accounting for traffic and incidents while optimizing for charging has long been seen as the holy grail of EV route optimization. When enabled, the route response includes:
+Activez le routage tenant compte du trafic pour prendre en compte l'impact du trafic mondial lors du calcul des itinéraires. Tenir compte du trafic et des incidents tout en optimisant la recharge a longtemps été considéré comme le Graal de l'optimisation d'itinéraires pour EV. Lorsqu'il est activé, la réponse de l'itinéraire inclut :
 
-- **Segments** of the route affected by traffic;
-- **Level of congestion** on those segments;
-- **Delay** added to the total route duration.
+- Les **segments** de l'itinéraire affectés par le trafic ;
+- Le **niveau de congestion** sur ces segments ;
+- Le **retard** ajouté à la durée totale de l'itinéraire.
 
-This provides a more realistic estimate of travel time when traffic conditions affect the route and allows you to give globally optimized routes to your customers ready for turn-by-turn navigation.
+Vous obtenez ainsi une estimation plus réaliste du temps de trajet lorsque les conditions de circulation affectent l'itinéraire, et vous pouvez proposer à vos clients des itinéraires optimisés globalement, prêts pour la navigation pas à pas.
 
-### Route warnings
+### Avertissements d'itinéraire
 
-Routing is often a best-effort process. Sometimes the routing engine cannot fully satisfy all requested conditions. Warnings help explain why a route may differ from the original request. Examples include:
+Le routage est souvent un processus au mieux. Il arrive que le moteur d'itinéraires ne puisse pas satisfaire pleinement toutes les conditions demandées. Les avertissements aident à expliquer pourquoi un itinéraire peut différer de la demande initiale. Par exemple :
 
-- **Unavailable operators**: stations with preferred charging operators are not available for this route leg.
-- **Constraints**: the requested final state of charge could not be achieved.
+- **Opérateurs indisponibles** : les stations des opérateurs de recharge préférés ne sont pas disponibles pour ce tronçon de l'itinéraire.
+- **Contraintes** : l'état de charge final demandé n'a pas pu être atteint.
 
-Warnings allow front-end teams to surface useful feedback to drivers or give engineers deeper insight into routing behavior. This makes it easier to understand routing results and troubleshoot edge cases.
+Les avertissements permettent aux équipes front-end de fournir des retours utiles aux conducteurs ou aux ingénieurs de mieux comprendre le comportement du routage. Il devient ainsi plus facile de comprendre les résultats de routage et de diagnostiquer les cas limites.
 
 
 
 <details>
-    <summary>Improvements</summary>
+  <summary>Améliorations</summary>
 
-    - Relaxed operator ranking validation in createRoute : if operator preferences (preferred or required) are requested without levels provided in the request or configured in project settings, route calculation now succeeds without operator prioritization and returns a non-breaking `OPERATOR_PREFERENCES_NOT_FOUND` warning in getRoute (also documented via /public/warnings).
+    - Assouplissement de la validation du classement des opérateurs dans `createRoute` : si des préférences d'opérateur (préférés ou requis) sont demandées sans niveaux fournis dans la requête ni configurés dans les paramètres du projet, le calcul de l'itinéraire réussit désormais sans priorisation des opérateurs et renvoie un avertissement non bloquant `OPERATOR_PREFERENCES_NOT_FOUND` dans getRoute (également documenté via /public/warnings).
 </details>
 
 <details>
-  <summary>Fixes</summary>
+  <summary>Corrections</summary>
 
-  - Fixed an issue where searching or filtering the vehicle list (vehicleList) by strings containing parentheses (such as vehicle make or model names) caused query parsing failures and returned an internal server error.
+  - Correction d'un problème où la recherche ou le filtrage de la liste de véhicules (vehicleList) par des chaînes contenant des parenthèses (comme des noms de marque ou de modèle de véhicule) provoquait des échecs d'analyse de la requête et renvoyait une erreur interne du serveur.
 </details>

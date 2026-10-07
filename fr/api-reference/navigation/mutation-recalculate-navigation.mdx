@@ -1,12 +1,12 @@
 ---
-title: Recalculate navigation
+title: Recalculer la navigation
 schemaName: recalculateNavigation
 schemaType: Mutation
 ---
 
-Recalculate the route of an active navigation session by using the recalculateNavigation mutation. This is useful when a driver deviates from the original route or conditions change along the way.
+Recalculez l'itinéraire d'une session de navigation active à l'aide de la mutation recalculateNavigation. Elle est utile lorsqu'un conducteur s'écarte de l'itinéraire initial ou que les conditions changent en cours de route.
 
 ## Mutation
 
-A navigation session `id` and `current_location` are required to recalculate its route. Optionally include `state_of_charge`, `via`, or `telemetry` to refine the new route. The `id` can be obtained through the [startNavigation mutation](/api-reference/navigation/mutation-start-navigation).
+Un `id` de session de navigation et une `current_location` sont requis pour recalculer son itinéraire. Vous pouvez inclure `state_of_charge`, `via` ou `telemetry` pour affiner le nouvel itinéraire. L'`id` peut être obtenu via la [mutation startNavigation](/api-reference/navigation/mutation-start-navigation).
 

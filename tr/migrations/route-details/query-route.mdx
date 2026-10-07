@@ -1,49 +1,49 @@
 ---
 slug: route-details
-title: Route details migration guide
+title: Rota ayrıntıları geçiş rehberi
 migrateBefore: 01-01-2027
 ---
 
-# Route details
+# Rota ayrıntıları
 
-Migrate from the legacy Route service to the latest version. The new service delivers a reorganized schema, per-country operator preferences, faster route computation, and greater maintainability.
+Eski Rota hizmetinden en son sürüme geçin. Yeni hizmet; yeniden düzenlenmiş bir şema, ülke bazlı operatör tercihleri, daha hızlı rota hesaplama ve daha kolay sürdürülebilirlik sunar.
 
-## Operations
+## İşlemler
 
-| Old                | New                                                   |
+| Eski               | Yeni                                                  |
 | ------------------ | ------------------------------------------------------|
 | `route`            | [`getRoute`](/api-reference/route/query-get-route)     |
 | `routeUpdatedById`  | [`route`](/api-reference/route/subscription-route)     |
 
-## General schema changes
+## Genel şema değişiklikleri
 
-- **Explicit typing**: previously flexible JSON fields are now explicitly typed in the schema to improve structure and validation.
-- **Naming conventions**: fields now use `snake_case` instead of `camelCase`.
-- **Unit support**: numeric inputs now support different unit types, expressed as an object with `value`, `type`, and an optional `source` (`manual`, `telemetry`, or `default`).
+- **Açık tür tanımlama**: daha önce esnek olan JSON alanları, yapıyı ve doğrulamayı iyileştirmek için artık şemada açıkça türlendirilmiştir.
+- **Adlandırma kuralları**: alanlar artık `camelCase` yerine `snake_case` kullanır.
+- **Birim desteği**: sayısal girdiler artık farklı birim türlerini destekler; bunlar `value`, `type` ve isteğe bağlı bir `source` (`manual`, `telemetry` veya `default`) içeren bir nesne olarak ifade edilir.
 
-## Query and subscription changes
+## Sorgu ve abonelik değişiklikleri
 
-Field naming and grouping have been revised, and redundant fields have been removed. The response now includes the original input enriched with defaults, so it can be reused for future route recalculations.
+Alan adlandırması ve gruplandırması gözden geçirilmiş, gereksiz alanlar kaldırılmıştır. Yanıt artık varsayılanlarla zenginleştirilmiş özgün girdiyi içerir; böylece gelecekteki rota yeniden hesaplamalarında yeniden kullanılabilir.
 
-### Top level
+### Üst düzey
 
-At the top level, most fields move under `recommended`, and the `ev`, `telemetry`, and `routeRequest` inputs are folded into a single `request_input` object.
+Üst düzeyde alanların çoğu `recommended` altına taşınır; `ev`, `telemetry` ve `routeRequest` girdileri ise tek bir `request_input` nesnesinde birleştirilir.
 
-| Field          | Moved to               |
+| Alan           | Taşındığı yer          |
 | -------------- | ---------------------- |
 | `route`        | `recommended`          |
-| `alternatives` | Removed                |
+| `alternatives` | Kaldırıldı             |
 | `ev`           | `request_input`        |
 | `telemetry`    | `request_input`        |
 | `routeRequest` | `request_input`        |
 | `app`          | `meta.app_id`          |
-| `status`       | Unchanged              |
+| `status`       | Değişmedi              |
 
-### Route
+### Rota
 
-At the route level, most fields move under `recommended`, keeping their own names, alongside a few explicit renames.
+Rota düzeyinde alanların çoğu kendi adlarını koruyarak `recommended` altına taşınır; birkaç alan ise açıkça yeniden adlandırılır.
 
-| Field                 | Moved to                             |
+| Alan                  | Taşındığı yer                        |
 | --------------------- | ------------------------------------ |
 | `rangeStart*`         | `range_at_origin`                    |
 | `rangeEnd*`           | `range_at_destination`               |
@@ -55,32 +55,32 @@ At the route level, most fields move under `recommended`, keeping their own name
 | `pathPlot`            | `recommended.path_plot`              |
 | `legs`                | `recommended.legs`                   |
 | `tags`                | `recommended.tags`                   |
-| `instructions`        | Removed                              |
-| `amenityRanking`      | Removed                              |
+| `instructions`        | Kaldırıldı                           |
+| `amenityRanking`      | Kaldırıldı                           |
 | `stationsAlongRoute`  | `recommended.alternative_stations`   |
 
-### Legs
+### Bölümler (legs)
 
-At the leg level, ranges follow the same renaming as the route, and occupant and cargo details move onto each leg's `origin` and `via` location properties.
+Bölüm düzeyinde menzil alanları rotayla aynı yeniden adlandırmayı izler; yolcu ve kargo ayrıntıları ise her bölümün `origin` ve `via` konum özelliklerine taşınır.
 
-| Field         | Moved to                               |
+| Alan          | Taşındığı yer                           |
 | ------------- | --------------------------------------- |
 | `rangeStart*` | `range_at_origin`                       |
 | `rangeEnd*`   | `range_at_destination`                  |
 | `steps`       | `sections`                              |
 | `stationId`   | `recommended.legs.station.station_id`   |
 
-Legs also gain a new `range_after_charge` field.
+Bölümlere ayrıca yeni bir `range_after_charge` alanı da eklenmiştir.
 
-## Highlighted changes
+## Öne çıkan değişiklikler
 
-The response also introduces a new, more structured shape for route sections. It's covered in more detail below.
+Yanıt ayrıca rota kesitleri için yeni ve daha yapılandırılmış bir şekil sunar. Bu aşağıda daha ayrıntılı olarak ele alınmıştır.
 
-### Sections
+### Kesitler
 
-Steps have been replaced with sections, which provide more granular information, including origin and destination details for each section.
+Adımlar (steps), her kesit için başlangıç ve varış ayrıntıları dahil daha ayrıntılı bilgi sağlayan kesitlerle (sections) değiştirilmiştir.
 
-```graphql Sections {{ mark: [1,13,14,26,27] }}
+```graphql Kesitler {{ mark: [1,13,14,26,27] }}
 sections {
   type
   tags

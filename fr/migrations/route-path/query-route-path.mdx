@@ -1,25 +1,25 @@
 ---
 slug: query-route-path
-title: Route path migration guide
+title: Guide de migration du chemin de l'itinéraire
 migrateBefore: 01-01-2027
 ---
 
 # routePath
 
-Migrate from the legacy Route service to the latest version. The new service delivers a reorganized schema, per-country operator preferences, faster route computation, and greater maintainability.
+Migrez de l'ancien service Route vers la dernière version. Le nouveau service offre un schéma réorganisé, des préférences d'opérateur par pays, un calcul d'itinéraire plus rapide et une meilleure maintenabilité.
 
-## Operations
+## Opérations
 
-| Old         | New                                                   |
+| Ancien      | Nouveau                                               |
 | ----------- | ------------------------------------------------------|
 | `routePath` | [`getRoute`](/api-reference/route/query-get-route)    |
 
-## General schema changes
+## Changements généraux du schéma
 
-- **Explicit typing**: previously flexible JSON fields are now explicitly typed in the schema to improve structure and validation.
-- **Naming conventions**: fields now use `snake_case` instead of `camelCase`.
-- **Unit support**: numeric inputs now support different unit types, expressed as an object with `value`, `type`, and an optional `source` (`manual`, `telemetry`, or `default`).
+- **Typage explicite** : les champs JSON auparavant flexibles sont désormais explicitement typés dans le schéma pour améliorer la structure et la validation.
+- **Conventions de nommage** : les champs utilisent désormais `snake_case` au lieu de `camelCase`.
+- **Prise en charge des unités** : les entrées numériques prennent désormais en charge différents types d'unités, exprimées sous la forme d'un objet avec `value`, `type` et une `source` facultative (`manual`, `telemetry` ou `default`).
 
-## Query changes
+## Changements de requête
 
-The route's path is now already included in the `getRoute` response as `recommended.path_plot`, so a separate query to fetch it is no longer needed.
+Le chemin de l'itinéraire est désormais déjà inclus dans la réponse `getRoute` sous `recommended.path_plot`, une requête distincte pour le récupérer n'est donc plus nécessaire.

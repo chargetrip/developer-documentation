@@ -3,26 +3,26 @@ title: JSON
 tag: Rest
 ---
 
-The JSON tile service provides access to station-related geographic data in JSON format. 
+JSON 瓦片服务以 JSON 格式提供与充电站相关的地理数据。
 
-## Setup
+## 设置
 
-To access the station data in JSON format, send a request to the following endpoint:
+要以 JSON 格式获取充电站数据，请向以下端点发送请求：
 
 ```bash Tile / JSON / Base URL
 https://api.chargetrip.io/v2/station/{z}/{x}/{y}/tile.json
 ```
 
-The JSON URL uses the following path parameters:
+JSON URL 使用以下路径参数：
 
-- `z`: The zoom level of the tile.
-- `x`: The x-coordinate of the tile.
-- `y`: The y-coordinate of the tile.
+- `z`：瓦片的缩放级别。
+- `x`：瓦片的 x 坐标。
+- `y`：瓦片的 y 坐标。
 
-Most map providers have built-in methods to convert latitude and longitude to pixel coordinates. To manually convert latitude and longitude coordinates to x and y use the [Web Mercator Projection](https://en.wikipedia.org/wiki/Web_Mercator_projection).
+大多数地图提供商都内置了将纬度和经度转换为像素坐标的方法。若要手动将纬度和经度坐标转换为 x 和 y，请使用 [Web 墨卡托投影](https://en.wikipedia.org/wiki/Web_Mercator_projection)。
 
-### Filtering
-Use the `filter` query parameter to filter the stations returned based on specific criteria. See the [filters documentation](/api-reference/tiles/filters) for more information.
+### 筛选
+使用 `filter` 查询参数，根据特定条件筛选返回的充电站。更多信息请参见[筛选文档](/api-reference/tiles/filters)。
 
-### Selectors
-Use the `station_properties[]` query parameter to specify the fields returned for each station feature. See the [selectors documentation](/api-reference/tiles/selectors) for more information.
+### 选择器
+使用 `station_properties[]` 查询参数指定为每个充电站要素返回的字段。更多信息请参见[选择器文档](/api-reference/tiles/selectors)。

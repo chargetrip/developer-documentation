@@ -1,39 +1,39 @@
 ---
-title: Traffic
+title: Trafik
 date: 01-03-2026
 ---
 
-## Traffic
+## Trafik
 
-![Traffic support](../../../assets/changelog/2026/march.jpg)
+![Trafik desteği](../../../assets/changelog/2026/march.jpg)
 
-Enable traffic-aware routing for global traffic impact when calculating routes. Accounting for traffic and incidents while optimizing for charging has long been seen as the holy grail of EV route optimization. When enabled, the route response includes:
+Rotaları hesaplarken küresel trafik etkisi için trafiğe duyarlı rota planlamayı etkinleştirin. Şarj optimizasyonu yapılırken trafiği ve olayları hesaba katmak, uzun zamandır EV rota optimizasyonunun kutsal kasesi olarak görülüyor. Etkinleştirildiğinde rota yanıtı şunları içerir:
 
-- **Segments** of the route affected by traffic;
-- **Level of congestion** on those segments;
-- **Delay** added to the total route duration.
+- Rotanın trafikten etkilenen **segmentleri**;
+- Bu segmentlerdeki **yoğunluk seviyesi**;
+- Toplam rota süresine eklenen **gecikme**.
 
-This provides a more realistic estimate of travel time when traffic conditions affect the route and allows you to give globally optimized routes to your customers ready for turn-by-turn navigation.
+Bu, trafik koşulları rotayı etkilediğinde daha gerçekçi bir seyahat süresi tahmini sunar ve müşterilerinize adım adım navigasyona hazır, küresel olarak optimize edilmiş rotalar vermenizi sağlar.
 
-### Route warnings
+### Rota uyarıları
 
-Routing is often a best-effort process. Sometimes the routing engine cannot fully satisfy all requested conditions. Warnings help explain why a route may differ from the original request. Examples include:
+Rota planlama çoğu zaman elinden gelenin en iyisini yapma sürecidir. Bazen rota motoru, istenen tüm koşulları tam olarak karşılayamaz. Uyarılar, bir rotanın özgün istekten neden farklı olabileceğini açıklamaya yardımcı olur. Örnekler şunlardır:
 
-- **Unavailable operators**: stations with preferred charging operators are not available for this route leg.
-- **Constraints**: the requested final state of charge could not be achieved.
+- **Kullanılamayan operatörler**: tercih edilen şarj operatörlerine ait istasyonlar bu rota bölümü için kullanılabilir değil.
+- **Kısıtlar**: istenen son şarj durumuna ulaşılamadı.
 
-Warnings allow front-end teams to surface useful feedback to drivers or give engineers deeper insight into routing behavior. This makes it easier to understand routing results and troubleshoot edge cases.
+Uyarılar, ön uç ekiplerinin sürücülere yararlı geri bildirim sunmasına veya mühendislere rota planlama davranışı hakkında daha derin bilgi vermesine olanak tanır. Bu, rota sonuçlarını anlamayı ve uç durumlarda sorun gidermeyi kolaylaştırır.
 
 
 
 <details>
-    <summary>Improvements</summary>
+  <summary>İyileştirmeler</summary>
 
-    - Relaxed operator ranking validation in createRoute : if operator preferences (preferred or required) are requested without levels provided in the request or configured in project settings, route calculation now succeeds without operator prioritization and returns a non-breaking `OPERATOR_PREFERENCES_NOT_FOUND` warning in getRoute (also documented via /public/warnings).
+    - `createRoute` içinde operatör sıralaması doğrulaması esnetildi: operatör tercihleri (tercih edilen veya zorunlu) istekte seviyeler sağlanmadan veya proje ayarlarında yapılandırılmadan talep edilirse, rota hesaplaması artık operatör önceliklendirmesi olmadan başarıyla tamamlanıyor ve getRoute içinde kesintiye yol açmayan bir `OPERATOR_PREFERENCES_NOT_FOUND` uyarısı döndürüyor (ayrıca /public/warnings üzerinden belgelenmiştir).
 </details>
 
 <details>
-  <summary>Fixes</summary>
+  <summary>Düzeltmeler</summary>
 
-  - Fixed an issue where searching or filtering the vehicle list (vehicleList) by strings containing parentheses (such as vehicle make or model names) caused query parsing failures and returned an internal server error.
+  - Araç listesinin (vehicleList) parantez içeren dizelerle (araç markası veya model adları gibi) aranması veya filtrelenmesinin sorgu ayrıştırma hatalarına ve dahili sunucu hatası döndürülmesine neden olduğu sorun düzeltildi.
 </details>

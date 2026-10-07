@@ -1,14 +1,14 @@
 ---
-title: Route amenity stop
+title: Servicestopp auf der Route
 schemaName: getRouteStationsWithAmenities
 schemaType: Query
 ---
 
-Search for charging stations with amenities at a certain point along a route by using the getRouteStationsWithAmenities query. This is useful when you want to plan a charging stop near restaurants, shops, or other amenities.
+Suchen Sie mit der Query getRouteStationsWithAmenities nach Ladestationen mit Ausstattungen an einem bestimmten Punkt entlang einer Route. Dies ist nützlich, wenn Sie einen Ladestopp in der Nähe von Restaurants, Geschäften oder anderen Ausstattungen planen möchten.
 
 ## Query
 
-A `route_id`, `route_details_id`, `time_window`, and `amenity_types` are required to search for stations along a route. Both ids can be obtained through the [getRoute query](/api-reference/route/query-get-route). Use the `filter` argument to narrow the results down based on specific criteria, and the `first` and `after` arguments to [paginate](/docs/pagination) through them.
+Zum Suchen von Stationen entlang einer Route sind `route_id`, `route_details_id`, `time_window` und `amenity_types` erforderlich. Beide IDs erhalten Sie über die [Query getRoute](/api-reference/route/query-get-route). Verwenden Sie das Argument `filter`, um die Ergebnisse anhand bestimmter Kriterien einzugrenzen, sowie die Argumente `first` und `after`, um die Ergebnisse zu [paginieren](/api-reference/api/pagination).
 
 > [!WARNING] Limits
-> `first` cannot exceed 10 for this query.
+> `first` darf bei dieser Query nicht größer als 10 sein.

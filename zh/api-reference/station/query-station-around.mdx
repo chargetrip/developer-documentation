@@ -1,11 +1,11 @@
 ---
-title: Station around
+title: 周边充电站
 schemaName: stationAround
 schemaType: Query
 ---
 
-With the stationAround query you can fetch the stations within a specific radius of a GEOJSON point. This can be useful when a station is busy, or when you want to provide several charging options.
+使用 stationAround 查询，您可以获取某个 GeoJSON 点特定半径范围内的充电站。当某个充电站繁忙，或您想提供多个充电选择时，此操作非常有用。
 
-## Query
+## 查询
 
-A `location` (GeoJSON point) and `distance` in meters are required to search for stations around a point. Use the `filter` and `search` arguments to narrow down the results, and the `size` and `page` arguments to [paginate](/docs/pagination) through them.
+按点搜索周边充电站需要 `location`（GeoJSON 点）和以米为单位的 `distance`。使用 `filter` 和 `search` 参数缩小结果范围，并使用 `size` 和 `page` 参数对结果进行[分页](/api-reference/api/pagination)。

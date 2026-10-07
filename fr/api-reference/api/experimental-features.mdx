@@ -1,0 +1,94 @@
+---
+title: Fonctionnalités expérimentales
+---
+
+Chargetrip introduit de nouvelles capacités importantes via un programme expérimental structuré. Il vous donne un accès anticipé pour évaluer les fonctionnalités à venir et influencer leur conception avant que les schémas et les contrats ne deviennent définitifs.
+
+> [!WARNING] Exemption de la politique d'obsolescence de 12 mois
+> Les fonctionnalités en alpha et en bêta sont exemptées de la [politique d'obsolescence de 12 mois](/api-reference/api/lifecycle#calendrier-dobsolescence) et peuvent changer ou être retirées plus tôt.
+
+## Types de fonctionnalités expérimentales
+
+- Nouvelles opérations : des queries, mutations ou subscriptions entièrement nouvelles.
+- Extensions d'opérations existantes : de nouveaux arguments optionnels ou champs de sortie ajoutés à des opérations stables existantes.
+
+## Phases des fonctionnalités expérimentales
+
+| Dimension | Alpha | Bêta |
+ | ----- | ----- | ----- |
+| **Prêt pour la production** | Fortement déconseillé dans les environnements de production. | Adapté aux pilotes contrôlés. Déconseillé pour les flux critiques. |
+| **Activation** | Désactivée par défaut. Nécessite une activation explicite dans le Dashboard. | Activée par défaut pour tous les clients. |
+| **Stabilité** | Stable mais sujette à de fréquents changements de schéma.| Stable. Peut subir des changements de schéma mineurs. |
+| **Indicateur dans le schéma** | Marquée `[ALPHA]` dans les descriptions des champs du schéma. | Marquée `[BETA]` dans les descriptions des champs du schéma. |
+| **Préavis d'arrêt** | Aucun. Sujette à modification ou retrait immédiat. | Contact direct proactif auprès des clients en cours d'intégration. |
+
+Pour connaître les garanties des fonctionnalités stables, consultez [cycle de vie de l'API](/api-reference/api/lifecycle).
+
+
+## Bonnes pratiques
+
+ - Utilisez les fonctionnalités alpha pour l'évaluation en sandbox, les preuves de concept et les retours. Si vous en déployez une malgré tout, vous ne recevrez aucun préavis ni protection de compatibilité lorsqu'elle change.
+ - Si vous exposez des capacités bêta à vos utilisateurs finaux, affichez un badge « bêta » pour qu'ils sachent que la capacité est encore en cours de stabilisation.
+
+
+## Cycle de graduation
+
+1. **Alpha ➔ bêta** Lorsque la fonctionnalité et le schéma atteignent une maturité suffisante, la fonctionnalité passe en bêta. Le tag de description passe de `[ALPHA]` à `[BETA]`, l'accès est activé par défaut pour tous les clients, et les changements sont annoncés dans les notes de version.
+
+2. **Bêta ➔ stable** Lorsque la fiabilité et la maturité sont validées auprès de plusieurs clients, le tag de description `[BETA]` et les avertissements à l'exécution sont supprimés et la fonctionnalité passe dans le [cycle de vie stable](/api-reference/api/lifecycle).
+
+
+## Tarification
+- Les requêtes vers des opérations marquées comme expérimentales sont **gratuites**.
+- Les requêtes vers des endpoints stables qui incluent des arguments d'entrée ou des champs de sortie expérimentaux optionnels sont **facturées** conformément à votre abonnement.
+
+## Avertissements programmatiques
+Pour tenir votre équipe de développement informée des dépendances expérimentales dans le trafic actif, les réponses de l'API utilisant des capacités alpha ou bêta renvoient des métadonnées d'avertissement dans le bloc `extensions` de GraphQL :
+
+<details>
+  <summary>Exemple d'avertissement pour une fonctionnalité alpha</summary>
+
+```json Exemple de requête et de réponse
+{
+  "data": {
+    "getTruckRoute": {
+      "id": "dd07b4d0-6b79-11f0-bf8f-e6b813282ac3",
+      "status": "done"
+    }
+  },
+  "extensions": {
+    "warnings": [
+      {
+        "code": "ALPHA_FEATURE",
+        "path": ["getTruckRoute"],
+        "message": "This feature is currently in ALPHA. Visit https://developers.chargetrip.com/api-reference for more information."
+      }
+    ]
+  }
+}
+```
+</details>
+
+
+<details>
+  <summary>Exemple d'avertissement pour une fonctionnalité bêta</summary>
+
+```json Exemple de requête et de réponse
+{
+  "data": {
+    "vehicleMakes": {
+      "name": "Opel"
+    }
+  },
+  "extensions": {
+    "warnings": [
+      {
+        "code": "BETA_FEATURE",
+        "path": ["vehicleMakes"],
+        "message": "This feature is currently in BETA. Visit https://developers.chargetrip.com/api-reference for more information."
+      }
+    ]
+  }
+}
+```
+</details>

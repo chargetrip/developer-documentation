@@ -1,53 +1,61 @@
 ---
-title: Chinese Overview
+title: 概览
 slug: overview
 ---
 
-GraphQL is a query language for APIs. It lets you request exactly the data you need in a single call, instead of working through many fixed REST endpoints.
+GraphQL 是一种用于 API 的查询语言。它让您可以在一次调用中精确请求所需的数据，而无需处理许多固定的 REST 端点。
 
-The API is built on GraphQL. Every resource, such as vehicles, stations, routes, and navigation sessions, is available from a single endpoint as a query, mutation, or subscription.
+该 API 基于 GraphQL 构建。每种资源，例如车辆、充电站、路线和导航会话，都可以通过同一个 GraphQL API 访问。您可以将它们作为查询（query）、变更（mutation）或订阅（subscription）来访问。
 
-If you're new to GraphQL, the [official GraphQL documentation](https://graphql.org/learn/) is a good place to start.
+如果您刚接触 GraphQL，可以从 [GraphQL 官方文档](https://graphql.org/learn/)开始。
 
-## Authentication
+## GraphQL 端点
 
-Every request needs a base URL and the `x-client-id` and `x-app-id` headers to authenticate. See [send your first request](/docs/getting-started/api-request) for the full list of headers and an example request.
+查询、变更和订阅可通过以下端点访问。示例请参见[发送您的第一个请求](/docs/getting-started/api-request)。
 
-```bash Base URL
+对于查询和变更，请使用：
+
+```bash Mutation and Query URL
 https://api.chargetrip.io/graphql
 ```
 
-## Resources
+对于订阅，请使用：
 
-Browse the API by resource. Each section below links to its queries, mutations, and subscriptions.
+```bash Subscriptions URL
+wss://api.chargetrip.io/subscription
+```
 
-| Resource | Description |
+## 资源
+
+按资源浏览 API。下面的每个部分都链接到其查询、变更和订阅。
+
+| 资源 | 描述 |
 | --- | --- |
-| [Vehicle](/api-reference/vehicle/query-vehicles) | Look up EV specs, consumption models, and premium pricing data. |
-| [Connected vehicle](/api-reference/connected-vehicle/query-connected-vehicle-list) | Connect a vehicle to a connectivity provider and retrieve its live data. |
-| [Station](/api-reference/station/query-station-details) | Look up individual charge stations, nearby stations, and amenities. |
-| [Station review](/api-reference/review/query-user-review-list) | Read, add, and remove user reviews for a charge station. |
-| [Station tariff](/api-reference/tariff/query-tariff-list) | Look up the cost of charging at a station. |
-| [Station operator](/api-reference/operator/query-operator-list) | Look up details about a station's charge point operator. |
-| [Tiles](/api-reference/tiles/mvt) | Access station data as vector or JSON map tiles for rendering on a map. |
-| [Route](/api-reference/route/mutation-create-route) | Calculate an EV route with charging stops, energy consumption, and drive time. |
-| [Truck route](/api-reference/truck-route/mutation-create-truck-route) | Calculate an e-truck route accounting for vehicle weight and dimensions. |
-| [Navigation](/api-reference/navigation/mutation-start-navigation) | Track a vehicle's progress along a route and receive real-time updates. |
-| [Emissions](/api-reference/emissions/query-emissions) | Calculate the emissions saved by taking a route. |
-| [Isoline](/api-reference/isoline/mutation-create-isoline) | Visualize the area a vehicle can reach from a point given its state of charge. |
+| [车辆](/api-reference/vehicle/query-vehicles) | 查询 EV 规格、能耗模型和高级价格数据。 |
+| [联网车辆](/api-reference/connected-vehicle/query-connected-vehicle-list) | 将车辆连接到连接服务提供商并获取其实时数据。 |
+| [充电站](/api-reference/station/query-station-details) | 查询单个充电站、附近的充电站和设施。 |
+| [充电站评价](/api-reference/review/query-user-review-list) | 读取、添加和删除充电站的用户评价。 |
+| [充电站费率](/api-reference/tariff/query-tariff-list) | 查询在充电站充电的费用。 |
+| [充电站运营商](/api-reference/operator/query-operator-list) | 查询充电站的充电桩运营商的详细信息。 |
+| [地图瓦片](/api-reference/tiles/mvt) | 以矢量或 JSON 地图瓦片的形式获取充电站数据，用于在地图上渲染。 |
+| [路线](/api-reference/route/mutation-create-route) | 计算包含充电停靠点、能耗和行驶时间的 EV 路线。 |
+| [货车路线](/api-reference/truck-route/mutation-create-truck-route) | 计算考虑车辆重量和尺寸的电动货车路线。 |
+| [导航](/api-reference/navigation/mutation-start-navigation) | 跟踪车辆沿路线的行驶进度并接收实时更新。 |
+| [排放](/api-reference/emissions/query-emissions) | 计算选择某条路线所减少的排放量。 |
+| [等值线](/api-reference/isoline/mutation-create-isoline) | 根据车辆的电量状态，可视化车辆从某一点出发可到达的区域。 |
 
-### Authentication
+### 身份验证
 
-Every request is authenticated with the `x-client-id` and `x-app-id` headers. See [Authorization](/docs/api/authorization) for how to obtain and send them.
+每个请求都通过 `x-client-id` 和 `x-app-id` 请求头进行身份验证。有关如何获取和发送它们，请参见[授权](/docs/getting-started/api-request#授权请求头)。
 
-### Pagination
+### 分页
 
-List queries accept `size` and `page` arguments, or `first` and `after` arguments for cursor-based pagination, depending on which query you use. See [Pagination](/docs/pagination) for details. Requests are also subject to rate limiting.
+列表查询使用 `size` 和 `page` 参数，或者对于基于游标的分页，使用 `first` 和 `after` 参数。详情请参见[分页](/api-reference/api/pagination)。
 
-### Beta and alpha features
+### 速率限制
 
-Some resources are still evolving. [Connected vehicle](/api-reference/connected-vehicle/query-connected-vehicle-list) and [Navigation](/api-reference/navigation/mutation-start-navigation) are in beta, and [Truck route](/api-reference/truck-route/mutation-create-truck-route) is in alpha. Expect their contracts to change as we stabilize them.
+请求受[速率限制](/api-reference/api/rate-limiting)约束。
 
-### Lifecycle
+### 生命周期
 
-Chargetrip uses a single, evolving API rather than versioned releases. See [Lifecycle](/docs/api/life-cycle) for how we handle breaking and non-breaking changes.
+Chargetrip 使用单一的、持续演进的 GraphQL API，而不是带版本的发布。有关我们如何处理破坏性和非破坏性变更，请参见[生命周期](/api-reference/api/lifecycle)。

@@ -3,26 +3,26 @@ title: MVT
 tag: Rest
 ---
 
-The MVT (Mapbox Vector Tile) service provides access to station-related geographic data in a tile-based format. Vector tiles are encoded as Protocol Buffers (PBF), allowing for efficient serialization of structured data.
+Der MVT-Service (Mapbox Vector Tile) bietet Zugriff auf stationsbezogene Geodaten in einem kachelbasierten Format. Vektorkacheln werden als Protocol Buffers (PBF) kodiert, was eine effiziente Serialisierung strukturierter Daten ermöglicht.
 
-## Setup
+## Einrichtung
 
-To access the station data in MVT format, send a request to the following endpoint:
+Um auf die Stationsdaten im MVT-Format zuzugreifen, senden Sie eine Anfrage an den folgenden Endpoint:
 
 ```bash Tile / MVT / Base URL
 https://api.chargetrip.io/v2/station/{z}/{x}/{y}/tile.mvt
 ```
 
-The MVT URL uses the following path parameters:
+Die MVT-URL verwendet die folgenden Pfadparameter:
 
-- `z`: The zoom level of the tile.
-- `x`: The x-coordinate of the tile.
-- `y`: The y-coordinate of the tile.
+- `z`: Die Zoomstufe der Kachel.
+- `x`: Die x-Koordinate der Kachel.
+- `y`: Die y-Koordinate der Kachel.
 
-Most map providers have built-in methods to convert latitude and longitude to pixel coordinates. To manually convert latitude and longitude coordinates to x and y use the [Web Mercator Projection](https://en.wikipedia.org/wiki/Web_Mercator_projection).
+Die meisten Kartenanbieter bieten integrierte Methoden, um Breiten- und Längengrad in Pixelkoordinaten umzurechnen. Um Breiten- und Längengrad manuell in x und y umzurechnen, verwenden Sie die [Web-Mercator-Projektion](https://en.wikipedia.org/wiki/Web_Mercator_projection).
 
-### Filtering
-Use the `filter` query parameter to filter the stations returned based on specific criteria. See the [filters documentation](/api-reference/tiles/filters) for more information.
+### Filtern
+Verwenden Sie den Query-Parameter `filter`, um die zurückgegebenen Stationen anhand bestimmter Kriterien zu filtern. Weitere Informationen finden Sie in der [Dokumentation zu Filtern](/api-reference/tiles/filters).
 
-### Selectors
-Use the `station_properties[]` query parameter to specify the fields returned for each station feature. See the [selectors documentation](/api-reference/tiles/selectors) for more information.
+### Selektoren
+Verwenden Sie den Query-Parameter `station_properties[]`, um die Felder festzulegen, die für jedes Stations-Feature zurückgegeben werden. Weitere Informationen finden Sie in der [Dokumentation zu Selektoren](/api-reference/tiles/selectors).

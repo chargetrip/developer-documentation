@@ -1,26 +1,26 @@
 ---
-title: Stay on highway preference
+title: Stili di guida
 date: 01-02-2026
 ---
 
-## Driving styles
+## Stili di guida
 
-![Driving styles](../../../assets/changelog/2026/february.jpg)
+![Stili di guida](../../../assets/changelog/2026/february.jpg)
 
-Driving speed directly affects EV energy consumption. To make routes more accurately reflect real-world vehicle behavior and trip duration, we are introducing two new controls: speed factor and driving styles.
+La velocità di guida influisce direttamente sul consumo energetico dei veicoli elettrici. Per far sì che i percorsi riflettano con maggiore precisione il comportamento reale del veicolo e la durata del viaggio, introduciamo due nuovi controlli: fattore di velocità e stili di guida.
 
-Driving styles change estimated arrival time and energy consumption.
+Gli stili di guida modificano l'orario di arrivo stimato e il consumo energetico.
 
-- **Eco** assumes a more relaxed, efficient pace to save battery;
-- **Sport** assumes higher speeds and greater consumption for a quicker arrival.
+- **Eco** presume un ritmo più rilassato ed efficiente per risparmiare batteria;
+- **Sport** presume velocità più elevate e consumi maggiori per un arrivo più rapido.
 
-These features allow you to adjust routing calculations based on how a vehicle is actually driven, resulting in more precise consumption estimates and arrival times.
+Queste funzionalità ti consentono di regolare i calcoli di instradamento in base a come viene effettivamente guidato un veicolo, ottenendo stime di consumo e orari di arrivo più precisi.
 
 
-### Updated getRouteStationsWithAmenities Schema
+### Schema aggiornato di getRouteStationsWithAmenities
 
-We updated the `getRouteStationsWithAmenities` query to simplify inputs and support multi-amenity filtering.
+Abbiamo aggiornato la query `getRouteStationsWithAmenities` per semplificare gli input e supportare il filtro multi-servizio.
 
-- **Multi-amenity search**: Query multiple amenity categories simultaneously with logical OR filtering;
-- **Direct time inputs**: Pass time windows directly in seconds from the route origin;
-- **External station id**: Access `external_id` on the station nodes.
+- **Ricerca multi-servizio**: interroga più categorie di servizi contemporaneamente con filtro logico OR;
+- **Input di tempo diretti**: passa le finestre temporali direttamente in secondi dall'origine del percorso;
+- **ID esterno della stazione**: accedi a `external_id` sui nodi delle stazioni.

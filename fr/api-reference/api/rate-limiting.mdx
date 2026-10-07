@@ -1,63 +1,63 @@
 ---
-title: Rate limiting
+title: Limitation de débit
 ---
 
-The API rate limits requests using a <a href="https://en.wikipedia.org/wiki/Leaky_bucket" target="_blank" rel="noopener noreferrer">leaky bucket algorithm</a>. Each request costs a number of units, and those units leak out of the bucket at a constant rate. This keeps traffic flowing at a steady rate while still allowing short bursts.
+L'API limite le débit des requêtes à l'aide d'un <a href="https://en.wikipedia.org/wiki/Leaky_bucket" target="_blank" rel="noopener noreferrer">algorithme du seau percé</a>. Chaque requête coûte un certain nombre d'unités, et ces unités s'écoulent du seau à un rythme constant. Cela maintient un trafic régulier tout en autorisant de brefs pics.
 
-## GraphQL API
+## API GraphQL
 
-Rate limiting for the GraphQL API is based on the cost of each request, rather than a fixed number of requests. The sections below cover best practices for keeping that cost down, and how to read your current rate limit status.
+La limitation de débit de l'API GraphQL repose sur le coût de chaque requête, plutôt que sur un nombre fixe de requêtes. Les sections ci-dessous présentent les bonnes pratiques pour réduire ce coût et expliquent comment lire l'état actuel de votre limite de débit.
 
-### Best practices
+### Bonnes pratiques
 
-- Use subscriptions instead of polling by using queries to know when data changes.
-- Query only the fields you need, and use `filter` to narrow down list queries.
-- List queries return up to 100 records per page, but a larger page costs more than a smaller one. Fetching 100 records in one request costs more than fetching 10, so request fewer records rather than more. See [pagination](/api-reference/api/pagination) for details.
-- If a request is rejected with a `429` error, your bucket is full. Stop sending requests and only make new requests once the time given by `reset` has passed.
+- Utilisez des subscriptions plutôt que d'interroger régulièrement avec des queries pour savoir quand les données changent.
+- Interrogez uniquement les champs dont vous avez besoin, et utilisez `filter` pour affiner les queries de liste.
+- Les queries de liste renvoient jusqu'à 100 enregistrements par page, mais une page plus grande coûte plus cher qu'une plus petite. Récupérer 100 enregistrements en une requête coûte plus que d'en récupérer 10, alors demandez moins d'enregistrements plutôt que plus. Consultez [pagination](/api-reference/api/pagination) pour plus de détails.
+- Si une requête est rejetée avec une erreur `429`, votre seau est plein. Arrêtez d'envoyer des requêtes et n'en effectuez de nouvelles qu'une fois le délai indiqué par `reset` écoulé.
 
-### Rate limit
+### Limite de débit
 
-To protect the API from queries that are too complex or resource intensive, each request is assigned a cost based on the amount of requested data. Every response to a valid request, or a request that fails business validation, includes an `extensions.cost` object with the cost of the request and the state of your rate limit. It is omitted entirely when a request fails GraphQL schema validation.
+Pour protéger l'API contre les queries trop complexes ou gourmandes en ressources, chaque requête se voit attribuer un coût en fonction de la quantité de données demandées. Chaque réponse à une requête valide, ou à une requête qui échoue à la validation métier, inclut un objet `extensions.cost` contenant le coût de la requête et l'état de votre limite de débit. Il est entièrement omis lorsqu'une requête échoue à la validation du schéma GraphQL.
 
 `cost` · <span class="text-muted">Integer</span>
-: The cost, in units, of the current request.
+: Le coût, en unités, de la requête en cours.
 
 `limit` · <span class="text-muted">Integer</span>
-: The maximum cost, in units, allowed in the current rate limit window.
+: Le coût maximal, en unités, autorisé dans la fenêtre de limite de débit actuelle.
 
 `used` · <span class="text-muted">Integer</span>
-: How many units have already been consumed in this window.
+: Le nombre d'unités déjà consommées dans cette fenêtre.
 
 `remaining` · <span class="text-muted">Integer</span>
-: How many units you still have available before hitting the limit.
+: Le nombre d'unités dont vous disposez encore avant d'atteindre la limite.
 
 `reset` · <span class="text-muted">Integer</span>
-: A UNIX timestamp, in seconds, indicating when the quota refreshes.
+: Un timestamp UNIX, en secondes, indiquant quand le quota est réinitialisé.
 
-## REST API
+## API REST
 
-Rate limiting for the REST API applies to the [tile service](/api-reference/tiles/mvt). Unlike the GraphQL API, rate limit status is returned through HTTP response headers, and each request has a fixed cost of 1 unit. These headers are returned on every request, including failed ones.
+La limitation de débit de l'API REST s'applique au [service de tuiles](/api-reference/tiles/mvt). Contrairement à l'API GraphQL, l'état de la limite de débit est renvoyé via les en-têtes de réponse HTTP, et chaque requête a un coût fixe de 1 unité. Ces en-têtes sont renvoyés pour chaque requête, y compris celles qui échouent.
 
 `x-ratelimit-cost` · <span class="text-muted">Integer</span>
-: The cost, in units, of the current request. Always `1` for REST requests.
+: Le coût, en unités, de la requête en cours. Toujours `1` pour les requêtes REST.
 
 `x-ratelimit-limit` · <span class="text-muted">Integer</span>
-: The maximum cost, in units, allowed in the current rate limit window.
+: Le coût maximal, en unités, autorisé dans la fenêtre de limite de débit actuelle.
 
 `x-ratelimit-used` · <span class="text-muted">Integer</span>
-: How many units have already been consumed in this window.
+: Le nombre d'unités déjà consommées dans cette fenêtre.
 
 `x-ratelimit-remaining` · <span class="text-muted">Integer</span>
-: How many units you still have available before hitting the limit.
+: Le nombre d'unités dont vous disposez encore avant d'atteindre la limite.
 
 `x-ratelimit-reset` · <span class="text-muted">Integer</span>
-: A UNIX timestamp, in seconds, indicating when the quota refreshes.
+: Un timestamp UNIX, en secondes, indiquant quand le quota est réinitialisé.
 
-## Current limits
+## Limites actuelles
 
-Rate limits are applied per customer, on a one minute window. There is no default limit in place yet. Limits are configured individually per customer until default limits are introduced in 2027.
+Les limites de débit sont appliquées par client, sur une fenêtre d'une minute. Aucune limite par défaut n'est encore en place. Les limites sont configurées individuellement pour chaque client jusqu'à l'introduction de limites par défaut en 2027.
 
-Some queries and mutations also have individual limits that are lower than your overall limit. These are set on a per product basis, and sometimes on a per request basis, rather than globally.
+Certaines queries et mutations ont également des limites individuelles inférieures à votre limite globale. Elles sont définies par produit, et parfois par requête, plutôt que globalement.
 
-> [!WARNING] No limit set
-> If no limit is set for your account, `limit`, `remaining`, and `reset` are returned as `null`. `cost` and `used` are still tracked and returned.
+> [!WARNING] Aucune limite définie
+> Si aucune limite n'est définie pour votre compte, `limit`, `remaining` et `reset` sont renvoyés à `null`. `cost` et `used` restent suivis et renvoyés.

@@ -1,26 +1,26 @@
 ---
-title: Async operations
+title: Eşzamansız işlemler
 ---
 
-Some operations, like creating a route or a matched route, run asynchronously to keep the API responsive. Rather than waiting for a mutation to return the full result, you get an `id` right away and follow up to track and retrieve it.
+Rota veya eşleştirilmiş rota oluşturma gibi bazı işlemler, API'nin duyarlı kalması için eşzamansız çalışır. Bir mutasyonun tam sonucu döndürmesini beklemek yerine hemen bir `id` alır ve sonucu izlemek ve almak için sonraki adımları uygularsınız.
 
-## How it works
+## Nasıl çalışır
 
-1. **Create**
-   Call the mutation. It returns an `id` right away, which you use in the next step to track and retrieve the result.
-2. **Open a subscription**
-   Subscribe using the `id` from the previous step. While the result is being calculated, the subscription pushes status updates you can use to drive an async loading state in your UI.
-3. **Render the result**
-   Once `status` resolves to a final value, usually `done`, `error`, or `not_found`, render the corresponding UI for that outcome.
-4. **Re-fetch a finished result**
-   Once a result reaches a final status, it's already precomputed. If you need it again later, for example after navigating back to it, use the matching query instead of opening a new subscription.
+1. **Oluşturun**
+   Mutasyonu çağırın. Mutasyon hemen bir `id` döndürür; bu `id`'yi sonraki adımda sonucu izlemek ve almak için kullanırsınız.
+2. **Bir abonelik açın**
+   Önceki adımdaki `id` ile abone olun. Sonuç hesaplanırken abonelik, arayüzünüzde eşzamansız bir yükleme durumunu yönetmek için kullanabileceğiniz durum güncellemeleri gönderir.
+3. **Sonucu gösterin**
+   `status` nihai bir değere ulaştığında, o sonuca karşılık gelen arayüzü gösterin.
+4. **Tamamlanmış bir sonucu yeniden getirin**
+   Bir sonuç nihai duruma ulaştığında zaten önceden hesaplanmıştır. Daha sonra, örneğin ona geri döndüğünüzde yeniden ihtiyaç duyarsanız, yeni bir abonelik açmak yerine ilgili sorguyu kullanın.
 
-## Where this applies
+## Nerede geçerlidir
 
-| Feature | Mutation | Subscription | Query |
+| Özellik | Mutasyon | Abonelik | Sorgu |
 | --- | --- | --- | --- |
-| [Route](/docs/getting-started/route) | `createRoute` | `route` | `getRoute` |
-| [Matched route](/api-reference/matched-route/mutation-create-matched-route) | `createMatchedRoute` | `matchedRoute` | `getMatchedRoute` |
-| [Isoline](/api-reference/isoline/mutation-create-isoline) | `createIsoline` | `isoline` | `isoline` |
-| [Truck route](/api-reference/truck-route/mutation-create-truck-route) | `createTruckRoute` | `truckRoute` | `getTruckRoute` |
-| [Navigation](/api-reference/navigation/mutation-start-navigation) | `startNavigation` | `navigation` | `navigation` |
+| [Rota](/docs/getting-started/route) | `createRoute` | `route` | `getRoute` |
+| [Eşleştirilmiş rota](/api-reference/matched-route/mutation-create-matched-route) | `createMatchedRoute` | `matchedRoute` | `getMatchedRoute` |
+| [İzoline](/api-reference/isoline/mutation-create-isoline) | `createIsoline` | `isoline` | `isoline` |
+| [Kamyon rotası](/api-reference/truck-route/mutation-create-truck-route) | `createTruckRoute` | `truckRoute` | `getTruckRoute` |
+| [Navigasyon](/api-reference/navigation/mutation-start-navigation) | `startNavigation` | `navigation` | `navigation` |

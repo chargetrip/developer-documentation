@@ -1,27 +1,26 @@
 ---
-title: Set up your account
-tag: Setup
+title: Hesabınızı ayarlayın
+tag: Kurulum
 ---
 
-To start using the API, create an account. Once your account is set up, you can start using the API directly against the production environment.
+API'yi kullanmaya başlamak için bir hesap oluşturun. Hesabınız hazır olduğunda, API'yi doğrudan üretim ortamında kullanmaya başlayabilirsiniz.
 
-## Set up your environment
+## Ortamınızı ayarlayın
 
-The dashboard is organized into three levels, from broadest to most specific.
+Pano, en genelden en özele doğru üç düzeyde düzenlenmiştir.
 
-1. **Workspace**
-   A workspace lets your team members work together on the same projects, for example when a country manager needs to manage operator preferences and a developer needs access to the API keys. A workspace is also the billable relationship with us, so multiple workspaces means multiple contracts.
-2. **Project**
-   Within a workspace, set up a project. Projects are created based on operator preferences, station database, and vehicle selections. If you have use cases that need a different setup, create a separate project for each.
-3. **App**
-   If you share these settings but still want separate analytics or security measures, for example when you build an iOS and an Android app, create different apps within a project.
+1. **Çalışma alanı**
+   Çalışma alanı, ekip üyelerinizin aynı projeler üzerinde birlikte çalışmasını sağlar; örneğin bir ülke yöneticisinin operatör tercihlerini yönetmesi ve bir geliştiricinin API anahtarlarına erişmesi gerektiğinde. Çalışma alanı aynı zamanda bizimle olan faturalandırılabilir ilişkidir, yani birden fazla çalışma alanı birden fazla sözleşme anlamına gelir.
+2. **Proje**
+   Bir çalışma alanı içinde bir proje oluşturun. Projeler operatör tercihlerine, istasyon veritabanına ve araç seçimlerine göre oluşturulur. Farklı bir kurulum gerektiren kullanım senaryolarınız varsa, her biri için ayrı bir proje oluşturun.
+3. **Uygulama**
+   Bu ayarları paylaşıyor ancak yine de ayrı analizler veya güvenlik önlemleri istiyorsanız, örneğin bir iOS ve bir Android uygulaması geliştirirken, bir proje içinde farklı uygulamalar oluşturun.
 
-See [send requests](/docs/getting-started/api-request) for how to use your project and app ids to authenticate requests.
+İsteklerin kimliğini doğrulamak için proje ve uygulama kimliklerinizi nasıl kullanacağınızı öğrenmek üzere [istekler gönderin](/docs/getting-started/api-request) bölümüne bakın.
 
-## Keep your account safe
+## Hesabınızı güvende tutun
 
-After you set up your account, you'll want to keep it safe. Here are our recommendations:
+Hesabınızı kurduktan sonra onu güvende tutmak isteyeceksiniz. İşte önerilerimiz:
 
-- **Protect your credentials**: Never commit an API key to source control, store it in a secrets vault instead, and scope it to only the access it needs since our keys can be restricted.
-- **Pick a password you don't reuse elsewhere**: A password shared across services means a breach on another site can be used to break into this one too. Update your password from your account settings in the dashboard whenever needed.
-- **Grant access through team members instead of sharing logins**: Invite colleagues to your workspace with only the access they need, rather than handing out your own credentials.
+- **Kimlik bilgilerinizi koruyun**: Bir API anahtarını asla kaynak kontrolüne göndermeyin, bunun yerine bir gizli bilgi kasasında saklayın ve anahtarlarımız kısıtlanabildiği için yalnızca ihtiyaç duyduğu erişimle sınırlandırın.
+- **Oturum bilgilerini paylaşmak yerine ekip üyeleri aracılığıyla erişim verin**: Kendi kimlik bilgilerinizi vermek yerine, iş arkadaşlarınızı çalışma alanınıza yalnızca ihtiyaç duydukları erişimle davet edin.

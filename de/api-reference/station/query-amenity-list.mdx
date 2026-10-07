@@ -1,12 +1,12 @@
 ---
-title: Amenity list
+title: Ausstattungsliste
 schemaName: amenityList
 schemaType: Query
 ---
 
-Get a list of amenities available around a specific station by using the amenityList query. This is useful when you want to display nearby restaurants, shops, or other facilities while a vehicle is charging.
+Rufen Sie mit der Query amenityList eine Liste der Ausstattungen ab, die rund um eine bestimmte Station verfügbar sind. Dies ist nützlich, wenn Sie Restaurants, Geschäfte oder andere Einrichtungen in der Nähe anzeigen möchten, während ein Fahrzeug lädt.
 
 ## Query
 
-A station `id` is required to get its amenities. The `id` can be obtained through either a [route](/api-reference/route/query-get-route), the [tile service](/api-reference/tiles/mvt), or the [station around query](/api-reference/station/query-station-around). Use the `filter` argument to narrow the results down based on specific criteria, and the `size` and `page` arguments to [paginate](/docs/pagination) through them.
+Zum Abrufen der Ausstattungen einer Station ist deren `id` erforderlich. Die `id` erhalten Sie entweder über eine [Route](/api-reference/route/query-get-route), den [Kachel-Service](/api-reference/tiles/mvt) oder die [Query stationAround](/api-reference/station/query-station-around). Verwenden Sie das Argument `filter`, um die Ergebnisse anhand bestimmter Kriterien einzugrenzen, sowie die Argumente `size` und `page`, um die Ergebnisse zu [paginieren](/api-reference/api/pagination).
 

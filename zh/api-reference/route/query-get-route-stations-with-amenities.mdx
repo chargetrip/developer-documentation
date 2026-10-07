@@ -1,14 +1,14 @@
 ---
-title: Route amenity stop
+title: 路线便利设施停靠点
 schemaName: getRouteStationsWithAmenities
 schemaType: Query
 ---
 
-Search for charging stations with amenities at a certain point along a route by using the getRouteStationsWithAmenities query. This is useful when you want to plan a charging stop near restaurants, shops, or other amenities.
+使用 getRouteStationsWithAmenities 查询在路线上的某一点搜索带有便利设施的充电站。当您想在餐厅、商店或其他便利设施附近规划充电停靠点时，此操作非常有用。
 
-## Query
+## 查询
 
-A `route_id`, `route_details_id`, `time_window`, and `amenity_types` are required to search for stations along a route. Both ids can be obtained through the [getRoute query](/api-reference/route/query-get-route). Use the `filter` argument to narrow the results down based on specific criteria, and the `first` and `after` arguments to [paginate](/docs/pagination) through them.
+沿路线搜索充电站需要 `route_id`、`route_details_id`、`time_window` 和 `amenity_types`。两个 ID 都可通过 [getRoute 查询](/api-reference/route/query-get-route)获取。使用 `filter` 参数根据特定条件缩小结果范围，并使用 `first` 和 `after` 参数对结果进行[分页](/api-reference/api/pagination)。
 
-> [!WARNING] Limits
-> `first` cannot exceed 10 for this query.
+> [!WARNING] 限制
+> 此查询的 `first` 不能超过 10。

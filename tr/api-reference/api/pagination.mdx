@@ -1,61 +1,61 @@
 ---
-title: Pagination
+title: Sayfalandırma
 ---
 
-To keep the API fast and responsive, list queries limit how much data is returned in a single request. Two pagination types are used across the API:
+API'yi hızlı ve duyarlı tutmak için liste sorguları, tek bir istekte döndürülen veri miktarını sınırlar. API genelinde iki sayfalandırma türü kullanılır:
 
-- Cursor-based (current): used by newly developed list queries.
-- Offset-based (legacy): used by most existing list queries. These will eventually be replaced by cursor-based versions.
+- İmleç tabanlı (güncel): Yeni geliştirilen liste sorguları tarafından kullanılır.
+- Ofset tabanlı (eski): Mevcut liste sorgularının çoğu tarafından kullanılır. Bunlar zamanla imleç tabanlı sürümlerle değiştirilecektir.
 
-> [!WARNING] Pagination limits
-> Regardless of the pagination type, list queries return at most 100 items per page, except for the `getRouteStationsWithAmenities` query, which is limited to 10.
+> [!WARNING] Sayfalandırma sınırları
+> Sayfalandırma türünden bağımsız olarak liste sorguları sayfa başına en fazla 100 öğe döndürür; sınırı 10 olan `getRouteStationsWithAmenities` sorgusu bunun dışındadır.
 
-## Cursor-based pagination
+## İmleç tabanlı sayfalandırma
 
-Cursor-based pagination is the current standard. It lets you define the starting point of a request using a cursor, a unique identifier for a position in the result set.
+İmleç tabanlı sayfalandırma güncel standarttır. Sonuç kümesindeki bir konum için benzersiz bir tanımlayıcı olan imleci kullanarak bir isteğin başlangıç noktasını belirlemenizi sağlar.
 
-### Arguments
+### Argümanlar
 
 `first` · <span class="text-muted">Integer</span>
-: The number of items to return.
+: Döndürülecek öğe sayısı.
 
 `after` · <span class="text-muted">String</span>
-: The cursor to start from. Omit this argument, or set it to `null`, to fetch the first page. For later pages, use the `page_info.end_cursor` value from the previous response.
+: Başlangıç yapılacak imleç. İlk sayfayı getirmek için bu argümanı atlayın veya `null` olarak ayarlayın. Sonraki sayfalar için önceki yanıttaki `page_info.end_cursor` değerini kullanın.
 
-### Response
+### Yanıt
 
-The response returns results directly through a `nodes` array, along with pagination metadata.
+Yanıt, sonuçları doğrudan bir `nodes` dizisi üzerinden ve sayfalandırma meta verileriyle birlikte döndürür.
 
 `nodes` · <span class="text-muted">Array</span>
-: The list of data objects for the current page.
+: Geçerli sayfa için veri nesneleri listesi.
 
 `total_count` · <span class="text-muted">Integer</span>
-: The total number of items matching the query, across all pages.
+: Tüm sayfalar genelinde sorguyla eşleşen toplam öğe sayısı.
 
 `page_info.has_next_page` · <span class="text-muted">Boolean</span>
-: Whether more results are available after the current page.
+: Geçerli sayfadan sonra başka sonuçların bulunup bulunmadığı.
 
 `page_info.has_previous_page` · <span class="text-muted">Boolean</span>
-: Whether more results are available before the current page.
+: Geçerli sayfadan önce başka sonuçların bulunup bulunmadığı.
 
 `page_info.start_cursor` · <span class="text-muted">String</span>
-: The cursor of the first node in `nodes`.
+: `nodes` içindeki ilk düğümün imleci.
 
 `page_info.end_cursor` · <span class="text-muted">String</span>
-: The cursor of the last node in `nodes`. Use this value as the `after` argument in your next query.
+: `nodes` içindeki son düğümün imleci. Bu değeri sonraki sorgunuzda `after` argümanı olarak kullanın.
 
-## Offset-based pagination (legacy)
+## Ofset tabanlı sayfalandırma (eski)
 
-Offset-based pagination is the legacy standard, still used by most list queries. It uses `page` to skip a set number of records and `size` to return a fixed window of results.
+Ofset tabanlı sayfalandırma, liste sorgularının çoğunda hâlâ kullanılan eski standarttır. Belirli sayıda kaydı atlamak için `page`, sabit boyutlu bir sonuç penceresi döndürmek için `size` kullanır.
 
-### Arguments
+### Argümanlar
 
 `size` · <span class="text-muted">Integer</span>
-: The number of items to return per page.
+: Sayfa başına döndürülecek öğe sayısı.
 
 `page` · <span class="text-muted">Integer</span>
-: The page number to fetch. Omit this argument, or set it to `0`, to fetch the first page.
+: Getirilecek sayfa numarası. İlk sayfayı getirmek için bu argümanı atlayın veya `0` olarak ayarlayın.
 
-### Response
+### Yanıt
 
-The response returns a list of data objects directly, limited by the `size` value.
+Yanıt, `size` değeriyle sınırlanmış bir veri nesneleri listesini doğrudan döndürür.

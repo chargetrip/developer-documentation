@@ -1,19 +1,19 @@
 ---
-title: Traffic
+title: Alternatif rotalar
 date: 01-04-2026
 ---
 
-## Alternative routes
+## Alternatif rotalar
 
-![Route alternatives visual](../../../assets/changelog/2026/april.jpg)
+![Rota alternatifleri](../../../assets/changelog/2026/april.jpg)
 
-You can now request geographically different alternative routes alongside the recommended route during route calculation. This allows drivers and dispatchers to evaluate alternative paths based on their preferences while maintaining the same trip constraints. You can specify up to 2 alternative routes.
+Artık rota hesaplaması sırasında önerilen rotanın yanı sıra coğrafi olarak farklı alternatif rotalar da isteyebilirsiniz. Bu sayede sürücüler ve sevkiyat görevlileri, aynı yolculuk kısıtlarını koruyarak alternatif güzergahları kendi tercihlerine göre değerlendirebilir. En fazla 2 alternatif rota belirtebilirsiniz.
 
 
 
 <details>
-    <summary>Fixes</summary>
+  <summary>Düzeltmeler</summary>
 
-    - Fixed an issue where providing empty `via` waypoints without geometry, location, or station IDs in `createRoute` failed silently with a `not_found` status instead of returning a `ROUTE_VIA_LOCATION_MISSING` validation error.
-    - Fixed an issue in `operatorList` where queries using ranking filters returned empty results if the project had no excluded countries configured, ensuring operators matching ranking preferences are returned correctly.
+    - `createRoute` içinde geometri, konum veya istasyon ID'si olmayan boş `via` ara noktaları sağlandığında, `ROUTE_VIA_LOCATION_MISSING` doğrulama hatası döndürmek yerine `not_found` durumuyla sessizce başarısız olunan sorun düzeltildi.
+    - `operatorList` içinde, projede hariç tutulan ülke yapılandırılmamışsa sıralama filtreleri kullanan sorguların boş sonuç döndürdüğü sorun düzeltildi; böylece sıralama tercihlerine uyan operatörler doğru şekilde döndürülüyor.
 </details>

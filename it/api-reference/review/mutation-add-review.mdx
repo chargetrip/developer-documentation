@@ -1,12 +1,12 @@
 ---
-title: Add review
+title: Aggiungi recensione
 schemaName: addReview
 schemaType: Mutation
 ---
 
-Add a review for a station by using the addReview mutation. Include a rating and message, along with the EV and plug type that were used, to give other users more context. If an `x-token` header is sent for a valid user the review will belong to them, otherwise it's added anonymously.
+Aggiungi una recensione per una stazione usando la mutation addReview. Includi una valutazione e un messaggio, insieme all'EV e al tipo di connettore utilizzati, per dare agli altri utenti più contesto. Se viene inviato un header `x-token` per un utente valido, la recensione apparterrà a quell'utente, altrimenti viene aggiunta in forma anonima.
 
 ## Mutation
 
-A `review` object is required, containing the station `id`, `rating`, and `message`. Optionally include the `ev`, `plugType`, `locale`, `properties`, and `tags` used during the visit.
+È richiesto un oggetto `review`, che contiene l'`id` della stazione, `rating` e `message`. Facoltativamente includi `ev`, `plugType`, `locale`, `properties` e `tags` utilizzati durante la visita.
 

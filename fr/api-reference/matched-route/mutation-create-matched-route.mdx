@@ -1,11 +1,11 @@
 ---
-title: Create matched route
+title: Créer un itinéraire concordant
 schemaName: createMatchedRoute
 schemaType: Mutation
 ---
 
-Create a route from a sequence of GPS points by using the createMatchedRoute mutation. This is most useful when you already have a route based on your own business rules and want to add charging stops and calculate energy consumption on top of it.
+Créez un itinéraire à partir d'une séquence de points GPS à l'aide de la mutation createMatchedRoute. Elle est particulièrement utile lorsque vous disposez déjà d'un itinéraire basé sur vos propres règles métier et que vous souhaitez y ajouter des arrêts de recharge et calculer la consommation d'énergie.
 
 ## Mutation
 
-A `vehicle` and at least two chronological `points` are required to create a matched route. Optionally add `via` points, `departure_time`, `weather`, `driving_preferences`, `operators`, or `alternative_station_radius` to refine the calculation. Set `plan_charging_stops` to find and plan charging stops if the vehicle's state of charge reaches the threshold at any point along the route. The mutation returns a matched route `id`, which can be used to retrieve route details or subscribe to updates.
+Un `vehicle` et au moins deux `points` chronologiques sont requis pour créer un itinéraire concordant. Vous pouvez ajouter des points `via`, `departure_time`, `weather`, `driving_preferences`, `operators` ou `alternative_station_radius` pour affiner le calcul. Définissez `plan_charging_stops` pour trouver et planifier des arrêts de recharge si l'état de charge du véhicule atteint le seuil à un moment quelconque de l'itinéraire. La mutation renvoie un `id` d'itinéraire concordant, qui permet de récupérer les détails de l'itinéraire ou de s'abonner à ses mises à jour.

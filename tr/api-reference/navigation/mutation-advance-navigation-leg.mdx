@@ -1,11 +1,11 @@
 ---
-title: Advance navigation leg
+title: Navigasyon bölümünü ilerlet
 schemaName: advanceNavigationLeg
 schemaType: Mutation
 ---
 
-Advance an active navigation session to the next route leg by using the advanceNavigationLeg mutation. This is useful when a driver completes a leg, such as finishing a charging stop, and continues to the next one.
+advanceNavigationLeg mutasyonunu kullanarak etkin bir navigasyon oturumunu bir sonraki rota bölümüne ilerletin. Bu, bir sürücü bir bölümü, örneğin bir şarj durağını tamamlayıp bir sonrakine devam ettiğinde kullanışlıdır.
 
-## Mutation
+## Mutasyon
 
-A navigation session `id` and `current_location` are required to advance to the next leg. Optionally include `state_of_charge` to specify the vehicle's charge level at the current location. The `id` can be obtained through the [startNavigation mutation](/api-reference/navigation/mutation-start-navigation).
+Bir sonraki bölüme ilerlemek için bir navigasyon oturumu `id` ve `current_location` gereklidir. İsteğe bağlı olarak, aracın mevcut konumdaki şarj seviyesini belirtmek için `state_of_charge` ekleyin. `id`, [startNavigation mutasyonu](/api-reference/navigation/mutation-start-navigation) üzerinden alınabilir.

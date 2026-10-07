@@ -1,12 +1,12 @@
 ---
-title: Add review
+title: İnceleme ekle
 schemaName: addReview
 schemaType: Mutation
 ---
 
-Add a review for a station by using the addReview mutation. Include a rating and message, along with the EV and plug type that were used, to give other users more context. If an `x-token` header is sent for a valid user the review will belong to them, otherwise it's added anonymously.
+addReview mutasyonunu kullanarak bir istasyon için inceleme ekleyin. Diğer kullanıcılara daha fazla bağlam sunmak için bir puan ve mesajın yanı sıra kullanılan EV ve konnektör tipini de ekleyin. Geçerli bir kullanıcı için `x-token` başlığı gönderilirse inceleme o kullanıcıya ait olur, aksi takdirde anonim olarak eklenir.
 
-## Mutation
+## Mutasyon
 
-A `review` object is required, containing the station `id`, `rating`, and `message`. Optionally include the `ev`, `plugType`, `locale`, `properties`, and `tags` used during the visit.
+İstasyon `id`, `rating` ve `message` değerlerini içeren bir `review` nesnesi gereklidir. İsteğe bağlı olarak ziyaret sırasında kullanılan `ev`, `plugType`, `locale`, `properties` ve `tags` değerlerini ekleyin.
 

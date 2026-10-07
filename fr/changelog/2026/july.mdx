@@ -1,40 +1,40 @@
 ---
-title: Station boosting
+title: Boost de stations
 date: 01-07-2026
 ---
 
-## Influence routes with Station Boosting
+## Influencer les itinéraires avec le boost de stations
 
-![Station boosting](../../../assets/changelog/2026/july.jpg)
+![Boost de stations](../../../assets/changelog/2026/july.jpg)
 
-For businesses looking to maximize network utilization, honor partner agreements, or guide drivers to specific high-margin charging stations, Station Boosting offers a streamlined way to influence routing decisions. Available in Alpha, this feature gives you direct control over how specific charging locations are prioritized without adding unnecessary operational complexity.
+Pour les entreprises qui souhaitent maximiser l'utilisation de leur réseau, honorer des accords de partenariat ou orienter les conducteurs vers des stations de recharge spécifiques à forte marge, le boost de stations (Station Boosting) offre un moyen simple d'influencer les décisions d'itinéraire. Disponible en Alpha, cette fonctionnalité vous donne un contrôle direct sur la priorité accordée à certains sites de recharge, sans complexité opérationnelle inutile.
 
-- Targeted Client Groups: Create up to 5 distinct groups per environment (with up to 50 specific stations per group) to run targeted regional or time-based campaigns.
+- Groupes de clients ciblés : créez jusqu'à 5 groupes distincts par environnement (avec jusqu'à 50 stations spécifiques par groupe) pour mener des campagnes régionales ou temporelles ciblées.
 
-If you would like to test this feature and start steering volume to high-priority hardware, please reach out to your Customer Success Manager to manage your configuration.
+Si vous souhaitez tester cette fonctionnalité et commencer à orienter le volume vers du matériel prioritaire, contactez votre Customer Success Manager pour gérer votre configuration.
 
-### Configurable maximum charging SoC & expanded battery limits
-Drivers can now configure the maximum State of Charge (SoC) for charging stops between 80% and 100%, and plan trips requiring higher remaining battery levels upon arrival.
+### Niveau de charge maximal configurable et limites de batterie étendues
+Les conducteurs peuvent désormais configurer l'état de charge (SoC) maximal des arrêts de recharge entre 80 % et 100 %, et planifier des trajets nécessitant des niveaux de batterie restants plus élevés à l'arrivée.
 
-- Pass `maximum_state_of_charge` (80–100%) in `createRoute` (`RouteVehicleChargingInput`). When set, vehicles can charge beyond the default 80% ceiling during planned or unplanned stops across both `ALWAYS_TO_MAX_CHARGE` and `OPTIMIZE_TRAVEL_TIME` modes;
-- Configure `final_state_of_charge` up to 80% of vehicle battery capacity (increased from 60%);
-- Added two new SoC leg warnings: `risk_margin_soc_not_possible` when expected arrival SoC falls below the safety risk margin, and `final_soc_below_risk_margin` when the requested final SoC falls below the safe risk margin.
+- Transmettez `maximum_state_of_charge` (80–100 %) dans `createRoute` (`RouteVehicleChargingInput`). Lorsqu'il est défini, les véhicules peuvent se recharger au-delà du plafond par défaut de 80 % lors d'arrêts planifiés ou non planifiés, dans les modes `ALWAYS_TO_MAX_CHARGE` et `OPTIMIZE_TRAVEL_TIME` ;
+- Configurez `final_state_of_charge` jusqu'à 80 % de la capacité de la batterie du véhicule (contre 60 % auparavant) ;
+- Ajout de deux nouveaux avertissements de SoC par tronçon : `risk_margin_soc_not_possible` lorsque le SoC d'arrivée attendu passe sous la marge de risque de sécurité, et `final_soc_below_risk_margin` lorsque le SoC final demandé passe sous la marge de risque de sécurité.
 
 
 
 <details>
-  <summary>Improvements</summary>
+  <summary>Améliorations</summary>
 
-  - Added `type` and `region` array filters to `vehicleMakes` (`VehicleMakesFilter`), allowing clients to filter brands that offer specific vehicle types or operate within designated geographical regions.
-  - Added `model_count` to `VehicleMake` and `vehicle_count` to `VehicleModel` to expose real-time counts of accessible models per make and vehicles per model.
-  - Implemented cursor-based pagination arguments (`first` and `after`) along with `total_count` and `page_info` on the `vehicleMakes` query.
-  - Updated `vehicleMakes` and vehicle queries to return country-specific brand logos when a country filter is supplied, falling back to global images when localized assets are not configured.
+  - Ajout de filtres de tableau `type` et `region` à `vehicleMakes` (`VehicleMakesFilter`), permettant aux clients de filtrer les marques proposant des types de véhicules spécifiques ou opérant dans des régions géographiques données.
+  - Ajout de `model_count` à `VehicleMake` et de `vehicle_count` à `VehicleModel` pour exposer en temps réel le nombre de modèles accessibles par marque et de véhicules par modèle.
+  - Mise en œuvre d'arguments de pagination par curseur (`first` et `after`) ainsi que de `total_count` et `page_info` sur la requête `vehicleMakes`.
+  - Mise à jour des requêtes `vehicleMakes` et de véhicule pour renvoyer des logos de marque spécifiques au pays lorsqu'un filtre de pays est fourni, avec repli sur les images globales lorsque les ressources localisées ne sont pas configurées.
 </details>
 
 <details>
-  <summary>Fixes</summary>
+  <summary>Corrections</summary>
 
-  - Fixed an issue in `vehicleList` where filtering by make name failed after introducing make IDs, restoring backward compatibility so `filter.make` accepts both make IDs and make names.
-  - Fixed an issue where routes starting with an initial State of Charge below the safety risk margin (`initialSOC < safeRiskMargin`) drove until reaching 0% battery instead of routing to the nearest available charging station.
-  - Fixed an issue where the sum of individual leg section durations did not align with total driving durations (`durations.driving`) in route details.
+  - Correction d'un problème dans `vehicleList` où le filtrage par nom de marque échouait après l'introduction des identifiants de marque, avec rétablissement de la rétrocompatibilité afin que `filter.make` accepte à la fois les identifiants et les noms de marque.
+  - Correction d'un problème où des itinéraires démarrant avec un état de charge initial inférieur à la marge de risque de sécurité (`initialSOC < safeRiskMargin`) roulaient jusqu'à 0 % de batterie au lieu de se diriger vers la station de recharge disponible la plus proche.
+  - Correction d'un problème où la somme des durées des sections de tronçon ne correspondait pas aux durées totales de conduite (`durations.driving`) dans les détails de l'itinéraire.
 </details>

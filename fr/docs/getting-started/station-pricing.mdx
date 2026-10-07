@@ -1,33 +1,33 @@
 ---
-title: Station pricing
+title: Tarification des stations
 ---
 
-Charging prices can be shown at two levels: directly on a map through the Tile service, or in full detail through a connector's pricing.
+Les prix de recharge peuvent être affichés à deux niveaux : directement sur une carte via le service de tuiles, ou en détail via la tarification d'un connecteur.
 
-## Tile service
+## Service de tuiles
 
-The Tile service exposes `minimum_station_price` and `maximum_station_price` as both a filter and a response field.
+Le service de tuiles expose `minimum_station_price` et `maximum_station_price` à la fois comme filtre et comme champ de réponse.
 
-- As a [filter](/api-reference/tiles/filters), pass `minimum_station_price` and `maximum_station_price`, along with `price_currency` to convert the range to the correct currency, to dynamically include or exclude stations whose price falls within that range.
-- As a [selector](/api-reference/tiles/selectors), request `minimum_station_price` and `maximum_station_price` to render each station's price range directly on the map.
+- En tant que [filtre](/api-reference/tiles/filters), transmettez `minimum_station_price` et `maximum_station_price`, ainsi que `price_currency` pour convertir la plage dans la bonne devise, afin d'inclure ou d'exclure dynamiquement les stations dont le prix se situe dans cette plage.
+- En tant que [sélecteur](/api-reference/tiles/selectors), demandez `minimum_station_price` et `maximum_station_price` pour afficher directement sur la carte la fourchette de prix de chaque station.
 
-## Station pricing
+## Tarification des stations
 
-Where pricing details come from depends on the station database behind a station.
+L'origine des détails de tarification dépend de la base de données de stations utilisée pour une station.
 
-- If Ecomovement is used, pricing can be found on the pricing object of a station's connectors, at `evses[].connectors[].prices`.
-- For any other station database, use the dedicated [tariffList](/api-reference/tariff/query-tariff-list) and [tariff](/api-reference/tariff/query-tariff) queries instead.
+- Si Ecomovement est utilisé, la tarification se trouve dans l'objet de prix des connecteurs d'une station, à `evses[].connectors[].prices`.
+- Pour toute autre base de données de stations, utilisez plutôt les requêtes dédiées [tariffList](/api-reference/tariff/query-tariff-list) et [tariff](/api-reference/tariff/query-tariff).
 
-A connector can have several price elements active at different times. Work through them in order to render the correct price.
+Un connecteur peut avoir plusieurs éléments de prix actifs à différents moments. Parcourez-les dans l'ordre pour afficher le bon prix.
 
-1. **Find the active price element**
-   Each price element has `restrictions`, such as `day_of_week`, `start_time`/`end_time`, or minimum and maximum kWh, power, or duration. Use these to determine which price element applies right now.
-2. **Display all price components**
-   A price element can combine several components at once. An `energy` component gives you the price per kWh. A `time` component gives you the price per interval, billed in blocks defined by its `step_size`. For example, a `step_size` of `300` on a `time` component bills in blocks of 5 minutes. A `flat` component adds a fixed amount to the session, independent of energy used or time spent.
-3. **Account for the overstay fee**
-   A `parking_time` component charges an idle fee for staying connected after charging has finished, since nobody else can use the connector in the meantime. It applies once the connector's overstay restrictions, such as `overstay_time` or `overstay_battery_percentage`, are met.
+1. **Trouver l'élément de prix actif**
+   Chaque élément de prix possède des `restrictions`, telles que `day_of_week`, `start_time`/`end_time`, ou des minimums et maximums de kWh, de puissance ou de durée. Utilisez-les pour déterminer quel élément de prix s'applique à l'instant présent.
+2. **Afficher tous les composants de prix**
+   Un élément de prix peut combiner plusieurs composants à la fois. Un composant `energy` indique le prix par kWh. Un composant `time` indique le prix par intervalle, facturé par blocs définis par son `step_size`. Par exemple, un `step_size` de `300` sur un composant `time` facture par blocs de 5 minutes. Un composant `flat` ajoute un montant fixe à la session, indépendamment de l'énergie utilisée ou du temps passé.
+3. **Tenir compte des frais de stationnement prolongé**
+   Un composant `parking_time` facture des frais d'inactivité lorsque le véhicule reste branché après la fin de la recharge, puisque personne d'autre ne peut utiliser le connecteur entre-temps. Il s'applique dès que les restrictions de stationnement prolongé du connecteur, telles que `overstay_time` ou `overstay_battery_percentage`, sont remplies.
 
-Each connector can have its own price, and prices can be changed dynamically by the operator at any time.
+Chaque connecteur peut avoir son propre prix, et les prix peuvent être modifiés dynamiquement par l'opérateur à tout moment.
 
-> [!WARNING] Rely on last_updated
-> Since prices can change at any time, always check a price object's `last_updated` field before caching or reusing a price, rather than assuming it stays valid.
+> [!WARNING] Fiez-vous à last_updated
+> Comme les prix peuvent changer à tout moment, vérifiez toujours le champ `last_updated` d'un objet de prix avant de mettre un prix en cache ou de le réutiliser, plutôt que de supposer qu'il reste valide.

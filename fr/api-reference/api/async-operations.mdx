@@ -1,26 +1,26 @@
 ---
-title: Async operations
+title: Opérations asynchrones
 ---
 
-Some operations, like creating a route or a matched route, run asynchronously to keep the API responsive. Rather than waiting for a mutation to return the full result, you get an `id` right away and follow up to track and retrieve it.
+Certaines opérations, comme la création d'un itinéraire ou d'un itinéraire concordant, s'exécutent de manière asynchrone pour que l'API reste réactive. Au lieu d'attendre qu'une mutation renvoie le résultat complet, vous obtenez immédiatement un `id` que vous utilisez ensuite pour suivre et récupérer le résultat.
 
-## How it works
+## Comment ça fonctionne
 
-1. **Create**
-   Call the mutation. It returns an `id` right away, which you use in the next step to track and retrieve the result.
-2. **Open a subscription**
-   Subscribe using the `id` from the previous step. While the result is being calculated, the subscription pushes status updates you can use to drive an async loading state in your UI.
-3. **Render the result**
-   Once `status` resolves to a final value, usually `done`, `error`, or `not_found`, render the corresponding UI for that outcome.
-4. **Re-fetch a finished result**
-   Once a result reaches a final status, it's already precomputed. If you need it again later, for example after navigating back to it, use the matching query instead of opening a new subscription.
+1. **Créer**
+   Appelez la mutation. Elle renvoie immédiatement un `id`, que vous utilisez à l'étape suivante pour suivre et récupérer le résultat.
+2. **Ouvrir une subscription**
+   Souscrivez en utilisant l'`id` de l'étape précédente. Pendant le calcul du résultat, la subscription envoie des mises à jour de statut que vous pouvez utiliser pour piloter un état de chargement asynchrone dans votre interface.
+3. **Afficher le résultat**
+   Une fois que `status` prend une valeur finale, affichez l'interface correspondant à ce résultat.
+4. **Récupérer à nouveau un résultat terminé**
+   Une fois qu'un résultat atteint un statut final, il est déjà précalculé. Si vous en avez de nouveau besoin plus tard, par exemple après y être revenu par navigation, utilisez la query correspondante plutôt que d'ouvrir une nouvelle subscription.
 
-## Where this applies
+## Où cela s'applique
 
-| Feature | Mutation | Subscription | Query |
+| Fonctionnalité | Mutation | Subscription | Query |
 | --- | --- | --- | --- |
-| [Route](/docs/getting-started/route) | `createRoute` | `route` | `getRoute` |
-| [Matched route](/api-reference/matched-route/mutation-create-matched-route) | `createMatchedRoute` | `matchedRoute` | `getMatchedRoute` |
+| [Itinéraire](/docs/getting-started/route) | `createRoute` | `route` | `getRoute` |
+| [Itinéraire concordant](/api-reference/matched-route/mutation-create-matched-route) | `createMatchedRoute` | `matchedRoute` | `getMatchedRoute` |
 | [Isoline](/api-reference/isoline/mutation-create-isoline) | `createIsoline` | `isoline` | `isoline` |
-| [Truck route](/api-reference/truck-route/mutation-create-truck-route) | `createTruckRoute` | `truckRoute` | `getTruckRoute` |
+| [Itinéraire camion](/api-reference/truck-route/mutation-create-truck-route) | `createTruckRoute` | `truckRoute` | `getTruckRoute` |
 | [Navigation](/api-reference/navigation/mutation-start-navigation) | `startNavigation` | `navigation` | `navigation` |

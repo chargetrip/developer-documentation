@@ -1,52 +1,52 @@
 ---
-title: Vehicles
+title: Véhicules
 tag: Guide
 ---
 
-A comprehensive vehicle database is essential for any EV application. Vehicle data allows end-users to understand their vehicle better and find charging stations that are suitable for them. It's also essential to routing, since the most optimal route will be radically different based on the vehicle driven.
+Une base de données de véhicules complète est essentielle pour toute application EV. Les données de véhicule permettent aux utilisateurs finaux de mieux comprendre leur véhicule et de trouver des stations de recharge qui leur conviennent. Elles sont également essentielles au calcul d'itinéraire, car l'itinéraire optimal sera radicalement différent selon le véhicule conduit.
 
 ## Introduction
 
-A quick primer on EVs and why vehicle data matters for routing.
+Un bref aperçu des EV et de l'importance des données de véhicule pour le calcul d'itinéraire.
 
-### Electric vs. internal combustion engines
+### Véhicules électriques et moteurs à combustion interne
 
-An ICE (internal combustion engine) vehicle burns fossil fuel to run. An EV runs on electricity and recharges by plugging into a charger.
+Un véhicule ICE (moteur à combustion interne) brûle du carburant fossile pour fonctionner. Un EV fonctionne à l'électricité et se recharge en se branchant à une borne de recharge.
 
-### Charging an electric vehicle
+### Recharger un véhicule électrique
 
-EVs charge at charging stations using one of several plug types, so knowing a driver's vehicle and a charger's supported plugs matters. Charging speed comes in three levels: level 1 and 2 use AC and take hours, while level 3 "fast charging" uses DC and can charge a vehicle in under an hour. The Chargetrip API accounts for each vehicle's charge curve, and exposes the available payment options per location, since these vary by region and operator.
+Les EV se rechargent dans des stations de recharge à l'aide de l'un des nombreux types de prises ; il est donc important de connaître le véhicule d'un conducteur et les prises prises en charge par une borne. La vitesse de recharge se décline en trois niveaux : les niveaux 1 et 2 utilisent le courant alternatif (AC) et prennent des heures, tandis que le niveau 3, la « recharge rapide », utilise le courant continu (DC) et peut recharger un véhicule en moins d'une heure. L'API Chargetrip tient compte de la courbe de charge de chaque véhicule et expose les options de paiement disponibles par lieu, car elles varient selon la région et l'opérateur.
 
-### Impact factors of a battery
+### Facteurs d'influence sur une batterie
 
-Battery performance is affected by weather, climate control use, and vehicle specifications, similar to how phone batteries behave differently in the cold. Chargetrip accounts for these factors to produce accurate range estimations.
+Les performances de la batterie sont affectées par la météo, l'utilisation de la climatisation et du chauffage, et les spécifications du véhicule, un peu comme les batteries de téléphone se comportent différemment par temps froid. Chargetrip tient compte de ces facteurs pour produire des estimations d'autonomie précises.
 
-### Routing for EVs
+### Calcul d'itinéraire pour les EV
 
-Range anxiety, the fear of running out of charge before reaching a destination or charger, can be addressed with route planning that shows if and where charging is needed along the way.
+L'anxiété d'autonomie, la peur de tomber en panne de batterie avant d'atteindre une destination ou une borne, peut être atténuée par une planification d'itinéraire qui indique si et où une recharge est nécessaire en chemin.
 
-### Range predictions
+### Prévisions d'autonomie
 
-Accurate routing depends on predicting how much energy a vehicle will use between two points, which lets an application recommend charging stops along the journey. Use isolines to visualize the area a vehicle can reach under given conditions and preferences.
+Un calcul d'itinéraire précis dépend de la prévision de l'énergie qu'un véhicule consommera entre deux points, ce qui permet à une application de recommander des arrêts de recharge au cours du trajet. Utilisez les isolines pour visualiser la zone qu'un véhicule peut atteindre dans des conditions et avec des préférences données.
 
-## Database
+## Base de données
 
-Instead of having to provide all the data and details about a vehicle, which is customary for most EV routing APIs, the vehicle database contains over 2,200 BEV (battery electric vehicle), PHEV (plug-in hybrid electric vehicle), HEV (hybrid electric vehicle), and EREV (extended range electric vehicle) models. All BEVs and EREVs come with their own validated consumption model.
+Au lieu de devoir fournir toutes les données et tous les détails d'un véhicule, comme c'est l'usage avec la plupart des API de calcul d'itinéraire pour EV, la base de données de véhicules contient plus de 2 200 modèles BEV (véhicule électrique à batterie), PHEV (véhicule hybride rechargeable), HEV (véhicule hybride) et EREV (véhicule électrique à prolongateur d'autonomie). Tous les BEV et EREV sont fournis avec leur propre modèle de consommation validé.
 
-The consumption models take into account properties like drag coefficient and rolling resistance in relation to speed, elevation, charging speed, charging temperature, battery temperature, and many more.
+Les modèles de consommation prennent en compte des propriétés comme le coefficient de traînée et la résistance au roulement en fonction de la vitesse, le dénivelé, la vitesse de recharge, la température de recharge, la température de la batterie, et bien d'autres.
 
-Additionally, all vehicles come with detailed vehicle specifications and images that can be used in front ends. New models are continuously added as they're released to market.
+De plus, tous les véhicules sont fournis avec des spécifications détaillées et des images utilisables dans les interfaces. De nouveaux modèles sont ajoutés en continu dès leur mise sur le marché.
 
-### Premium data
+### Données premium
 
-If you need additional information beyond the standard vehicle data, [vehiclePremium](/api-reference/vehicle/query-vehicle-premium) is available as an add-on. It contains extended data about the battery, the body of the vehicle, availability, pricing, efficiency, safety, and more. [Contact sales](https://www.chargetrip.com/contact/sales) to upgrade to premium vehicle data.
+Si vous avez besoin d'informations supplémentaires au-delà des données de véhicule standard, [vehiclePremium](/api-reference/vehicle/query-vehicle-premium) est disponible en option. Il contient des données étendues sur la batterie, la carrosserie du véhicule, la disponibilité, les prix, l'efficacité, la sécurité, et plus encore. [Contactez l'équipe commerciale](https://www.chargetrip.com/contact/sales) pour passer aux données de véhicule premium.
 
 ### Images
 
-Rights-cleared vehicle images are also available as an add-on, just like `vehiclePremium`. These images are higher quality than the default images provided with the vehicle database. [Contact sales](https://www.chargetrip.com/contact/sales) to enable this for your project.
+Des images de véhicules libres de droits sont également disponibles en option, tout comme `vehiclePremium`. Ces images sont de meilleure qualité que les images par défaut fournies avec la base de données de véhicules. [Contactez l'équipe commerciale](https://www.chargetrip.com/contact/sales) pour l'activer sur votre projet.
 
-## Implementation
+## Implémentation
 
-Access the complete vehicle database through the [vehicleList](/api-reference/vehicle/query-vehicles) query, and fetch more detailed information using the [vehicle](/api-reference/vehicle/query-vehicle-details) query.
+Accédez à la base de données de véhicules complète via la requête [vehicleList](/api-reference/vehicle/query-vehicles), et récupérez des informations plus détaillées avec la requête [vehicle](/api-reference/vehicle/query-vehicle-details).
 
-Any [route](/docs/getting-started/route) or isoline mutation requires a vehicle `id`, which can be obtained through the `vehicleList` query.
+Toute mutation d'[itinéraire](/docs/getting-started/route) ou d'isoline nécessite un `id` de véhicule, qui peut être obtenu via la requête `vehicleList`.

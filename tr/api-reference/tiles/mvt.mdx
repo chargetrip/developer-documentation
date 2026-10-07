@@ -3,26 +3,26 @@ title: MVT
 tag: Rest
 ---
 
-The MVT (Mapbox Vector Tile) service provides access to station-related geographic data in a tile-based format. Vector tiles are encoded as Protocol Buffers (PBF), allowing for efficient serialization of structured data.
+MVT (Mapbox Vector Tile) servisi, istasyonlarla ilgili coğrafi verilere karo tabanlı bir formatta erişim sağlar. Vektör karoları Protocol Buffers (PBF) olarak kodlanır ve bu da yapılandırılmış verilerin verimli şekilde serileştirilmesine olanak tanır.
 
-## Setup
+## Kurulum
 
-To access the station data in MVT format, send a request to the following endpoint:
+İstasyon verilerine MVT formatında erişmek için aşağıdaki uç noktaya bir istek gönderin:
 
 ```bash Tile / MVT / Base URL
 https://api.chargetrip.io/v2/station/{z}/{x}/{y}/tile.mvt
 ```
 
-The MVT URL uses the following path parameters:
+MVT URL'si aşağıdaki yol parametrelerini kullanır:
 
-- `z`: The zoom level of the tile.
-- `x`: The x-coordinate of the tile.
-- `y`: The y-coordinate of the tile.
+- `z`: Karonun yakınlaştırma seviyesi.
+- `x`: Karonun x koordinatı.
+- `y`: Karonun y koordinatı.
 
-Most map providers have built-in methods to convert latitude and longitude to pixel coordinates. To manually convert latitude and longitude coordinates to x and y use the [Web Mercator Projection](https://en.wikipedia.org/wiki/Web_Mercator_projection).
+Çoğu harita sağlayıcısı, enlem ve boylamı piksel koordinatlarına dönüştürmek için yerleşik yöntemlere sahiptir. Enlem ve boylam koordinatlarını x ve y'ye elle dönüştürmek için [Web Mercator Projeksiyonu](https://en.wikipedia.org/wiki/Web_Mercator_projection) kullanın.
 
-### Filtering
-Use the `filter` query parameter to filter the stations returned based on specific criteria. See the [filters documentation](/api-reference/tiles/filters) for more information.
+### Filtreleme
+Döndürülen istasyonları belirli ölçütlere göre filtrelemek için `filter` sorgu parametresini kullanın. Daha fazla bilgi için [filtreler belgelerine](/api-reference/tiles/filters) bakın.
 
-### Selectors
-Use the `station_properties[]` query parameter to specify the fields returned for each station feature. See the [selectors documentation](/api-reference/tiles/selectors) for more information.
+### Seçiciler
+Her istasyon özelliği için döndürülecek alanları belirtmek üzere `station_properties[]` sorgu parametresini kullanın. Daha fazla bilgi için [seçiciler belgelerine](/api-reference/tiles/selectors) bakın.

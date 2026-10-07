@@ -1,0 +1,161 @@
+---
+title: "Route mit Zwischenstopps"
+---
+
+Bei der Berechnung einer EV-Route mit der Chargetrip Route API können Sie mit `via` Zwischenstopps zwischen Start und Ziel hinzufügen.
+
+Mit Zwischenstopps können Sie das Routing an reale Reiseszenarien anpassen, etwa Laden an einer bevorzugten Ladestation, Passagiere abholen oder an einem Restaurant halten.
+
+
+## Arten von Zwischenstopps
+
+Chargetrip unterstützt zwei Arten von Zwischenstopps:
+
+| Stopp | Laden |  Eingabefeld | Zweck |
+| :--- | :--- | :--- | :--- |
+| **Standort** | Nein |  `via.geometry`| Geografischer Stopp (Abholung, Lieferung, landschaftlicher Umweg, Kaffeepause).
+| **Station** | Ja | `via.properties.station.station_id`| Explizit ausgewählte Ladestation.
+
+
+## Stoppdauer
+
+Sie können die Dauer jedes Stopps konfigurieren. Je nach Art des Stopps (mit oder ohne Laden) wird `stop_duration` an unterschiedlichen Stellen konfiguriert und verhält sich unterschiedlich:
+
+### 1. Bei Stopps ohne Laden
+
+Die Stoppdauer wird unter `input.via.properties.location.stop_duration` konfiguriert. Diese Dauer entspricht der **genauen Stoppdauer** und wird direkt zur Gesamtreisedauer addiert, ohne die Lade- oder Fahrzeit des Fahrzeugs zu beeinflussen.
+
+### 2. Bei Ladestopps
+
+Die Stoppdauer wird unter `input.via.properties.station.stop_duration` konfiguriert. Dieser Wert entspricht **der minimalen Stoppdauer**. Das Fahrzeug bleibt mindestens so lange an der Station, aber der Routenplaner kann den Stopp je nach konfiguriertem `charge_mode` verlängern:
+
+  * `ALWAYS_TO_MAX_CHARGE`: Verlängert die Ladezeit bei Bedarf, um den maximal konfigurierten SoC zu erreichen. Übersteigt die angeforderte `stop_duration` die Zeit, die bis zum maximalen SoC erforderlich ist, wird die verbleibende Zeit als Standzeit erfasst.
+
+  * `OPTIMIZE_TRAVEL_TIME`: Verlängert den Aufenthalt über `stop_duration` hinaus nur, wenn dadurch die Gesamtreisezeit sinkt (zum Beispiel durch den Wegfall eines nachfolgenden Ladestopps). Andernfalls wird genau die angeforderte Dauer geladen. Übersteigt die angeforderte `stop_duration` die Zeit, die bis zum maximalen SoC erforderlich ist, wird die verbleibende Zeit als Standzeit erfasst.
+
+Wird kein Wert angegeben, optimiert der Planer die Ladedauer allein anhand des `charge_mode` der Route.
+
+
+## Beispiele
+
+<details>
+  <summary>Eine Route mit einem 30-minütigen Stopp ohne Laden berechnen.</summary>
+  Bei diesem Stopp wurde eine `stop_duration` von 1800 Sekunden (30 Minuten) hinzugefügt. Dies ist die Stoppdauer, da kein zusätzlicher Nutzen möglich ist.
+
+```graphql Beispielanfrage
+mutation CreateRouteWithWaypoint {
+  createRoute(
+    input: {
+      vehicle: {
+        id: "60b8d5a2f1c8e9001b9e2831"
+        charging: { mode: OPTIMIZE_TRAVEL_TIME }
+      }
+      origin: {
+        type: Point
+        coordinates: [4.9041, 52.3676]
+      }
+      destination: {
+        type: Point
+        coordinates: [6.9583, 50.9375]
+      }
+      via: [
+        {
+          geometry: {
+            type: Point
+            coordinates: [5.1214, 52.0907] # Utrecht
+          }
+          properties: {
+            location: {
+              name: "Utrecht Central"
+              stop_duration: 1800 # 30 minutes in seconds
+            }
+          }
+        }
+      ]
+    }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>
+
+
+<details>
+  <summary>Eine Route mit einem Ladestopp von mindestens 30 Minuten berechnen.</summary>
+  Bei diesem Stopp wurde eine `stop_duration` von 1800 Sekunden (30 Minuten) hinzugefügt. Dies ist die **minimale** Stoppdauer. Wenn längeres Laden der Reiseroute zugutekommt, verlängert sie sich.
+  
+```graphql Beispielanfrage
+mutation CreateRouteWithChargingVia {
+  createRoute(
+    input: {
+      vehicle: {
+        id: "60b8d5a2f1c8e9001b9e2831"
+        charging: { mode: OPTIMIZE_TRAVEL_TIME }
+      }
+      origin: {
+        type: Point
+        coordinates: [4.9041, 52.3676]
+      }
+      destination: {
+        type: Point
+        coordinates: [6.9583, 50.9375]
+      }
+      via: [
+        {
+          properties: {
+            station: {
+              station_id: "5e849ea2837bc43df65d19a2"
+              stop_duration: 1800
+            }
+          }
+        }
+      ]
+    }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>
+
+
+<details>
+  <summary>Eine Route mit einem Ladestopp ohne minimale Stoppdauer berechnen.</summary>
+  Bei diesem Stopp wird `stop_duration` weggelassen: Der Planer berechnet die optimale Ladezeit anhand des Lademodus.
+
+```graphql Beispielanfrage
+mutation CreateRouteWithChargingVia {
+  createRoute(
+    input: {
+      vehicle: {
+        id: "60b8d5a2f1c8e9001b9e2831"
+        charging: { mode: OPTIMIZE_TRAVEL_TIME }
+      }
+      origin: {
+        type: Point
+        coordinates: [4.9041, 52.3676]
+      }
+      destination: {
+        type: Point
+        coordinates: [6.9583, 50.9375]
+      }
+      via: [
+        {
+          properties: {
+            station: {
+              station_id: "5e849ea2837bc43df65d19a2"
+            }
+          }
+        }
+      ]
+    }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>

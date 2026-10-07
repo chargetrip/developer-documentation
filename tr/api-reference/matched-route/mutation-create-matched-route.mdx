@@ -1,11 +1,11 @@
 ---
-title: Create matched route
+title: Eşleştirilmiş rota oluştur
 schemaName: createMatchedRoute
 schemaType: Mutation
 ---
 
-Create a route from a sequence of GPS points by using the createMatchedRoute mutation. This is most useful when you already have a route based on your own business rules and want to add charging stops and calculate energy consumption on top of it.
+createMatchedRoute mutasyonunu kullanarak bir GPS noktaları dizisinden rota oluşturun. Bu, özellikle kendi iş kurallarınıza dayanan bir rotanız olduğunda ve üzerine şarj durakları ekleyip enerji tüketimini hesaplamak istediğinizde kullanışlıdır.
 
-## Mutation
+## Mutasyon
 
-A `vehicle` and at least two chronological `points` are required to create a matched route. Optionally add `via` points, `departure_time`, `weather`, `driving_preferences`, `operators`, or `alternative_station_radius` to refine the calculation. Set `plan_charging_stops` to find and plan charging stops if the vehicle's state of charge reaches the threshold at any point along the route. The mutation returns a matched route `id`, which can be used to retrieve route details or subscribe to updates.
+Eşleştirilmiş bir rota oluşturmak için bir `vehicle` ve kronolojik sırada en az iki `points` gereklidir. Hesaplamayı iyileştirmek için isteğe bağlı olarak `via` noktaları, `departure_time`, `weather`, `driving_preferences`, `operators` veya `alternative_station_radius` ekleyin. Aracın şarj durumu rota boyunca herhangi bir noktada eşiğe ulaşırsa şarj duraklarını bulup planlamak için `plan_charging_stops` değerini ayarlayın. Mutasyon, rota ayrıntılarını almak veya güncellemelere abone olmak için kullanılabilecek bir eşleştirilmiş rota `id` döndürür.

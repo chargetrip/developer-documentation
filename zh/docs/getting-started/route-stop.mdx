@@ -1,0 +1,161 @@
+---
+title: "带停靠点的路线"
+---
+
+使用 Chargetrip Route API 计算 EV 路线时，您可以使用 `via` 在起点和终点之间添加中间停靠点。
+
+停靠点可让您针对真实出行场景自定义路线规划，例如在偏好的充电站充电、接送乘客或在餐厅停留。
+
+
+## 停靠点类型
+
+Chargetrip 支持两种类型的中间停靠点：
+
+| 停靠点 | 是否充电 |  输入字段 | 用途 |
+| :--- | :--- | :--- | :--- |
+| **地点** | 否 |  `via.geometry`| 地理位置停靠点（接人、送货、风景绕行、咖啡休息）。
+| **充电站** | 是 | `via.properties.station.station_id`| 明确选定的充电站。
+
+
+## 停靠时长
+
+您可以为每个停靠点配置时长。根据停靠点类型（充电或非充电）的不同，`stop_duration` 的配置位置不同，行为也不同：
+
+### 1. 非充电停靠点
+
+停靠时长配置在 `input.via.properties.location.stop_duration`。该时长表示**确切的停靠时长**，会直接计入总行程时间，不影响车辆的充电或行驶时间。
+
+### 2. 充电停靠点
+
+停靠时长配置在 `input.via.properties.station.stop_duration`。该值表示**最短停靠时长**。车辆至少会在充电站停留这么长时间，但路线规划器可能会根据所配置的 `charge_mode` 延长停靠：
+
+  * `ALWAYS_TO_MAX_CHARGE`：如有需要，延长充电时间以达到所配置的最大 SoC。如果请求的 `stop_duration` 超过达到最大 SoC 所需的时间，剩余时间将记为闲置停留。
+
+  * `OPTIMIZE_TRAVEL_TIME`：仅当延长停留能缩短整体行程时间（例如省去后续的一次充电停靠）时，才会超出 `stop_duration` 延长停留。否则，按请求的确切时长充电。如果请求的 `stop_duration` 超过达到最大 SoC 所需的时间，剩余时间将记为闲置停留。
+
+如果未提供值，规划器将完全根据路线的 `charge_mode` 来优化充电时长。
+
+
+## 示例
+
+<details>
+  <summary>计算带有 30 分钟非充电停靠的路线。</summary>
+  在该停靠点上添加了 1800 秒（30 分钟）的 `stop_duration`。这就是停靠时长，因为不可能带来额外收益。
+
+```graphql 示例请求
+mutation CreateRouteWithWaypoint {
+  createRoute(
+    input: {
+      vehicle: {
+        id: "60b8d5a2f1c8e9001b9e2831"
+        charging: { mode: OPTIMIZE_TRAVEL_TIME }
+      }
+      origin: {
+        type: Point
+        coordinates: [4.9041, 52.3676]
+      }
+      destination: {
+        type: Point
+        coordinates: [6.9583, 50.9375]
+      }
+      via: [
+        {
+          geometry: {
+            type: Point
+            coordinates: [5.1214, 52.0907] # Utrecht
+          }
+          properties: {
+            location: {
+              name: "Utrecht Central"
+              stop_duration: 1800 # 30 minutes in seconds
+            }
+          }
+        }
+      ]
+    }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>
+
+
+<details>
+  <summary>计算带有至少 30 分钟充电停靠的路线。</summary>
+  在该停靠点上添加了 1800 秒（30 分钟）的 `stop_duration`。这将是**最短**停靠时长。如果延长充电时间对行程有利，时长将会增加。
+  
+```graphql 示例请求
+mutation CreateRouteWithChargingVia {
+  createRoute(
+    input: {
+      vehicle: {
+        id: "60b8d5a2f1c8e9001b9e2831"
+        charging: { mode: OPTIMIZE_TRAVEL_TIME }
+      }
+      origin: {
+        type: Point
+        coordinates: [4.9041, 52.3676]
+      }
+      destination: {
+        type: Point
+        coordinates: [6.9583, 50.9375]
+      }
+      via: [
+        {
+          properties: {
+            station: {
+              station_id: "5e849ea2837bc43df65d19a2"
+              stop_duration: 1800
+            }
+          }
+        }
+      ]
+    }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>
+
+
+<details>
+  <summary>计算不设最短停靠时长的充电停靠路线。</summary>
+  在该停靠点上省略了 `stop_duration`：规划器会根据充电模式计算最优充电时间。
+
+```graphql 示例请求
+mutation CreateRouteWithChargingVia {
+  createRoute(
+    input: {
+      vehicle: {
+        id: "60b8d5a2f1c8e9001b9e2831"
+        charging: { mode: OPTIMIZE_TRAVEL_TIME }
+      }
+      origin: {
+        type: Point
+        coordinates: [4.9041, 52.3676]
+      }
+      destination: {
+        type: Point
+        coordinates: [6.9583, 50.9375]
+      }
+      via: [
+        {
+          properties: {
+            station: {
+              station_id: "5e849ea2837bc43df65d19a2"
+            }
+          }
+        }
+      ]
+    }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>

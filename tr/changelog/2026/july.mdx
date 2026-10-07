@@ -1,40 +1,40 @@
 ---
-title: Station boosting
+title: İstasyon öne çıkarma
 date: 01-07-2026
 ---
 
-## Influence routes with Station Boosting
+## İstasyon Öne Çıkarma ile rotaları yönlendirin
 
-![Station boosting](../../../assets/changelog/2026/july.jpg)
+![İstasyon öne çıkarma](../../../assets/changelog/2026/july.jpg)
 
-For businesses looking to maximize network utilization, honor partner agreements, or guide drivers to specific high-margin charging stations, Station Boosting offers a streamlined way to influence routing decisions. Available in Alpha, this feature gives you direct control over how specific charging locations are prioritized without adding unnecessary operational complexity.
+Ağ kullanımını en üst düzeye çıkarmak, iş ortağı anlaşmalarına uymak veya sürücüleri yüksek marjlı belirli şarj istasyonlarına yönlendirmek isteyen işletmeler için İstasyon Öne Çıkarma, rota kararlarını etkilemenin kolay bir yolunu sunar. Alpha olarak sunulan bu özellik, gereksiz operasyonel karmaşıklık eklemeden belirli şarj noktalarına nasıl öncelik verileceği üzerinde doğrudan kontrol sağlar.
 
-- Targeted Client Groups: Create up to 5 distinct groups per environment (with up to 50 specific stations per group) to run targeted regional or time-based campaigns.
+- Hedefli İstemci Grupları: Hedefli bölgesel veya zamana dayalı kampanyalar yürütmek için ortam başına en fazla 5 ayrı grup oluşturun (grup başına en fazla 50 belirli istasyon).
 
-If you would like to test this feature and start steering volume to high-priority hardware, please reach out to your Customer Success Manager to manage your configuration.
+Bu özelliği test etmek ve hacmi yüksek öncelikli donanımlara yönlendirmeye başlamak isterseniz, yapılandırmanızı yönetmek için lütfen Müşteri Başarı Yöneticinizle iletişime geçin.
 
-### Configurable maximum charging SoC & expanded battery limits
-Drivers can now configure the maximum State of Charge (SoC) for charging stops between 80% and 100%, and plan trips requiring higher remaining battery levels upon arrival.
+### Yapılandırılabilir maksimum şarj SoC'si ve genişletilmiş batarya sınırları
+Sürücüler artık şarj durakları için maksimum şarj durumunu (SoC) %80 ile %100 arasında yapılandırabilir ve varışta daha yüksek kalan batarya seviyesi gerektiren yolculuklar planlayabilir.
 
-- Pass `maximum_state_of_charge` (80–100%) in `createRoute` (`RouteVehicleChargingInput`). When set, vehicles can charge beyond the default 80% ceiling during planned or unplanned stops across both `ALWAYS_TO_MAX_CHARGE` and `OPTIMIZE_TRAVEL_TIME` modes;
-- Configure `final_state_of_charge` up to 80% of vehicle battery capacity (increased from 60%);
-- Added two new SoC leg warnings: `risk_margin_soc_not_possible` when expected arrival SoC falls below the safety risk margin, and `final_soc_below_risk_margin` when the requested final SoC falls below the safe risk margin.
+- `createRoute` içinde (`RouteVehicleChargingInput`) `maximum_state_of_charge` (%80–100) değerini iletin. Ayarlandığında, araçlar hem `ALWAYS_TO_MAX_CHARGE` hem de `OPTIMIZE_TRAVEL_TIME` modlarında planlı veya plansız duraklarda varsayılan %80 sınırının ötesinde şarj olabilir;
+- `final_state_of_charge` değerini araç batarya kapasitesinin %80'ine kadar yapılandırın (önceden %60);
+- İki yeni SoC bölüm uyarısı eklendi: beklenen varış SoC'si güvenlik risk marjının altına düştüğünde `risk_margin_soc_not_possible`, istenen son SoC güvenli risk marjının altına düştüğünde ise `final_soc_below_risk_margin`.
 
 
 
 <details>
-  <summary>Improvements</summary>
+  <summary>İyileştirmeler</summary>
 
-  - Added `type` and `region` array filters to `vehicleMakes` (`VehicleMakesFilter`), allowing clients to filter brands that offer specific vehicle types or operate within designated geographical regions.
-  - Added `model_count` to `VehicleMake` and `vehicle_count` to `VehicleModel` to expose real-time counts of accessible models per make and vehicles per model.
-  - Implemented cursor-based pagination arguments (`first` and `after`) along with `total_count` and `page_info` on the `vehicleMakes` query.
-  - Updated `vehicleMakes` and vehicle queries to return country-specific brand logos when a country filter is supplied, falling back to global images when localized assets are not configured.
+  - `vehicleMakes` sorgusuna (`VehicleMakesFilter`) `type` ve `region` dizi filtreleri eklendi; böylece istemciler belirli araç türleri sunan veya belirlenen coğrafi bölgelerde faaliyet gösteren markaları filtreleyebiliyor.
+  - Marka başına erişilebilir model sayısını ve model başına araç sayısını gerçek zamanlı olarak sunmak için `VehicleMake` türüne `model_count`, `VehicleModel` türüne `vehicle_count` eklendi.
+  - `vehicleMakes` sorgusuna, `total_count` ve `page_info` ile birlikte imleç tabanlı sayfalandırma argümanları (`first` ve `after`) eklendi.
+  - `vehicleMakes` ve araç sorguları, bir ülke filtresi sağlandığında ülkeye özgü marka logolarını döndürecek şekilde güncellendi; yerelleştirilmiş varlıklar yapılandırılmamışsa genel görsellere geri dönülüyor.
 </details>
 
 <details>
-  <summary>Fixes</summary>
+  <summary>Düzeltmeler</summary>
 
-  - Fixed an issue in `vehicleList` where filtering by make name failed after introducing make IDs, restoring backward compatibility so `filter.make` accepts both make IDs and make names.
-  - Fixed an issue where routes starting with an initial State of Charge below the safety risk margin (`initialSOC < safeRiskMargin`) drove until reaching 0% battery instead of routing to the nearest available charging station.
-  - Fixed an issue where the sum of individual leg section durations did not align with total driving durations (`durations.driving`) in route details.
+  - `vehicleList` içinde, marka ID'leri getirildikten sonra marka adına göre filtrelemenin başarısız olduğu sorun düzeltildi; `filter.make` artık hem marka ID'lerini hem de marka adlarını kabul ederek geriye dönük uyumluluk sağlanıyor.
+  - Güvenlik risk marjının altında bir başlangıç şarj durumuyla (`initialSOC < safeRiskMargin`) başlayan rotaların, en yakın kullanılabilir şarj istasyonuna yönlendirmek yerine batarya %0'a ulaşana kadar sürdüğü sorun düzeltildi.
+  - Rota ayrıntılarında bölüm sürelerinin toplamının toplam sürüş süreleriyle (`durations.driving`) uyuşmadığı sorun düzeltildi.
 </details>

@@ -1,53 +1,61 @@
 ---
-title: Overview
+title: Genel bakış
 slug: overview
 ---
 
-GraphQL is a query language for APIs. It lets you request exactly the data you need in a single call, instead of working through many fixed REST endpoints.
+GraphQL, API'ler için bir sorgu dilidir. Çok sayıda sabit REST uç noktasıyla uğraşmak yerine, ihtiyacınız olan veriyi tek bir çağrıda tam olarak istemenizi sağlar.
 
-The API is built on GraphQL. Every resource, such as vehicles, stations, routes, and navigation sessions, is available from a single endpoint as a query, mutation, or subscription.
+API, GraphQL üzerine kurulmuştur. Araçlar, istasyonlar, rotalar ve navigasyon oturumları gibi her kaynağa tek bir GraphQL API üzerinden erişilebilir. Her birine sorgu (query), mutasyon (mutation) veya abonelik (subscription) olarak erişebilirsiniz.
 
-If you're new to GraphQL, the [official GraphQL documentation](https://graphql.org/learn/) is a good place to start.
+GraphQL'e yeniyseniz, [resmi GraphQL belgeleri](https://graphql.org/learn/) başlamak için iyi bir yerdir.
 
-## Authentication
+## GraphQL uç noktaları
 
-Every request needs a base URL and the `x-client-id` and `x-app-id` headers to authenticate. See [send your first request](/docs/getting-started/api-request) for the full list of headers and an example request.
+Sorgulara, mutasyonlara ve aboneliklere aşağıdaki uç noktalardan erişilebilir. Bir örnek için [ilk isteğinizi gönderin](/docs/getting-started/api-request) bölümüne bakın.
 
-```bash Base URL
+Sorgular ve mutasyonlar için şunu kullanın:
+
+```bash Mutation and Query URL
 https://api.chargetrip.io/graphql
 ```
 
-## Resources
+Abonelikler için şunu kullanın:
 
-Browse the API by resource. Each section below links to its queries, mutations, and subscriptions.
+```bash Subscriptions URL
+wss://api.chargetrip.io/subscription
+```
 
-| Resource | Description |
+## Kaynaklar
+
+API'yi kaynağa göre keşfedin. Aşağıdaki her bölüm, ilgili sorgulara, mutasyonlara ve aboneliklere bağlantı verir.
+
+| Kaynak | Açıklama |
 | --- | --- |
-| [Vehicle](/api-reference/vehicle/query-vehicles) | Look up EV specs, consumption models, and premium pricing data. |
-| [Connected vehicle](/api-reference/connected-vehicle/query-connected-vehicle-list) | Connect a vehicle to a connectivity provider and retrieve its live data. |
-| [Station](/api-reference/station/query-station-details) | Look up individual charge stations, nearby stations, and amenities. |
-| [Station review](/api-reference/review/query-user-review-list) | Read, add, and remove user reviews for a charge station. |
-| [Station tariff](/api-reference/tariff/query-tariff-list) | Look up the cost of charging at a station. |
-| [Station operator](/api-reference/operator/query-operator-list) | Look up details about a station's charge point operator. |
-| [Tiles](/api-reference/tiles/mvt) | Access station data as vector or JSON map tiles for rendering on a map. |
-| [Route](/api-reference/route/mutation-create-route) | Calculate an EV route with charging stops, energy consumption, and drive time. |
-| [Truck route](/api-reference/truck-route/mutation-create-truck-route) | Calculate an e-truck route accounting for vehicle weight and dimensions. |
-| [Navigation](/api-reference/navigation/mutation-start-navigation) | Track a vehicle's progress along a route and receive real-time updates. |
-| [Emissions](/api-reference/emissions/query-emissions) | Calculate the emissions saved by taking a route. |
-| [Isoline](/api-reference/isoline/mutation-create-isoline) | Visualize the area a vehicle can reach from a point given its state of charge. |
+| [Araç](/api-reference/vehicle/query-vehicles) | EV özelliklerini, tüketim modellerini ve premium fiyatlandırma verilerini sorgulayın. |
+| [Bağlı araç](/api-reference/connected-vehicle/query-connected-vehicle-list) | Bir aracı bir bağlantı sağlayıcısına bağlayın ve canlı verilerini alın. |
+| [İstasyon](/api-reference/station/query-station-details) | Tekil şarj istasyonlarını, yakındaki istasyonları ve olanakları sorgulayın. |
+| [İstasyon incelemesi](/api-reference/review/query-user-review-list) | Bir şarj istasyonu için kullanıcı incelemelerini okuyun, ekleyin ve kaldırın. |
+| [İstasyon tarifesi](/api-reference/tariff/query-tariff-list) | Bir istasyonda şarj maliyetini sorgulayın. |
+| [İstasyon operatörü](/api-reference/operator/query-operator-list) | Bir istasyonun şarj noktası operatörü hakkındaki ayrıntıları sorgulayın. |
+| [Tiles](/api-reference/tiles/mvt) | İstasyon verilerine, haritada görüntülemek üzere vektör veya JSON harita karoları olarak erişin. |
+| [Rota](/api-reference/route/mutation-create-route) | Şarj durakları, enerji tüketimi ve sürüş süresiyle bir EV rotası hesaplayın. |
+| [Kamyon rotası](/api-reference/truck-route/mutation-create-truck-route) | Araç ağırlığını ve boyutlarını dikkate alan bir e-kamyon rotası hesaplayın. |
+| [Navigasyon](/api-reference/navigation/mutation-start-navigation) | Bir aracın rota üzerindeki ilerleyişini takip edin ve gerçek zamanlı güncellemeler alın. |
+| [Emisyonlar](/api-reference/emissions/query-emissions) | Bir rotayı izleyerek tasarruf edilen emisyonları hesaplayın. |
+| [İzoline](/api-reference/isoline/mutation-create-isoline) | Bir aracın, şarj durumuna göre bir noktadan ulaşabileceği alanı görselleştirin. |
 
-### Authentication
+### Kimlik doğrulama
 
-Every request is authenticated with the `x-client-id` and `x-app-id` headers. See [Authorization](/docs/api/authorization) for how to obtain and send them.
+Her istek, `x-client-id` ve `x-app-id` başlıklarıyla doğrulanır. Bunları nasıl edineceğinizi ve göndereceğinizi [yetkilendirme](/docs/getting-started/api-request#yetkilendirme-başlıkları) bölümünde bulabilirsiniz.
 
-### Pagination
+### Sayfalandırma
 
-List queries accept `size` and `page` arguments, or `first` and `after` arguments for cursor-based pagination, depending on which query you use. See [Pagination](/docs/pagination) for details. Requests are also subject to rate limiting.
+Liste sorguları ya `size` ve `page` argümanlarını ya da imleç tabanlı sayfalandırma için `first` ve `after` argümanlarını kullanır. Ayrıntılar için [sayfalandırma](/api-reference/api/pagination) bölümüne bakın.
 
-### Beta and alpha features
+### Hız sınırlaması
 
-Some resources are still evolving. [Connected vehicle](/api-reference/connected-vehicle/query-connected-vehicle-list) and [Navigation](/api-reference/navigation/mutation-start-navigation) are in beta, and [Truck route](/api-reference/truck-route/mutation-create-truck-route) is in alpha. Expect their contracts to change as we stabilize them.
+İstekler [hız sınırlamasına](/api-reference/api/rate-limiting) tabidir.
 
-### Lifecycle
+### Yaşam döngüsü
 
-Chargetrip uses a single, evolving API rather than versioned releases. See [Lifecycle](/docs/api/life-cycle) for how we handle breaking and non-breaking changes.
+Chargetrip, sürümlendirilmiş yayınlar yerine tek ve sürekli gelişen bir GraphQL API kullanır. Bozucu ve bozucu olmayan değişiklikleri nasıl ele aldığımızı [yaşam döngüsü](/api-reference/api/lifecycle) bölümünde bulabilirsiniz.

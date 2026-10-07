@@ -1,49 +1,111 @@
 ---
-title: Lifecycle
+title: Cycle de vie
 ---
 
-The API is built around a single, evolving GraphQL endpoint. This way, the latest features and improvements are always available without managing multiple API versions. A single-endpoint approach simplifies integration, but it also requires a clear strategy for managing changes. This page outlines the approach to API evolution and provides guidelines for building integrations that remain stable as the API evolves.
+L'API est construite autour d'un unique endpoint GraphQL évolutif. Cette architecture garantit que les nouvelles capacités et les améliorations de performance sont livrées en continu, sans nécessiter de migration entre des versions d'API.
 
-## Non-breaking changes
+Cette page décrit les différents niveaux de stabilité de l'API, les garanties de stabilité de l'API stable, les types de changements (incompatibles ou compatibles) et la gestion des obsolescences. Pour les fonctionnalités actuellement en préversion, consultez les [fonctionnalités expérimentales](/api-reference/api/experimental-features).
 
-A non-breaking change is a modification that is safe and backward-compatible. Because these changes won't disrupt existing integrations, they are introduced without a formal announcement.
+## Cycle de vie des fonctionnalités
 
-### What this includes
+Chaque fonctionnalité se situe à l'un des trois niveaux de stabilité : alpha, bêta ou stable. La plupart des fonctionnalités les parcourent dans l'ordre, et les fonctionnalités stables ne peuvent être retirées que via un processus d'obsolescence.
 
-- Adding a new query, mutation, or subscription.
-- Adding a new optional input.
-- Adding a new field to an output.
-- Making a previously required input field optional.
-- Adding a new value to an existing enum type.
+```text Cycle de vie
+[ ALPHA ] ──> [ BETA ] ──> [ STABLE ] ──> [ DEPRECATED ] ──> [ REMOVED ]
+ Opt-in        Enabled                      12+ month
+               by default                   notice window
+```
 
-> [!TIP] Handle new enum values
-> `enum` types are not exhaustive. New values are introduced to existing enum types over time as new features are added. Always implement a catch-all case in your application's logic to gracefully handle new enum values.
 
-## Breaking changes
+## API stable
+Les fonctionnalités stables constituent le cœur de l'API, prêt pour la production. Les changements sont classés en deux catégories : compatibles et incompatibles.
 
-A breaking change is a modification that could cause an existing integration to stop working. Because such changes can be disruptive, any breaking change follows a formal deprecation process to give you time to adapt.
+### Changements compatibles
+Ajouts rétrocompatibles qui ne perturbent pas les intégrations existantes. Ils sont publiés en continu, sans préavis ni obsolescence.
 
-### What this includes
+Les changements compatibles incluent :
 
-- Removing or renaming an existing query, mutation, or subscription.
-- Removing or renaming an existing field.
-- Removing a value from an existing enum type.
-- Changing the type of a field.
-- Making an optional input field required.
-- Changing the core behavior of an existing field.
+- L'ajout d'une nouvelle query, mutation ou subscription.
+- L'ajout d'un nouvel argument d'entrée optionnel à une opération existante.
+- L'ajout d'un nouvel argument avec une valeur par défaut qui préserve le comportement existant.
+- L'ajout d'un nouveau champ à la sortie d'une opération existante.
+- Le passage d'un argument d'entrée obligatoire à optionnel.
+- L'ajout d'une nouvelle valeur à un type enum existant.
 
-## Deprecations
 
-When a functionality is deprecated, it continues to work normally for at least 12 months. After this notice period, the deprecated functionality is removed, and requests using it return GraphQL errors.
+#### Concevoir pour les changements compatibles
 
-### What this includes
+Les changements compatibles peuvent tout de même affecter les clients qui font des hypothèses rigides. Pour garder des intégrations résilientes :
 
-- Deprecated fields marked with `@deprecated` in the GraphQL schema.
-- Deprecated fields flagged on the deprecations portal.
+- Évitez la désérialisation stricte des objets, qui échoue lorsque des propriétés supplémentaires apparaissent dans les charges utiles.
+- Les types `enum` GraphQL ne sont pas exhaustifs et s'étendent au fil du temps. Implémentez toujours un cas par défaut de repli dans la logique du client.
+- Inspectez les valeurs `extensions.exception.code` des erreurs plutôt que de comparer des chaînes d'erreur lisibles par un humain.
 
-> [!TIP] Plan migrations early
-> To prevent errors and service disruption, complete your migrations before the scheduled removal date.
+### Changements incompatibles et obsolescences
 
-## Beta and alpha features
+Un changement incompatible pourrait casser des intégrations actives existantes. Par conséquent, tout changement incompatible doit d'abord passer par un processus d'obsolescence de 12 mois.
 
-Chargetrip uses an alpha and beta program to introduce and validate impactful new functionality before it becomes part of the stable API. Unlike changes to stable features, changes to alpha or beta features are exempt from the deprecation process. Fields or operations marked as alpha or beta may change or be removed at any time without prior notice.
+Les changements incompatibles incluent :
+
+- La suppression ou le renommage d'une query, mutation, subscription, d'un champ ou d'un argument d'entrée existant.
+- La suppression ou le renommage de valeurs d'enum.
+- La modification du type de données d'un champ ou d'un argument d'entrée existant.
+- L'ajout d'un nouvel argument d'entrée obligatoire.
+- Le passage d'un argument d'entrée optionnel à obligatoire.
+- La modification de la logique métier ou du comportement d'un champ existant.
+- Le passage d'un champ de sortie de non nullable (!) à nullable.
+- La modification de la valeur par défaut d'un argument d'entrée ou d'un champ.
+- La modification des valeurs par défaut de pagination, des tailles de page maximales ou de l'ordre de tri documenté.
+
+
+#### Calendrier d'obsolescence
+
+Lorsqu'un changement incompatible nécessite de supprimer ou de remplacer une capacité stable, il suit un calendrier strict en trois phases :
+
+1. **Annonce de l'obsolescence**
+    La fonctionnalité est marquée avec la directive `@deprecated` dans le schéma GraphQL. Le cas échéant, un chemin de migration est fourni. L'obsolescence et la date de suppression correspondante sont annoncées simultanément sur [trois canaux de suivi](#suivi-des-obsolescences).
+2. **Période de préavis active (mois 1 à 12)**
+    La fonctionnalité obsolète reste pleinement opérationnelle. Si un chemin de migration est fourni, les intégrateurs doivent mettre à jour leurs applications et adopter les nouveaux champs pendant cette période de 12 mois.
+3. **Suppression définitive**
+    À la date de suppression, la fonctionnalité est définitivement supprimée. Toute requête ultérieure utilisant la fonctionnalité échouera à la validation du schéma avec une erreur GraphQL.
+
+> [!TIP] Planifiez vos migrations tôt
+> Pour éviter les erreurs et les interruptions de service, terminez vos migrations avant la date de suppression prévue.
+
+#### Suivi des obsolescences
+
+Identifiez et suivez les retraits à venir via trois canaux :
+
+- Inspectez les directives `@deprecated(reason: "...")` dans vos outils de schéma.
+- Consultez les dates de fin et les guides de migration dans la section héritée de l'API ou sur le [portail des obsolescences](/deprecations).
+- Surveillez les avertissements `DEPRECATED_FEATURE` renvoyés directement dans les réponses de l'API.
+
+
+<details>
+  <summary>Exemple de réponse</summary>
+
+```graphql Exemple de requête et de réponse
+{
+  "data": {
+    "station": {
+      "id": "5e8c22366f9c5f23ab0eff39",
+      "amenityList": [
+        {
+          "name": "Coffee Shop",
+          "foursquareUrl": "https://foursquare.com/v/example"
+        }
+      ]
+    }
+  },
+  "extensions": {
+    "warnings": [
+      {
+        "code": "DEPRECATED_FEATURE",
+        "path": ["amenityList", "foursquareUrl"],
+        "message": "This feature is deprecated and will be removed. To prevent errors and service disruptions, migrate to the recommended alternative before the scheduled removal date. Visit https://developers.chargetrip.com/deprecations for more information."
+      }
+    ]
+  }
+}
+```
+</details>

@@ -1,32 +1,32 @@
 ---
-title: Traffic
+title: 实验性功能和弃用 API 警告
 date: 01-05-2026
 release: alpha
 ---
 
-## Experimental and deprecation API warnings
+## 实验性功能和弃用 API 警告
 
-![Experimental API](../../../assets/changelog/2026/may.jpg)
+![实验性 API](../../../assets/changelog/2026/may.jpg)
 
-We have introduced lifecycle warnings in GraphQL response extensions to inform developers whenever a requested operation or field is in Alpha, Beta, or scheduled for deprecation. This provides direct visibility into feature maturity and upcoming deprecations without disrupting API responses.
+我们在 GraphQL 响应扩展中引入了生命周期警告，每当所请求的操作或字段处于 alpha、beta 阶段或已计划弃用时，都会通知开发者。这让您可以直接了解功能的成熟度和即将到来的弃用，同时不会影响 API 响应。
 
-What’s new:
+新增内容：
 
-- **Lifecycle notifications**: Receive structured alerts under `extensions.warnings` whenever your request touches schema elements marked with `@experimental(stage: "alpha")`, `@experimental(stage: "beta")`, or `@chargetripdeprecated`;
-- **Consistent delivery**: Warnings are included across all responses regardless of whether the operation succeeds or returns errors.
+- **生命周期通知**：每当您的请求涉及标记为 `@experimental(stage: "alpha")`、`@experimental(stage: "beta")` 或 `@chargetripdeprecated` 的 schema 元素时，会在 `extensions.warnings` 下收到结构化的提醒；
+- **一致的交付**：无论操作成功还是返回错误，所有响应中都会包含警告。
 
 
 
 <details>
-    <summary>Improvements</summary>
+  <summary>改进</summary>
 
-    - Extended `createIsoline` to support custom weather conditions (`temperature`, `air_pressure`, and `solar_irradiance`) alongside standard presets (`summer`, `winter`, `actual`) via the new `weather` input, deprecating the `season` input.
-    - Added station operating status warnings at the route leg level (`station_closed`, `station_closing_soon`, and `station_unknown_open_hours`) and refined `station_limited_open_hours` to warn drivers when a station on their route may be closed or have limited/unknown operating hours upon arrival.
-    - Standardized schema annotations by replacing hardcoded `[BETA]` text descriptions with the formal `@experimental(stage: "beta")` directive across the Isoline, Routing V2, and Navigation GraphQL schemas.
+    - 扩展了 `createIsoline`，通过新的 `weather` 输入支持自定义天气条件（`temperature`、`air_pressure` 和 `solar_irradiance`），同时保留标准预设（`summer`、`winter`、`actual`），并弃用 `season` 输入。
+    - 在路线路段层级新增了充电站运营状态警告（`station_closed`、`station_closing_soon` 和 `station_unknown_open_hours`），并优化了 `station_limited_open_hours`，在路线上的充电站到达时可能已关闭或营业时间有限/未知时提醒驾驶员。
+    - 规范了 schema 注解：在 Isoline、Routing V2 和 Navigation GraphQL schema 中，将硬编码的 `[BETA]` 文本描述替换为正式的 `@experimental(stage: "beta")` 指令。
 </details>
 
 <details>
-    <summary>Fixes</summary>
+  <summary>修复</summary>
 
-    - Fixed an issue in getRoute where savings.money returned null instead of 0 on BEV routes when no monetary savings were accrued.
+    - 修复了 getRoute 中，当 BEV 路线没有产生任何金钱节省时，savings.money 返回 null 而不是 0 的问题。
 </details>

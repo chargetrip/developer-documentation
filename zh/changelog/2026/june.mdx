@@ -1,19 +1,25 @@
 ---
-title: Truck routing
+title: 货车路线规划
 date: 01-06-2026
 ---
 
-## Truck routing
+## 货车路线规划
 
-![Truck routing](../../../assets/changelog/2026/june.jpg)
+![货车路线规划](../../../assets/changelog/2026/june.jpg)
 
-We have officially launched our dedicated truck routing engine on the backend. Accessible via a brand-new set of queries and mutations, this standalone API feature factors in weight limits, height clearances, and truck-specific energy consumption models to build dependable commercial routes for heavy electric vehicles.
-
+我们已在后端正式推出专用的货车路线规划引擎。通过全新的一组查询和 mutation 即可访问，这项独立的 API 功能会综合考虑重量限制、高度限制以及货车专用的能耗模型，为大型电动车辆构建可靠的商用路线。
 
 
 <details>
-  <summary>Fixes</summary>
+  <summary>改进</summary>
 
-  - Fixed an issue where routes that retraced their path could end up with a negative state of charge.
-  - Fixed an issue where the charging time at the final stop was calculated incorrectly when using the `OPTIMIZE_TRAVEL_TIME` charging mode combined with a custom final state of charge.
+  - 改进了在 createRoute 中指定途经充电站时的验证和诊断错误报告：当无法充电时返回明确的错误代码（`ROUTE_STATION_OUT_OF_SERVICE`、`ROUTE_STATION_INVALID_CHARGER` 以及优化后的 `ROUTE_STATION_INVALID_SPEED`），并在可用连接器低于请求的 minimum_power 阈值时，引入 via_station_below_minimum_power 路段警告。
+</details>
+<details>
+  <summary>修复</summary>
+
+  - 修复了启用 `traffic_aware` 时，推荐路线和备选路线上的总行驶时长和行程时长（`durations.driving` 和 `durations.total`）未包含拥堵延误的问题。
+  - 修复了以充电站为终点的路线在最后一个路段上记录了错误的充电时长，并使路线的 `charges` 总数多出一次充电停靠的问题。
+  - 修复了按包含特殊字符的 `make` 或 `model` 字符串（例如 `Lynk&Co`、`e.GO`、`ID.7` 或 `N°4 E-Tense`）筛选 `vehicleList` 时返回空结果的问题。
+  - 修复了 `amenityList` 中经过筛选的 POI 搜索结果与充电站设施总数不一致的问题。
 </details>

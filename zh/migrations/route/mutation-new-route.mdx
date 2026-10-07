@@ -1,46 +1,46 @@
 ---
 slug: mutation-new-route
-title: Route migration guide
+title: 路线迁移指南
 migrateBefore: 01-01-2027
 ---
 
-# Create route
+# 创建路线
 
-Migrate from the legacy Route service to the latest version. The new service delivers a reorganized schema, per-country operator preferences, faster route computation, and greater maintainability.
+从旧版路线服务迁移到最新版本。新服务提供了重新组织的 schema、按国家设置的运营商偏好、更快的路线计算以及更好的可维护性。
 
-## Operations
+## 操作
 
-| Old               | New                                                             |
+| 旧版              | 新版                                                            |
 | ----------------- | ----------------------------------------------------------------|
 | `newRoute`        | [`createRoute`](/api-reference/route/mutation-create-route)     |
 
-## General schema changes
+## 通用 schema 变更
 
-- **Explicit typing**: previously flexible JSON fields are now explicitly typed in the schema to improve structure and validation.
-- **Naming conventions**: fields now use `snake_case` instead of `camelCase`.
-- **Unit support**: numeric inputs now support different unit types, expressed as an object with `value`, `type`, and an optional `source` (`manual`, `telemetry`, or `default`).
+- **显式类型**：以前灵活的 JSON 字段现在在 schema 中有了明确的类型，以改进结构和验证。
+- **命名约定**：字段现在使用 `snake_case`，而不是 `camelCase`。
+- **单位支持**：数值输入现在支持不同的单位类型，以包含 `value`、`type` 和可选 `source`（`manual`、`telemetry` 或 `default`）的对象表示。
 
-## Mutation changes
+## Mutation 变更
 
-The `input` argument on `createRoute` has been reorganized and simplified.
+`createRoute` 上的 `input` 参数已被重新组织并简化。
 
 ### routeRequest
 
-At the root level, the following fields have been removed. Operator-related fields are now covered by [operator preferences](#operator-preferences), and amenity-related fields have moved to their own dedicated [amenity query](/api-reference/route/query-get-route-stations-with-amenities).
+在根层级，以下字段已被移除。与运营商相关的字段现在由[运营商偏好](#运营商偏好)涵盖，与设施相关的字段已移至其专用的[设施查询](/api-reference/route/query-get-route-stations-with-amenities)。
 
-| Field                  | Moved to                              |
+| 字段                   | 移至                                   |
 | ---------------------- | -------------------------------------- |
-| `operatorIds`          | Removed                                |
-| `amenities`            | Removed                                |
-| `amenity_preferences`  | Removed                                |
-| `operatorRequired`     | Removed                                |
-| `operatorPrefer`       | Removed                                |
+| `operatorIds`          | 已移除                                 |
+| `amenities`            | 已移除                                 |
+| `amenity_preferences`  | 已移除                                 |
+| `operatorRequired`     | 已移除                                 |
+| `operatorPrefer`       | 已移除                                 |
 
 ### EV
 
-At the EV level, most top-level fields have moved into a dedicated `vehicle` object.
+在 EV 层级，大多数顶层字段已移入专用的 `vehicle` 对象。
 
-| Field             | Moved to                              |
+| 字段              | 移至                                   |
 | ----------------- | -------------------------------------- |
 | `ev.id`           | `vehicle.id`                     |
 | `battery`         | `vehicle`                        |
@@ -49,22 +49,22 @@ At the EV level, most top-level fields have moved into a dedicated `vehicle` obj
 | `plugs`           | `vehicle.charging.connectors`    |
 | `safeRiskMargin`       | `vehicle.charging.risk_margin`   |
 | `chargeMode`           | `vehicle.charging.mode`          |
-| `bmsConsumption`  | Removed                                |
+| `bmsConsumption`  | 已移除                                 |
 
-### Vehicle load
+### 车辆负载
 
-Vehicle load properties are no longer set in a single place. They're now specified per `origin` and `via` point, giving more granular control over occupant and cargo weight per leg. They live under `properties.vehicle` on each location, and their field names change as follows:
+车辆负载属性不再在单一位置设置。现在它们按每个 `origin` 和 `via` 点分别指定，从而可以按路段更精细地控制乘员和载货重量。它们位于每个位置的 `properties.vehicle` 下，字段名称变更如下：
 
-| Field       | Moved to             |
+| 字段        | 移至                  |
 | ----------- | --------------------- |
-| `occupants` | Unchanged              |
+| `occupants` | 不变                   |
 | `cargo`     | `total_cargo_weight`  |
 
-### Telemetry
+### 遥测
 
-The following telemetry data has moved from the root level into the `vehicle` object.
+以下遥测数据已从根层级移入 `vehicle` 对象。
 
-| Field                 | Moved to        |
+| 字段                  | 移至            |
 | --------------------- | ---------------- |
 | `heading`             | `vehicle`  |
 | `motor_rpm`           | `vehicle`  |
@@ -73,15 +73,15 @@ The following telemetry data has moved from the root level into the `vehicle` ob
 | `tire_pressure`       | `vehicle`  |
 | `vehicle_speed`       | `vehicle`  |
 
-## Highlighted changes
+## 重点变更
 
-A few fields on the `input` argument now have new, more structured shapes. These are covered in more detail below.
+`input` 参数上的一些字段现在具有新的、结构更清晰的形态。下文将更详细地介绍。
 
-### Operator preferences
+### 运营商偏好
 
-Operator preferences are simplified to three levels: `high`, `medium`, and `low`. Each entry — whether ranked, excluded, or avoided — can be scoped to specific countries via the `countries` field. If omitted, all countries are considered.
+运营商偏好被简化为三个级别：`high`、`medium` 和 `low`。每个条目（无论是排名、排除还是避开）都可以通过 `countries` 字段限定到特定国家。如果省略，则会考虑所有国家。
 
-```graphql Operator preferences {{ mark: [6,9,12] }}
+```graphql 运营商偏好 {{ mark: [6,9,12] }}
 input: {
   operators: {
     ranking: {
@@ -104,11 +104,11 @@ input: {
 }
 ```
 
-### Total occupant weight
+### 乘员总重量
 
-A new `total_occupant_weight` field lets you override the default occupant weight, expressed with the new unit object.
+新的 `total_occupant_weight` 字段允许您覆盖默认的乘员重量，使用新的单位对象表示。
 
-```graphql Total occupant weight {{ mark: [6,7,8,9,10] }}
+```graphql 乘员总重量 {{ mark: [6,7,8,9,10] }}
 input: {
   origin: {
     properties: {

@@ -1,27 +1,25 @@
 ---
-title: Truck routing
+title: Lkw-Routing
 date: 01-06-2026
 ---
 
-## Truck routing
+## Lkw-Routing
 
-![Truck routing](../../../assets/changelog/2026/june.jpg)
+![Lkw-Routing](../../../assets/changelog/2026/june.jpg)
 
-We have officially launched our dedicated truck routing engine on the backend. Accessible via a brand-new set of queries and mutations, this standalone API feature factors in weight limits, height clearances, and truck-specific energy consumption models to build dependable commercial routes for heavy electric vehicles.
-
+Wir haben unsere eigene Lkw-Routing-Engine im Backend offiziell gestartet. Diese eigenständige API-Funktion ist über eine völlig neue Reihe von Abfragen und Mutationen verfügbar und berücksichtigt Gewichtsbeschränkungen, Durchfahrtshöhen und lkw-spezifische Energieverbrauchsmodelle, um zuverlässige gewerbliche Routen für schwere Elektrofahrzeuge zu erstellen.
 
 
 <details>
-  <summary>Improvements</summary>
+  <summary>Verbesserungen</summary>
 
-  - Improved validation and diagnostic error reporting when specifying via charging stations in createRoute, returning explicit error codes (`ROUTE_STATION_OUT_OF_SERVICE`, `ROUTE_STATION_INVALID_CHARGER`, and refined `ROUTE_STATION_INVALID_SPEED`) when charging is not possible, and introducing the via_station_below_minimum_power leg warning when available connectors fall below the requested minimum_power threshold.
+  - Verbesserte Validierung und Fehlerdiagnose bei der Angabe von Ladestationen als Via-Punkte in createRoute: Wenn Laden nicht möglich ist, werden explizite Fehlercodes zurückgegeben (`ROUTE_STATION_OUT_OF_SERVICE`, `ROUTE_STATION_INVALID_CHARGER` und das überarbeitete `ROUTE_STATION_INVALID_SPEED`). Zusätzlich wurde die Etappenwarnung via_station_below_minimum_power eingeführt, wenn die verfügbaren Anschlüsse unter dem angeforderten Schwellenwert minimum_power liegen.
 </details>
-
 <details>
-  <summary>Fixes</summary>
+  <summary>Fehlerbehebungen</summary>
 
-  - Fixed an issue where total driving and trip durations (`durations.driving` and `durations.total`) on recommended and alternative routes omitted congestion delays when `traffic_aware` was enabled.
-  - Fixed an issue where routes ending at a charging station recorded an erroneous charging duration on the final leg and added an extra charge stop to the route's total `charges` count.
-  - Fixed an issue where filtering `vehicleList` by `make` or `model` strings containing special characters (such as `Lynk&Co`, `e.GO`, `ID.7`, or `N°4 E-Tense`) returned empty results.
-  - Fixed an issue in `amenityList` where filtered POI search results did not match the station's total amenity count.
+  - Es wurde ein Problem behoben, bei dem die gesamten Fahr- und Fahrtdauern (`durations.driving` und `durations.total`) bei empfohlenen und alternativen Routen Staubedingte Verzögerungen nicht enthielten, wenn `traffic_aware` aktiviert war.
+  - Es wurde ein Problem behoben, bei dem Routen, die an einer Ladestation endeten, auf der letzten Etappe eine fehlerhafte Ladedauer erfassten und die Gesamtzahl `charges` der Route um einen zusätzlichen Ladestopp erhöhten.
+  - Es wurde ein Problem behoben, bei dem das Filtern von `vehicleList` nach `make`- oder `model`-Zeichenfolgen mit Sonderzeichen (wie `Lynk&Co`, `e.GO`, `ID.7` oder `N°4 E-Tense`) leere Ergebnisse lieferte.
+  - Es wurde ein Problem in `amenityList` behoben, bei dem gefilterte POI-Suchergebnisse nicht mit der Gesamtzahl der Ausstattungsmerkmale der Station übereinstimmten.
 </details>

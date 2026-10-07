@@ -1,11 +1,11 @@
 ---
-title: Create isoline
+title: İzoline oluştur
 schemaName: createIsoline
 schemaType: Mutation
 ---
 
-Create a consumption-based isoline by using the createIsoline mutation. This is useful when you want to visualize the area a vehicle can reach from a given point.
+createIsoline mutasyonunu kullanarak tüketime dayalı bir izoline oluşturun. Bu, bir aracın belirli bir noktadan ulaşabileceği alanı görselleştirmek istediğinizde kullanışlıdır.
 
-## Mutation
+## Mutasyon
 
-A `vehicle_id` and `origin` are required to create an isoline. Optionally add `state_of_charge`, `polygon_count`, or other preferences to refine the calculation. The mutation returns an isoline `id`, which can be used to retrieve isoline details or subscribe to updates.
+Bir izoline oluşturmak için bir `vehicle_id` ve `origin` gereklidir. Hesaplamayı iyileştirmek için isteğe bağlı olarak `state_of_charge`, `polygon_count` veya diğer tercihleri ekleyin. Mutasyon, izoline ayrıntılarını almak veya güncellemelere abone olmak için kullanılabilecek bir izoline `id` döndürür.

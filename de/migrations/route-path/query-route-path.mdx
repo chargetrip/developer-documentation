@@ -1,25 +1,25 @@
 ---
 slug: query-route-path
-title: Route path migration guide
+title: Migrationsleitfaden Routenpfad
 migrateBefore: 01-01-2027
 ---
 
 # routePath
 
-Migrate from the legacy Route service to the latest version. The new service delivers a reorganized schema, per-country operator preferences, faster route computation, and greater maintainability.
+Migrieren Sie vom veralteten Route-Service auf die neueste Version. Der neue Service bietet ein neu organisiertes Schema, länderspezifische Betreiberpräferenzen, eine schnellere Routenberechnung und bessere Wartbarkeit.
 
-## Operations
+## Operationen
 
-| Old         | New                                                   |
+| Alt         | Neu                                                   |
 | ----------- | ------------------------------------------------------|
 | `routePath` | [`getRoute`](/api-reference/route/query-get-route)    |
 
-## General schema changes
+## Allgemeine Schemaänderungen
 
-- **Explicit typing**: previously flexible JSON fields are now explicitly typed in the schema to improve structure and validation.
-- **Naming conventions**: fields now use `snake_case` instead of `camelCase`.
-- **Unit support**: numeric inputs now support different unit types, expressed as an object with `value`, `type`, and an optional `source` (`manual`, `telemetry`, or `default`).
+- **Explizite Typisierung**: Zuvor flexible JSON-Felder sind jetzt im Schema explizit typisiert, um Struktur und Validierung zu verbessern.
+- **Namenskonventionen**: Felder verwenden jetzt `snake_case` statt `camelCase`.
+- **Einheitenunterstützung**: Numerische Eingaben unterstützen jetzt verschiedene Einheitentypen, ausgedrückt als Objekt mit `value`, `type` und einer optionalen `source` (`manual`, `telemetry` oder `default`).
 
-## Query changes
+## Änderungen an der Abfrage
 
-The route's path is now already included in the `getRoute` response as `recommended.path_plot`, so a separate query to fetch it is no longer needed.
+Der Pfad der Route ist jetzt bereits in der Antwort von `getRoute` als `recommended.path_plot` enthalten, sodass keine separate Abfrage mehr nötig ist, um ihn abzurufen.

@@ -1,11 +1,11 @@
 ---
-title: Create matched route
+title: 创建匹配路线
 schemaName: createMatchedRoute
 schemaType: Mutation
 ---
 
-Create a route from a sequence of GPS points by using the createMatchedRoute mutation. This is most useful when you already have a route based on your own business rules and want to add charging stops and calculate energy consumption on top of it.
+使用 createMatchedRoute 变更根据一系列 GPS 点创建路线。当您已经根据自己的业务规则拥有一条路线，并希望在其基础上添加充电停靠点并计算能耗时，此操作最为有用。
 
-## Mutation
+## 变更
 
-A `vehicle` and at least two chronological `points` are required to create a matched route. Optionally add `via` points, `departure_time`, `weather`, `driving_preferences`, `operators`, or `alternative_station_radius` to refine the calculation. Set `plan_charging_stops` to find and plan charging stops if the vehicle's state of charge reaches the threshold at any point along the route. The mutation returns a matched route `id`, which can be used to retrieve route details or subscribe to updates.
+创建匹配路线需要 `vehicle` 和至少两个按时间顺序排列的 `points`。您还可以添加 `via` 点、`departure_time`、`weather`、`driving_preferences`、`operators` 或 `alternative_station_radius` 来优化计算。设置 `plan_charging_stops` 后，当车辆的电量状态在路线上任意位置达到阈值时，将查找并规划充电停靠点。该变更会返回匹配路线的 `id`，可用于获取路线详情或订阅更新。

@@ -1,115 +1,117 @@
 ---
-title: Filters
+title: 筛选
 tag: Rest
 ---
 
-Filters allow applications to refine the charging stations returned by the Tile Service API. Beyond simply hiding non-matching results, certain filters also transform the station data to ensure the response is contextually relevant.
+筛选让应用可以细化 Tile Service API 返回的充电站。除了简单地隐藏不匹配的结果外，某些筛选还会转换充电站数据，以确保响应与上下文相关。
 
-## How filters affect data
+## 筛选如何影响数据
 
-When a request includes filters, the Tile service performs two distinct operations:
+当请求包含筛选时，Tile 服务会执行两个不同的操作：
 
-1. **Exclusion of non-matching stations**
-   Any station that does not meet the specified filtering criteria is removed from the response entirely. This operation occurs when station-level filters or EVSE-level filters are used.
-2. **Data transformation**
-   When particular filtering parameters are provided, the Tile Service recalculates some of the station’s dynamic properties. This operation occurs when EVSE-level filters are used.
+1. **排除不匹配的充电站**
+   任何不满足指定筛选条件的充电站都会从响应中完全移除。使用充电站级别筛选或 EVSE 级别筛选时会执行此操作。
+2. **数据转换**
+   当提供特定的筛选参数时，Tile 服务会重新计算充电站的某些动态属性。使用 EVSE 级别筛选时会执行此操作。
 
-## Implementation
+## 实现
 
-Filter parameters can be appended to the request URL as query strings to any of the Tile Service endpoints (MVT or JSON or Count). If no filters are applied, all available charging stations are returned, and no data transformations are done.
+筛选参数可以作为查询字符串附加到请求 URL 上，适用于任何 Tile 服务端点（MVT、JSON 或 Count）。如果未应用任何筛选，则返回所有可用的充电站，并且不会进行任何数据转换。
 
 ```bash Tile / Filter / Example
 https://api.chargetrip.io/v2/station/..../?{filter_1}&{filter_2}&{filter_n}
 ```
 
-## Levels
+## 级别
 
-Filters can exist on two levels. EVSE level or station level. Each with their own impact and results as described below.
+筛选可以存在于两个级别：EVSE 级别或充电站级别，各自的影响和结果如下所述。
 
-### Station level
+### 充电站级别
 
-Filters that evaluate the station's global attributes. These filters are exclusion-only: exclude non-matching stations but never modify the returned data fields.
+评估充电站整体属性的筛选。这些筛选仅用于排除：排除不匹配的充电站，但绝不会修改返回的数据字段。
 
-`amenities` · `enum` · [Show example url](tip:https://api.chargetrip.io/v2/station?preferred_operators=true;;true)
-: Filter to include only stations that provide the specified amenities.
+`amenities` · `enum` · [显示示例 URL](tip:https://api.chargetrip.io/v2/station?amenities[]=HOTEL)
+: 筛选，仅包含提供指定设施的充电站。
 : `HOTEL`, `SHOPPING`, `BATHROOM`, `SUPERMARKET`, `PLAYGROUND`, `PHARMACY`, `MUSEUM`, `COFFEE`, `RESTAURANT`
 
-`preferred_operators` · `boolean` · [Show example url](tip:https://api.chargetrip.io/v2/station?preferred_operators=true;;true)
-: Filter to include only stations operated by operators configured as preferred. Preferred operators can be set in project settings within the dashboard.
+`preferred_operators` · `boolean` · [显示示例 URL](tip:https://api.chargetrip.io/v2/station?preferred_operators=true)
+: 筛选，仅包含由配置为首选的运营商运营的充电站。可以在 Dashboard 的项目设置中设置首选运营商。
 : `true`, `false`
 
-`truck_dedicated` · `boolean` · [Show example url](tip:https://api.chargetrip.io/v2/station?preferred_operators=true;;true)
-: Filter to include only stations dedicated or primarily intended for truck charging. **Only applicable if the Eco-Movement station database is used; otherwise, it is ignored.**
+`truck_dedicated` · `boolean` · [显示示例 URL](tip:https://api.chargetrip.io/v2/station?truck_dedicated=true)
+: 筛选，仅包含专用于或主要用于货车充电的充电站。**仅在使用 Eco-Movement 充电站数据库时适用；否则将被忽略。**
 : `true`, `false`
 
-### EVSE level
+### EVSE 级别
 
-Filters that evaluate the station’s specific charging capabilities. These filters perform exclusion and [transformation](/api-reference/tiles/filters#data-transformation-examples): non-matching stations are excluded, and matching stations have their dynamic fields recalculated.
+评估充电站具体充电能力的筛选。这些筛选会执行排除和[转换](/api-reference/tiles/filters#数据转换示例)：不匹配的充电站被排除，匹配的充电站其动态字段会被重新计算。
 
-`connectors` · `enum` · [Show example url](tip:https://api.chargetrip.io/v2/station?preferred_operators=true;;true)
-: Filter to include only stations that have EVSEs with the specified connector types. Accepts an array of strings with any OCPI 2.2.1 connector values.
+`connectors` · `enum` · [显示示例 URL](tip:https://api.chargetrip.io/v2/station?connectors[]=CHADEMO)
+: 筛选，仅包含具有指定连接器类型 EVSE 的充电站。接受包含任意 OCPI 2.2.1 连接器值的字符串数组。
 : `CHADEMO`, `DOMESTIC_A`, `DOMESTIC_B`, `DOMESTIC_C`, `DOMESTIC_D`, `DOMESTIC_E`, `DOMESTIC_F`, `DOMESTIC_G`, `DOMESTIC_H`, `DOMESTIC_I`, `DOMESTIC_J`, `DOMESTIC_K`,
 `DOMESTIC_L`, `DOMESTIC_M`, `DOMESTIC_N`, `DOMESTIC_O`, `IEC_60309_2_single_16`, `IEC_60309_2_three_16`, `IEC_60309_2_three_32`, `IEC_60309_2_three_64`, `IEC_62196_T1`,
 `IEC_62196_T1_COMBO`, `IEC_62196_T2`, `IEC_62196_T2_COMBO`, `IEC_62196_T3A`, `IEC_62196_T3C`, `PANTOGRAPH_BOTTOM_UP`, `PANTOGRAPH_TOP_DOWN`, `TESLA_R`, `TESLA_S`, `GB_T`,
 `CHAOJI`, `NEMA_5_20`, `NEMA_6_30`, `NEMA_6_50`, `NEMA_10_30`, `NEMA_10_50`, `NEMA_14_30`, `NEMA_14_50`
 
-## Examples
+## 示例
 
-To display the behaviour, examples have been provided for filtering and data transformations below.
+为展示其行为，下面提供了筛选和数据转换的示例。
 
-### Filter examples
+### 筛选示例
 
-Filters can exist on two levels. EVSE level or station level. Each with their own impact and results as described below.
+筛选可以存在于两个级别：EVSE 级别或充电站级别，各自的影响和结果如下所述。
 
 <details>
-  <summary>Same filter type, different values</summary>
-  ```bash Example URL
-  https://api.chargetrip.io/v2/station?connectors[]=IEC_62196_T1_COMBO&connectors[]=CHADEMO
-  ```
+  <summary>相同的筛选类型，不同的值</summary>
 
-  | Station | Properties                                                                            | Matches                                                                |
+```bash Example URL
+https://api.chargetrip.io/v2/station?connectors[]=IEC_62196_T1_COMBO&connectors[]=CHADEMO
+```
+
+  | 充电站 | 属性                                                                            | 是否匹配                                                                |
   |---------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------|
-  | A       | 2x `IEC_62196_T1_COMBO` <br /> 1x `CHAdeMO` <br /> 1x `TOILET` <br /> 1x `RESTAURANT` | [true](tip:Matching reason;;Has CHAdeMO charger)                       |
-  | B       | 1x `IEC_62196_T1_COMBO` <br /> 1x `IEC_62196_T2_COMBO` <br /> 1x `RESTAURANT`         | [true](tip:Title;;The description text;;optional-copy-value)           |
-  | C       | 2x `IEC_62196_T2_COMBO` <br /> 1x `TOILET`                                            | [false](tip:Title;;The description text;;optional-copy-value) |
+  | A       | 2x `IEC_62196_T1_COMBO` <br /> 1x `CHAdeMO` <br /> 1x `TOILET` <br /> 1x `RESTAURANT` | [true](tip:匹配原因;;具有 CHAdeMO 充电桩)                       |
+  | B       | 1x `IEC_62196_T1_COMBO` <br /> 1x `IEC_62196_T2_COMBO` <br /> 1x `RESTAURANT`         | [true](tip:标题;;描述文本;;optional-copy-value)           |
+  | C       | 2x `IEC_62196_T2_COMBO` <br /> 1x `TOILET`                                            | [false](tip:标题;;描述文本;;optional-copy-value) |
 </details>
 
 <details>
-  <summary>Multiple different filter types</summary>
-  ```bash Example URL
-  https://api.chargetrip.io/v2/station?minimum_power=120&evse_statuses[]=AVAILABLE&connectors[]=IEC_62196_T1_COMBO
-  ```
-  | Station | Properties                                                                            | Matches                                                                |
+  <summary>多种不同的筛选类型</summary>
+
+```bash Example URL
+https://api.chargetrip.io/v2/station?minimum_power=120&evse_statuses[]=AVAILABLE&connectors[]=IEC_62196_T1_COMBO
+```
+  | 充电站 | 属性                                                                            | 是否匹配                                                                |
   |---------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------|
-  | A       | 2x `IEC_62196_T1_COMBO` <br /> 1x `CHAdeMO` <br /> 1x `TOILET` <br /> 1x `RESTAURANT` | [true](tip:Title;;The description text;;optional-copy-value)           |
-  | B       | 1x `IEC_62196_T1_COMBO` <br /> 1x `IEC_62196_T2_COMBO` <br /> 1x `RESTAURANT`         | [true](tip:Title;;The description text;;optional-copy-value)           |
-  | C       | 2x `IEC_62196_T2_COMBO` <br /> 1x `TOILET`                                            | [false](tip:Title;;The description text;;optional-copy-value)          |
+  | A       | 2x `IEC_62196_T1_COMBO` <br /> 1x `CHAdeMO` <br /> 1x `TOILET` <br /> 1x `RESTAURANT` | [true](tip:标题;;描述文本;;optional-copy-value)           |
+  | B       | 1x `IEC_62196_T1_COMBO` <br /> 1x `IEC_62196_T2_COMBO` <br /> 1x `RESTAURANT`         | [true](tip:标题;;描述文本;;optional-copy-value)           |
+  | C       | 2x `IEC_62196_T2_COMBO` <br /> 1x `TOILET`                                            | [false](tip:标题;;描述文本;;optional-copy-value)          |
 </details>
 
-### Data transformation examples
+### 数据转换示例
 
-Some outputs are recalculated when EVSE-Level filters are applied. These fields are "transformed" to ignore connectors that don't match the user's search criteria.
-These “dynamic” output fields are `connector_maximum_power` and `evse_status_*`.
+应用 EVSE 级别筛选时，某些输出会被重新计算。这些字段会被“转换”，以忽略与用户搜索条件不匹配的连接器。
+这些“动态”输出字段是 `connector_maximum_power` 和 `evse_status_*`。
 
 <details>
-    <summary>Same filter type, different values</summary>
-    The request includes CHADEMO connector filter. The station is included because it has a CHADEMO connector, but the dynamic fields are transformed to ignore the Combo Type 1  chargers.
+  <summary>相同的筛选类型，不同的值</summary>
+  请求包含 CHADEMO 连接器筛选。该充电站因为具有 CHADEMO 连接器而被包含，但其动态字段会被转换，以忽略 Combo Type 1 充电桩。
 
-    ```bash Example URL
-    https://api.chargetrip.io/v2/station?connectors[]=IEC_62196_T1_COMBO&connectors[]=CHADEMO
-    ```
+```bash Example URL
+https://api.chargetrip.io/v2/station?connectors[]=IEC_62196_T1_COMBO&connectors[]=CHADEMO
+```
 
-    ```json Response
-    {
-        "id": "station_a",
-        // Static: Remains 150 kW (This represents the station maximum power across all conectors)
-        "station_maximum_power": 150,
-        // Dynamic: Adjusted to 100 kW (Max power of the CHADEMO connector)
-        "connector_maximum_power": 100,
-        // Dynamic: Counts the 1 CHADEMO chargers
-        "evse_status_out_of_order": 0
-        // Dynamic: 0, because the charging Type 1 plugs are filtered out
-        "evse_status_available": 1,
-    }
-    ```
+```json Response
+{
+  "id": "station_a",
+  // Static: Remains 150 kW (This represents the station maximum power across all connectors)
+  "station_maximum_power": 150,
+  // Dynamic: Adjusted to 100 kW (Max power of the CHADEMO connector)
+  "connector_maximum_power": 100,
+  // Dynamic: Counts the 1 CHADEMO chargers
+  "evse_status_out_of_order": 0,
+  // Dynamic: 0, because the charging Type 1 plugs are filtered out
+  "evse_status_available": 1
+}
+```
 </details>

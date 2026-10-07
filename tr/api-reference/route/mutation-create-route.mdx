@@ -1,12 +1,12 @@
 ---
-title: Create route
+title: Rota oluştur
 schemaName: createRoute
 schemaType: Mutation
 ---
 
-Create a new route by using the createRoute mutation. This is useful when you want to calculate charging stops, energy consumption, and drive time between an origin and a destination.
+createRoute mutasyonunu kullanarak yeni bir rota oluşturun. Bu, bir başlangıç noktası ile bir varış noktası arasındaki şarj duraklarını, enerji tüketimini ve sürüş süresini hesaplamak istediğinizde kullanışlıdır.
 
-## Mutation
+## Mutasyon
 
-A `vehicle`, `origin`, and `destination` are required to create a route. Optionally add `via` points, `operators`, `weather`, or other preferences to refine the calculation. The mutation returns a route `id`, which can be used to retrieve route details, emissions, or amenities along the way.
+Bir rota oluşturmak için bir `vehicle`, `origin` ve `destination` gereklidir. Hesaplamayı iyileştirmek için isteğe bağlı olarak `via` noktaları, `operators`, `weather` veya diğer tercihleri ekleyin. Mutasyon, rota ayrıntılarını, emisyonları veya yol boyunca olanakları almak için kullanılabilecek bir rota `id` döndürür.
 

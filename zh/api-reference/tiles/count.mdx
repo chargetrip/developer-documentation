@@ -1,16 +1,16 @@
 ---
-title: Count
+title: 计数
 tag: Rest
 ---
 
-The station count endpoint returns the total number of charging stations, either globally or filtered by specific criteria. This service returns a static count and does not adjust based on map zoom levels.
+充电站计数端点返回充电站的总数。
 
-## Setup
-To retrieve the station count, make a `GET` request to the following URL:
+## 设置
+要获取充电站数量，请向以下 URL 发送 `GET` 请求：
 
 ```bash Count / Base URL
-https://api.chargetrip.io/v2/station/count/
+https://api.chargetrip.io/v2/station/count
 ```
 
-### Filtering
-Use the `filter` query parameter to narrow the count down based on specific criteria. See the [filters documentation](/api-reference/tiles/filters) for more information.
+### 筛选
+使用 `filter` 查询参数，根据特定条件缩小计数范围。更多信息请参见[筛选文档](/api-reference/tiles/filters)。

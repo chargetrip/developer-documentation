@@ -1,63 +1,63 @@
 ---
-title: Rate limiting
+title: Hız sınırlaması
 ---
 
-The API rate limits requests using a <a href="https://en.wikipedia.org/wiki/Leaky_bucket" target="_blank" rel="noopener noreferrer">leaky bucket algorithm</a>. Each request costs a number of units, and those units leak out of the bucket at a constant rate. This keeps traffic flowing at a steady rate while still allowing short bursts.
+API, istekleri <a href="https://en.wikipedia.org/wiki/Leaky_bucket" target="_blank" rel="noopener noreferrer">sızdıran kova algoritması</a> ile hız sınırlamasına tabi tutar. Her istek belirli sayıda birim maliyetlidir ve bu birimler kovadan sabit bir hızda sızar. Bu sayede trafik düzenli bir hızda akarken kısa süreli yoğunluklara da izin verilir.
 
 ## GraphQL API
 
-Rate limiting for the GraphQL API is based on the cost of each request, rather than a fixed number of requests. The sections below cover best practices for keeping that cost down, and how to read your current rate limit status.
+GraphQL API için hız sınırlaması, sabit bir istek sayısı yerine her isteğin maliyetine dayanır. Aşağıdaki bölümlerde bu maliyeti düşük tutmaya yönelik en iyi uygulamalar ve mevcut hız sınırı durumunuzu nasıl okuyacağınız anlatılmaktadır.
 
-### Best practices
+### En iyi uygulamalar
 
-- Use subscriptions instead of polling by using queries to know when data changes.
-- Query only the fields you need, and use `filter` to narrow down list queries.
-- List queries return up to 100 records per page, but a larger page costs more than a smaller one. Fetching 100 records in one request costs more than fetching 10, so request fewer records rather than more. See [pagination](/api-reference/api/pagination) for details.
-- If a request is rejected with a `429` error, your bucket is full. Stop sending requests and only make new requests once the time given by `reset` has passed.
+- Verinin ne zaman değiştiğini öğrenmek için sorgularla yoklama (polling) yapmak yerine abonelikleri kullanın.
+- Yalnızca ihtiyacınız olan alanları sorgulayın ve liste sorgularını daraltmak için `filter` kullanın.
+- Liste sorguları sayfa başına en fazla 100 kayıt döndürür, ancak daha büyük bir sayfa daha küçük bir sayfadan daha pahalıdır. Tek bir istekte 100 kayıt getirmek 10 kayıt getirmekten daha maliyetlidir; bu nedenle daha fazla değil, daha az kayıt isteyin. Ayrıntılar için [sayfalandırma](/api-reference/api/pagination) bölümüne bakın.
+- Bir istek `429` hatasıyla reddedilirse kovanız doludur. İstek göndermeyi durdurun ve yalnızca `reset` ile belirtilen süre geçtikten sonra yeni istekler yapın.
 
-### Rate limit
+### Hız sınırı
 
-To protect the API from queries that are too complex or resource intensive, each request is assigned a cost based on the amount of requested data. Every response to a valid request, or a request that fails business validation, includes an `extensions.cost` object with the cost of the request and the state of your rate limit. It is omitted entirely when a request fails GraphQL schema validation.
+API'yi çok karmaşık veya kaynak yoğun sorgulardan korumak için her isteğe, istenen veri miktarına göre bir maliyet atanır. Geçerli bir isteğe verilen veya iş doğrulamasında başarısız olan bir isteğe verilen her yanıt, isteğin maliyetini ve hız sınırınızın durumunu içeren bir `extensions.cost` nesnesi içerir. Bir istek GraphQL şema doğrulamasında başarısız olursa bu nesne tamamen çıkarılır.
 
 `cost` · <span class="text-muted">Integer</span>
-: The cost, in units, of the current request.
+: Geçerli isteğin birim cinsinden maliyeti.
 
 `limit` · <span class="text-muted">Integer</span>
-: The maximum cost, in units, allowed in the current rate limit window.
+: Geçerli hız sınırı penceresinde izin verilen birim cinsinden maksimum maliyet.
 
 `used` · <span class="text-muted">Integer</span>
-: How many units have already been consumed in this window.
+: Bu pencerede şimdiye kadar kaç birim tüketildiği.
 
 `remaining` · <span class="text-muted">Integer</span>
-: How many units you still have available before hitting the limit.
+: Sınıra ulaşmadan önce kaç birim hakkınızın kaldığı.
 
 `reset` · <span class="text-muted">Integer</span>
-: A UNIX timestamp, in seconds, indicating when the quota refreshes.
+: Kotanın ne zaman yenileneceğini gösteren, saniye cinsinden bir UNIX zaman damgası.
 
 ## REST API
 
-Rate limiting for the REST API applies to the [tile service](/api-reference/tiles/mvt). Unlike the GraphQL API, rate limit status is returned through HTTP response headers, and each request has a fixed cost of 1 unit. These headers are returned on every request, including failed ones.
+REST API için hız sınırlaması [tile servisine](/api-reference/tiles/mvt) uygulanır. GraphQL API'nin aksine hız sınırı durumu HTTP yanıt başlıkları üzerinden döndürülür ve her isteğin maliyeti sabit olarak 1 birimdir. Bu başlıklar, başarısız olanlar dahil her istekte döndürülür.
 
 `x-ratelimit-cost` · <span class="text-muted">Integer</span>
-: The cost, in units, of the current request. Always `1` for REST requests.
+: Geçerli isteğin birim cinsinden maliyeti. REST istekleri için her zaman `1`.
 
 `x-ratelimit-limit` · <span class="text-muted">Integer</span>
-: The maximum cost, in units, allowed in the current rate limit window.
+: Geçerli hız sınırı penceresinde izin verilen birim cinsinden maksimum maliyet.
 
 `x-ratelimit-used` · <span class="text-muted">Integer</span>
-: How many units have already been consumed in this window.
+: Bu pencerede şimdiye kadar kaç birim tüketildiği.
 
 `x-ratelimit-remaining` · <span class="text-muted">Integer</span>
-: How many units you still have available before hitting the limit.
+: Sınıra ulaşmadan önce kaç birim hakkınızın kaldığı.
 
 `x-ratelimit-reset` · <span class="text-muted">Integer</span>
-: A UNIX timestamp, in seconds, indicating when the quota refreshes.
+: Kotanın ne zaman yenileneceğini gösteren, saniye cinsinden bir UNIX zaman damgası.
 
-## Current limits
+## Mevcut sınırlar
 
-Rate limits are applied per customer, on a one minute window. There is no default limit in place yet. Limits are configured individually per customer until default limits are introduced in 2027.
+Hız sınırları müşteri başına, bir dakikalık pencerede uygulanır. Henüz varsayılan bir sınır yoktur. Varsayılan sınırlar 2027'de getirilene kadar sınırlar müşteri bazında tek tek yapılandırılır.
 
-Some queries and mutations also have individual limits that are lower than your overall limit. These are set on a per product basis, and sometimes on a per request basis, rather than globally.
+Bazı sorguların ve mutasyonların, genel sınırınızdan daha düşük olan kendi sınırları da vardır. Bunlar genel olarak değil, ürün bazında ve bazen istek bazında belirlenir.
 
-> [!WARNING] No limit set
-> If no limit is set for your account, `limit`, `remaining`, and `reset` are returned as `null`. `cost` and `used` are still tracked and returned.
+> [!WARNING] Sınır belirlenmemiş
+> Hesabınız için bir sınır belirlenmemişse `limit`, `remaining` ve `reset` `null` olarak döndürülür. `cost` ve `used` yine de izlenir ve döndürülür.

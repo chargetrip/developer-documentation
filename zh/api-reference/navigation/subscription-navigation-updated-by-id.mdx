@@ -1,14 +1,14 @@
 ---
-title: Navigation updated by ID
+title: 导航更新
 schemaName: navigation
 schemaType: Subscription
 ---
 
-Once you have a navigation session `id` from the [startNavigation mutation](/api-reference/navigation/mutation-start-navigation), subscribe to it to receive real-time status and update details as the driver progresses along the route.
+通过 [startNavigation 变更](/api-reference/navigation/mutation-start-navigation)获得导航会话的 `id` 后，订阅该会话，即可在驾驶员沿路线行进时实时接收状态和更新详情。
 
-> [!TIP] Stay subscribed
-> Use this subscription at all times to avoid missing navigation session updates.
+> [!TIP] 保持订阅
+> 请始终使用此订阅，以免错过导航会话的更新。
 
-## Subscription
+## 订阅
 
-A navigation session `id` is required to subscribe to its updates. The `id` can be obtained through the [startNavigation mutation](/api-reference/navigation/mutation-start-navigation). Use `last_change.type` to see why a session updated, for example `route_updated` or `next_station_availability_updated`. `meta.updated_at` changes whenever the route needs to be re-rendered, such as after a [recalculateNavigation mutation](/api-reference/navigation/mutation-recalculate-navigation) call.
+订阅导航会话的更新需要其 `id`。`id` 可通过 [startNavigation 变更](/api-reference/navigation/mutation-start-navigation)获取。使用 `last_change.type` 可查看会话更新的原因，例如 `route_updated` 或 `next_station_availability_updated`。每当需要重新渲染路线时（例如调用 [recalculateNavigation 变更](/api-reference/navigation/mutation-recalculate-navigation)之后），`meta.updated_at` 都会发生变化。

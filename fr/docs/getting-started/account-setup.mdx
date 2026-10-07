@@ -1,27 +1,26 @@
 ---
-title: Set up your account
-tag: Setup
+title: Configurer votre compte
+tag: Configuration
 ---
 
-To start using the API, create an account. Once your account is set up, you can start using the API directly against the production environment.
+Pour commencer à utiliser l'API, créez un compte. Une fois votre compte configuré, vous pouvez utiliser l'API directement sur l'environnement de production.
 
-## Set up your environment
+## Configurer votre environnement
 
-The dashboard is organized into three levels, from broadest to most specific.
+Le dashboard est organisé en trois niveaux, du plus large au plus spécifique.
 
-1. **Workspace**
-   A workspace lets your team members work together on the same projects, for example when a country manager needs to manage operator preferences and a developer needs access to the API keys. A workspace is also the billable relationship with us, so multiple workspaces means multiple contracts.
-2. **Project**
-   Within a workspace, set up a project. Projects are created based on operator preferences, station database, and vehicle selections. If you have use cases that need a different setup, create a separate project for each.
-3. **App**
-   If you share these settings but still want separate analytics or security measures, for example when you build an iOS and an Android app, create different apps within a project.
+1. **Espace de travail**
+   Un espace de travail permet aux membres de votre équipe de collaborer sur les mêmes projets, par exemple lorsqu'un responsable pays doit gérer les préférences d'opérateur et qu'un développeur a besoin d'accéder aux clés d'API. Un espace de travail constitue également la relation contractuelle facturable avec nous : plusieurs espaces de travail signifient donc plusieurs contrats.
+2. **Projet**
+   Au sein d'un espace de travail, configurez un projet. Les projets sont créés en fonction des préférences d'opérateur, de la base de données de stations et des sélections de véhicules. Si certains cas d'usage nécessitent une configuration différente, créez un projet distinct pour chacun.
+3. **Application**
+   Si vous partagez ces paramètres mais souhaitez tout de même des analyses ou des mesures de sécurité séparées, par exemple lorsque vous développez une application iOS et une application Android, créez différentes applications au sein d'un projet.
 
-See [send requests](/docs/getting-started/api-request) for how to use your project and app ids to authenticate requests.
+Consultez [envoyer des requêtes](/docs/getting-started/api-request) pour savoir comment utiliser les identifiants de votre projet et de votre application afin d'authentifier les requêtes.
 
-## Keep your account safe
+## Garder votre compte en sécurité
 
-After you set up your account, you'll want to keep it safe. Here are our recommendations:
+Une fois votre compte configuré, vous voudrez le protéger. Voici nos recommandations :
 
-- **Protect your credentials**: Never commit an API key to source control, store it in a secrets vault instead, and scope it to only the access it needs since our keys can be restricted.
-- **Pick a password you don't reuse elsewhere**: A password shared across services means a breach on another site can be used to break into this one too. Update your password from your account settings in the dashboard whenever needed.
-- **Grant access through team members instead of sharing logins**: Invite colleagues to your workspace with only the access they need, rather than handing out your own credentials.
+- **Protégez vos identifiants** : ne commitez jamais une clé d'API dans le contrôle de version, stockez-la plutôt dans un coffre de secrets et limitez-la aux seuls accès nécessaires, car nos clés peuvent être restreintes.
+- **Accordez l'accès via des membres d'équipe plutôt qu'en partageant des identifiants de connexion** : invitez vos collègues dans votre espace de travail avec uniquement les accès dont ils ont besoin, plutôt que de leur transmettre vos propres identifiants.

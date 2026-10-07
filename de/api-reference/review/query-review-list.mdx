@@ -1,11 +1,11 @@
 ---
-title: Review list
+title: Bewertungsliste
 schemaName: reviewList
 schemaType: Query
 ---
 
-Every station can be accompanied by user reviews. Query for properties such as rating and message, or receive data about the EV that was used to charge. Reviews are scoped to a single station database and can't be used across different projects.
+Jede Station kann mit Nutzerbewertungen versehen sein. Fragen Sie Eigenschaften wie Bewertung und Nachricht ab oder erhalten Sie Daten zum EV, mit dem geladen wurde. Bewertungen sind auf eine einzelne Stationsdatenbank beschränkt und können nicht projektübergreifend verwendet werden.
 
 ## Query
 
-A station `id` is required to get its reviews. The `id` can be obtained through either a [route](/api-reference/route/query-get-route), the [tile service](/api-reference/tiles/mvt), or the [station around query](/api-reference/station/query-station-around). Use the `size` and `page` arguments to [paginate](/docs/pagination) through them.
+Zum Abrufen der Bewertungen einer Station ist deren `id` erforderlich. Die `id` erhalten Sie entweder über eine [Route](/api-reference/route/query-get-route), den [Kachel-Service](/api-reference/tiles/mvt) oder die [Query stationAround](/api-reference/station/query-station-around). Verwenden Sie die Argumente `size` und `page`, um die Ergebnisse zu [paginieren](/api-reference/api/pagination).

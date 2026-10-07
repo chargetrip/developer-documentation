@@ -1,49 +1,49 @@
 ---
 slug: route-details
-title: Route details migration guide
+title: Guide de migration des détails de l'itinéraire
 migrateBefore: 01-01-2027
 ---
 
-# Route details
+# Détails de l'itinéraire
 
-Migrate from the legacy Route service to the latest version. The new service delivers a reorganized schema, per-country operator preferences, faster route computation, and greater maintainability.
+Migrez de l'ancien service Route vers la dernière version. Le nouveau service offre un schéma réorganisé, des préférences d'opérateur par pays, un calcul d'itinéraire plus rapide et une meilleure maintenabilité.
 
-## Operations
+## Opérations
 
-| Old                | New                                                   |
+| Ancien             | Nouveau                                               |
 | ------------------ | ------------------------------------------------------|
 | `route`            | [`getRoute`](/api-reference/route/query-get-route)     |
 | `routeUpdatedById`  | [`route`](/api-reference/route/subscription-route)     |
 
-## General schema changes
+## Changements généraux du schéma
 
-- **Explicit typing**: previously flexible JSON fields are now explicitly typed in the schema to improve structure and validation.
-- **Naming conventions**: fields now use `snake_case` instead of `camelCase`.
-- **Unit support**: numeric inputs now support different unit types, expressed as an object with `value`, `type`, and an optional `source` (`manual`, `telemetry`, or `default`).
+- **Typage explicite** : les champs JSON auparavant flexibles sont désormais explicitement typés dans le schéma pour améliorer la structure et la validation.
+- **Conventions de nommage** : les champs utilisent désormais `snake_case` au lieu de `camelCase`.
+- **Prise en charge des unités** : les entrées numériques prennent désormais en charge différents types d'unités, exprimées sous la forme d'un objet avec `value`, `type` et une `source` facultative (`manual`, `telemetry` ou `default`).
 
-## Query and subscription changes
+## Changements de requête et de souscription
 
-Field naming and grouping have been revised, and redundant fields have been removed. The response now includes the original input enriched with defaults, so it can be reused for future route recalculations.
+Le nommage et le regroupement des champs ont été revus, et les champs redondants ont été supprimés. La réponse inclut désormais l'entrée d'origine enrichie des valeurs par défaut, afin de pouvoir la réutiliser pour de futurs recalculs d'itinéraire.
 
-### Top level
+### Niveau supérieur
 
-At the top level, most fields move under `recommended`, and the `ev`, `telemetry`, and `routeRequest` inputs are folded into a single `request_input` object.
+Au niveau supérieur, la plupart des champs passent sous `recommended`, et les entrées `ev`, `telemetry` et `routeRequest` sont regroupées dans un seul objet `request_input`.
 
-| Field          | Moved to               |
+| Champ          | Déplacé vers           |
 | -------------- | ---------------------- |
 | `route`        | `recommended`          |
-| `alternatives` | Removed                |
+| `alternatives` | Supprimé               |
 | `ev`           | `request_input`        |
 | `telemetry`    | `request_input`        |
 | `routeRequest` | `request_input`        |
 | `app`          | `meta.app_id`          |
-| `status`       | Unchanged              |
+| `status`       | Inchangé               |
 
-### Route
+### Itinéraire
 
-At the route level, most fields move under `recommended`, keeping their own names, alongside a few explicit renames.
+Au niveau de l'itinéraire, la plupart des champs passent sous `recommended` en conservant leur nom, avec quelques renommages explicites.
 
-| Field                 | Moved to                             |
+| Champ                 | Déplacé vers                         |
 | --------------------- | ------------------------------------ |
 | `rangeStart*`         | `range_at_origin`                    |
 | `rangeEnd*`           | `range_at_destination`               |
@@ -55,30 +55,30 @@ At the route level, most fields move under `recommended`, keeping their own name
 | `pathPlot`            | `recommended.path_plot`              |
 | `legs`                | `recommended.legs`                   |
 | `tags`                | `recommended.tags`                   |
-| `instructions`        | Removed                              |
-| `amenityRanking`      | Removed                              |
+| `instructions`        | Supprimé                             |
+| `amenityRanking`      | Supprimé                             |
 | `stationsAlongRoute`  | `recommended.alternative_stations`   |
 
-### Legs
+### Tronçons
 
-At the leg level, ranges follow the same renaming as the route, and occupant and cargo details move onto each leg's `origin` and `via` location properties.
+Au niveau du tronçon, les autonomies suivent le même renommage que pour l'itinéraire, et les détails sur les occupants et la cargaison passent aux propriétés de localisation `origin` et `via` de chaque tronçon.
 
-| Field         | Moved to                               |
+| Champ         | Déplacé vers                           |
 | ------------- | --------------------------------------- |
 | `rangeStart*` | `range_at_origin`                       |
 | `rangeEnd*`   | `range_at_destination`                  |
 | `steps`       | `sections`                              |
 | `stationId`   | `recommended.legs.station.station_id`   |
 
-Legs also gain a new `range_after_charge` field.
+Les tronçons gagnent également un nouveau champ `range_after_charge`.
 
-## Highlighted changes
+## Changements mis en avant
 
-The response also introduces a new, more structured shape for route sections. It's covered in more detail below.
+La réponse introduit aussi une nouvelle forme, plus structurée, pour les sections d'itinéraire. Elle est détaillée ci-dessous.
 
 ### Sections
 
-Steps have been replaced with sections, which provide more granular information, including origin and destination details for each section.
+Les étapes (steps) ont été remplacées par des sections, qui fournissent des informations plus fines, notamment les détails d'origine et de destination de chaque section.
 
 ```graphql Sections {{ mark: [1,13,14,26,27] }}
 sections {

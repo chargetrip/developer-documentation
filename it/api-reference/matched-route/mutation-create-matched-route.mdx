@@ -1,11 +1,11 @@
 ---
-title: Create matched route
+title: Crea percorso associato
 schemaName: createMatchedRoute
 schemaType: Mutation
 ---
 
-Create a route from a sequence of GPS points by using the createMatchedRoute mutation. This is most useful when you already have a route based on your own business rules and want to add charging stops and calculate energy consumption on top of it.
+Crea un percorso a partire da una sequenza di punti GPS usando la mutation createMatchedRoute. È particolarmente utile quando hai già un percorso basato sulle tue regole di business e vuoi aggiungere tappe di ricarica e calcolare il consumo energetico su di esso.
 
 ## Mutation
 
-A `vehicle` and at least two chronological `points` are required to create a matched route. Optionally add `via` points, `departure_time`, `weather`, `driving_preferences`, `operators`, or `alternative_station_radius` to refine the calculation. Set `plan_charging_stops` to find and plan charging stops if the vehicle's state of charge reaches the threshold at any point along the route. The mutation returns a matched route `id`, which can be used to retrieve route details or subscribe to updates.
+Per creare un percorso associato sono necessari un `vehicle` e almeno due `points` in ordine cronologico. Facoltativamente aggiungi punti `via`, `departure_time`, `weather`, `driving_preferences`, `operators` o `alternative_station_radius` per affinare il calcolo. Imposta `plan_charging_stops` per trovare e pianificare le tappe di ricarica se lo stato di carica del veicolo raggiunge la soglia in un qualsiasi punto del percorso. La mutation restituisce un `id` del percorso associato, che può essere usato per recuperare i dettagli del percorso o per iscriversi agli aggiornamenti.

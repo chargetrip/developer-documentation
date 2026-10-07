@@ -1,12 +1,12 @@
 ---
-title: Amenity list
+title: Olanak listesi
 schemaName: amenityList
 schemaType: Query
 ---
 
-Get a list of amenities available around a specific station by using the amenityList query. This is useful when you want to display nearby restaurants, shops, or other facilities while a vehicle is charging.
+amenityList sorgusunu kullanarak belirli bir istasyonun çevresindeki olanakların listesini alın. Bu, bir araç şarj olurken yakındaki restoranları, mağazaları veya diğer tesisleri göstermek istediğinizde kullanışlıdır.
 
-## Query
+## Sorgu
 
-A station `id` is required to get its amenities. The `id` can be obtained through either a [route](/api-reference/route/query-get-route), the [tile service](/api-reference/tiles/mvt), or the [station around query](/api-reference/station/query-station-around). Use the `filter` argument to narrow the results down based on specific criteria, and the `size` and `page` arguments to [paginate](/docs/pagination) through them.
+Olanaklarını almak için bir istasyon `id` gereklidir. `id`, bir [rota](/api-reference/route/query-get-route), [tile hizmeti](/api-reference/tiles/mvt) veya [yakındaki istasyonlar sorgusu](/api-reference/station/query-station-around) üzerinden alınabilir. Sonuçları belirli ölçütlere göre daraltmak için `filter` argümanını, bunlar arasında [sayfalandırma](/api-reference/api/pagination) yapmak için ise `size` ve `page` argümanlarını kullanın.
 

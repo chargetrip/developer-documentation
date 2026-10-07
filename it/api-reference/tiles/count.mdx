@@ -1,16 +1,16 @@
 ---
-title: Count
+title: Conteggio
 tag: Rest
 ---
 
-The station count endpoint returns the total number of charging stations, either globally or filtered by specific criteria. This service returns a static count and does not adjust based on map zoom levels.
+L'endpoint di conteggio delle stazioni restituisce il numero totale di stazioni di ricarica.
 
-## Setup
-To retrieve the station count, make a `GET` request to the following URL:
+## Configurazione
+Per recuperare il conteggio delle stazioni, effettua una richiesta `GET` al seguente URL:
 
 ```bash Count / Base URL
-https://api.chargetrip.io/v2/station/count/
+https://api.chargetrip.io/v2/station/count
 ```
 
-### Filtering
-Use the `filter` query parameter to narrow the count down based on specific criteria. See the [filters documentation](/api-reference/tiles/filters) for more information.
+### Filtri
+Usa il parametro di query `filter` per restringere il conteggio in base a criteri specifici. Consulta la [documentazione sui filtri](/api-reference/tiles/filters) per maggiori informazioni.

@@ -1,28 +1,26 @@
 ---
-title: Set up your account
-tag: Setup
+title: 设置您的账户
+tag: 设置
 ---
 
-To start using the API, create an account. Once your account is set up, you can start using the API directly against the production environment.
+要开始使用 API，请先创建账户。账户设置完成后，您即可直接在生产环境中使用 API。
 
-## Set up your environment
+## 设置您的环境
 
-The dashboard is organized into three levels, from broadest to most specific.
+Dashboard 按从最宽泛到最具体的顺序分为三个层级。
 
-1. **Workspace**
-   A workspace lets your team members work together on the same projects, for example when a country manager needs to manage operator preferences and a developer needs access to the API keys. A workspace is also the billable relationship with us, so multiple workspaces means multiple contracts.
-2. **Project**
-   Within a workspace, set up a project. Projects are created based on operator preferences, station database, and vehicle selections. If you have use cases that need a different setup, create a separate project for each.
-3. **App**
-   If you share these settings but still want separate analytics or security measures, for example when you build an iOS and an Android app, create different apps within a project.
+1. **工作区**
+   工作区让您的团队成员可以在同一批项目上协同工作，例如当区域经理需要管理运营商偏好，而开发人员需要访问 API 密钥时。工作区同时也是与我们建立计费关系的单位，因此多个工作区意味着多份合同。
+2. **项目**
+   在工作区内创建项目。项目基于运营商偏好、充电站数据库和车辆选择来创建。如果您的使用场景需要不同的配置，请为每种场景分别创建一个项目。
+3. **应用**
+   如果您共用这些设置，但仍希望拥有各自独立的分析或安全措施，例如构建 iOS 和 Android 应用时，请在项目内创建不同的应用。
 
-See [send requests](/docs/getting-started/api-request) for how to use your project and app ids to authenticate requests.
+有关如何使用项目 ID 和应用 ID 对请求进行身份验证，请参阅[发送请求](/docs/getting-started/api-request)。
 
-## Keep your account safe
+## 保护您的账户安全
 
-After you set up your account, you'll want to keep it safe. Here are our recommendations:
+账户设置完成后，您需要确保其安全。以下是我们的建议：
 
-- **Protect your credentials**: Never commit an API key to source control, store it in a secrets vault instead, and scope it to only the access it needs since our keys can be restricted.
-- **Pick a password you don't reuse elsewhere**: A password shared across services means a breach on another site can be used to break into this one too. Update your password from your account settings in the dashboard whenever needed.
-- **Grant access through team members instead of sharing logins**: Invite colleagues to your workspace with only the access they need, rather than handing out your own credentials.
-
+- **保护您的凭据**：切勿将 API 密钥提交到源代码管理中，请改为存放在密钥保管库中，并将其权限限制在所需的最小范围，因为我们的密钥支持访问限制。
+- **通过团队成员授予访问权限，而不是共享登录信息**：仅以所需的访问权限邀请同事加入您的工作区，而不是分发您自己的凭据。

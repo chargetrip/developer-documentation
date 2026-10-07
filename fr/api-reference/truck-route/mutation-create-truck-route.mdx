@@ -1,11 +1,11 @@
 ---
-title: Create truck route
+title: Créer un itinéraire camion
 schemaName: createTruckRoute
 schemaType: Mutation
 ---
 
-Create a new truck route by using the createTruckRoute mutation. This is useful when you want to calculate charging stops, energy consumption, and drive time for an e-truck between an origin and a destination.
+Créez un nouvel itinéraire camion à l'aide de la mutation createTruckRoute. Elle est utile lorsque vous souhaitez calculer les arrêts de recharge, la consommation d'énergie et la durée de conduite d'un camion électrique entre une origine et une destination.
 
 ## Mutation
 
-A `vehicle`, `origin`, and `destination` are required to create a truck route. Optionally add `via` points, `operators`, `weather`, or other preferences to refine the calculation. The mutation returns a truck route `id`, which can be used to retrieve route details or subscribe to updates.
+Un `vehicle`, un `origin` et un `destination` sont requis pour créer un itinéraire camion. Vous pouvez ajouter des points `via`, des `operators`, `weather` ou d'autres préférences pour affiner le calcul. La mutation renvoie un `id` d'itinéraire camion, qui permet de récupérer les détails de l'itinéraire ou de s'abonner à ses mises à jour.

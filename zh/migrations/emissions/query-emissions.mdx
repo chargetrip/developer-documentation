@@ -1,12 +1,12 @@
 ---
 slug: query-emissions
-title: Emissions migration guide
+title: 排放迁移指南
 migrateBefore: 01-01-2027
 ---
 
-# Route emissions
-Migrate from the legacy Emissions service to the latest version. The new service is built as its own dedicated query, better aligned with scalability and future updates.
+# 路线排放
+从旧版排放服务迁移到最新版本。新服务以独立的专用查询形式构建，更适合扩展性和后续更新。
 
-## Query changes
+## 查询变更
 
-Emissions data has moved out of the route response and into its own dedicated `getRouteEmissions` query, so it can be requested independently of a route calculation.
+排放数据已从路线响应中移出，放入其专用的 `getRouteEmissions` 查询中，因此可以独立于路线计算单独请求。

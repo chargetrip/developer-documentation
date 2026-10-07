@@ -1,25 +1,25 @@
 ---
 slug: query-route-path
-title: Route path migration guide
+title: Rota yolu geçiş rehberi
 migrateBefore: 01-01-2027
 ---
 
 # routePath
 
-Migrate from the legacy Route service to the latest version. The new service delivers a reorganized schema, per-country operator preferences, faster route computation, and greater maintainability.
+Eski Rota hizmetinden en son sürüme geçin. Yeni hizmet; yeniden düzenlenmiş bir şema, ülke bazlı operatör tercihleri, daha hızlı rota hesaplama ve daha kolay sürdürülebilirlik sunar.
 
-## Operations
+## İşlemler
 
-| Old         | New                                                   |
+| Eski        | Yeni                                                  |
 | ----------- | ------------------------------------------------------|
 | `routePath` | [`getRoute`](/api-reference/route/query-get-route)    |
 
-## General schema changes
+## Genel şema değişiklikleri
 
-- **Explicit typing**: previously flexible JSON fields are now explicitly typed in the schema to improve structure and validation.
-- **Naming conventions**: fields now use `snake_case` instead of `camelCase`.
-- **Unit support**: numeric inputs now support different unit types, expressed as an object with `value`, `type`, and an optional `source` (`manual`, `telemetry`, or `default`).
+- **Açık tür tanımlama**: daha önce esnek olan JSON alanları, yapıyı ve doğrulamayı iyileştirmek için artık şemada açıkça türlendirilmiştir.
+- **Adlandırma kuralları**: alanlar artık `camelCase` yerine `snake_case` kullanır.
+- **Birim desteği**: sayısal girdiler artık farklı birim türlerini destekler; bunlar `value`, `type` ve isteğe bağlı bir `source` (`manual`, `telemetry` veya `default`) içeren bir nesne olarak ifade edilir.
 
-## Query changes
+## Sorgu değişiklikleri
 
-The route's path is now already included in the `getRoute` response as `recommended.path_plot`, so a separate query to fetch it is no longer needed.
+Rotanın yolu artık `getRoute` yanıtına `recommended.path_plot` olarak dahil edilmiştir; bu nedenle onu almak için ayrı bir sorguya gerek yoktur.

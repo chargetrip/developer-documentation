@@ -1,12 +1,12 @@
 ---
-title: Add review
+title: 添加充电站评价
 schemaName: addReview
 schemaType: Mutation
 ---
 
-Add a review for a station by using the addReview mutation. Include a rating and message, along with the EV and plug type that were used, to give other users more context. If an `x-token` header is sent for a valid user the review will belong to them, otherwise it's added anonymously.
+使用 addReview 变更为充电站添加评价。请包含评分和留言，以及所使用的 EV 和插头类型，为其他用户提供更多背景信息。如果为有效用户发送了 `x-token` 请求头，则该评价将归属于该用户，否则将以匿名方式添加。
 
-## Mutation
+## 变更
 
-A `review` object is required, containing the station `id`, `rating`, and `message`. Optionally include the `ev`, `plugType`, `locale`, `properties`, and `tags` used during the visit.
+需要提供 `review` 对象，其中包含充电站 `id`、`rating` 和 `message`。您还可以包含此次访问中使用的 `ev`、`plugType`、`locale`、`properties` 和 `tags`。
 

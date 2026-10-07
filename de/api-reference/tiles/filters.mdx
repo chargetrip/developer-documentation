@@ -1,115 +1,117 @@
 ---
-title: Filters
+title: Filter
 tag: Rest
 ---
 
-Filters allow applications to refine the charging stations returned by the Tile Service API. Beyond simply hiding non-matching results, certain filters also transform the station data to ensure the response is contextually relevant.
+Mit Filtern können Anwendungen die Ladestationen eingrenzen, die von der Tile Service API zurückgegeben werden. Neben dem reinen Ausblenden nicht passender Ergebnisse transformieren bestimmte Filter auch die Stationsdaten, damit die Antwort kontextuell relevant ist.
 
-## How filters affect data
+## Wie Filter die Daten beeinflussen
 
-When a request includes filters, the Tile service performs two distinct operations:
+Wenn eine Anfrage Filter enthält, führt der Tile Service zwei unterschiedliche Operationen aus:
 
-1. **Exclusion of non-matching stations**
-   Any station that does not meet the specified filtering criteria is removed from the response entirely. This operation occurs when station-level filters or EVSE-level filters are used.
-2. **Data transformation**
-   When particular filtering parameters are provided, the Tile Service recalculates some of the station’s dynamic properties. This operation occurs when EVSE-level filters are used.
+1. **Ausschluss nicht passender Stationen**
+   Jede Station, die die angegebenen Filterkriterien nicht erfüllt, wird vollständig aus der Antwort entfernt. Diese Operation erfolgt, wenn Filter auf Stationsebene oder auf EVSE-Ebene verwendet werden.
+2. **Datentransformation**
+   Wenn bestimmte Filterparameter angegeben werden, berechnet der Tile Service einige dynamische Eigenschaften der Station neu. Diese Operation erfolgt, wenn Filter auf EVSE-Ebene verwendet werden.
 
-## Implementation
+## Implementierung
 
-Filter parameters can be appended to the request URL as query strings to any of the Tile Service endpoints (MVT or JSON or Count). If no filters are applied, all available charging stations are returned, and no data transformations are done.
+Filterparameter können als Query-Strings an die Anfrage-URL jedes Tile-Service-Endpoints (MVT, JSON oder Count) angehängt werden. Wenn keine Filter angewendet werden, werden alle verfügbaren Ladestationen zurückgegeben, und es erfolgen keine Datentransformationen.
 
 ```bash Tile / Filter / Example
 https://api.chargetrip.io/v2/station/..../?{filter_1}&{filter_2}&{filter_n}
 ```
 
-## Levels
+## Ebenen
 
-Filters can exist on two levels. EVSE level or station level. Each with their own impact and results as described below.
+Filter können auf zwei Ebenen existieren: auf EVSE-Ebene oder auf Stationsebene, jeweils mit eigenen Auswirkungen und Ergebnissen, wie unten beschrieben.
 
-### Station level
+### Stationsebene
 
-Filters that evaluate the station's global attributes. These filters are exclusion-only: exclude non-matching stations but never modify the returned data fields.
+Filter, die die globalen Attribute der Station auswerten. Diese Filter schließen nur aus: Sie schließen nicht passende Stationen aus, verändern aber nie die zurückgegebenen Datenfelder.
 
-`amenities` · `enum` · [Show example url](tip:https://api.chargetrip.io/v2/station?amenities[]=HOTEL)
-: Filter to include only stations that provide the specified amenities.
+`amenities` · `enum` · [Beispiel-URL anzeigen](tip:https://api.chargetrip.io/v2/station?amenities[]=HOTEL)
+: Filtert so, dass nur Stationen enthalten sind, die die angegebenen Ausstattungen bieten.
 : `HOTEL`, `SHOPPING`, `BATHROOM`, `SUPERMARKET`, `PLAYGROUND`, `PHARMACY`, `MUSEUM`, `COFFEE`, `RESTAURANT`
 
-`preferred_operators` · `boolean` · [Show example url](tip:https://api.chargetrip.io/v2/station?preferred_operators=true)
-: Filter to include only stations operated by operators configured as preferred. Preferred operators can be set in project settings within the dashboard.
+`preferred_operators` · `boolean` · [Beispiel-URL anzeigen](tip:https://api.chargetrip.io/v2/station?preferred_operators=true)
+: Filtert so, dass nur Stationen enthalten sind, die von Betreibern betrieben werden, die als bevorzugt konfiguriert sind. Bevorzugte Betreiber können in den Projekteinstellungen im Dashboard festgelegt werden.
 : `true`, `false`
 
-`truck_dedicated` · `boolean` · [Show example url](tip:https://api.chargetrip.io/v2/station?truck_dedicated=true)
-: Filter to include only stations dedicated or primarily intended for truck charging. **Only applicable if the Eco-Movement station database is used; otherwise, it is ignored.**
+`truck_dedicated` · `boolean` · [Beispiel-URL anzeigen](tip:https://api.chargetrip.io/v2/station?truck_dedicated=true)
+: Filtert so, dass nur Stationen enthalten sind, die speziell oder hauptsächlich zum Laden von Lkw vorgesehen sind. **Nur anwendbar, wenn die Eco-Movement-Stationsdatenbank verwendet wird, andernfalls wird er ignoriert.**
 : `true`, `false`
 
-### EVSE level
+### EVSE-Ebene
 
-Filters that evaluate the station’s specific charging capabilities. These filters perform exclusion and [transformation](/api-reference/tiles/filters#data-transformation-examples): non-matching stations are excluded, and matching stations have their dynamic fields recalculated.
+Filter, die die spezifischen Ladefähigkeiten der Station auswerten. Diese Filter schließen aus und führen eine [Transformation](/api-reference/tiles/filters#beispiele-für-datentransformation) durch: Nicht passende Stationen werden ausgeschlossen, und bei passenden Stationen werden die dynamischen Felder neu berechnet.
 
-`connectors` · `enum` · [Show example url](tip:https://api.chargetrip.io/v2/station?connectors[]=CHADEMO)
-: Filter to include only stations that have EVSEs with the specified connector types. Accepts an array of strings with any OCPI 2.2.1 connector values.
+`connectors` · `enum` · [Beispiel-URL anzeigen](tip:https://api.chargetrip.io/v2/station?connectors[]=CHADEMO)
+: Filtert so, dass nur Stationen enthalten sind, die EVSEs mit den angegebenen Anschlusstypen haben. Akzeptiert ein Array von Strings mit beliebigen OCPI-2.2.1-Anschlusswerten.
 : `CHADEMO`, `DOMESTIC_A`, `DOMESTIC_B`, `DOMESTIC_C`, `DOMESTIC_D`, `DOMESTIC_E`, `DOMESTIC_F`, `DOMESTIC_G`, `DOMESTIC_H`, `DOMESTIC_I`, `DOMESTIC_J`, `DOMESTIC_K`,
 `DOMESTIC_L`, `DOMESTIC_M`, `DOMESTIC_N`, `DOMESTIC_O`, `IEC_60309_2_single_16`, `IEC_60309_2_three_16`, `IEC_60309_2_three_32`, `IEC_60309_2_three_64`, `IEC_62196_T1`,
 `IEC_62196_T1_COMBO`, `IEC_62196_T2`, `IEC_62196_T2_COMBO`, `IEC_62196_T3A`, `IEC_62196_T3C`, `PANTOGRAPH_BOTTOM_UP`, `PANTOGRAPH_TOP_DOWN`, `TESLA_R`, `TESLA_S`, `GB_T`,
 `CHAOJI`, `NEMA_5_20`, `NEMA_6_30`, `NEMA_6_50`, `NEMA_10_30`, `NEMA_10_50`, `NEMA_14_30`, `NEMA_14_50`
 
-## Examples
+## Beispiele
 
-To display the behaviour, examples have been provided for filtering and data transformations below.
+Um das Verhalten zu veranschaulichen, finden Sie unten Beispiele für Filter und Datentransformationen.
 
-### Filter examples
+### Filterbeispiele
 
-Filters can exist on two levels. EVSE level or station level. Each with their own impact and results as described below.
+Filter können auf zwei Ebenen existieren: auf EVSE-Ebene oder auf Stationsebene, jeweils mit eigenen Auswirkungen und Ergebnissen, wie unten beschrieben.
 
 <details>
-  <summary>Same filter type, different values</summary>
-  ```bash Example URL
-  https://api.chargetrip.io/v2/station?connectors[]=IEC_62196_T1_COMBO&connectors[]=CHADEMO
-  ```
+  <summary>Gleicher Filtertyp, unterschiedliche Werte</summary>
 
-  | Station | Properties                                                                            | Matches                                                                |
+```bash Example URL
+https://api.chargetrip.io/v2/station?connectors[]=IEC_62196_T1_COMBO&connectors[]=CHADEMO
+```
+
+  | Station | Eigenschaften                                                                         | Treffer                                                                |
   |---------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------|
-  | A       | 2x `IEC_62196_T1_COMBO` <br /> 1x `CHAdeMO` <br /> 1x `TOILET` <br /> 1x `RESTAURANT` | [true](tip:Matching reason;;Has CHAdeMO charger)                       |
-  | B       | 1x `IEC_62196_T1_COMBO` <br /> 1x `IEC_62196_T2_COMBO` <br /> 1x `RESTAURANT`         | [true](tip:Title;;The description text;;optional-copy-value)           |
-  | C       | 2x `IEC_62196_T2_COMBO` <br /> 1x `TOILET`                                            | [false](tip:Title;;The description text;;optional-copy-value) |
+  | A       | 2x `IEC_62196_T1_COMBO` <br /> 1x `CHAdeMO` <br /> 1x `TOILET` <br /> 1x `RESTAURANT` | [true](tip:Grund für den Treffer;;Hat einen CHAdeMO-Lader)             |
+  | B       | 1x `IEC_62196_T1_COMBO` <br /> 1x `IEC_62196_T2_COMBO` <br /> 1x `RESTAURANT`         | [true](tip:Titel;;Der Beschreibungstext;;optional-copy-value)          |
+  | C       | 2x `IEC_62196_T2_COMBO` <br /> 1x `TOILET`                                            | [false](tip:Titel;;Der Beschreibungstext;;optional-copy-value) |
 </details>
 
 <details>
-  <summary>Multiple different filter types</summary>
-  ```bash Example URL
-  https://api.chargetrip.io/v2/station?minimum_power=120&evse_statuses[]=AVAILABLE&connectors[]=IEC_62196_T1_COMBO
-  ```
-  | Station | Properties                                                                            | Matches                                                                |
+  <summary>Mehrere unterschiedliche Filtertypen</summary>
+
+```bash Example URL
+https://api.chargetrip.io/v2/station?minimum_power=120&evse_statuses[]=AVAILABLE&connectors[]=IEC_62196_T1_COMBO
+```
+  | Station | Eigenschaften                                                                         | Treffer                                                                |
   |---------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------|
-  | A       | 2x `IEC_62196_T1_COMBO` <br /> 1x `CHAdeMO` <br /> 1x `TOILET` <br /> 1x `RESTAURANT` | [true](tip:Title;;The description text;;optional-copy-value)           |
-  | B       | 1x `IEC_62196_T1_COMBO` <br /> 1x `IEC_62196_T2_COMBO` <br /> 1x `RESTAURANT`         | [true](tip:Title;;The description text;;optional-copy-value)           |
-  | C       | 2x `IEC_62196_T2_COMBO` <br /> 1x `TOILET`                                            | [false](tip:Title;;The description text;;optional-copy-value)          |
+  | A       | 2x `IEC_62196_T1_COMBO` <br /> 1x `CHAdeMO` <br /> 1x `TOILET` <br /> 1x `RESTAURANT` | [true](tip:Titel;;Der Beschreibungstext;;optional-copy-value)          |
+  | B       | 1x `IEC_62196_T1_COMBO` <br /> 1x `IEC_62196_T2_COMBO` <br /> 1x `RESTAURANT`         | [true](tip:Titel;;Der Beschreibungstext;;optional-copy-value)          |
+  | C       | 2x `IEC_62196_T2_COMBO` <br /> 1x `TOILET`                                            | [false](tip:Titel;;Der Beschreibungstext;;optional-copy-value)         |
 </details>
 
-### Data transformation examples
+### Beispiele für Datentransformation
 
-Some outputs are recalculated when EVSE-Level filters are applied. These fields are "transformed" to ignore connectors that don't match the user's search criteria.
-These “dynamic” output fields are `connector_maximum_power` and `evse_status_*`.
+Einige Ausgaben werden neu berechnet, wenn Filter auf EVSE-Ebene angewendet werden. Diese Felder werden „transformiert“, damit Anschlüsse ignoriert werden, die nicht den Suchkriterien des Nutzers entsprechen.
+Diese „dynamischen“ Ausgabefelder sind `connector_maximum_power` und `evse_status_*`.
 
 <details>
-    <summary>Same filter type, different values</summary>
-    The request includes CHADEMO connector filter. The station is included because it has a CHADEMO connector, but the dynamic fields are transformed to ignore the Combo Type 1  chargers.
+  <summary>Gleicher Filtertyp, unterschiedliche Werte</summary>
+  Die Anfrage enthält einen CHADEMO-Anschlussfilter. Die Station ist enthalten, weil sie einen CHADEMO-Anschluss hat, aber die dynamischen Felder werden so transformiert, dass die Combo-Typ-1-Lader ignoriert werden.
 
-    ```bash Example URL
-    https://api.chargetrip.io/v2/station?connectors[]=IEC_62196_T1_COMBO&connectors[]=CHADEMO
-    ```
+```bash Example URL
+https://api.chargetrip.io/v2/station?connectors[]=IEC_62196_T1_COMBO&connectors[]=CHADEMO
+```
 
-    ```json Response
-    {
-        "id": "station_a",
-        // Static: Remains 150 kW (This represents the station maximum power across all conectors)
-        "station_maximum_power": 150,
-        // Dynamic: Adjusted to 100 kW (Max power of the CHADEMO connector)
-        "connector_maximum_power": 100,
-        // Dynamic: Counts the 1 CHADEMO chargers
-        "evse_status_out_of_order": 0
-        // Dynamic: 0, because the charging Type 1 plugs are filtered out
-        "evse_status_available": 1,
-    }
-    ```
+```json Response
+{
+  "id": "station_a",
+  // Static: Remains 150 kW (This represents the station maximum power across all connectors)
+  "station_maximum_power": 150,
+  // Dynamic: Adjusted to 100 kW (Max power of the CHADEMO connector)
+  "connector_maximum_power": 100,
+  // Dynamic: Counts the 1 CHADEMO chargers
+  "evse_status_out_of_order": 0,
+  // Dynamic: 0, because the charging Type 1 plugs are filtered out
+  "evse_status_available": 1
+}
+```
 </details>

@@ -1,52 +1,52 @@
 ---
-title: Vehicles
-tag: Guide
+title: Araçlar
+tag: Rehber
 ---
 
-A comprehensive vehicle database is essential for any EV application. Vehicle data allows end-users to understand their vehicle better and find charging stations that are suitable for them. It's also essential to routing, since the most optimal route will be radically different based on the vehicle driven.
+Kapsamlı bir araç veritabanı, her EV uygulaması için olmazsa olmazdır. Araç verileri, son kullanıcıların araçlarını daha iyi anlamasını ve kendilerine uygun şarj istasyonlarını bulmasını sağlar. Ayrıca rota planlama için de şarttır; çünkü en uygun rota, kullanılan araca göre kökten farklılık gösterir.
 
-## Introduction
+## Giriş
 
-A quick primer on EVs and why vehicle data matters for routing.
+EV'lere ve araç verilerinin rota planlama için neden önemli olduğuna dair kısa bir giriş.
 
-### Electric vs. internal combustion engines
+### Elektrikli ve içten yanmalı motorlar
 
-An ICE (internal combustion engine) vehicle burns fossil fuel to run. An EV runs on electricity and recharges by plugging into a charger.
+Bir ICE (içten yanmalı motor) aracı çalışmak için fosil yakıt yakar. Bir EV ise elektrikle çalışır ve bir şarj cihazına takılarak şarj olur.
 
-### Charging an electric vehicle
+### Elektrikli aracı şarj etme
 
-EVs charge at charging stations using one of several plug types, so knowing a driver's vehicle and a charger's supported plugs matters. Charging speed comes in three levels: level 1 and 2 use AC and take hours, while level 3 "fast charging" uses DC and can charge a vehicle in under an hour. The Chargetrip API accounts for each vehicle's charge curve, and exposes the available payment options per location, since these vary by region and operator.
+EV'ler şarj istasyonlarında çeşitli fiş türlerinden biriyle şarj olur; bu nedenle sürücünün aracını ve bir şarj cihazının desteklediği fişleri bilmek önemlidir. Şarj hızı üç seviyeden oluşur: seviye 1 ve 2 AC kullanır ve saatler sürer, seviye 3 "hızlı şarj" ise DC kullanır ve bir aracı bir saatten kısa sürede şarj edebilir. Chargetrip API her aracın şarj eğrisini hesaba katar ve bölgeye ve operatöre göre değiştiği için konum başına kullanılabilir ödeme seçeneklerini sunar.
 
-### Impact factors of a battery
+### Bir bataryanın etki faktörleri
 
-Battery performance is affected by weather, climate control use, and vehicle specifications, similar to how phone batteries behave differently in the cold. Chargetrip accounts for these factors to produce accurate range estimations.
+Batarya performansı; hava durumundan, iklim kontrolü kullanımından ve araç özelliklerinden etkilenir; tıpkı telefon bataryalarının soğukta farklı davranması gibi. Chargetrip, doğru menzil tahminleri üretmek için bu faktörleri hesaba katar.
 
-### Routing for EVs
+### EV'ler için rota planlama
 
-Range anxiety, the fear of running out of charge before reaching a destination or charger, can be addressed with route planning that shows if and where charging is needed along the way.
+Bir varış noktasına veya şarj cihazına ulaşmadan şarjın bitmesi korkusu olan menzil kaygısı, yol boyunca şarjın gerekip gerekmediğini ve nerede gerektiğini gösteren rota planlamasıyla giderilebilir.
 
-### Range predictions
+### Menzil tahminleri
 
-Accurate routing depends on predicting how much energy a vehicle will use between two points, which lets an application recommend charging stops along the journey. Use isolines to visualize the area a vehicle can reach under given conditions and preferences.
+Doğru rota planlama, bir aracın iki nokta arasında ne kadar enerji tüketeceğini tahmin etmeye bağlıdır; bu da bir uygulamanın yolculuk boyunca şarj duraklarını önermesini sağlar. Bir aracın belirli koşullar ve tercihler altında ulaşabileceği alanı görselleştirmek için izolineleri kullanın.
 
-## Database
+## Veritabanı
 
-Instead of having to provide all the data and details about a vehicle, which is customary for most EV routing APIs, the vehicle database contains over 2,200 BEV (battery electric vehicle), PHEV (plug-in hybrid electric vehicle), HEV (hybrid electric vehicle), and EREV (extended range electric vehicle) models. All BEVs and EREVs come with their own validated consumption model.
+Çoğu EV rota planlama API'sinde olağan olduğu gibi bir araçla ilgili tüm verileri ve ayrıntıları sağlamanız gerekmek yerine, araç veritabanı 2.200'den fazla BEV (batarya elektrikli araç), PHEV (şarj edilebilir hibrit elektrikli araç), HEV (hibrit elektrikli araç) ve EREV (menzil uzatıcılı elektrikli araç) modeli içerir. Tüm BEV'ler ve EREV'ler kendi doğrulanmış tüketim modeliyle gelir.
 
-The consumption models take into account properties like drag coefficient and rolling resistance in relation to speed, elevation, charging speed, charging temperature, battery temperature, and many more.
+Tüketim modelleri; hıza göre sürüklenme katsayısı ve yuvarlanma direnci, yükselti, şarj hızı, şarj sıcaklığı, batarya sıcaklığı ve çok daha fazlası gibi özellikleri dikkate alır.
 
-Additionally, all vehicles come with detailed vehicle specifications and images that can be used in front ends. New models are continuously added as they're released to market.
+Ayrıca tüm araçlar, ön yüzlerde kullanılabilecek ayrıntılı araç özellikleri ve görsellerle birlikte gelir. Yeni modeller piyasaya çıktıkça sürekli eklenir.
 
-### Premium data
+### Premium veriler
 
-If you need additional information beyond the standard vehicle data, [vehiclePremium](/api-reference/vehicle/query-vehicle-premium) is available as an add-on. It contains extended data about the battery, the body of the vehicle, availability, pricing, efficiency, safety, and more. [Contact sales](https://www.chargetrip.com/contact/sales) to upgrade to premium vehicle data.
+Standart araç verilerinin ötesinde ek bilgiye ihtiyacınız varsa, [vehiclePremium](/api-reference/vehicle/query-vehicle-premium) bir eklenti olarak sunulur. Batarya, araç gövdesi, bulunabilirlik, fiyatlandırma, verimlilik, güvenlik ve daha fazlası hakkında genişletilmiş veriler içerir. Premium araç verilerine geçmek için [satışla iletişime geçin](https://www.chargetrip.com/contact/sales).
 
-### Images
+### Görseller
 
-Rights-cleared vehicle images are also available as an add-on, just like `vehiclePremium`. These images are higher quality than the default images provided with the vehicle database. [Contact sales](https://www.chargetrip.com/contact/sales) to enable this for your project.
+Hakları temizlenmiş araç görselleri de tıpkı `vehiclePremium` gibi bir eklenti olarak sunulur. Bu görseller, araç veritabanıyla birlikte gelen varsayılan görsellerden daha yüksek kalitelidir. Bunu projeniz için etkinleştirmek üzere [satışla iletişime geçin](https://www.chargetrip.com/contact/sales).
 
-## Implementation
+## Uygulama
 
-Access the complete vehicle database through the [vehicleList](/api-reference/vehicle/query-vehicles) query, and fetch more detailed information using the [vehicle](/api-reference/vehicle/query-vehicle-details) query.
+Tüm araç veritabanına [vehicleList](/api-reference/vehicle/query-vehicles) sorgusuyla erişin ve [vehicle](/api-reference/vehicle/query-vehicle-details) sorgusuyla daha ayrıntılı bilgi alın.
 
-Any [route](/docs/getting-started/route) or isoline mutation requires a vehicle `id`, which can be obtained through the `vehicleList` query.
+Herhangi bir [rota](/docs/getting-started/route) veya izoline mutasyonu bir araç `id` değeri gerektirir; bu değer `vehicleList` sorgusuyla elde edilebilir.

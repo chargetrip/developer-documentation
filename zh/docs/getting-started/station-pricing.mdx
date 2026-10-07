@@ -1,33 +1,33 @@
 ---
-title: Station pricing
+title: 充电站定价
 ---
 
-Charging prices can be shown at two levels: directly on a map through the Tile service, or in full detail through a connector's pricing.
+充电价格可以在两个层级展示：通过 Tile 服务直接显示在地图上，或通过连接器的定价查看完整详情。
 
-## Tile service
+## Tile 服务
 
-The Tile service exposes `minimum_station_price` and `maximum_station_price` as both a filter and a response field.
+Tile 服务将 `minimum_station_price` 和 `maximum_station_price` 同时作为筛选条件和响应字段提供。
 
-- As a [filter](/api-reference/tiles/filters), pass `minimum_station_price` and `maximum_station_price`, along with `price_currency` to convert the range to the correct currency, to dynamically include or exclude stations whose price falls within that range.
-- As a [selector](/api-reference/tiles/selectors), request `minimum_station_price` and `maximum_station_price` to render each station's price range directly on the map.
+- 作为[筛选条件](/api-reference/tiles/filters)时，传入 `minimum_station_price` 和 `maximum_station_price`，并配合 `price_currency` 将价格范围转换为正确的货币，即可动态包含或排除价格落在该范围内的充电站。
+- 作为[选择器](/api-reference/tiles/selectors)时，请求 `minimum_station_price` 和 `maximum_station_price`，即可直接在地图上呈现每个充电站的价格范围。
 
-## Station pricing
+## 充电站定价
 
-Where pricing details come from depends on the station database behind a station.
+定价详情的来源取决于充电站背后所使用的充电站数据库。
 
-- If Ecomovement is used, pricing can be found on the pricing object of a station's connectors, at `evses[].connectors[].prices`.
-- For any other station database, use the dedicated [tariffList](/api-reference/tariff/query-tariff-list) and [tariff](/api-reference/tariff/query-tariff) queries instead.
+- 如果使用 Ecomovement，可在充电站连接器的定价对象中找到价格，路径为 `evses[].connectors[].prices`。
+- 对于任何其他充电站数据库，请改用专用的 [tariffList](/api-reference/tariff/query-tariff-list) 和 [tariff](/api-reference/tariff/query-tariff) 查询。
 
-A connector can have several price elements active at different times. Work through them in order to render the correct price.
+一个连接器可以有多个在不同时间生效的价格元素。请按顺序逐个处理，以呈现正确的价格。
 
-1. **Find the active price element**
-   Each price element has `restrictions`, such as `day_of_week`, `start_time`/`end_time`, or minimum and maximum kWh, power, or duration. Use these to determine which price element applies right now.
-2. **Display all price components**
-   A price element can combine several components at once. An `energy` component gives you the price per kWh. A `time` component gives you the price per interval, billed in blocks defined by its `step_size`. For example, a `step_size` of `300` on a `time` component bills in blocks of 5 minutes. A `flat` component adds a fixed amount to the session, independent of energy used or time spent.
-3. **Account for the overstay fee**
-   A `parking_time` component charges an idle fee for staying connected after charging has finished, since nobody else can use the connector in the meantime. It applies once the connector's overstay restrictions, such as `overstay_time` or `overstay_battery_percentage`, are met.
+1. **找到当前生效的价格元素**
+   每个价格元素都有 `restrictions`，例如 `day_of_week`、`start_time`/`end_time`，或最小和最大 kWh、功率或时长。利用这些条件来确定当前适用哪个价格元素。
+2. **显示所有价格组成部分**
+   一个价格元素可以同时包含多个组成部分。`energy` 组成部分给出每 kWh 的价格。`time` 组成部分给出每个时间间隔的价格，按其 `step_size` 定义的区块计费。例如，`time` 组成部分的 `step_size` 为 `300` 时，按 5 分钟为一个区块计费。`flat` 组成部分会为该次会话增加一笔固定金额，与所用电量或花费的时间无关。
+3. **考虑超时占用费**
+   `parking_time` 组成部分会对充电结束后仍保持连接的行为收取闲置费，因为在此期间其他人无法使用该连接器。当满足连接器的超时占用限制条件（例如 `overstay_time` 或 `overstay_battery_percentage`）时，该费用即开始适用。
 
-Each connector can have its own price, and prices can be changed dynamically by the operator at any time.
+每个连接器都可以有自己的价格，并且运营商可以随时动态更改价格。
 
-> [!WARNING] Rely on last_updated
-> Since prices can change at any time, always check a price object's `last_updated` field before caching or reusing a price, rather than assuming it stays valid.
+> [!WARNING] 请依赖 last_updated
+> 由于价格可能随时变化，在缓存或复用价格之前，请务必检查价格对象的 `last_updated` 字段，而不要假定价格一直有效。

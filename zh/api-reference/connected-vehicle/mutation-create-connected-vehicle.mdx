@@ -1,11 +1,11 @@
 ---
-title: Create connected vehicle
+title: 创建联网车辆
 schemaName: createConnectedVehicle
 schemaType: Mutation
 ---
 
-Connect a vehicle to a connectivity provider by using the createConnectedVehicle mutation. This is useful when you want to retrieve live vehicle data directly from the vehicle instead of a route calculation.
+使用 createConnectedVehicle 变更将车辆连接到连接服务提供商。当您希望直接从车辆获取实时车辆数据，而不是依赖路线计算时，此操作非常有用。
 
-## Mutation
+## 变更
 
-A `vehicle_id` and `provider` are required to create a connected vehicle, along with provider-specific `options`. The mutation returns a connected vehicle `id` and an `authorization_url`, which can be used to complete authorization through the [authorizeConnectedVehicle mutation](/api-reference/connected-vehicle/mutation-authorize-connected-vehicle).
+创建联网车辆需要 `vehicle_id` 和 `provider`，以及特定于提供商的 `options`。该变更会返回联网车辆的 `id` 和 `authorization_url`，可用于通过 [authorizeConnectedVehicle 变更](/api-reference/connected-vehicle/mutation-authorize-connected-vehicle)完成授权。

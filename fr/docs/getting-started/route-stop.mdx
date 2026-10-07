@@ -1,0 +1,161 @@
+---
+title: "Itinéraire avec arrêts"
+---
+
+Lors du calcul d'un itinéraire EV avec l'API Route de Chargetrip, vous pouvez ajouter des arrêts intermédiaires entre l'origine et la destination à l'aide de `via`.
+
+Les arrêts vous permettent de personnaliser le calcul d'itinéraire pour des scénarios de déplacement réels, comme recharger dans une station de recharge préférée, prendre des passagers ou s'arrêter dans un restaurant.
+
+
+## Types d'arrêts
+
+Chargetrip prend en charge deux types d'arrêts intermédiaires :
+
+| Arrêt | Recharge |  Champ d'entrée | Objectif |
+| :--- | :--- | :--- | :--- |
+| **Lieu** | Non |  `via.geometry`| Arrêt géographique (prise en charge, livraison, détour touristique, pause café).
+| **Station** | Oui | `via.properties.station.station_id`| Station de recharge sélectionnée explicitement.
+
+
+## Durée d'arrêt
+
+Vous pouvez configurer la durée de chaque arrêt. Selon le type d'arrêt (avec ou sans recharge), le `stop_duration` est configuré à des emplacements différents et se comporte différemment :
+
+### 1. Dans les arrêts sans recharge
+
+La durée d'arrêt est configurée dans `input.via.properties.location.stop_duration`. Cette durée représente la **durée d'arrêt exacte** et s'ajoute directement à la durée totale du trajet sans affecter le temps de recharge ou de conduite du véhicule.
+
+### 2. Dans les arrêts avec recharge
+
+La durée d'arrêt est configurée dans `input.via.properties.station.stop_duration`. Cette valeur représente **la durée d'arrêt minimale**. Le véhicule reste à la station au moins ce temps, mais le planificateur d'itinéraire peut prolonger l'arrêt en fonction du `charge_mode` configuré :
+
+  * `ALWAYS_TO_MAX_CHARGE` : prolonge le temps de recharge si nécessaire pour atteindre le SoC maximal configuré. Si le `stop_duration` demandé dépasse le temps nécessaire pour atteindre le SoC maximal, le temps restant est consigné comme temps d'arrêt inactif.
+
+  * `OPTIMIZE_TRAVEL_TIME` : prolonge le séjour au-delà de `stop_duration` uniquement si cela réduit la durée totale du trajet (par exemple, en supprimant un arrêt de recharge ultérieur). Sinon, recharge pendant la durée exacte demandée. Si le `stop_duration` demandé dépasse le temps nécessaire pour atteindre le SoC maximal, le temps restant est consigné comme temps d'arrêt inactif.
+
+Si aucune valeur n'est fournie, le planificateur optimise la durée de recharge uniquement en fonction du `charge_mode` de l'itinéraire.
+
+
+## Exemples
+
+<details>
+  <summary>Calculer un itinéraire avec un arrêt de 30 minutes sans recharge.</summary>
+  Sur cet arrêt, un `stop_duration` de 1800 secondes (30 minutes) a été ajouté. Ce sera la durée d'arrêt, puisqu'il ne peut y avoir aucun avantage supplémentaire.
+
+```graphql Example request
+mutation CreateRouteWithWaypoint {
+  createRoute(
+    input: {
+      vehicle: {
+        id: "60b8d5a2f1c8e9001b9e2831"
+        charging: { mode: OPTIMIZE_TRAVEL_TIME }
+      }
+      origin: {
+        type: Point
+        coordinates: [4.9041, 52.3676]
+      }
+      destination: {
+        type: Point
+        coordinates: [6.9583, 50.9375]
+      }
+      via: [
+        {
+          geometry: {
+            type: Point
+            coordinates: [5.1214, 52.0907] # Utrecht
+          }
+          properties: {
+            location: {
+              name: "Utrecht Central"
+              stop_duration: 1800 # 30 minutes in seconds
+            }
+          }
+        }
+      ]
+    }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>
+
+
+<details>
+  <summary>Calculer un itinéraire avec un arrêt de recharge d'au moins 30 minutes.</summary>
+  Sur cet arrêt, un `stop_duration` de 1800 secondes (30 minutes) a été ajouté. Ce sera la durée d'arrêt **minimale**. Si une recharge plus longue est bénéfique pour l'itinéraire, elle sera prolongée.
+  
+```graphql Example request
+mutation CreateRouteWithChargingVia {
+  createRoute(
+    input: {
+      vehicle: {
+        id: "60b8d5a2f1c8e9001b9e2831"
+        charging: { mode: OPTIMIZE_TRAVEL_TIME }
+      }
+      origin: {
+        type: Point
+        coordinates: [4.9041, 52.3676]
+      }
+      destination: {
+        type: Point
+        coordinates: [6.9583, 50.9375]
+      }
+      via: [
+        {
+          properties: {
+            station: {
+              station_id: "5e849ea2837bc43df65d19a2"
+              stop_duration: 1800
+            }
+          }
+        }
+      ]
+    }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>
+
+
+<details>
+  <summary>Calculer un itinéraire avec un arrêt de recharge sans durée d'arrêt minimale.</summary>
+  Sur cet arrêt, `stop_duration` est omis : le planificateur calcule le temps de recharge optimal en fonction du mode de recharge.
+
+```graphql Example request
+mutation CreateRouteWithChargingVia {
+  createRoute(
+    input: {
+      vehicle: {
+        id: "60b8d5a2f1c8e9001b9e2831"
+        charging: { mode: OPTIMIZE_TRAVEL_TIME }
+      }
+      origin: {
+        type: Point
+        coordinates: [4.9041, 52.3676]
+      }
+      destination: {
+        type: Point
+        coordinates: [6.9583, 50.9375]
+      }
+      via: [
+        {
+          properties: {
+            station: {
+              station_id: "5e849ea2837bc43df65d19a2"
+            }
+          }
+        }
+      ]
+    }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>

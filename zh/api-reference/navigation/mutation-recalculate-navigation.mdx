@@ -1,12 +1,12 @@
 ---
-title: Recalculate navigation
+title: 重新计算导航
 schemaName: recalculateNavigation
 schemaType: Mutation
 ---
 
-Recalculate the route of an active navigation session by using the recalculateNavigation mutation. This is useful when a driver deviates from the original route or conditions change along the way.
+使用 recalculateNavigation 变更重新计算进行中的导航会话的路线。当驾驶员偏离原路线或途中情况发生变化时，此操作非常有用。
 
-## Mutation
+## 变更
 
-A navigation session `id` and `current_location` are required to recalculate its route. Optionally include `state_of_charge`, `via`, or `telemetry` to refine the new route. The `id` can be obtained through the [startNavigation mutation](/api-reference/navigation/mutation-start-navigation).
+重新计算路线需要导航会话的 `id` 和 `current_location`。您还可以包含 `state_of_charge`、`via` 或 `telemetry` 来优化新路线。`id` 可通过 [startNavigation 变更](/api-reference/navigation/mutation-start-navigation)获取。
 

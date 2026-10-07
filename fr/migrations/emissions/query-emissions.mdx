@@ -1,12 +1,12 @@
 ---
 slug: query-emissions
-title: Emissions migration guide
+title: Guide de migration des émissions
 migrateBefore: 01-01-2027
 ---
 
-# Route emissions
-Migrate from the legacy Emissions service to the latest version. The new service is built as its own dedicated query, better aligned with scalability and future updates.
+# Émissions de l'itinéraire
+Migrez de l'ancien service Emissions vers la dernière version. Le nouveau service est conçu comme une requête dédiée, mieux adaptée à la scalabilité et aux évolutions futures.
 
-## Query changes
+## Changements de requête
 
-Emissions data has moved out of the route response and into its own dedicated `getRouteEmissions` query, so it can be requested independently of a route calculation.
+Les données d'émissions ont quitté la réponse de l'itinéraire pour rejoindre leur propre requête dédiée `getRouteEmissions`, ce qui permet de les demander indépendamment d'un calcul d'itinéraire.

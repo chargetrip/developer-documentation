@@ -1,11 +1,11 @@
 ---
-title: Review list
+title: 充电站评价详情
 schemaName: reviewList
 schemaType: Query
 ---
 
-Every station can be accompanied by user reviews. Query for properties such as rating and message, or receive data about the EV that was used to charge. Reviews are scoped to a single station database and can't be used across different projects.
+每个充电站都可以附带用户评价。您可以查询评分和留言等属性，也可以获取有关充电时所用 EV 的数据。评价仅限于单个充电站数据库，不能跨不同项目使用。
 
-## Query
+## 查询
 
-A station `id` is required to get its reviews. The `id` can be obtained through either a [route](/api-reference/route/query-get-route), the [tile service](/api-reference/tiles/mvt), or the [station around query](/api-reference/station/query-station-around). Use the `size` and `page` arguments to [paginate](/docs/pagination) through them.
+获取充电站的评价需要充电站的 `id`。`id` 可通过[路线](/api-reference/route/query-get-route)、[瓦片服务](/api-reference/tiles/mvt)或[周边充电站查询](/api-reference/station/query-station-around)获取。使用 `size` 和 `page` 参数对结果进行[分页](/api-reference/api/pagination)。

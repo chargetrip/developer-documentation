@@ -1,46 +1,63 @@
 ---
-title: Send your first request
-tag: Setup
+title: Invia la tua prima richiesta
+tag: Configurazione
 ---
 
-Once all credentials are configured inside the dashboard, start making requests using the base URL and authorization headers.
+Una volta create le tue credenziali nella dashboard di Chargetrip, puoi iniziare a effettuare richieste autorizzate usando i nostri URL di base e gli header di autenticazione richiesti.
 
-## The setup
+## La configurazione
 
-The API is a GraphQL API that uses the following base URL. You can find more information about the API in the [GraphQL API reference](/api-reference).
 
-```bash Base URL
+L'API Chargetrip utilizza due endpoint distinti a seconda del tipo di operazione: un URL HTTPS per query e mutation e un URL WebSocket (WSS) per le subscription. Puoi trovare maggiori informazioni sull'API nel [riferimento API GraphQL](/api-reference).
+
+### Query e mutation
+Query e mutation vengono eseguite tramite richieste HTTP POST all'endpoint GraphQL principale.
+
+
+```bash URL dell'endpoint GraphQL per query e mutation
 https://api.chargetrip.io/graphql
 ```
 
-## Authorization headers
+### Subscription
+Le subscription richiedono una connessione persistente tramite WebSocket e possono essere implementate usando il protocollo `graphql-transport-ws`. Scopri come usare i websocket nel dettaglio [qui](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications).
 
-After obtaining the base URL, add one or more of the following headers to each request.
 
-`x-client-id` · <span class="text-accent">required</span>
-: A project id that contains the project configuration.
+```bash URL della subscription GraphQL
+wss://api.chargetrip.io/subscription
+```
 
-`x-app-id` · <span class="text-accent">required</span>
-: An app id for security and splitting up analytics.
+> [!WARNING] Il protocollo graphql-ws è deprecato
+> Il protocollo di subscription legacy graphql-ws è deprecato e verrà presto rimosso. Esegui la migrazione al protocollo graphql-transport-ws per evitare errori nelle subscription e interruzioni del servizio.
+
+
+## Header di autorizzazione
+
+Dopo aver ottenuto l'URL di base, aggiungi i seguenti header a ogni richiesta. Gli header contrassegnati come obbligatori devono essere sempre inviati.
+
+`x-client-id` · <span class="text-accent">obbligatorio</span>
+: Un id di progetto che contiene la configurazione del progetto.
+
+`x-app-id` · <span class="text-accent">obbligatorio</span>
+: Un id di app per la sicurezza e la suddivisione delle analisi.
 
 `x-app-identifier`
-: An iOS or Android bundle identifier.
+: Un bundle identifier iOS o Android.
 
 `x-app-fingerprint`
-: An Android SHA fingerprint.
+: Un'impronta SHA Android.
 
-> [!TIP] Secure your keys
-> For maximum security, restrict your application to machine-to-machine (M2M) access and keep credentials on your own server behind your own authentication, rather than exposing them to a browser or device. See [Security](/api-reference/api/security) for all available restriction types.
+> [!TIP] Proteggi le tue chiavi
+> Per la massima sicurezza, limita la tua applicazione all'accesso machine-to-machine (M2M) e conserva le credenziali sul tuo server dietro la tua autenticazione, anziché esporle a un browser o a un dispositivo. Consulta [Sicurezza](/api-reference/api/security) per tutti i tipi di restrizione disponibili.
 
-## Sending an authorized request
+## Invio di una richiesta autorizzata
 
-To communicate with the API, you must authenticate each request with the headers `x-client-id` and `x-app-id`. By default, a unique `x-app-id` is generated for each project.
+Per comunicare con l'API, devi autenticare ogni richiesta con gli header `x-client-id` e `x-app-id`. Per impostazione predefinita, per ogni progetto viene generato un `x-app-id` univoco.
 
-```bash Example request
+```bash Esempio di richiesta
 curl -X POST \
   -H "Content-Type: application/json" \
-  -H "x-client-id: 5e8c22366f9c5f23ab0eff39" \
-  -H "x-app-id: 5e8c22366f9c5f23ab0eff39" \
+  -H "x-client-id: YOUR_KEY_HERE" \
+  -H "x-app-id: YOUR_KEY_HERE" \
   -d '{ "query": "{ } " }' \
   https://api.chargetrip.io/graphql
 ```

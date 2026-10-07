@@ -1,26 +1,26 @@
 ---
-title: Stay on highway preference
+title: Sürüş stilleri
 date: 01-02-2026
 ---
 
-## Driving styles
+## Sürüş stilleri
 
-![Driving styles](../../../assets/changelog/2026/february.jpg)
+![Sürüş stilleri](../../../assets/changelog/2026/february.jpg)
 
-Driving speed directly affects EV energy consumption. To make routes more accurately reflect real-world vehicle behavior and trip duration, we are introducing two new controls: speed factor and driving styles.
+Sürüş hızı, EV enerji tüketimini doğrudan etkiler. Rotaların gerçek dünyadaki araç davranışını ve yolculuk süresini daha doğru yansıtması için iki yeni kontrol sunuyoruz: hız faktörü ve sürüş stilleri.
 
-Driving styles change estimated arrival time and energy consumption.
+Sürüş stilleri tahmini varış zamanını ve enerji tüketimini değiştirir.
 
-- **Eco** assumes a more relaxed, efficient pace to save battery;
-- **Sport** assumes higher speeds and greater consumption for a quicker arrival.
+- **Eco**, bataryadan tasarruf etmek için daha rahat ve verimli bir tempo varsayar;
+- **Sport**, daha hızlı varış için daha yüksek hızlar ve daha fazla tüketim varsayar.
 
-These features allow you to adjust routing calculations based on how a vehicle is actually driven, resulting in more precise consumption estimates and arrival times.
+Bu özellikler, rota hesaplamalarını aracın gerçekte nasıl kullanıldığına göre ayarlamanıza olanak tanıyarak daha hassas tüketim tahminleri ve varış zamanları sağlar.
 
 
-### Updated getRouteStationsWithAmenities Schema
+### Güncellenen getRouteStationsWithAmenities şeması
 
-We updated the `getRouteStationsWithAmenities` query to simplify inputs and support multi-amenity filtering.
+Girdileri basitleştirmek ve birden fazla olanağa göre filtrelemeyi desteklemek için `getRouteStationsWithAmenities` sorgusunu güncelledik.
 
-- **Multi-amenity search**: Query multiple amenity categories simultaneously with logical OR filtering;
-- **Direct time inputs**: Pass time windows directly in seconds from the route origin;
-- **External station id**: Access `external_id` on the station nodes.
+- **Çoklu olanak araması**: Mantıksal OR filtrelemesiyle birden fazla olanak kategorisini aynı anda sorgulayın;
+- **Doğrudan zaman girdileri**: Zaman pencerelerini rota başlangıcından itibaren doğrudan saniye cinsinden iletin;
+- **Harici istasyon id'si**: İstasyon düğümlerinde `external_id` alanına erişin.

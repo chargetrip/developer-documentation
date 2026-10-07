@@ -1,46 +1,46 @@
 ---
 slug: mutation-new-route
-title: Route migration guide
+title: Guide de migration de l'itinéraire
 migrateBefore: 01-01-2027
 ---
 
-# Create route
+# Créer un itinéraire
 
-Migrate from the legacy Route service to the latest version. The new service delivers a reorganized schema, per-country operator preferences, faster route computation, and greater maintainability.
+Migrez de l'ancien service Route vers la dernière version. Le nouveau service offre un schéma réorganisé, des préférences d'opérateur par pays, un calcul d'itinéraire plus rapide et une meilleure maintenabilité.
 
-## Operations
+## Opérations
 
-| Old               | New                                                             |
+| Ancien            | Nouveau                                                         |
 | ----------------- | ----------------------------------------------------------------|
 | `newRoute`        | [`createRoute`](/api-reference/route/mutation-create-route)     |
 
-## General schema changes
+## Changements généraux du schéma
 
-- **Explicit typing**: previously flexible JSON fields are now explicitly typed in the schema to improve structure and validation.
-- **Naming conventions**: fields now use `snake_case` instead of `camelCase`.
-- **Unit support**: numeric inputs now support different unit types, expressed as an object with `value`, `type`, and an optional `source` (`manual`, `telemetry`, or `default`).
+- **Typage explicite** : les champs JSON auparavant flexibles sont désormais explicitement typés dans le schéma pour améliorer la structure et la validation.
+- **Conventions de nommage** : les champs utilisent désormais `snake_case` au lieu de `camelCase`.
+- **Prise en charge des unités** : les entrées numériques prennent désormais en charge différents types d'unités, exprimées sous la forme d'un objet avec `value`, `type` et une `source` facultative (`manual`, `telemetry` ou `default`).
 
-## Mutation changes
+## Changements de mutation
 
-The `input` argument on `createRoute` has been reorganized and simplified.
+L'argument `input` de `createRoute` a été réorganisé et simplifié.
 
 ### routeRequest
 
-At the root level, the following fields have been removed. Operator-related fields are now covered by [operator preferences](#operator-preferences), and amenity-related fields have moved to their own dedicated [amenity query](/api-reference/route/query-get-route-stations-with-amenities).
+Au niveau racine, les champs suivants ont été supprimés. Les champs liés aux opérateurs sont désormais couverts par les [préférences d'opérateur](#préférences-dopérateur), et les champs liés aux équipements ont été déplacés vers leur propre [requête d'équipements](/api-reference/route/query-get-route-stations-with-amenities) dédiée.
 
-| Field                  | Moved to                              |
+| Champ                  | Déplacé vers                          |
 | ---------------------- | -------------------------------------- |
-| `operatorIds`          | Removed                                |
-| `amenities`            | Removed                                |
-| `amenity_preferences`  | Removed                                |
-| `operatorRequired`     | Removed                                |
-| `operatorPrefer`       | Removed                                |
+| `operatorIds`          | Supprimé                               |
+| `amenities`            | Supprimé                               |
+| `amenity_preferences`  | Supprimé                               |
+| `operatorRequired`     | Supprimé                               |
+| `operatorPrefer`       | Supprimé                               |
 
 ### EV
 
-At the EV level, most top-level fields have moved into a dedicated `vehicle` object.
+Au niveau EV, la plupart des champs de premier niveau ont été déplacés dans un objet `vehicle` dédié.
 
-| Field             | Moved to                              |
+| Champ             | Déplacé vers                          |
 | ----------------- | -------------------------------------- |
 | `ev.id`           | `vehicle.id`                     |
 | `battery`         | `vehicle`                        |
@@ -49,22 +49,22 @@ At the EV level, most top-level fields have moved into a dedicated `vehicle` obj
 | `plugs`           | `vehicle.charging.connectors`    |
 | `safeRiskMargin`       | `vehicle.charging.risk_margin`   |
 | `chargeMode`           | `vehicle.charging.mode`          |
-| `bmsConsumption`  | Removed                                |
+| `bmsConsumption`  | Supprimé                               |
 
-### Vehicle load
+### Charge du véhicule
 
-Vehicle load properties are no longer set in a single place. They're now specified per `origin` and `via` point, giving more granular control over occupant and cargo weight per leg. They live under `properties.vehicle` on each location, and their field names change as follows:
+Les propriétés de charge du véhicule ne sont plus définies à un seul endroit. Elles sont désormais spécifiées par point `origin` et `via`, ce qui offre un contrôle plus fin du poids des occupants et de la cargaison par tronçon. Elles se trouvent sous `properties.vehicle` de chaque localisation, et leurs noms de champs changent comme suit :
 
-| Field       | Moved to             |
+| Champ       | Déplacé vers          |
 | ----------- | --------------------- |
-| `occupants` | Unchanged              |
+| `occupants` | Inchangé               |
 | `cargo`     | `total_cargo_weight`  |
 
-### Telemetry
+### Télémétrie
 
-The following telemetry data has moved from the root level into the `vehicle` object.
+Les données de télémétrie suivantes ont été déplacées du niveau racine vers l'objet `vehicle`.
 
-| Field                 | Moved to        |
+| Champ                 | Déplacé vers    |
 | --------------------- | ---------------- |
 | `heading`             | `vehicle`  |
 | `motor_rpm`           | `vehicle`  |
@@ -73,15 +73,15 @@ The following telemetry data has moved from the root level into the `vehicle` ob
 | `tire_pressure`       | `vehicle`  |
 | `vehicle_speed`       | `vehicle`  |
 
-## Highlighted changes
+## Changements mis en avant
 
-A few fields on the `input` argument now have new, more structured shapes. These are covered in more detail below.
+Quelques champs de l'argument `input` ont désormais de nouvelles formes plus structurées. Elles sont détaillées ci-dessous.
 
-### Operator preferences
+### Préférences d'opérateur
 
-Operator preferences are simplified to three levels: `high`, `medium`, and `low`. Each entry — whether ranked, excluded, or avoided — can be scoped to specific countries via the `countries` field. If omitted, all countries are considered.
+Les préférences d'opérateur sont simplifiées en trois niveaux : `high`, `medium` et `low`. Chaque entrée, qu'elle soit classée, exclue ou évitée, peut être limitée à des pays spécifiques via le champ `countries`. Si celui-ci est omis, tous les pays sont pris en compte.
 
-```graphql Operator preferences {{ mark: [6,9,12] }}
+```graphql Préférences d'opérateur {{ mark: [6,9,12] }}
 input: {
   operators: {
     ranking: {
@@ -104,11 +104,11 @@ input: {
 }
 ```
 
-### Total occupant weight
+### Poids total des occupants
 
-A new `total_occupant_weight` field lets you override the default occupant weight, expressed with the new unit object.
+Un nouveau champ `total_occupant_weight` vous permet de remplacer le poids par défaut des occupants, exprimé avec le nouvel objet d'unité.
 
-```graphql Total occupant weight {{ mark: [6,7,8,9,10] }}
+```graphql Poids total des occupants {{ mark: [6,7,8,9,10] }}
 input: {
   origin: {
     properties: {

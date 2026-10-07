@@ -1,28 +1,28 @@
 ---
-title: Security
+title: Güvenlik
 ---
 
-Headers sent with a request, including `x-app-id`, are visible to anyone who inspects network traffic. To prevent unauthorized use of your applications, apply a restriction that limits which platform or origin can use it.
+`x-app-id` dahil, bir istekle gönderilen başlıklar, ağ trafiğini inceleyen herkes tarafından görülebilir. Uygulamalarınızın yetkisiz kullanımını önlemek için, hangi platformun veya kaynağın kullanabileceğini sınırlayan bir kısıtlama uygulayın.
 
-> [!WARNING] One restriction per application
-> Only one restriction can be applied per application. To combine restrictions — for example a web and a mobile client — create a separate application for each.
+> [!WARNING] Uygulama başına tek kısıtlama
+> Uygulama başına yalnızca bir kısıtlama uygulanabilir. Kısıtlamaları birleştirmek için, örneğin bir web ve bir mobil istemci için, her biri için ayrı bir uygulama oluşturun.
 
-## Restriction types
+## Kısıtlama türleri
 
-Four restriction types are available, each suited to a different platform or communication pattern.
+Her biri farklı bir platforma veya iletişim modeline uygun dört kısıtlama türü vardır.
 
 ### Web
 
-Restrict a web application via HTTP referrer, applied to the `x-app-id` header. Multiple URLs can be added to a single application.
+Bir web uygulamasını, `x-app-id` başlığına uygulanan HTTP referrer ile kısıtlayın. Tek bir uygulamaya birden fazla URL eklenebilir.
 
-### Machine-to-machine (M2M)
+### Makineden makineye (M2M)
 
-Restrict server-to-server communication via IP address (IPv4 and IPv6 are supported), configured in the app dashboard. This is the most secure option, since credentials never reach a browser or device.
+Sunucudan sunucuya iletişimi, uygulama panelinde yapılandırılan IP adresi (IPv4 ve IPv6 desteklenir) ile kısıtlayın. Kimlik bilgileri hiçbir zaman bir tarayıcıya veya cihaza ulaşmadığından bu en güvenli seçenektir.
 
 ### Android
 
-Restrict an Android application using the `x-app-identifier` and `x-app-fingerprint` headers, sent with every request.
+Bir Android uygulamasını, her istekle birlikte gönderilen `x-app-identifier` ve `x-app-fingerprint` başlıklarıyla kısıtlayın.
 
 ### iOS
 
-Restrict an iOS application using the `x-app-identifier` header, carrying the app's bundle identifier.
+Bir iOS uygulamasını, uygulamanın bundle tanımlayıcısını taşıyan `x-app-identifier` başlığıyla kısıtlayın.

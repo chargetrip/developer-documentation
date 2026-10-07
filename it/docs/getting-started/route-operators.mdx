@@ -1,0 +1,175 @@
+---
+title: "Percorso con preferenze sugli operatori"
+---
+Le preferenze sugli operatori ti permettono di controllare quali reti di ricarica il servizio di routing preferisce quando calcola un percorso EV.
+
+Puoi configurare le preferenze in due punti:
+- [Dashboard Chargetrip](https://account.chargetrip.io/projects): Imposta la configurazione globale delle preferenze sugli operatori per il tuo progetto in project / advanced / station operator preferences.
+- [Richiesta Create Route](/api-reference/route/mutation-create-route#arg-input-operators): Definisci le preferenze dinamicamente o sovrascrivi la configurazione delle preferenze sugli operatori della dashboard per ogni richiesta usando il campo `input.operators` nella mutation `createRoute`.
+
+---
+
+### 1. Tipi di preferenza e comportamento del percorso
+
+
+Le preferenze sugli operatori sono di quattro tipi e ciascuna può essere limitata a paesi specifici:
+
+| Preferenza | Comportamento del routing |
+|:---|:---|
+| Escluso | Le stazioni di questi operatori sono rigorosamente escluse in ogni circostanza. |
+| Evitato  |  Le stazioni di questi operatori vengono evitate a meno che non esista un'alternativa migliore. |
+| Preferito | Le stazioni di questi operatori hanno la priorità in base alla loro classifica (alta, media, bassa). Più alto è il livello, più è probabile che la stazione venga selezionata. Il percorso utilizzerà comunque stazioni non classificate o evitate se non esiste un'alternativa migliore.|
+| Obbligatorio  | Vengono utilizzate solo le stazioni di questi operatori. All'interno di questo insieme consentito, i livelli della classifica continuano ad applicarsi, quindi gli operatori di livello alto sono preferiti a quelli di livello medio e basso. Se il veicolo non riesce a raggiungere la destinazione usando solo stazioni classificate, il calcolo del percorso non riesce.|
+
+
+---
+
+### 2. Come vengono applicate le preferenze a livello di dashboard
+
+Capire come gli input a livello di richiesta interagiscono con le impostazioni della dashboard garantisce un comportamento di routing prevedibile:
+
+- **Gli operatori Esclusi ed Evitati nella dashboard si applicano automaticamente**:
+Gli operatori configurati come Esclusi o Evitati nella dashboard si applicano a ogni calcolo di percorso senza richiedere alcun parametro nella tua richiesta `createRoute`.
+- **I livelli di classifica della dashboard restano inattivi senza un tipo di classifica**:
+Gli operatori configurati nei livelli di classifica devono essere attivati impostando `input.operators.ranking.type` nella tua richiesta `createRoute`, altrimenti non influiscono sulla selezione delle stazioni.
+- **Gli operatori a livello di richiesta sostituiscono le rispettive preferenze della dashboard**:
+Specificare gli ID degli operatori nella richiesta `createRoute` sostituisce solo la configurazione corrispondente della dashboard. Ad esempio, fornire `input.operators.exclude[]` sostituisce l'intera configurazione degli operatori esclusi della dashboard, mentre gli operatori da evitare a livello di dashboard continuano ad applicarsi.
+---
+### 3. Esempi di implementazione
+
+<details>
+  <summary>Usa solo le esclusioni e gli operatori evitati della dashboard</summary>
+  Applica le configurazioni degli operatori esclusi ed evitati impostate nella dashboard. Le impostazioni di classifica della dashboard sono inattive perché non è specificato alcun `input.operators.ranking.type`.
+
+```graphql Esempio di richiesta
+createRoute(
+  input: {
+    vehicle: { id: "607823b2c246f9001b97b1a2" }
+    origin: {
+      type: Feature
+      geometry: { type: Point, coordinates: [4.895168, 52.370216] }
+    }
+    destination: {
+      type: Feature
+      geometry: { type: Point, coordinates: [2.352222, 48.856614] }
+    }
+  }
+)
+```
+</details>
+
+<details>
+  <summary>Usa gli operatori classificati della dashboard come "Preferiti"</summary>
+  Applica le configurazioni degli operatori esclusi ed evitati della dashboard e preferisce le stazioni appartenenti ai livelli di classifica della dashboard.
+
+```graphql Esempio di richiesta {{ mark: [14] }}
+createRoute(
+  input: {
+    vehicle: { id: "607823b2c246f9001b97b1a2" }
+    origin: {
+      type: Feature
+      geometry: { type: Point, coordinates: [4.895168, 52.370216] }
+    }
+    destination: {
+      type: Feature
+      geometry: { type: Point, coordinates: [2.352222, 48.856614] }
+    }
+    operators: {
+      ranking: {
+        type: preferred
+      }
+    }
+  }
+)
+```
+</details>
+
+<details>
+  <summary>Usa gli operatori classificati della dashboard come "Obbligatori"</summary>
+  Limita il percorso in modo da ricaricare esclusivamente presso stazioni appartenenti agli operatori configurati nei livelli di classifica della dashboard.
+
+```graphql Esempio di richiesta {{ mark: [14] }}
+createRoute(
+  input: {
+    vehicle: { id: "607823b2c246f9001b97b1a2" }
+    origin: {
+      type: Feature
+      geometry: { type: Point, coordinates: [4.895168, 52.370216] }
+    }
+    destination: {
+      type: Feature
+      geometry: { type: Point, coordinates: [2.352222, 48.856614] }
+    }
+    operators: {
+      ranking: {
+        type: required
+      }
+    }
+  }
+)
+```
+</details>
+
+<details>
+  <summary>Definisci preferenze personalizzate e sovrascrivi le impostazioni della dashboard</summary>
+  Fornisci le configurazioni complete degli operatori direttamente nella chiamata API. Qualsiasi campo specificato (ranking, avoid o exclude) sovrascrive la corrispondente configurazione della dashboard per quella richiesta.
+
+```graphql Esempio di richiesta  {{ mark: [13,14,15,16,17,18,19,20,21] }}
+createRoute(
+  input: {
+    vehicle: { id: "607823b2c246f9001b97b1a2" }
+    origin: {
+      type: Feature
+      geometry: { type: Point, coordinates: [4.895168, 52.370216] }
+    }
+    destination: {
+      type: Feature
+      geometry: { type: Point, coordinates: [2.352222, 48.856614] }
+    }
+    operators: {
+      ranking: {
+        type: preferred
+        level: {
+          high: [{ id: "5e8c22366f9c5f23ab0eff01" }]
+          medium: [{ id: "5e8c22366f9c5f23ab0eff02" }]
+        }
+      }
+      avoid: [{ id: "5e8c22366f9c5f23ab0eff03" }]
+      exclude: [{ id: "5e8c22366f9c5f23ab0eff04" }]
+    }
+  }
+)
+```
+</details>
+
+<details>
+  <summary>Definisci preferenze personalizzate per paesi specifici</summary>
+  Fornisci le configurazioni complete degli operatori direttamente nella chiamata API. Qualsiasi campo specificato (ranking, avoid o exclude) sovrascrive la corrispondente configurazione della dashboard per quella richiesta.
+
+```graphql Esempio di richiesta  {{ mark: [13,14,15,16,17,18,19,20,21] }}
+createRoute(
+  input: {
+    vehicle: { id: "607823b2c246f9001b97b1a2" }
+    origin: {
+      type: Feature
+      geometry: { type: Point, coordinates: [4.895168, 52.370216] }
+    }
+    destination: {
+      type: Feature
+      geometry: { type: Point, coordinates: [2.352222, 48.856614] }
+    }
+    operators: {
+      ranking: {
+        type: preferred
+        level: {
+          high: [{ id: "5e8c22366f9c5f23ab0eff01", countries: ["NL", "DE"] }]
+          medium: [{ id: "5e8c22366f9c5f23ab0eff01", countries: ["FR"] }]
+        }
+      }
+      avoid: [{ id: "5e8c22366f9c5f23ab0eff03", countries: ["AT"] }]
+      exclude: [{ id: "5e8c22366f9c5f23ab0eff04" }]
+    }
+  }
+)
+```
+</details>

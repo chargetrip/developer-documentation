@@ -1,28 +1,28 @@
 ---
-title: Security
+title: Sécurité
 ---
 
-Headers sent with a request, including `x-app-id`, are visible to anyone who inspects network traffic. To prevent unauthorized use of your applications, apply a restriction that limits which platform or origin can use it.
+Les en-têtes envoyés avec une requête, y compris `x-app-id`, sont visibles par quiconque inspecte le trafic réseau. Pour empêcher toute utilisation non autorisée de vos applications, appliquez une restriction qui limite la plateforme ou l'origine pouvant l'utiliser.
 
-> [!WARNING] One restriction per application
-> Only one restriction can be applied per application. To combine restrictions — for example a web and a mobile client — create a separate application for each.
+> [!WARNING] Une restriction par application
+> Une seule restriction peut être appliquée par application. Pour combiner des restrictions, par exemple un client web et un client mobile, créez une application distincte pour chacun.
 
-## Restriction types
+## Types de restrictions
 
-Four restriction types are available, each suited to a different platform or communication pattern.
+Quatre types de restrictions sont disponibles, chacun adapté à une plateforme ou à un mode de communication différent.
 
 ### Web
 
-Restrict a web application via HTTP referrer, applied to the `x-app-id` header. Multiple URLs can be added to a single application.
+Restreignez une application web via le référent HTTP, appliqué à l'en-tête `x-app-id`. Plusieurs URL peuvent être ajoutées à une même application.
 
-### Machine-to-machine (M2M)
+### Machine à machine (M2M)
 
-Restrict server-to-server communication via IP address (IPv4 and IPv6 are supported), configured in the app dashboard. This is the most secure option, since credentials never reach a browser or device.
+Restreignez la communication de serveur à serveur via l'adresse IP (IPv4 et IPv6 sont pris en charge), configurée dans le tableau de bord de l'application. C'est l'option la plus sûre, car les identifiants n'atteignent jamais un navigateur ou un appareil.
 
 ### Android
 
-Restrict an Android application using the `x-app-identifier` and `x-app-fingerprint` headers, sent with every request.
+Restreignez une application Android à l'aide des en-têtes `x-app-identifier` et `x-app-fingerprint`, envoyés avec chaque requête.
 
 ### iOS
 
-Restrict an iOS application using the `x-app-identifier` header, carrying the app's bundle identifier.
+Restreignez une application iOS à l'aide de l'en-tête `x-app-identifier`, qui contient l'identifiant de bundle de l'application.

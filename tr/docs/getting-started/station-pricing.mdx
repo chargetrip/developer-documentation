@@ -1,33 +1,33 @@
 ---
-title: Station pricing
+title: İstasyon fiyatlandırması
 ---
 
-Charging prices can be shown at two levels: directly on a map through the Tile service, or in full detail through a connector's pricing.
+Şarj fiyatları iki düzeyde gösterilebilir: doğrudan haritada Tile hizmeti aracılığıyla veya bir konnektörün fiyatlandırması üzerinden tüm ayrıntılarıyla.
 
-## Tile service
+## Tile hizmeti
 
-The Tile service exposes `minimum_station_price` and `maximum_station_price` as both a filter and a response field.
+Tile hizmeti, `minimum_station_price` ve `maximum_station_price` değerlerini hem filtre hem de yanıt alanı olarak sunar.
 
-- As a [filter](/api-reference/tiles/filters), pass `minimum_station_price` and `maximum_station_price`, along with `price_currency` to convert the range to the correct currency, to dynamically include or exclude stations whose price falls within that range.
-- As a [selector](/api-reference/tiles/selectors), request `minimum_station_price` and `maximum_station_price` to render each station's price range directly on the map.
+- Bir [filtre](/api-reference/tiles/filters) olarak, fiyatı bu aralığa düşen istasyonları dinamik olarak dahil etmek veya hariç tutmak için `minimum_station_price` ve `maximum_station_price` değerlerini, aralığı doğru para birimine dönüştürmek üzere `price_currency` ile birlikte gönderin.
+- Bir [seçici](/api-reference/tiles/selectors) olarak, her istasyonun fiyat aralığını doğrudan haritada göstermek için `minimum_station_price` ve `maximum_station_price` değerlerini isteyin.
 
-## Station pricing
+## İstasyon fiyatlandırması
 
-Where pricing details come from depends on the station database behind a station.
+Fiyatlandırma ayrıntılarının nereden geldiği, bir istasyonun arkasındaki istasyon veritabanına bağlıdır.
 
-- If Ecomovement is used, pricing can be found on the pricing object of a station's connectors, at `evses[].connectors[].prices`.
-- For any other station database, use the dedicated [tariffList](/api-reference/tariff/query-tariff-list) and [tariff](/api-reference/tariff/query-tariff) queries instead.
+- Ecomovement kullanılıyorsa, fiyatlandırma bir istasyonun konnektörlerinin fiyatlandırma nesnesinde, `evses[].connectors[].prices` konumunda bulunabilir.
+- Diğer tüm istasyon veritabanları için bunun yerine özel [tariffList](/api-reference/tariff/query-tariff-list) ve [tariff](/api-reference/tariff/query-tariff) sorgularını kullanın.
 
-A connector can have several price elements active at different times. Work through them in order to render the correct price.
+Bir konnektörün farklı zamanlarda etkin olan birden fazla fiyat öğesi olabilir. Doğru fiyatı göstermek için bunları sırayla değerlendirin.
 
-1. **Find the active price element**
-   Each price element has `restrictions`, such as `day_of_week`, `start_time`/`end_time`, or minimum and maximum kWh, power, or duration. Use these to determine which price element applies right now.
-2. **Display all price components**
-   A price element can combine several components at once. An `energy` component gives you the price per kWh. A `time` component gives you the price per interval, billed in blocks defined by its `step_size`. For example, a `step_size` of `300` on a `time` component bills in blocks of 5 minutes. A `flat` component adds a fixed amount to the session, independent of energy used or time spent.
-3. **Account for the overstay fee**
-   A `parking_time` component charges an idle fee for staying connected after charging has finished, since nobody else can use the connector in the meantime. It applies once the connector's overstay restrictions, such as `overstay_time` or `overstay_battery_percentage`, are met.
+1. **Etkin fiyat öğesini bulun**
+   Her fiyat öğesinin `day_of_week`, `start_time`/`end_time` veya minimum ve maksimum kWh, güç ya da süre gibi `restrictions` kısıtlamaları vardır. Şu anda hangi fiyat öğesinin geçerli olduğunu belirlemek için bunları kullanın.
+2. **Tüm fiyat bileşenlerini gösterin**
+   Bir fiyat öğesi aynı anda birden fazla bileşeni birleştirebilir. Bir `energy` bileşeni size kWh başına fiyatı verir. Bir `time` bileşeni size aralık başına fiyatı verir ve `step_size` ile tanımlanan bloklar halinde faturalandırılır. Örneğin, bir `time` bileşenindeki `300` değerindeki `step_size`, 5 dakikalık bloklar halinde faturalandırır. Bir `flat` bileşeni, kullanılan enerjiden veya geçirilen süreden bağımsız olarak oturuma sabit bir tutar ekler.
+3. **Park aşım ücretini hesaba katın**
+   Bir `parking_time` bileşeni, şarj bittikten sonra bağlı kalma için bir bekleme ücreti uygular; çünkü bu sürede konnektörü kimse kullanamaz. Konnektörün `overstay_time` veya `overstay_battery_percentage` gibi park aşım kısıtlamaları karşılandığında devreye girer.
 
-Each connector can have its own price, and prices can be changed dynamically by the operator at any time.
+Her konnektörün kendi fiyatı olabilir ve fiyatlar operatör tarafından istenen zamanda dinamik olarak değiştirilebilir.
 
-> [!WARNING] Rely on last_updated
-> Since prices can change at any time, always check a price object's `last_updated` field before caching or reusing a price, rather than assuming it stays valid.
+> [!WARNING] last_updated alanına güvenin
+> Fiyatlar her an değişebileceğinden, geçerli kalacağını varsaymak yerine bir fiyatı önbelleğe almadan veya yeniden kullanmadan önce her zaman fiyat nesnesinin `last_updated` alanını kontrol edin.

@@ -1,11 +1,11 @@
 ---
-title: Advance navigation leg
+title: Avanza tappa di navigazione
 schemaName: advanceNavigationLeg
 schemaType: Mutation
 ---
 
-Advance an active navigation session to the next route leg by using the advanceNavigationLeg mutation. This is useful when a driver completes a leg, such as finishing a charging stop, and continues to the next one.
+Fai avanzare una sessione di navigazione attiva alla tratta successiva del percorso usando la mutation advanceNavigationLeg. È utile quando un conducente completa una tratta, ad esempio terminando una tappa di ricarica, e prosegue verso la successiva.
 
 ## Mutation
 
-A navigation session `id` and `current_location` are required to advance to the next leg. Optionally include `state_of_charge` to specify the vehicle's charge level at the current location. The `id` can be obtained through the [startNavigation mutation](/api-reference/navigation/mutation-start-navigation).
+Per passare alla tratta successiva sono necessari l'`id` della sessione di navigazione e `current_location`. Facoltativamente includi `state_of_charge` per indicare il livello di carica del veicolo nella posizione attuale. L'`id` si ottiene tramite la [mutation startNavigation](/api-reference/navigation/mutation-start-navigation).

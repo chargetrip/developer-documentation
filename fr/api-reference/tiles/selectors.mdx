@@ -1,77 +1,77 @@
 ---
-title: Selectors
+title: Sélecteurs
 tag: Rest
 ---
 
-To optimize response time and size, by default, the MVT and JSON API return a minimized response. This approach ensures peak performance and reduces tile payload sizes, which is critical for smooth map interactions. By using selectors, you can include the additional data points your application specifically requires.
+Pour optimiser le temps de réponse et la taille, l'API MVT et l'API JSON renvoient par défaut une réponse minimisée. Cette approche garantit des performances optimales et réduit la taille des tuiles, ce qui est essentiel pour des interactions fluides avec la carte. Grâce aux sélecteurs, vous pouvez inclure les données supplémentaires dont votre application a spécifiquement besoin.
 
-## Available selectors
+## Sélecteurs disponibles
 
-Any field listed in the station properties for MVT and JSON tiles can be used as a selector in its respective service, with the exception of the mandatory GeoJSON fields returned in JSON endpoint.
+Tout champ listé dans les propriétés de station des tuiles MVT et JSON peut être utilisé comme sélecteur dans son service respectif, à l'exception des champs GeoJSON obligatoires renvoyés par l'endpoint JSON.
 
 `count` · `integer` · <span class="text-accent">default</span>
-: The count of stations within a cluster count of 1 means a Station feature, where count greater than 1 means a Cluster feature
+: Le nombre de stations dans un cluster. Un nombre de 1 signifie une feature Station, tandis qu'un nombre supérieur à 1 signifie une feature Cluster.
 
 `expansion_zoom` · `integer` · <span class="text-accent">default</span>
-: The zoom level at which a cluster splits into multiple smaller clusters or stations.
+: Le niveau de zoom auquel un cluster se divise en plusieurs clusters ou stations plus petits.
 
 `id` · `string`
-: The identifier of the station.
+: L'identifiant de la station.
 
 `lng` · `float`
-: The longitude of the station.
+: La longitude de la station.
 
 `lat` · `float`
-: The latitude of the station.
+: La latitude de la station.
 
 `station_maximum_power` · `integer`
-: The station’s maximum charging power (in kW) available at the station. This value is static and always reflects the station's highest capability, regardless of connector filters.
+: La puissance de charge maximale de la station (en kW) disponible à la station. Cette valeur est statique et reflète toujours la capacité maximale de la station, quels que soient les filtres de connecteurs.
 
 `connector_maximum_power` · `integer`
-: The maximum charging power (in kW) available from the connectors matching the `connectors[]` filter. If no filter is provided, all connectors are considered and it matches `station_maximum_power`.
+: La puissance de charge maximale (en kW) disponible sur les connecteurs correspondant au filtre `connectors[]`. Si aucun filtre n'est fourni, tous les connecteurs sont pris en compte et elle est égale à `station_maximum_power`.
 
 `preferred_operator` · `boolean`
-: Indicates if the operator of a station is as a preferred operator. Preferred operators can be managed on project level in the Dashboard.
+: Indique si l'opérateur d'une station est un opérateur préféré. Les opérateurs préférés peuvent être gérés au niveau du projet dans le Dashboard.
 
 `evse_status_blocked` · `integer`
-: The number of EVSEs in blocked status. If a `connectors[]` filter is provided, it only counts blocked EVSEs that match the selected connector types.
+: Le nombre d'EVSE au statut bloqué. Si un filtre `connectors[]` est fourni, seuls les EVSE bloqués correspondant aux types de connecteurs sélectionnés sont comptés.
 
 `evse_status_planned` · `integer`
-: Number of EVSEs in planned status. If a `connectors[]` filter is provided, it only counts planned EVSEs that have at least one of selected connector types.
+: Nombre d'EVSE au statut planifié. Si un filtre `connectors[]` est fourni, seuls les EVSE planifiés ayant au moins un des types de connecteurs sélectionnés sont comptés.
 
 `evse_status_available` · `integer`
-: Number of EVSEs in status available. If a `connectors[]` filter is provided, it only counts planned EVSEs that have at least one of selected connector types.
+: Nombre d'EVSE au statut disponible. Si un filtre `connectors[]` est fourni, seuls les EVSE disponibles ayant au moins un des types de connecteurs sélectionnés sont comptés.
 
 `evse_status_charging` · `integer`
-: Number of EVSEs in status charging. If a `connectors[]` filter is provided, it only counts planned EVSEs that have at least one of selected connector types.
+: Nombre d'EVSE au statut en charge. Si un filtre `connectors[]` est fourni, seuls les EVSE en charge ayant au moins un des types de connecteurs sélectionnés sont comptés.
 
 `evse_status_unknown` · `integer`
-: Number of EVSEs in status unknown. If a `connectors[]` filter is provided, it only counts planned EVSEs that have at least one of selected connector types.
+: Nombre d'EVSE au statut inconnu. Si un filtre `connectors[]` est fourni, seuls les EVSE inconnus ayant au moins un des types de connecteurs sélectionnés sont comptés.
 
 `evse_status_reserved` · `integer`
-: Number of EVSEs in status reserved. If a `connectors[]` filter is provided, it only counts reserved EVSEs that have at least one of selected connector types.
+: Nombre d'EVSE au statut réservé. Si un filtre `connectors[]` est fourni, seuls les EVSE réservés ayant au moins un des types de connecteurs sélectionnés sont comptés.
 
 `evse_status_out_of_order` · `integer`
-: Number of EVSEs in status out_of_order. If a `connectors[]` filter is provided, it only counts out of order EVSEs that have at least one of selected connector types.
+: Nombre d'EVSE au statut out_of_order. Si un filtre `connectors[]` est fourni, seuls les EVSE hors service ayant au moins un des types de connecteurs sélectionnés sont comptés.
 
 `evse_status_inoperative` · `integer`
-: Number of EVSEs in status inoperative. If a `connectors[]` filter is provided, it only counts inoperative EVSEs that have at least one of selected connector types.
+: Nombre d'EVSE au statut inoperative. Si un filtre `connectors[]` est fourni, seuls les EVSE inopérants ayant au moins un des types de connecteurs sélectionnés sont comptés.
 
-## Implementation
+## Implémentation
 
-To request specific properties, append `station_properties[]` query parameter to the tile request URL.
+Pour demander des propriétés spécifiques, ajoutez le paramètre de requête `station_properties[]` à l'URL de la requête de tuile.
 
 ```bash Tile / Selectors / Example
 https://api.chargetrip.io/v2/station/.../?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
 ```
 
-## Behaviour examples
+## Exemples de comportement
 
-When selectors are provided, the request returns only the specified fields.
+Lorsque des sélecteurs sont fournis, la requête ne renvoie que les champs spécifiés.
 
 ### GeoJSON
 
-In the GeoJSON endpoint, the mandatory GeoJSON fields (`type` and `geometry` and `id`) are always returned regardless of the selectors chosen.
+Dans l'endpoint GeoJSON, les champs GeoJSON obligatoires (`type`, `geometry` et `id`) sont toujours renvoyés, quels que soient les sélecteurs choisis.
 
 ```json JSON Selectors example
 {
@@ -110,7 +110,7 @@ In the GeoJSON endpoint, the mandatory GeoJSON fields (`type` and `geometry` and
 
 ### MVT
 
-In MVT endpoint, only the parameters explicitly selected are returned as there are no mandatory fields.
+Dans l'endpoint MVT, seuls les paramètres explicitement sélectionnés sont renvoyés, car il n'y a aucun champ obligatoire.
 
 ```json MVT Selectors example
 // Station feature
@@ -125,6 +125,6 @@ In MVT endpoint, only the parameters explicitly selected are returned as there a
 // Cluster feature is not modified, as it's not affected by the selectors.
 {
   "count": 3,
-  "expansion_zoom":32
+  "expansion_zoom": 32
 }
 ```

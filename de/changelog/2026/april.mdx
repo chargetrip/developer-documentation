@@ -1,19 +1,19 @@
 ---
-title: Traffic
+title: Alternative Routen
 date: 01-04-2026
 ---
 
-## Alternative routes
+## Alternative Routen
 
-![Route alternatives](../../../assets/changelog/2026/april.jpg)
+![Routenalternativen](../../../assets/changelog/2026/april.jpg)
 
-You can now request geographically different alternative routes alongside the recommended route during route calculation. This allows drivers and dispatchers to evaluate alternative paths based on their preferences while maintaining the same trip constraints. You can specify up to 2 alternative routes.
+Sie können bei der Routenberechnung jetzt zusätzlich zur empfohlenen Route geografisch unterschiedliche alternative Routen anfordern. So können Fahrer und Disponenten alternative Strecken anhand ihrer Präferenzen bewerten, während dieselben Fahrtbeschränkungen erhalten bleiben. Sie können bis zu 2 alternative Routen angeben.
 
 
 
 <details>
-    <summary>Fixes</summary>
+  <summary>Fehlerbehebungen</summary>
 
-    - Fixed an issue where providing empty `via` waypoints without geometry, location, or station IDs in `createRoute` failed silently with a `not_found` status instead of returning a `ROUTE_VIA_LOCATION_MISSING` validation error.
-    - Fixed an issue in `operatorList` where queries using ranking filters returned empty results if the project had no excluded countries configured, ensuring operators matching ranking preferences are returned correctly.
+    - Es wurde ein Problem behoben, bei dem leere `via`-Wegpunkte ohne Geometrie, Standort oder Stations-IDs in `createRoute` stillschweigend mit dem Status `not_found` fehlschlugen, anstatt einen `ROUTE_VIA_LOCATION_MISSING`-Validierungsfehler zurückzugeben.
+    - Es wurde ein Problem in `operatorList` behoben, bei dem Abfragen mit Ranking-Filtern leere Ergebnisse lieferten, wenn für das Projekt keine ausgeschlossenen Länder konfiguriert waren. Betreiber, die den Ranking-Präferenzen entsprechen, werden nun korrekt zurückgegeben.
 </details>

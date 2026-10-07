@@ -1,12 +1,12 @@
 ---
 slug: query-emissions
-title: Emissions migration guide
+title: Emisyonlar geçiş rehberi
 migrateBefore: 01-01-2027
 ---
 
-# Route emissions
-Migrate from the legacy Emissions service to the latest version. The new service is built as its own dedicated query, better aligned with scalability and future updates.
+# Rota emisyonları
+Eski Emisyonlar hizmetinden en son sürüme geçin. Yeni hizmet, ölçeklenebilirlik ve gelecekteki güncellemelerle daha iyi uyum sağlayacak şekilde kendi özel sorgusu olarak oluşturulmuştur.
 
-## Query changes
+## Sorgu değişiklikleri
 
-Emissions data has moved out of the route response and into its own dedicated `getRouteEmissions` query, so it can be requested independently of a route calculation.
+Emisyon verileri rota yanıtından çıkarılıp kendi özel `getRouteEmissions` sorgusuna taşınmıştır; böylece rota hesaplamasından bağımsız olarak talep edilebilir.

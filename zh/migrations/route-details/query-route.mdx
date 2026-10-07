@@ -1,49 +1,49 @@
 ---
 slug: route-details
-title: Route details migration guide
+title: 路线详情迁移指南
 migrateBefore: 01-01-2027
 ---
 
-# Route details
+# 路线详情
 
-Migrate from the legacy Route service to the latest version. The new service delivers a reorganized schema, per-country operator preferences, faster route computation, and greater maintainability.
+从旧版路线服务迁移到最新版本。新服务提供了重新组织的 schema、按国家设置的运营商偏好、更快的路线计算以及更好的可维护性。
 
-## Operations
+## 操作
 
-| Old                | New                                                   |
+| 旧版               | 新版                                                  |
 | ------------------ | ------------------------------------------------------|
 | `route`            | [`getRoute`](/api-reference/route/query-get-route)     |
 | `routeUpdatedById`  | [`route`](/api-reference/route/subscription-route)     |
 
-## General schema changes
+## 通用 schema 变更
 
-- **Explicit typing**: previously flexible JSON fields are now explicitly typed in the schema to improve structure and validation.
-- **Naming conventions**: fields now use `snake_case` instead of `camelCase`.
-- **Unit support**: numeric inputs now support different unit types, expressed as an object with `value`, `type`, and an optional `source` (`manual`, `telemetry`, or `default`).
+- **显式类型**：以前灵活的 JSON 字段现在在 schema 中有了明确的类型，以改进结构和验证。
+- **命名约定**：字段现在使用 `snake_case`，而不是 `camelCase`。
+- **单位支持**：数值输入现在支持不同的单位类型，以包含 `value`、`type` 和可选 `source`（`manual`、`telemetry` 或 `default`）的对象表示。
 
-## Query and subscription changes
+## 查询和订阅变更
 
-Field naming and grouping have been revised, and redundant fields have been removed. The response now includes the original input enriched with defaults, so it can be reused for future route recalculations.
+字段的命名和分组已被修订，冗余字段已被移除。响应现在包含补充了默认值的原始输入，因此可以在以后重新计算路线时复用。
 
-### Top level
+### 顶层
 
-At the top level, most fields move under `recommended`, and the `ev`, `telemetry`, and `routeRequest` inputs are folded into a single `request_input` object.
+在顶层，大多数字段移至 `recommended` 下，`ev`、`telemetry` 和 `routeRequest` 输入被合并为单个 `request_input` 对象。
 
-| Field          | Moved to               |
+| 字段           | 移至                   |
 | -------------- | ---------------------- |
 | `route`        | `recommended`          |
-| `alternatives` | Removed                |
+| `alternatives` | 已移除                 |
 | `ev`           | `request_input`        |
 | `telemetry`    | `request_input`        |
 | `routeRequest` | `request_input`        |
 | `app`          | `meta.app_id`          |
-| `status`       | Unchanged              |
+| `status`       | 不变                   |
 
-### Route
+### 路线
 
-At the route level, most fields move under `recommended`, keeping their own names, alongside a few explicit renames.
+在路线层级，大多数字段移至 `recommended` 下并保留各自的名称，同时有少数明确的重命名。
 
-| Field                 | Moved to                             |
+| 字段                  | 移至                                 |
 | --------------------- | ------------------------------------ |
 | `rangeStart*`         | `range_at_origin`                    |
 | `rangeEnd*`           | `range_at_destination`               |
@@ -55,32 +55,32 @@ At the route level, most fields move under `recommended`, keeping their own name
 | `pathPlot`            | `recommended.path_plot`              |
 | `legs`                | `recommended.legs`                   |
 | `tags`                | `recommended.tags`                   |
-| `instructions`        | Removed                              |
-| `amenityRanking`      | Removed                              |
+| `instructions`        | 已移除                               |
+| `amenityRanking`      | 已移除                               |
 | `stationsAlongRoute`  | `recommended.alternative_stations`   |
 
-### Legs
+### 路段
 
-At the leg level, ranges follow the same renaming as the route, and occupant and cargo details move onto each leg's `origin` and `via` location properties.
+在路段层级，续航里程遵循与路线相同的重命名，乘员和载货详情则移至每个路段 `origin` 和 `via` 位置的属性中。
 
-| Field         | Moved to                               |
+| 字段          | 移至                                    |
 | ------------- | --------------------------------------- |
 | `rangeStart*` | `range_at_origin`                       |
 | `rangeEnd*`   | `range_at_destination`                  |
 | `steps`       | `sections`                              |
 | `stationId`   | `recommended.legs.station.station_id`   |
 
-Legs also gain a new `range_after_charge` field.
+路段还新增了 `range_after_charge` 字段。
 
-## Highlighted changes
+## 重点变更
 
-The response also introduces a new, more structured shape for route sections. It's covered in more detail below.
+响应还为路线分段引入了新的、结构更清晰的形态。下文将更详细地介绍。
 
-### Sections
+### 分段
 
-Steps have been replaced with sections, which provide more granular information, including origin and destination details for each section.
+步骤（steps）已被分段（sections）取代，后者提供更细粒度的信息，包括每个分段的起点和终点详情。
 
-```graphql Sections {{ mark: [1,13,14,26,27] }}
+```graphql 分段 {{ mark: [1,13,14,26,27] }}
 sections {
   type
   tags

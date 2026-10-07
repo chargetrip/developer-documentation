@@ -1,25 +1,25 @@
 ---
 slug: query-route-path
-title: Route path migration guide
+title: Guida alla migrazione del tracciato del percorso
 migrateBefore: 01-01-2027
 ---
 
 # routePath
 
-Migrate from the legacy Route service to the latest version. The new service delivers a reorganized schema, per-country operator preferences, faster route computation, and greater maintainability.
+Esegui la migrazione dal servizio Route legacy all'ultima versione. Il nuovo servizio offre uno schema riorganizzato, preferenze degli operatori per paese, un calcolo del percorso più veloce e una maggiore manutenibilità.
 
-## Operations
+## Operazioni
 
-| Old         | New                                                   |
+| Precedente  | Nuovo                                                 |
 | ----------- | ------------------------------------------------------|
 | `routePath` | [`getRoute`](/api-reference/route/query-get-route)    |
 
-## General schema changes
+## Modifiche generali allo schema
 
-- **Explicit typing**: previously flexible JSON fields are now explicitly typed in the schema to improve structure and validation.
-- **Naming conventions**: fields now use `snake_case` instead of `camelCase`.
-- **Unit support**: numeric inputs now support different unit types, expressed as an object with `value`, `type`, and an optional `source` (`manual`, `telemetry`, or `default`).
+- **Tipizzazione esplicita**: i campi JSON in precedenza flessibili ora sono tipizzati esplicitamente nello schema per migliorare struttura e validazione.
+- **Convenzioni di denominazione**: i campi ora usano `snake_case` invece di `camelCase`.
+- **Supporto delle unità**: gli input numerici ora supportano diversi tipi di unità, espressi come oggetto con `value`, `type` e un `source` facoltativo (`manual`, `telemetry` o `default`).
 
-## Query changes
+## Modifiche alle query
 
-The route's path is now already included in the `getRoute` response as `recommended.path_plot`, so a separate query to fetch it is no longer needed.
+Il tracciato del percorso è ora già incluso nella risposta di `getRoute` come `recommended.path_plot`, quindi non è più necessaria una query separata per recuperarlo.

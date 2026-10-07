@@ -1,37 +1,37 @@
 ---
-title: Error handling
+title: Hata yönetimi
 ---
 
-The API returns errors as part of a normal response, alongside any data that was still resolved. A request can partially succeed, so checking the HTTP status code alone is not enough to detect an error.
+API, hataları normal bir yanıtın parçası olarak, yine de çözümlenebilen verilerle birlikte döndürür. Bir istek kısmen başarılı olabilir; bu nedenle bir hatayı tespit etmek için yalnızca HTTP durum koduna bakmak yeterli değildir.
 
-> [!WARNING] Partial responses
-> The API returns HTTP 200 for most requests, even when they include errors. Always check the response body for an `errors` array, rather than relying on the HTTP status code, since `data` and `errors` can be returned together.
+> [!WARNING] Kısmi yanıtlar
+> API, hata içerseler bile çoğu istek için HTTP 200 döndürür. `data` ve `errors` birlikte döndürülebileceğinden, HTTP durum koduna güvenmek yerine yanıt gövdesinde her zaman bir `errors` dizisi olup olmadığını kontrol edin.
 
-## Errors
+## Hatalar
 
-Each error is returned in the top-level `errors` array, alongside `data`.
+Her hata, `data` ile birlikte en üst düzeydeki `errors` dizisinde döndürülür.
 
 `message` · <span class="text-muted">String</span>
-: A human readable description of the error.
+: Hatanın insan tarafından okunabilir açıklaması.
 
 `locations` · <span class="text-muted">Array</span>
-: The line and column in the request where the error occurred.
+: Hatanın oluştuğu istekteki satır ve sütun.
 
 `path` · <span class="text-muted">Array</span>
-: The path to the field that caused the error, for example `["vehicleList"]`.
+: Hataya neden olan alanın yolu, örneğin `["vehicleList"]`.
 
 `extensions.exception.code` · <span class="text-muted">String</span>
-: A machine readable error code. Use this field to handle errors programmatically, rather than matching on `message`.
+: Makine tarafından okunabilir bir hata kodu. Hataları programatik olarak yönetmek için `message` ile eşleştirme yapmak yerine bu alanı kullanın.
 
 `extensions.exception.status` · <span class="text-muted">Integer</span>
-: The HTTP status code that corresponds to the error, for example `403`.
+: Hataya karşılık gelen HTTP durum kodu, örneğin `403`.
 
 `extensions.exception.message` · <span class="text-muted">String</span>
-: A human readable description of the error, matching the top-level `message` field.
+: Hatanın insan tarafından okunabilir açıklaması; en üst düzeydeki `message` alanıyla aynıdır.
 
 `extensions.exception.response` · <span class="text-muted">String</span>
-: The response body of the underlying exception, often the same as `message`.
+: Temeldeki istisnanın yanıt gövdesi; genellikle `message` ile aynıdır.
 
-### Localization
+### Yerelleştirme
 
-To properly handle and localize error messages, use `extensions.exception.code` rather than `message`. For a description of what each code means, see the operation's page in the API reference. `message` should only be used for developer context, not shown to end users.
+Hata mesajlarını doğru şekilde yönetmek ve yerelleştirmek için `message` yerine `extensions.exception.code` kullanın. Her kodun ne anlama geldiğine dair açıklama için API referansındaki ilgili işlemin sayfasına bakın. `message` yalnızca geliştirici bağlamı için kullanılmalı, son kullanıcılara gösterilmemelidir.

@@ -3,26 +3,26 @@ title: JSON
 tag: Rest
 ---
 
-The JSON tile service provides access to station-related geographic data in JSON format. 
+Le service de tuiles JSON donne accès aux données géographiques liées aux stations au format JSON.
 
-## Setup
+## Configuration
 
-To access the station data in JSON format, send a request to the following endpoint:
+Pour accéder aux données des stations au format JSON, envoyez une requête à l'endpoint suivant :
 
 ```bash Tile / JSON / Base URL
 https://api.chargetrip.io/v2/station/{z}/{x}/{y}/tile.json
 ```
 
-The JSON URL uses the following path parameters:
+L'URL JSON utilise les paramètres de chemin suivants :
 
-- `z`: The zoom level of the tile.
-- `x`: The x-coordinate of the tile.
-- `y`: The y-coordinate of the tile.
+- `z` : le niveau de zoom de la tuile.
+- `x` : la coordonnée x de la tuile.
+- `y` : la coordonnée y de la tuile.
 
-Most map providers have built-in methods to convert latitude and longitude to pixel coordinates. To manually convert latitude and longitude coordinates to x and y use the [Web Mercator Projection](https://en.wikipedia.org/wiki/Web_Mercator_projection).
+La plupart des fournisseurs de cartes disposent de méthodes intégrées pour convertir la latitude et la longitude en coordonnées de pixels. Pour convertir manuellement des coordonnées de latitude et de longitude en x et y, utilisez la [projection Web Mercator](https://en.wikipedia.org/wiki/Web_Mercator_projection).
 
-### Filtering
-Use the `filter` query parameter to filter the stations returned based on specific criteria. See the [filters documentation](/api-reference/tiles/filters) for more information.
+### Filtrage
+Utilisez le paramètre de requête `filter` pour filtrer les stations renvoyées selon des critères spécifiques. Consultez la [documentation des filtres](/api-reference/tiles/filters) pour plus d'informations.
 
-### Selectors
-Use the `station_properties[]` query parameter to specify the fields returned for each station feature. See the [selectors documentation](/api-reference/tiles/selectors) for more information.
+### Sélecteurs
+Utilisez le paramètre de requête `station_properties[]` pour spécifier les champs renvoyés pour chaque feature de station. Consultez la [documentation des sélecteurs](/api-reference/tiles/selectors) pour plus d'informations.

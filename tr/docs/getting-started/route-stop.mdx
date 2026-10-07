@@ -1,0 +1,161 @@
+---
+title: "Duraklarla rota"
+---
+
+Chargetrip Route API ile bir EV rotası hesaplarken, `via` kullanarak başlangıç ile varış noktası arasına ara duraklar ekleyebilirsiniz.
+
+Duraklar, tercih edilen bir şarj istasyonunda şarj etmek, yolcu almak veya bir restoranda mola vermek gibi gerçek dünya seyahat senaryoları için rotayı özelleştirmenizi sağlar.
+
+
+## Durak türleri
+
+Chargetrip iki tür ara durağı destekler:
+
+| Durak | Şarj |  Girdi alanı | Amaç |
+| :--- | :--- | :--- | :--- |
+| **Konum** | Hayır |  `via.geometry`| Coğrafi durak (yolcu alma, teslimat, manzaralı güzergah sapması, kahve molası).
+| **İstasyon** | Evet | `via.properties.station.station_id`| Açıkça seçilmiş şarj istasyonu.
+
+
+## Durak süresi
+
+Her durağın süresini yapılandırabilirsiniz. Durağın türüne (şarj olan veya şarj olmayan) bağlı olarak `stop_duration` farklı konumlarda yapılandırılır ve farklı davranışlara sahiptir:
+
+### 1. Şarj olmayan duraklarda
+
+Durak süresi `input.via.properties.location.stop_duration` konumunda yapılandırılır. Bu süre **tam durak süresini** temsil eder ve aracın şarj veya sürüş süresini etkilemeden doğrudan toplam yolculuk süresine eklenir.
+
+### 2. Şarj olan duraklarda
+
+Durak süresi `input.via.properties.station.stop_duration` konumunda yapılandırılır. Bu değer **minimum durak süresini** temsil eder. Araç istasyonda en az bu süre boyunca kalır, ancak rota planlayıcı yapılandırılmış `charge_mode` değerine bağlı olarak durağı uzatabilir:
+
+  * `ALWAYS_TO_MAX_CHARGE`: Gerekirse yapılandırılmış maksimum SoC değerine ulaşmak için şarj süresini uzatır. İstenen `stop_duration` değeri maksimum SoC değerine ulaşmak için gereken süreyi aşarsa, kalan süre boşta bekleme olarak kaydedilir.
+
+  * `OPTIMIZE_TRAVEL_TIME`: Yalnızca toplam yolculuk süresini kısaltıyorsa (örneğin sonraki bir şarj durağını ortadan kaldırarak) kalış süresini `stop_duration` değerinin ötesine uzatır. Aksi halde tam olarak istenen süre kadar şarj eder. İstenen `stop_duration` değeri maksimum SoC değerine ulaşmak için gereken süreyi aşarsa, kalan süre boşta bekleme olarak kaydedilir.
+
+Herhangi bir değer verilmezse, planlayıcı şarj süresini yalnızca rotanın `charge_mode` değerine göre optimize eder.
+
+
+## Örnekler
+
+<details>
+  <summary>30 dakikalık, şarj olmayan bir durakla rota hesaplayın.</summary>
+  Bu durağa 1800 saniyelik (30 dakika) bir `stop_duration` eklenmiştir. Ek bir fayda sağlanamayacağı için durak süresi bu olacaktır.
+
+```graphql Örnek istek
+mutation CreateRouteWithWaypoint {
+  createRoute(
+    input: {
+      vehicle: {
+        id: "60b8d5a2f1c8e9001b9e2831"
+        charging: { mode: OPTIMIZE_TRAVEL_TIME }
+      }
+      origin: {
+        type: Point
+        coordinates: [4.9041, 52.3676]
+      }
+      destination: {
+        type: Point
+        coordinates: [6.9583, 50.9375]
+      }
+      via: [
+        {
+          geometry: {
+            type: Point
+            coordinates: [5.1214, 52.0907] # Utrecht
+          }
+          properties: {
+            location: {
+              name: "Utrecht Central"
+              stop_duration: 1800 # 30 minutes in seconds
+            }
+          }
+        }
+      ]
+    }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>
+
+
+<details>
+  <summary>En az 30 dakikalık bir şarj durağıyla rota hesaplayın.</summary>
+  Bu durağa 1800 saniyelik (30 dakika) bir `stop_duration` eklenmiştir. Bu, **minimum** durak süresi olacaktır. Daha uzun şarj etmek güzergaha fayda sağlıyorsa süre artacaktır.
+  
+```graphql Örnek istek
+mutation CreateRouteWithChargingVia {
+  createRoute(
+    input: {
+      vehicle: {
+        id: "60b8d5a2f1c8e9001b9e2831"
+        charging: { mode: OPTIMIZE_TRAVEL_TIME }
+      }
+      origin: {
+        type: Point
+        coordinates: [4.9041, 52.3676]
+      }
+      destination: {
+        type: Point
+        coordinates: [6.9583, 50.9375]
+      }
+      via: [
+        {
+          properties: {
+            station: {
+              station_id: "5e849ea2837bc43df65d19a2"
+              stop_duration: 1800
+            }
+          }
+        }
+      ]
+    }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>
+
+
+<details>
+  <summary>Minimum durak süresi olmayan bir şarj durağıyla rota hesaplayın.</summary>
+  Bu durakta `stop_duration` belirtilmemiştir: planlayıcı en uygun şarj süresini şarj moduna göre hesaplar.
+
+```graphql Örnek istek
+mutation CreateRouteWithChargingVia {
+  createRoute(
+    input: {
+      vehicle: {
+        id: "60b8d5a2f1c8e9001b9e2831"
+        charging: { mode: OPTIMIZE_TRAVEL_TIME }
+      }
+      origin: {
+        type: Point
+        coordinates: [4.9041, 52.3676]
+      }
+      destination: {
+        type: Point
+        coordinates: [6.9583, 50.9375]
+      }
+      via: [
+        {
+          properties: {
+            station: {
+              station_id: "5e849ea2837bc43df65d19a2"
+            }
+          }
+        }
+      ]
+    }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>

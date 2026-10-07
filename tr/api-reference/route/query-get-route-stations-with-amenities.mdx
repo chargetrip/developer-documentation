@@ -1,14 +1,14 @@
 ---
-title: Route amenity stop
+title: Rota olanaklı durak
 schemaName: getRouteStationsWithAmenities
 schemaType: Query
 ---
 
-Search for charging stations with amenities at a certain point along a route by using the getRouteStationsWithAmenities query. This is useful when you want to plan a charging stop near restaurants, shops, or other amenities.
+getRouteStationsWithAmenities sorgusunu kullanarak bir rota boyunca belirli bir noktada olanaklara sahip şarj istasyonlarını arayın. Bu, restoranlara, mağazalara veya diğer olanaklara yakın bir şarj durağı planlamak istediğinizde kullanışlıdır.
 
-## Query
+## Sorgu
 
-A `route_id`, `route_details_id`, `time_window`, and `amenity_types` are required to search for stations along a route. Both ids can be obtained through the [getRoute query](/api-reference/route/query-get-route). Use the `filter` argument to narrow the results down based on specific criteria, and the `first` and `after` arguments to [paginate](/docs/pagination) through them.
+Bir rota boyunca istasyon aramak için `route_id`, `route_details_id`, `time_window` ve `amenity_types` gereklidir. Her iki kimlik de [getRoute sorgusu](/api-reference/route/query-get-route) üzerinden alınabilir. Sonuçları belirli ölçütlere göre daraltmak için `filter` argümanını, bunlar arasında [sayfalandırma](/api-reference/api/pagination) yapmak için ise `first` ve `after` argümanlarını kullanın.
 
-> [!WARNING] Limits
-> `first` cannot exceed 10 for this query.
+> [!WARNING] Sınırlar
+> Bu sorgu için `first` değeri 10'u aşamaz.

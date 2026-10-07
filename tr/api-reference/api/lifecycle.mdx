@@ -1,49 +1,111 @@
 ---
-title: Lifecycle
+title: Yaşam döngüsü
 ---
 
-The API is built around a single, evolving GraphQL endpoint. This way, the latest features and improvements are always available without managing multiple API versions. A single-endpoint approach simplifies integration, but it also requires a clear strategy for managing changes. This page outlines the approach to API evolution and provides guidelines for building integrations that remain stable as the API evolves.
+API, tek ve sürekli gelişen bir GraphQL uç noktası etrafında inşa edilmiştir. Bu mimari, yeni yeteneklerin ve performans iyileştirmelerinin API sürümleri arasında geçiş yapmaya gerek kalmadan sürekli olarak sunulmasını sağlar.
 
-## Non-breaking changes
+Bu sayfa, API genelindeki farklı kararlılık düzeylerini, kararlı API'nin kararlılık garantilerini, değişiklik türlerini (bozucu ve bozucu olmayan) ve kullanımdan kaldırmaların nasıl yönetildiğini özetler. Şu anda önizlemede olan özellikler için [deneysel özelliklere](/api-reference/api/experimental-features) bakın.
 
-A non-breaking change is a modification that is safe and backward-compatible. Because these changes won't disrupt existing integrations, they are introduced without a formal announcement.
+## Özellik yaşam döngüsü
 
-### What this includes
+Her özellik üç kararlılık düzeyinden birindedir: alpha, beta veya kararlı. Çoğu özellik bu düzeylerden sırayla geçer ve kararlı özellikler yalnızca bir kullanımdan kaldırma süreciyle sonlandırılabilir.
 
-- Adding a new query, mutation, or subscription.
-- Adding a new optional input.
-- Adding a new field to an output.
-- Making a previously required input field optional.
-- Adding a new value to an existing enum type.
+```text Lifecycle
+[ ALPHA ] ──> [ BETA ] ──> [ STABLE ] ──> [ DEPRECATED ] ──> [ REMOVED ]
+ Opt-in        Enabled                      12+ month
+               by default                   notice window
+```
 
-> [!TIP] Handle new enum values
-> `enum` types are not exhaustive. New values are introduced to existing enum types over time as new features are added. Always implement a catch-all case in your application's logic to gracefully handle new enum values.
 
-## Breaking changes
+## Kararlı API
+Kararlı işlevler, API'nin üretime hazır çekirdeğini oluşturur. Değişiklikler iki kategoriye ayrılır: bozucu olmayan ve bozucu.
 
-A breaking change is a modification that could cause an existing integration to stop working. Because such changes can be disruptive, any breaking change follows a formal deprecation process to give you time to adapt.
+### Bozucu olmayan değişiklikler
+Mevcut entegrasyonları aksatmayan, geriye dönük uyumlu eklemelerdir. Bunlar önceden bildirim veya kullanımdan kaldırma olmaksızın sürekli olarak yayınlanır.
 
-### What this includes
+Bozucu olmayan değişiklikler şunları içerir:
 
-- Removing or renaming an existing query, mutation, or subscription.
-- Removing or renaming an existing field.
-- Removing a value from an existing enum type.
-- Changing the type of a field.
-- Making an optional input field required.
-- Changing the core behavior of an existing field.
+- Yeni bir sorgu, mutasyon veya abonelik eklemek.
+- Mevcut bir işleme yeni bir isteğe bağlı girdi argümanı eklemek.
+- Mevcut davranışı koruyan bir varsayılan değere sahip yeni bir argüman eklemek.
+- Mevcut bir işlemin çıktısına yeni bir alan eklemek.
+- Zorunlu bir girdi argümanını isteğe bağlı hale getirmek.
+- Mevcut bir enum türüne yeni bir değer eklemek.
 
-## Deprecations
 
-When a functionality is deprecated, it continues to work normally for at least 12 months. After this notice period, the deprecated functionality is removed, and requests using it return GraphQL errors.
+#### Bozucu olmayan değişiklikler için geliştirme
 
-### What this includes
+Bozucu olmayan değişiklikler de katı varsayımlarda bulunan istemcileri etkileyebilir. Entegrasyonları dayanıklı tutmak için:
 
-- Deprecated fields marked with `@deprecated` in the GraphQL schema.
-- Deprecated fields flagged on the deprecations portal.
+- Yanıt gövdelerinde ek özellikler göründüğünde başarısız olan katı nesne seri durumdan çıkarmadan (deserialization) kaçının.
+- GraphQL `enum` türleri kapsamlı değildir ve zamanla genişler. İstemci mantığında her zaman bir yedek varsayılan durum uygulayın.
+- İnsan tarafından okunabilir hata metinleriyle eşleştirme yapmak yerine hataların `extensions.exception.code` değerlerini inceleyin.
 
-> [!TIP] Plan migrations early
-> To prevent errors and service disruption, complete your migrations before the scheduled removal date.
+### Bozucu değişiklikler ve kullanımdan kaldırmalar
 
-## Beta and alpha features
+Bozucu bir değişiklik, çalışan mevcut entegrasyonları bozabilir. Bu nedenle her bozucu değişiklik önce 12 aylık bir kullanımdan kaldırma sürecinden geçmelidir.
 
-Chargetrip uses an alpha and beta program to introduce and validate impactful new functionality before it becomes part of the stable API. Unlike changes to stable features, changes to alpha or beta features are exempt from the deprecation process. Fields or operations marked as alpha or beta may change or be removed at any time without prior notice.
+Bozucu değişiklikler şunları içerir:
+
+- Mevcut bir sorguyu, mutasyonu, aboneliği, alanı veya girdi argümanını kaldırmak ya da yeniden adlandırmak.
+- Enum değerlerini kaldırmak ya da yeniden adlandırmak.
+- Mevcut bir alanın veya girdi argümanının veri türünü değiştirmek.
+- Yeni bir zorunlu girdi argümanı eklemek.
+- İsteğe bağlı bir girdi argümanını zorunlu hale getirmek.
+- Mevcut bir alanın iş mantığını veya davranışını değiştirmek.
+- Bir çıktı alanını null olamaz (!) durumundan null olabilir duruma değiştirmek.
+- Bir girdi argümanının veya alanın varsayılan değerini değiştirmek.
+- Sayfalandırma varsayılanlarını, maksimum sayfa boyutlarını veya belgelenmiş sıralama düzenini değiştirmek.
+
+
+#### Kullanımdan kaldırma zaman çizelgesi
+
+Bozucu bir değişiklik kararlı bir yeteneğin kaldırılmasını veya değiştirilmesini gerektirdiğinde, katı bir üç aşamalı zaman çizelgesi izlenir:
+
+1. **Kullanımdan kaldırma duyurusu**
+    İşlev, GraphQL şemasında `@deprecated` yönergesiyle etiketlenir. Uygunsa bir geçiş yolu sağlanır. Kullanımdan kaldırma ve ilgili kaldırma tarihi, [üç izleme kanalında](#kullanımdan-kaldırmaları-takip-etme) eşzamanlı olarak duyurulur.
+2. **Aktif bildirim süresi (1–12. aylar)**
+    Kullanımdan kaldırılan işlev tam olarak çalışmaya devam eder. Bir geçiş yolu sağlanmışsa, entegratörler bu 12 aylık süre içinde uygulamalarını güncellemeli ve yeni alanları benimsemelidir.
+3. **Kalıcı kaldırma**
+    Kaldırma tarihinde işlev kalıcı olarak kaldırılır. İşlevi kullanan sonraki tüm istekler, bir GraphQL hatasıyla şema doğrulamasında başarısız olur.
+
+> [!TIP] Geçişleri erken planlayın
+> Hataları ve hizmet kesintisini önlemek için geçişlerinizi planlanan kaldırma tarihinden önce tamamlayın.
+
+#### Kullanımdan kaldırmaları takip etme
+
+Yaklaşan kaldırmaları üç kanaldan belirleyin ve takip edin:
+
+- Şema araçlarınızdaki `@deprecated(reason: "...")` yönergelerini inceleyin.
+- Kaldırma tarihlerini ve geçiş rehberlerini API'nin eski bölümünde veya [kullanımdan kaldırmalar portalında](/deprecations) inceleyin.
+- API yanıtlarında doğrudan döndürülen `DEPRECATED_FEATURE` uyarılarını izleyin.
+
+
+<details>
+  <summary>Yanıt örneği</summary>
+
+```graphql Örnek istek ve yanıt
+{
+  "data": {
+    "station": {
+      "id": "5e8c22366f9c5f23ab0eff39",
+      "amenityList": [
+        {
+          "name": "Coffee Shop",
+          "foursquareUrl": "https://foursquare.com/v/example"
+        }
+      ]
+    }
+  },
+  "extensions": {
+    "warnings": [
+      {
+        "code": "DEPRECATED_FEATURE",
+        "path": ["amenityList", "foursquareUrl"],
+        "message": "This feature is deprecated and will be removed. To prevent errors and service disruptions, migrate to the recommended alternative before the scheduled removal date. Visit https://developers.chargetrip.com/deprecations for more information."
+      }
+    ]
+  }
+}
+```
+</details>

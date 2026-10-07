@@ -3,26 +3,26 @@ title: JSON
 tag: Rest
 ---
 
-The JSON tile service provides access to station-related geographic data in JSON format. 
+JSON karo servisi, istasyonlarla ilgili coğrafi verilere JSON formatında erişim sağlar.
 
-## Setup
+## Kurulum
 
-To access the station data in JSON format, send a request to the following endpoint:
+İstasyon verilerine JSON formatında erişmek için aşağıdaki uç noktaya bir istek gönderin:
 
 ```bash Tile / JSON / Base URL
 https://api.chargetrip.io/v2/station/{z}/{x}/{y}/tile.json
 ```
 
-The JSON URL uses the following path parameters:
+JSON URL'si aşağıdaki yol parametrelerini kullanır:
 
-- `z`: The zoom level of the tile.
-- `x`: The x-coordinate of the tile.
-- `y`: The y-coordinate of the tile.
+- `z`: Karonun yakınlaştırma seviyesi.
+- `x`: Karonun x koordinatı.
+- `y`: Karonun y koordinatı.
 
-Most map providers have built-in methods to convert latitude and longitude to pixel coordinates. To manually convert latitude and longitude coordinates to x and y use the [Web Mercator Projection](https://en.wikipedia.org/wiki/Web_Mercator_projection).
+Çoğu harita sağlayıcısı, enlem ve boylamı piksel koordinatlarına dönüştürmek için yerleşik yöntemlere sahiptir. Enlem ve boylam koordinatlarını x ve y'ye elle dönüştürmek için [Web Mercator Projeksiyonu](https://en.wikipedia.org/wiki/Web_Mercator_projection) kullanın.
 
-### Filtering
-Use the `filter` query parameter to filter the stations returned based on specific criteria. See the [filters documentation](/api-reference/tiles/filters) for more information.
+### Filtreleme
+Döndürülen istasyonları belirli ölçütlere göre filtrelemek için `filter` sorgu parametresini kullanın. Daha fazla bilgi için [filtreler belgelerine](/api-reference/tiles/filters) bakın.
 
-### Selectors
-Use the `station_properties[]` query parameter to specify the fields returned for each station feature. See the [selectors documentation](/api-reference/tiles/selectors) for more information.
+### Seçiciler
+Her istasyon özelliği için döndürülecek alanları belirtmek üzere `station_properties[]` sorgu parametresini kullanın. Daha fazla bilgi için [seçiciler belgelerine](/api-reference/tiles/selectors) bakın.

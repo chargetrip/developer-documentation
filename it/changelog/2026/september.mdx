@@ -7,22 +7,22 @@ date: 01-09-2026
 
 ![Route matching](../../../assets/changelog/2026/september.jpg)
 
-We have introduced Route Matching operations, allowing you to map-match external GPS traces and run them through our Routing Engine to calculate energy consumption and insert optimal charging stops.
+Abbiamo introdotto le operazioni di Route Matching, che ti consentono di associare alla mappa tracce GPS esterne (map-matching) e di elaborarle con il nostro motore di instradamento per calcolare il consumo energetico e inserire tappe di ricarica ottimali.
 
-- Calculate matched routes from coordinate sequences using the new `createMatchedRoute` mutation;
-- Designate intermediate stopovers using `vias` defined by coordinate array index (`via.index`), with support for updating vehicle passenger counts and cargo weight dynamically along the journey;
-- Enable `plan_charging_stops: true` to evaluate vehicle energy consumption along the pre-determined path and automatically insert compatible charging stops when needed;
-- Query full CO₂ emissions profiles for completed matched routes using `getRouteEmissions`.
+- Calcola percorsi associati a partire da sequenze di coordinate usando la nuova mutation `createMatchedRoute`;
+- Definisci soste intermedie usando `vias` definiti tramite l'indice nell'array di coordinate (`via.index`), con supporto per l'aggiornamento dinamico del numero di passeggeri e del peso del carico lungo il viaggio;
+- Abilita `plan_charging_stops: true` per valutare il consumo energetico del veicolo lungo il tragitto predeterminato e inserire automaticamente tappe di ricarica compatibili quando necessario;
+- Interroga i profili completi delle emissioni di CO₂ per i percorsi associati completati usando `getRouteEmissions`.
 
 <details>
-    <summary>Improvements</summary>
+  <summary>Miglioramenti</summary>
 
-    - Updated the operator query to accept an external_id next to the internal id.
+    - Aggiornata la query operator per accettare un external_id accanto all'id interno.
 </details>
 
 <details>
-    <summary>Fixes</summary>
+  <summary>Correzioni</summary>
 
-    - Fixed an issue where signing up to the dashboard with an email address containing uppercase letters prevented pending workspace invitations from being displayed upon login.
-    - Fixed a calculation and rounding discrepancy where the sum of leg section driving durations did not match total driving durations (`durations.driving`) in route details.
+    - Risolto un problema per cui la registrazione alla dashboard con un indirizzo e-mail contenente lettere maiuscole impediva la visualizzazione degli inviti in sospeso al workspace all'accesso.
+    - Risolta una discrepanza di calcolo e arrotondamento per cui la somma delle durate di guida delle sezioni delle tratte non corrispondeva alle durate totali di guida (`durations.driving`) nei dettagli del percorso.
 </details>

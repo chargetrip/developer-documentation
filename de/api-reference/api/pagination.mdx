@@ -2,60 +2,60 @@
 title: Pagination
 ---
 
-To keep the API fast and responsive, list queries limit how much data is returned in a single request. Two pagination types are used across the API:
+Damit die API schnell und reaktionsfähig bleibt, begrenzen Listen-Queries, wie viele Daten in einer einzelnen Anfrage zurückgegeben werden. In der API werden zwei Pagination-Arten verwendet:
 
-- Cursor-based (current): used by newly developed list queries.
-- Offset-based (legacy): used by most existing list queries. These will eventually be replaced by cursor-based versions.
+- Cursorbasiert (aktuell): wird von neu entwickelten Listen-Queries verwendet.
+- Offsetbasiert (Legacy): wird von den meisten bestehenden Listen-Queries verwendet. Diese werden irgendwann durch cursorbasierte Versionen ersetzt.
 
-> [!WARNING] Pagination limits
-> Regardless of the pagination type, list queries return at most 100 items per page, except for the `getRouteStationsWithAmenities` query, which is limited to 10.
+> [!WARNING] Pagination-Limits
+> Unabhängig von der Pagination-Art geben Listen-Queries höchstens 100 Elemente pro Seite zurück. Ausgenommen ist die Query `getRouteStationsWithAmenities`, die auf 10 begrenzt ist.
 
-## Cursor-based pagination
+## Cursorbasierte Pagination
 
-Cursor-based pagination is the current standard. It lets you define the starting point of a request using a cursor, a unique identifier for a position in the result set.
+Die cursorbasierte Pagination ist der aktuelle Standard. Mit ihr legen Sie den Startpunkt einer Anfrage über einen Cursor fest, eine eindeutige Kennung für eine Position in der Ergebnismenge.
 
-### Arguments
+### Argumente
 
 `first` · <span class="text-muted">Integer</span>
-: The number of items to return.
+: Die Anzahl der zurückzugebenden Elemente.
 
 `after` · <span class="text-muted">String</span>
-: The cursor to start from. Omit this argument, or set it to `null`, to fetch the first page. For later pages, use the `page_info.end_cursor` value from the previous response.
+: Der Cursor, ab dem begonnen wird. Lassen Sie dieses Argument weg oder setzen Sie es auf `null`, um die erste Seite abzurufen. Verwenden Sie für weitere Seiten den Wert `page_info.end_cursor` aus der vorherigen Antwort.
 
-### Response
+### Antwort
 
-The response returns results directly through a `nodes` array, along with pagination metadata.
+Die Antwort liefert die Ergebnisse direkt über ein `nodes`-Array, zusammen mit Pagination-Metadaten.
 
 `nodes` · <span class="text-muted">Array</span>
-: The list of data objects for the current page.
+: Die Liste der Datenobjekte für die aktuelle Seite.
 
 `total_count` · <span class="text-muted">Integer</span>
-: The total number of items matching the query, across all pages.
+: Die Gesamtzahl der Elemente, die der Query entsprechen, über alle Seiten hinweg.
 
 `page_info.has_next_page` · <span class="text-muted">Boolean</span>
-: Whether more results are available after the current page.
+: Ob nach der aktuellen Seite weitere Ergebnisse verfügbar sind.
 
 `page_info.has_previous_page` · <span class="text-muted">Boolean</span>
-: Whether more results are available before the current page.
+: Ob vor der aktuellen Seite weitere Ergebnisse verfügbar sind.
 
 `page_info.start_cursor` · <span class="text-muted">String</span>
-: The cursor of the first node in `nodes`.
+: Der Cursor des ersten Knotens in `nodes`.
 
 `page_info.end_cursor` · <span class="text-muted">String</span>
-: The cursor of the last node in `nodes`. Use this value as the `after` argument in your next query.
+: Der Cursor des letzten Knotens in `nodes`. Verwenden Sie diesen Wert als `after`-Argument in Ihrer nächsten Query.
 
-## Offset-based pagination (legacy)
+## Offsetbasierte Pagination (Legacy)
 
-Offset-based pagination is the legacy standard, still used by most list queries. It uses `page` to skip a set number of records and `size` to return a fixed window of results.
+Die offsetbasierte Pagination ist der Legacy-Standard und wird noch von den meisten Listen-Queries verwendet. Sie nutzt `page`, um eine bestimmte Anzahl von Datensätzen zu überspringen, und `size`, um ein Ergebnisfenster fester Größe zurückzugeben.
 
-### Arguments
+### Argumente
 
 `size` · <span class="text-muted">Integer</span>
-: The number of items to return per page.
+: Die Anzahl der zurückzugebenden Elemente pro Seite.
 
 `page` · <span class="text-muted">Integer</span>
-: The page number to fetch. Omit this argument, or set it to `0`, to fetch the first page.
+: Die abzurufende Seitennummer. Lassen Sie dieses Argument weg oder setzen Sie es auf `0`, um die erste Seite abzurufen.
 
-### Response
+### Antwort
 
-The response returns a list of data objects directly, limited by the `size` value.
+Die Antwort liefert direkt eine Liste von Datenobjekten, begrenzt durch den Wert von `size`.

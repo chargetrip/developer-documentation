@@ -1,26 +1,26 @@
 ---
-title: Stay on highway preference
+title: Styles de conduite
 date: 01-02-2026
 ---
 
-## Driving styles
+## Styles de conduite
 
-![Driving styles](../../../assets/changelog/2026/february.jpg)
+![Styles de conduite](../../../assets/changelog/2026/february.jpg)
 
-Driving speed directly affects EV energy consumption. To make routes more accurately reflect real-world vehicle behavior and trip duration, we are introducing two new controls: speed factor and driving styles.
+La vitesse de conduite influe directement sur la consommation d'énergie des EV. Pour que les itinéraires reflètent plus fidèlement le comportement réel du véhicule et la durée du trajet, nous introduisons deux nouveaux contrôles : le facteur de vitesse et les styles de conduite.
 
-Driving styles change estimated arrival time and energy consumption.
+Les styles de conduite modifient l'heure d'arrivée estimée et la consommation d'énergie.
 
-- **Eco** assumes a more relaxed, efficient pace to save battery;
-- **Sport** assumes higher speeds and greater consumption for a quicker arrival.
+- **Eco** suppose un rythme plus détendu et efficace pour économiser la batterie ;
+- **Sport** suppose des vitesses plus élevées et une consommation plus importante pour une arrivée plus rapide.
 
-These features allow you to adjust routing calculations based on how a vehicle is actually driven, resulting in more precise consumption estimates and arrival times.
+Ces fonctionnalités vous permettent d'ajuster les calculs d'itinéraire selon la façon dont un véhicule est réellement conduit, pour des estimations de consommation et des heures d'arrivée plus précises.
 
 
-### Updated getRouteStationsWithAmenities Schema
+### Schéma getRouteStationsWithAmenities mis à jour
 
-We updated the `getRouteStationsWithAmenities` query to simplify inputs and support multi-amenity filtering.
+Nous avons mis à jour la requête `getRouteStationsWithAmenities` pour simplifier les entrées et prendre en charge le filtrage multi-équipements.
 
-- **Multi-amenity search**: Query multiple amenity categories simultaneously with logical OR filtering;
-- **Direct time inputs**: Pass time windows directly in seconds from the route origin;
-- **External station id**: Access `external_id` on the station nodes.
+- **Recherche multi-équipements** : interrogez plusieurs catégories d'équipements simultanément avec un filtrage logique OR ;
+- **Entrées de temps directes** : transmettez les fenêtres de temps directement en secondes depuis l'origine de l'itinéraire ;
+- **Identifiant externe de station** : accédez à `external_id` sur les nœuds de station.

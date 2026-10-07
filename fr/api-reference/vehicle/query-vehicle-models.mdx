@@ -1,10 +1,10 @@
 ---
-title: Vehicle models
+title: Modèles de véhicules
 schemaName: vehicleModels
 schemaType: Query
 ---
 
-Get a list of vehicle models by using the vehicleModels query.
+Obtenez une liste de modèles de véhicules uniques à l'aide de la requête vehicleModels. Cette requête est utile en combinaison avec la [requête](/api-reference/vehicle/query-vehicle-makes) vehicleMakes pour construire une sélection de véhicule séquentielle.
 
 ## Query
-A vehicle make `id` is required to get its models. The id can be obtained through the vehicleMakes [query](/api-reference/vehicle/query-vehicle-makes). Use the `first` and `after` arguments to [paginate](/docs/pagination) through them, and the `country` argument to apply localization to the data.
+Un `id` de marque de véhicule est requis pour obtenir ses modèles. L'id peut être obtenu via la [requête](/api-reference/vehicle/query-vehicle-makes) vehicleMakes. Utilisez les arguments `first` et `after` pour les [paginer](/api-reference/api/pagination), `filters` pour affiner les résultats de recherche, et l'argument `country` pour appliquer la localisation aux données.

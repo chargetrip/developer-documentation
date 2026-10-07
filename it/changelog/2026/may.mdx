@@ -1,32 +1,32 @@
 ---
-title: Traffic
+title: Avvisi API per funzionalità sperimentali e deprecazioni
 date: 01-05-2026
 release: alpha
 ---
 
-## Experimental and deprecation API warnings
+## Avvisi API per funzionalità sperimentali e deprecazioni
 
-![Experimental API](../../../assets/changelog/2026/may.jpg)
+![API sperimentale](../../../assets/changelog/2026/may.jpg)
 
-We have introduced lifecycle warnings in GraphQL response extensions to inform developers whenever a requested operation or field is in Alpha, Beta, or scheduled for deprecation. This provides direct visibility into feature maturity and upcoming deprecations without disrupting API responses.
+Abbiamo introdotto avvisi sul ciclo di vita nelle estensioni di risposta GraphQL per informare gli sviluppatori ogni volta che un'operazione o un campo richiesto è in alpha, beta o programmato per la deprecazione. Questo offre visibilità diretta sulla maturità delle funzionalità e sulle prossime deprecazioni senza interrompere le risposte dell'API.
 
-What’s new:
+Novità:
 
-- **Lifecycle notifications**: Receive structured alerts under `extensions.warnings` whenever your request touches schema elements marked with `@experimental(stage: "alpha")`, `@experimental(stage: "beta")`, or `@chargetripdeprecated`;
-- **Consistent delivery**: Warnings are included across all responses regardless of whether the operation succeeds or returns errors.
+- **Notifiche sul ciclo di vita**: ricevi avvisi strutturati in `extensions.warnings` ogni volta che la tua richiesta coinvolge elementi dello schema contrassegnati con `@experimental(stage: "alpha")`, `@experimental(stage: "beta")` o `@chargetripdeprecated`;
+- **Consegna coerente**: gli avvisi sono inclusi in tutte le risposte, indipendentemente dal fatto che l'operazione riesca o restituisca errori.
 
 
 
 <details>
-    <summary>Improvements</summary>
+  <summary>Miglioramenti</summary>
 
-    - Extended `createIsoline` to support custom weather conditions (`temperature`, `air_pressure`, and `solar_irradiance`) alongside standard presets (`summer`, `winter`, `actual`) via the new `weather` input, deprecating the `season` input.
-    - Added station operating status warnings at the route leg level (`station_closed`, `station_closing_soon`, and `station_unknown_open_hours`) and refined `station_limited_open_hours` to warn drivers when a station on their route may be closed or have limited/unknown operating hours upon arrival.
-    - Standardized schema annotations by replacing hardcoded `[BETA]` text descriptions with the formal `@experimental(stage: "beta")` directive across the Isoline, Routing V2, and Navigation GraphQL schemas.
+    - Esteso `createIsoline` per supportare condizioni meteo personalizzate (`temperature`, `air_pressure` e `solar_irradiance`) insieme ai preset standard (`summer`, `winter`, `actual`) tramite il nuovo input `weather`, deprecando l'input `season`.
+    - Aggiunti avvisi sullo stato operativo delle stazioni a livello di tratta del percorso (`station_closed`, `station_closing_soon` e `station_unknown_open_hours`) e perfezionato `station_limited_open_hours` per avvisare i conducenti quando una stazione sul loro percorso potrebbe essere chiusa o avere orari di apertura limitati/sconosciuti all'arrivo.
+    - Standardizzate le annotazioni degli schemi sostituendo le descrizioni testuali `[BETA]` hardcoded con la direttiva formale `@experimental(stage: "beta")` negli schemi GraphQL di Isoline, Routing V2 e Navigation.
 </details>
 
 <details>
-    <summary>Fixes</summary>
+  <summary>Correzioni</summary>
 
-    - Fixed an issue in getRoute where savings.money returned null instead of 0 on BEV routes when no monetary savings were accrued.
+    - Risolto un problema in getRoute per cui savings.money restituiva null invece di 0 sui percorsi BEV quando non veniva accumulato alcun risparmio monetario.
 </details>

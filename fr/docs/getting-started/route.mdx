@@ -1,48 +1,48 @@
 ---
-title: Route
+title: Itinéraire
 tag: Guide
 ---
 
-Planning routes for EVs comes with unique challenges. Battery capacity, real-world energy consumption, topography, weather, and charging network availability all determine whether a vehicle will reach its destination.
+La planification d'itinéraires pour les EV s'accompagne de défis uniques. La capacité de la batterie, la consommation d'énergie réelle, la topographie, la météo et la disponibilité du réseau de recharge déterminent tous si un véhicule atteindra sa destination.
 
-The Route API considers all these variables to find optimal EV routes. Using a world-class energy consumption model, it automatically places charging stops exactly when and where they're needed. Routes are fully customizable, so you can fine-tune them to fit your own business rules.
+L'API Route prend en compte toutes ces variables pour trouver des itinéraires EV optimaux. Grâce à un modèle de consommation d'énergie de classe mondiale, elle place automatiquement les arrêts de recharge exactement quand et où ils sont nécessaires. Les itinéraires sont entièrement personnalisables, ce qui vous permet de les affiner selon vos propres règles métier.
 
-## How it works
+## Fonctionnement
 
-To ensure high performance, the Route API operates asynchronously, following the same [async pattern](/api-reference/api/async-operations) used across the API. Creating and retrieving a route happen in separate steps.
+Pour garantir de hautes performances, l'API Route fonctionne de manière asynchrone, selon le même [modèle asynchrone](/api-reference/api/async-operations) que celui utilisé dans toute l'API. La création et la récupération d'un itinéraire se font en deux étapes distinctes.
 
-1. **Create a route**
-   Call the `createRoute` mutation with at least a `vehicle`, `origin`, and `destination`. The mutation returns a route `id` right away, which you'll use in the next step to track and retrieve the route. Many more customization options are available, see [customize your route](#customize-your-route) below.
-2. **Open a subscription**
-   Subscribe to the `route` subscription using the `id` from the previous step. While the route is being calculated, the subscription pushes status updates you can use to drive an async loading state in your UI.
-3. **Render the result**
-   Once the route's `status` resolves to `done`, `error`, or `not_found`, render the corresponding UI for that outcome.
-4. **Re-fetch a finished route**
-   A route that has reached a final status is already precomputed. If you need to display it again later, for example after navigating back to it, use the `getRoute` query instead of opening a new subscription.
+1. **Créer un itinéraire**
+   Appelez la mutation `createRoute` avec au minimum un `vehicle`, une `origin` et une `destination`. La mutation renvoie immédiatement un `id` d'itinéraire, que vous utiliserez à l'étape suivante pour suivre et récupérer l'itinéraire. De nombreuses autres options de personnalisation sont disponibles ; consultez [personnaliser votre itinéraire](#personnaliser-votre-itinéraire) ci-dessous.
+2. **Ouvrir un abonnement**
+   Abonnez-vous à la subscription `route` en utilisant l'`id` de l'étape précédente. Pendant le calcul de l'itinéraire, l'abonnement envoie des mises à jour de statut que vous pouvez utiliser pour piloter un état de chargement asynchrone dans votre interface.
+3. **Afficher le résultat**
+   Une fois que le `status` de l'itinéraire passe à `done`, `error` ou `not_found`, affichez l'interface correspondant à ce résultat.
+4. **Récupérer à la demande**
+   Un itinéraire qui a atteint un statut final réussi est stocké avec tous ses détails. Si vous devez l'afficher à nouveau plus tard, par exemple après y être revenu, utilisez la requête `getRoute` plutôt que d'ouvrir un nouvel abonnement.
 
-> [!WARNING] Hybrid vehicles
-> Hybrid and plug-in hybrid vehicles don't rely solely on their battery, so their routes don't include charging stops.
+> [!WARNING] Véhicules hybrides
+> Les véhicules hybrides et hybrides rechargeables ne dépendent pas uniquement de leur batterie, leurs itinéraires n'incluent donc pas d'arrêts de recharge.
 
-## Customize your route
+## Personnaliser votre itinéraire
 
-`createRoute` accepts a range of optional input to fine-tune how a route is calculated. More details on each field can be found in the [API reference](/api-reference/route/mutation-create-route).
+`createRoute` accepte une série de paramètres facultatifs pour affiner le calcul d'un itinéraire. Vous trouverez plus de détails sur chaque champ dans la [référence de l'API](/api-reference/route/mutation-create-route).
 
-| Feature | Description |
+| Fonctionnalité | Description |
 | --- | --- |
-| [Waypoints](/api-reference/route/mutation-create-route#arg-input-via) | Add intermediate stops. Provide `via.properties.station.station_id` to force a charging stop at a specific station, or only `via.geometry` for a plain transit point with no charging. |
-| [Stop duration](/api-reference/route/mutation-create-route#arg-input-via-properties-station-stop_duration) | Set how long, in seconds, the vehicle stays at a waypoint or the destination, using `properties.station.stop_duration` or `properties.location.stop_duration`. |
-| [Highway charging](/api-reference/route/mutation-create-route#arg-input-station_preferences) | Prioritize charging stations located directly on the highway with `station_preferences.prefer_highway_charging`, avoiding stops that require exiting the highway. |
-| [Weather](/api-reference/route/mutation-create-route#arg-input-weather) | Apply a weather preset or custom weather conditions to the consumption model. Defaults to real-time weather data. |
-| [Season](/api-reference/route/mutation-create-route#arg-input-season) | Assume `summer`, `winter`, or `current` weather conditions, as a simpler alternative to `weather`. |
-| [Route features to avoid](/api-reference/route/mutation-create-route#arg-input-avoid) | Avoid `toll_road` or `ferry` on a best effort basis. |
-| [Operator ranking](/api-reference/route/mutation-create-route#arg-input-operators-ranking) | Prefer specific charging networks with `type: preferred`, or restrict routing to only those networks with `type: required`. Rank operators as `high`, `medium`, or `low`, and scope a ranking to specific countries per operator. |
-| [Operator exclusions](/api-reference/route/mutation-create-route#arg-input-operators-exclude) | Exclude an operator entirely from the route with `operators.exclude`. Falls back to your project's dashboard configuration when not set at the request level. |
-| [Operator avoidance](/api-reference/route/mutation-create-route#arg-input-operators-avoid) | Avoid an operator without excluding it outright, using `operators.avoid`. |
-| [Alternative charging stations](/api-reference/route/mutation-create-route#arg-input-alternative_station_radius) | Search for alternative charging stations within a radius between 500 and 5000 meters along the route. |
-| [Alternative routes](/api-reference/route/mutation-create-route#arg-input-alternative_routes) | Request additional route options, on a best effort basis. Set to `0` to calculate only the recommended route. |
-| [Driving preferences](/api-reference/route/mutation-create-route#arg-input-driving_preferences) | Adjust the driving style with `speed_factor` or `maximum_speed`, or pick a `style` of `eco` or `sport`. |
-| [Traffic awareness](/api-reference/route/mutation-create-route#arg-input-traffic_aware) | Take real-time traffic congestion into account. Contact support to enable this for your project. |
-| [Departure time](/api-reference/route/mutation-create-route#arg-input-departure_time) | Calculate expected arrival times using real-time traffic and historical, current, or forecasted weather. |
-| [Destination as a station](/api-reference/route/mutation-create-route#arg-input-destination-properties-station) | Set a specific station as the route's destination. This is treated as a non-charging stop. |
-| [Vehicle load per waypoint](/api-reference/route/mutation-create-route#arg-input-origin-properties-vehicle) | Set `occupants`, `total_occupant_weight`, and `total_cargo_weight` on `origin` or `via`. These propagate through the rest of the journey, and can be overridden at any later via point. |
-| [Minimum charging power](/api-reference/route/mutation-create-route#arg-input-vehicle-charging-minimum_power) | By default, routing excludes connectors below 43 kW. Set a different minimum to match your vehicle's charging speed. Higher-rated chargers are still selected even if your vehicle charges slower than their maximum rate. |
+| [Étapes](/api-reference/route/mutation-create-route#arg-input-via) | Ajoutez des arrêts intermédiaires. Fournissez `via.properties.station.station_id` pour forcer un arrêt de recharge à une station précise, ou uniquement `via.geometry` pour un simple point de passage sans recharge. |
+| [Durée d'arrêt](/api-reference/route/mutation-create-route#arg-input-via-properties-station-stop_duration) | Définissez la durée, en secondes, pendant laquelle le véhicule reste à une étape ou à la destination, avec `properties.station.stop_duration` ou `properties.location.stop_duration`. |
+| [Recharge sur autoroute](/api-reference/route/mutation-create-route#arg-input-station_preferences) | Donnez la priorité aux stations de recharge situées directement sur l'autoroute avec `station_preferences.prefer_highway_charging`, en évitant les arrêts qui nécessitent de quitter l'autoroute. |
+| [Météo](/api-reference/route/mutation-create-route#arg-input-weather) | Appliquez un préréglage météo ou des conditions météorologiques personnalisées au modèle de consommation. Utilise par défaut les données météo en temps réel. |
+| [Saison](/api-reference/route/mutation-create-route#arg-input-season) | Supposez des conditions météorologiques `summer`, `winter` ou `current`, comme alternative plus simple à `weather`. |
+| [Éléments d'itinéraire à éviter](/api-reference/route/mutation-create-route#arg-input-avoid) | Évitez `toll_road` ou `ferry` dans la mesure du possible. |
+| [Classement des opérateurs](/api-reference/route/mutation-create-route#arg-input-operators-ranking) | Privilégiez des réseaux de recharge spécifiques avec `type: preferred`, ou limitez le calcul d'itinéraire à ces seuls réseaux avec `type: required`. Classez les opérateurs en `high`, `medium` ou `low`, et limitez un classement à des pays précis pour chaque opérateur. |
+| [Exclusions d'opérateurs](/api-reference/route/mutation-create-route#arg-input-operators-exclude) | Excluez entièrement un opérateur de l'itinéraire avec `operators.exclude`. Revient à la configuration du dashboard de votre projet lorsqu'il n'est pas défini au niveau de la requête. |
+| [Évitement d'opérateurs](/api-reference/route/mutation-create-route#arg-input-operators-avoid) | Évitez un opérateur sans l'exclure complètement, avec `operators.avoid`. |
+| [Stations de recharge alternatives](/api-reference/route/mutation-create-route#arg-input-alternative_station_radius) | Recherchez des stations de recharge alternatives dans un rayon compris entre 500 et 5000 mètres le long de l'itinéraire. |
+| [Itinéraires alternatifs](/api-reference/route/mutation-create-route#arg-input-alternative_routes) | Demandez des options d'itinéraire supplémentaires, dans la mesure du possible. Définissez `0` pour ne calculer que l'itinéraire recommandé. |
+| [Préférences de conduite](/api-reference/route/mutation-create-route#arg-input-driving_preferences) | Ajustez le style de conduite avec `speed_factor` ou `maximum_speed`, ou choisissez un `style` `eco` ou `sport`. |
+| [Prise en compte du trafic](/api-reference/route/mutation-create-route#arg-input-traffic_aware) | Prenez en compte les embouteillages en temps réel. Contactez le support pour l'activer sur votre projet. |
+| [Heure de départ](/api-reference/route/mutation-create-route#arg-input-departure_time) | Calculez les heures d'arrivée prévues à partir du trafic en temps réel et de la météo historique, actuelle ou prévue. |
+| [Destination sous forme de station](/api-reference/route/mutation-create-route#arg-input-destination-properties-station) | Définissez une station précise comme destination de l'itinéraire. Elle est traitée comme un arrêt sans recharge. |
+| [Charge du véhicule par étape](/api-reference/route/mutation-create-route#arg-input-origin-properties-vehicle) | Définissez `occupants`, `total_occupant_weight` et `total_cargo_weight` sur `origin` ou `via`. Ces valeurs se propagent sur le reste du trajet et peuvent être remplacées à n'importe quel point `via` ultérieur. |
+| [Puissance de recharge minimale](/api-reference/route/mutation-create-route#arg-input-vehicle-charging-minimum_power) | Par défaut, le calcul d'itinéraire exclut les connecteurs de moins de 43 kW. Définissez un minimum différent pour correspondre à la vitesse de recharge de votre véhicule. Les bornes de puissance supérieure sont tout de même sélectionnées même si votre véhicule se recharge plus lentement que leur puissance maximale. |

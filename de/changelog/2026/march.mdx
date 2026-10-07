@@ -1,39 +1,39 @@
 ---
-title: Traffic
+title: Verkehr
 date: 01-03-2026
 ---
 
-## Traffic
+## Verkehr
 
-![Traffic support](../../../assets/changelog/2026/march.jpg)
+![Verkehrsunterstützung](../../../assets/changelog/2026/march.jpg)
 
-Enable traffic-aware routing for global traffic impact when calculating routes. Accounting for traffic and incidents while optimizing for charging has long been seen as the holy grail of EV route optimization. When enabled, the route response includes:
+Aktivieren Sie verkehrsabhängiges Routing, um bei der Routenberechnung die globale Verkehrslage zu berücksichtigen. Verkehr und Störungen bei gleichzeitiger Optimierung des Ladens zu berücksichtigen, galt lange als der heilige Gral der Routenoptimierung für EVs. Wenn die Funktion aktiviert ist, enthält die Routenantwort:
 
-- **Segments** of the route affected by traffic;
-- **Level of congestion** on those segments;
-- **Delay** added to the total route duration.
+- **Abschnitte** der Route, die vom Verkehr betroffen sind;
+- **Staugrad** auf diesen Abschnitten;
+- **Verzögerung**, die zur Gesamtdauer der Route hinzukommt.
 
-This provides a more realistic estimate of travel time when traffic conditions affect the route and allows you to give globally optimized routes to your customers ready for turn-by-turn navigation.
+Das liefert eine realistischere Schätzung der Reisezeit, wenn die Verkehrslage die Route beeinflusst, und ermöglicht es Ihnen, Ihren Kunden global optimierte Routen für die Turn-by-Turn-Navigation bereitzustellen.
 
-### Route warnings
+### Routenwarnungen
 
-Routing is often a best-effort process. Sometimes the routing engine cannot fully satisfy all requested conditions. Warnings help explain why a route may differ from the original request. Examples include:
+Routing ist oft ein Best-Effort-Prozess. Manchmal kann die Routing-Engine nicht alle angeforderten Bedingungen vollständig erfüllen. Warnungen helfen zu erklären, warum eine Route von der ursprünglichen Anfrage abweichen kann. Beispiele:
 
-- **Unavailable operators**: stations with preferred charging operators are not available for this route leg.
-- **Constraints**: the requested final state of charge could not be achieved.
+- **Nicht verfügbare Betreiber**: Stationen mit bevorzugten Lade-Betreibern sind auf dieser Etappe der Route nicht verfügbar.
+- **Einschränkungen**: Der angeforderte End-Ladezustand konnte nicht erreicht werden.
 
-Warnings allow front-end teams to surface useful feedback to drivers or give engineers deeper insight into routing behavior. This makes it easier to understand routing results and troubleshoot edge cases.
+Warnungen ermöglichen es Front-End-Teams, Fahrern nützliches Feedback anzuzeigen, oder geben Entwicklern tiefere Einblicke in das Routing-Verhalten. Dadurch lassen sich Routing-Ergebnisse leichter nachvollziehen und Sonderfälle leichter analysieren.
 
 
 
 <details>
-    <summary>Improvements</summary>
+  <summary>Verbesserungen</summary>
 
-    - Relaxed operator ranking validation in createRoute : if operator preferences (preferred or required) are requested without levels provided in the request or configured in project settings, route calculation now succeeds without operator prioritization and returns a non-breaking `OPERATOR_PREFERENCES_NOT_FOUND` warning in getRoute (also documented via /public/warnings).
+    - Die Validierung des Betreiber-Rankings in `createRoute` wurde gelockert: Wenn Betreiberpräferenzen (bevorzugt oder erforderlich) angefordert werden, ohne dass in der Anfrage Stufen angegeben oder in den Projekteinstellungen konfiguriert sind, ist die Routenberechnung nun erfolgreich, ohne Betreiber zu priorisieren, und gibt in getRoute eine nicht blockierende Warnung `OPERATOR_PREFERENCES_NOT_FOUND` zurück (ebenfalls dokumentiert über /public/warnings).
 </details>
 
 <details>
-  <summary>Fixes</summary>
+  <summary>Fehlerbehebungen</summary>
 
-  - Fixed an issue where searching or filtering the vehicle list (vehicleList) by strings containing parentheses (such as vehicle make or model names) caused query parsing failures and returned an internal server error.
+  - Es wurde ein Problem behoben, bei dem das Suchen oder Filtern der Fahrzeugliste (vehicleList) nach Zeichenfolgen mit Klammern (etwa Hersteller- oder Modellnamen) zu Fehlern beim Parsen der Abfrage führte und einen internen Serverfehler zurückgab.
 </details>

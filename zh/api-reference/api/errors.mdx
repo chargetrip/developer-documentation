@@ -1,37 +1,37 @@
 ---
-title: Error handling
+title: 错误处理
 ---
 
-The API returns errors as part of a normal response, alongside any data that was still resolved. A request can partially succeed, so checking the HTTP status code alone is not enough to detect an error.
+API 会将错误作为正常响应的一部分返回，并同时返回仍然成功解析的数据。请求可能部分成功，因此仅检查 HTTP 状态码不足以发现错误。
 
-> [!WARNING] Partial responses
-> The API returns HTTP 200 for most requests, even when they include errors. Always check the response body for an `errors` array, rather than relying on the HTTP status code, since `data` and `errors` can be returned together.
+> [!WARNING] 部分响应
+> 对于大多数请求，即使包含错误，API 也会返回 HTTP 200。请始终检查响应正文中的 `errors` 数组，而不要依赖 HTTP 状态码，因为 `data` 和 `errors` 可能同时返回。
 
-## Errors
+## 错误
 
-Each error is returned in the top-level `errors` array, alongside `data`.
+每个错误都会在顶层 `errors` 数组中返回，与 `data` 并列。
 
 `message` · <span class="text-muted">String</span>
-: A human readable description of the error.
+: 对错误的可读描述。
 
 `locations` · <span class="text-muted">Array</span>
-: The line and column in the request where the error occurred.
+: 请求中发生错误的行和列。
 
 `path` · <span class="text-muted">Array</span>
-: The path to the field that caused the error, for example `["vehicleList"]`.
+: 导致错误的字段路径，例如 `["vehicleList"]`。
 
 `extensions.exception.code` · <span class="text-muted">String</span>
-: A machine readable error code. Use this field to handle errors programmatically, rather than matching on `message`.
+: 机器可读的错误代码。请使用此字段以编程方式处理错误，而不是匹配 `message`。
 
 `extensions.exception.status` · <span class="text-muted">Integer</span>
-: The HTTP status code that corresponds to the error, for example `403`.
+: 与错误对应的 HTTP 状态码，例如 `403`。
 
 `extensions.exception.message` · <span class="text-muted">String</span>
-: A human readable description of the error, matching the top-level `message` field.
+: 对错误的可读描述，与顶层的 `message` 字段一致。
 
 `extensions.exception.response` · <span class="text-muted">String</span>
-: The response body of the underlying exception, often the same as `message`.
+: 底层异常的响应正文，通常与 `message` 相同。
 
-### Localization
+### 本地化
 
-To properly handle and localize error messages, use `extensions.exception.code` rather than `message`. For a description of what each code means, see the operation's page in the API reference. `message` should only be used for developer context, not shown to end users.
+要正确处理并本地化错误消息，请使用 `extensions.exception.code` 而不是 `message`。有关每个代码含义的说明，请参见 API 参考中对应操作的页面。`message` 仅应用于向开发者提供上下文，不应展示给最终用户。

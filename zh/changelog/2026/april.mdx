@@ -1,19 +1,19 @@
 ---
-title: Traffic
+title: 备选路线
 date: 01-04-2026
 ---
 
-## Alternative routes
+## 备选路线
 
-![Route alternatives](../../../assets/changelog/2026/april.jpg)
+![备选路线](../../../assets/changelog/2026/april.jpg)
 
-You can now request geographically different alternative routes alongside the recommended route during route calculation. This allows drivers and dispatchers to evaluate alternative paths based on their preferences while maintaining the same trip constraints. You can specify up to 2 alternative routes.
+现在，您可以在计算路线时，除推荐路线外，同时请求地理位置不同的备选路线。这样，驾驶员和调度员可以根据自己的偏好评估不同的路径，同时保持相同的行程约束。您最多可以指定 2 条备选路线。
 
 
 
 <details>
-    <summary>Fixes</summary>
+  <summary>修复</summary>
 
-    - Fixed an issue where providing empty `via` waypoints without geometry, location, or station IDs in `createRoute` failed silently with a `not_found` status instead of returning a `ROUTE_VIA_LOCATION_MISSING` validation error.
-    - Fixed an issue in `operatorList` where queries using ranking filters returned empty results if the project had no excluded countries configured, ensuring operators matching ranking preferences are returned correctly.
+    - 修复了在 `createRoute` 中提供不含几何信息、位置或充电站 ID 的空 `via` 途经点时，请求会以 `not_found` 状态静默失败，而不是返回 `ROUTE_VIA_LOCATION_MISSING` 验证错误的问题。
+    - 修复了在项目未配置排除国家时，`operatorList` 中使用排名筛选的查询返回空结果的问题，确保符合排名偏好的运营商能够被正确返回。
 </details>

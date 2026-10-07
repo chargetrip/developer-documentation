@@ -1,11 +1,11 @@
 ---
-title: Create truck route
+title: Kamyon rotası oluştur
 schemaName: createTruckRoute
 schemaType: Mutation
 ---
 
-Create a new truck route by using the createTruckRoute mutation. This is useful when you want to calculate charging stops, energy consumption, and drive time for an e-truck between an origin and a destination.
+createTruckRoute mutasyonunu kullanarak yeni bir kamyon rotası oluşturun. Bu, bir başlangıç noktası ile bir varış noktası arasında bir e-kamyon için şarj duraklarını, enerji tüketimini ve sürüş süresini hesaplamak istediğinizde kullanışlıdır.
 
-## Mutation
+## Mutasyon
 
-A `vehicle`, `origin`, and `destination` are required to create a truck route. Optionally add `via` points, `operators`, `weather`, or other preferences to refine the calculation. The mutation returns a truck route `id`, which can be used to retrieve route details or subscribe to updates.
+Bir kamyon rotası oluşturmak için bir `vehicle`, `origin` ve `destination` gereklidir. Hesaplamayı iyileştirmek için isteğe bağlı olarak `via` noktaları, `operators`, `weather` veya diğer tercihleri ekleyin. Mutasyon, rota ayrıntılarını almak veya güncellemelere abone olmak için kullanılabilecek bir kamyon rotası `id` döndürür.

@@ -1,53 +1,61 @@
 ---
-title: Overview
+title: Übersicht
 slug: overview
 ---
 
-GraphQL is a query language for APIs. It lets you request exactly the data you need in a single call, instead of working through many fixed REST endpoints.
+GraphQL ist eine Abfragesprache für APIs. Sie ermöglicht es Ihnen, genau die Daten in einem einzigen Aufruf abzufragen, die Sie benötigen, anstatt viele feste REST-Endpoints zu durchlaufen.
 
-The API is built on GraphQL. Every resource, such as vehicles, stations, routes, and navigation sessions, is available from a single endpoint as a query, mutation, or subscription.
+Die API basiert auf GraphQL. Jede Ressource, etwa Fahrzeuge, Stationen, Routen und Navigationssitzungen, ist über eine einzige GraphQL API verfügbar. Sie können jede davon als Query, Mutation oder Subscription aufrufen.
 
-If you're new to GraphQL, the [official GraphQL documentation](https://graphql.org/learn/) is a good place to start.
+Wenn Sie neu bei GraphQL sind, ist die [offizielle GraphQL-Dokumentation](https://graphql.org/learn/) ein guter Einstiegspunkt.
 
-## Authentication
+## GraphQL-Endpoints
 
-Every request needs a base URL and the `x-client-id` and `x-app-id` headers to authenticate. See [send your first request](/docs/getting-started/api-request) for the full list of headers and an example request.
+Queries, Mutationen und Subscriptions sind unter den folgenden Endpoints verfügbar. Ein Beispiel finden Sie unter [Ihre erste Anfrage senden](/docs/getting-started/api-request).
 
-```bash Base URL
+Für Queries und Mutationen verwenden Sie:
+
+```bash Mutation and Query URL
 https://api.chargetrip.io/graphql
 ```
 
-## Resources
+Für Subscriptions verwenden Sie:
 
-Browse the API by resource. Each section below links to its queries, mutations, and subscriptions.
+```bash Subscriptions URL
+wss://api.chargetrip.io/subscription
+```
 
-| Resource | Description |
+## Ressourcen
+
+Durchsuchen Sie die API nach Ressourcen. Jeder der folgenden Abschnitte verweist auf die zugehörigen Queries, Mutationen und Subscriptions.
+
+| Ressource | Beschreibung |
 | --- | --- |
-| [Vehicle](/api-reference/vehicle/query-vehicles) | Look up EV specs, consumption models, and premium pricing data. |
-| [Connected vehicle](/api-reference/connected-vehicle/query-connected-vehicle-list) | Connect a vehicle to a connectivity provider and retrieve its live data. |
-| [Station](/api-reference/station/query-station-details) | Look up individual charge stations, nearby stations, and amenities. |
-| [Station review](/api-reference/review/query-user-review-list) | Read, add, and remove user reviews for a charge station. |
-| [Station tariff](/api-reference/tariff/query-tariff-list) | Look up the cost of charging at a station. |
-| [Station operator](/api-reference/operator/query-operator-list) | Look up details about a station's charge point operator. |
-| [Tiles](/api-reference/tiles/mvt) | Access station data as vector or JSON map tiles for rendering on a map. |
-| [Route](/api-reference/route/mutation-create-route) | Calculate an EV route with charging stops, energy consumption, and drive time. |
-| [Truck route](/api-reference/truck-route/mutation-create-truck-route) | Calculate an e-truck route accounting for vehicle weight and dimensions. |
-| [Navigation](/api-reference/navigation/mutation-start-navigation) | Track a vehicle's progress along a route and receive real-time updates. |
-| [Emissions](/api-reference/emissions/query-emissions) | Calculate the emissions saved by taking a route. |
-| [Isoline](/api-reference/isoline/mutation-create-isoline) | Visualize the area a vehicle can reach from a point given its state of charge. |
+| [Fahrzeug](/api-reference/vehicle/query-vehicles) | Rufen Sie EV-Spezifikationen, Verbrauchsmodelle und Premium-Preisdaten ab. |
+| [Verbundenes Fahrzeug](/api-reference/connected-vehicle/query-connected-vehicle-list) | Verbinden Sie ein Fahrzeug mit einem Konnektivitätsanbieter und rufen Sie dessen Live-Daten ab. |
+| [Station](/api-reference/station/query-station-details) | Rufen Sie einzelne Ladestationen, Stationen in der Nähe und Ausstattungen ab. |
+| [Stationsbewertung](/api-reference/review/query-user-review-list) | Lesen, hinzufügen und entfernen Sie Nutzerbewertungen für eine Ladestation. |
+| [Stationstarif](/api-reference/tariff/query-tariff-list) | Rufen Sie die Ladekosten an einer Station ab. |
+| [Stationsbetreiber](/api-reference/operator/query-operator-list) | Rufen Sie Details zum Ladepunktbetreiber einer Station ab. |
+| [Kacheln](/api-reference/tiles/mvt) | Greifen Sie auf Stationsdaten als Vektor- oder JSON-Kartenkacheln zu, um sie auf einer Karte darzustellen. |
+| [Route](/api-reference/route/mutation-create-route) | Berechnen Sie eine EV-Route mit Ladestopps, Energieverbrauch und Fahrzeit. |
+| [Lkw-Route](/api-reference/truck-route/mutation-create-truck-route) | Berechnen Sie eine E-Lkw-Route unter Berücksichtigung von Fahrzeuggewicht und -abmessungen. |
+| [Navigation](/api-reference/navigation/mutation-start-navigation) | Verfolgen Sie den Fortschritt eines Fahrzeugs entlang einer Route und erhalten Sie Echtzeit-Updates. |
+| [Emissionen](/api-reference/emissions/query-emissions) | Berechnen Sie die Emissionen, die durch die Wahl einer Route eingespart werden. |
+| [Isoline](/api-reference/isoline/mutation-create-isoline) | Visualisieren Sie das Gebiet, das ein Fahrzeug von einem Punkt aus mit seinem Ladezustand erreichen kann. |
 
-### Authentication
+### Authentifizierung
 
-Every request is authenticated with the `x-client-id` and `x-app-id` headers. See [Authorization](/docs/api/authorization) for how to obtain and send them.
+Jede Anfrage wird mit den Headern `x-client-id` und `x-app-id` authentifiziert. Wie Sie diese erhalten und senden, erfahren Sie unter [Autorisierung](/docs/getting-started/api-request#autorisierungs-header).
 
 ### Pagination
 
-List queries accept `size` and `page` arguments, or `first` and `after` arguments for cursor-based pagination, depending on which query you use. See [Pagination](/docs/pagination) for details. Requests are also subject to rate limiting.
+Listen-Queries verwenden entweder die Argumente `size` und `page` oder, bei cursorbasierter Pagination, die Argumente `first` und `after`. Details finden Sie unter [Pagination](/api-reference/api/pagination).
 
-### Beta and alpha features
+### Rate Limiting
 
-Some resources are still evolving. [Connected vehicle](/api-reference/connected-vehicle/query-connected-vehicle-list) and [Navigation](/api-reference/navigation/mutation-start-navigation) are in beta, and [Truck route](/api-reference/truck-route/mutation-create-truck-route) is in alpha. Expect their contracts to change as we stabilize them.
+Für Anfragen gilt [Rate Limiting](/api-reference/api/rate-limiting).
 
-### Lifecycle
+### Lebenszyklus
 
-Chargetrip uses a single, evolving API rather than versioned releases. See [Lifecycle](/docs/api/life-cycle) for how we handle breaking and non-breaking changes.
+Chargetrip verwendet eine einzige, sich weiterentwickelnde GraphQL API anstelle versionierter Releases. Wie wir mit breaking und nicht-breaking Änderungen umgehen, erfahren Sie unter [Lebenszyklus](/api-reference/api/lifecycle).
