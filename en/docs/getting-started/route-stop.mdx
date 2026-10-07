@@ -4,28 +4,28 @@ title: "Route with stops"
 
 When calculating an EV route with the Chargetrip Route API, you can add intermediate stops between the origin and destination using `via`. 
 
-Vias allow you to customize routing for real-world travel scenarios—such as charging at a preferred charge station, picking up passengers or stopping at a restaurant.
+Stops allow you to customize routing for real-world travel scenarios—such as charging at a preferred charge station, picking up passengers or stopping at a restaurant.
 
 
-## Types of vias
+## Types of stops
 
 Chargetrip supports two types of intermediate stops:
 
-| Via type | Charging |  Activation / field | Purpose | 
+| Stop | Charging |  Input field | Purpose | 
 | :--- | :--- | :--- | :--- | 
-| **Location** | No |  `input.via.geometry`| Geographic stop (pick-up, delivery, scenic detour, coffee break). 
-| **Station** | Yes | `input.via.properties.station.station_id`| Explicitly selected charging station. 
+| **Location** | No |  `via.geometry`| Geographic stop (pick-up, delivery, scenic detour, coffee break). 
+| **Station** | Yes | `via.properties.station.station_id`| Explicitly selected charging station. 
 
 
 ## Stop duration
 
-You can configure the duration of the stop on every via. Depending on the type of stop (charging or non-charging), the `stop_duration` is configured in different locations and has different behaviors:
+You can configure the duration of every stop. Depending on the type of stop (charging or non-charging), the `stop_duration` is configured in different locations and has different behaviors:
 
-### 1. In non-charging vias
+### 1. In non-charging stops
 
 The stop duration is configured at `input.via.properties.location.stop_duration`. This duration represents the **exact stop duration** and is added directly to the total trip duration without affecting the vehicle charging or driving time.
 
-### 2. In charging vias
+### 2. In charging stops
 
 The stop duration is configured at `input.via.properties.station.stop_duration`. This value represents **the minimum stop duration**. The vehicle remains at the station for at least this long, but the route planner may extend the stop depending on the configured `charge_mode`:
 
@@ -40,7 +40,7 @@ If no value is provided, the planner optimizes charging duration purely based on
 
 <details>
   <summary>Calculate a route with a 30-minute non-charging stop.</summary>
-  On this via, a `stop_duration` of 1800 seconds (30 minutes) has been added. This will be the stop duration, since there cannot be an added benefit.
+  On this stop, a `stop_duration` of 1800 seconds (30 minutes) has been added. This will be the stop duration, since there cannot be an added benefit.
 
 ```graphql Example request
 mutation CreateRouteWithWaypoint {
@@ -84,7 +84,7 @@ mutation CreateRouteWithWaypoint {
 
 <details>
   <summary>Calculate a route with a charging stop of at least 30 minutes.</summary>
-  On this via, a `stop_duration` of 1800 seconds (30 minutes) has been added. This will be the **minimum** stop duration. If charging for longer benefits the itinerary, it will increase.
+  On this stop, a `stop_duration` of 1800 seconds (30 minutes) has been added. This will be the **minimum** stop duration. If charging for longer benefits the itinerary, it will increase.
   
 ```graphql Example request
 mutation CreateRouteWithChargingVia {
@@ -124,7 +124,7 @@ mutation CreateRouteWithChargingVia {
 
 <details>
   <summary>Calculate a route with a charging stop without a minimum stop duration.</summary>
-  On the via station `stop_duration` is omitted: the planner calculates optimal charging time based on charging mode. 
+  On this stop, `stop_duration` is omitted: the planner calculates optimal charging time based on charging mode. 
 
 ```graphql Example request
 mutation CreateRouteWithChargingVia {

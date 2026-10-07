@@ -1,0 +1,99 @@
+---
+title: Visualize vehicle range
+tag: Guide
+---
+
+An isoline shows the area an EV can reach from a given point with the energy it has on board. It answers a simple question, how far can this vehicle go from here, and draws the answer as shapes you can place on a map.
+
+Typical uses are a range map around a city, a "can I make it there without charging?" check, or a filter that only shows stations a vehicle can actually reach.
+
+An isoline uses the real road network as its reference. The calculation finds the furthest points the vehicle can reach by road, and the outline connects those points to each other. The result is a filled area, not a line that follows roads, so the stretches between roads, such as forests or fields, can fall inside it. Rivers, mountains, one-way systems and gaps in the network still shape the outline, because they decide how far the roads let the vehicle get.
+
+## How it works
+
+Like routes, isolines are calculated asynchronously, following the same [async pattern](/api-reference/api/async-operations) used across the API. Creating and retrieving an isoline happen in separate steps.
+
+1. **Create an isoline**
+   Call the `createIsoline` mutation with at least a `vehicle_id` and an `origin`. The mutation returns an isoline `id` right away, which you'll use in the next step. Optional input such as battery level or weather is covered in [customize your isoline](#customize-your-isoline).
+2. **Open a subscription**
+   Subscribe to the `isoline` subscription using the `id` from the previous step. While the isoline is being calculated, the status is `pending`. Use it to drive a loading state in your UI.
+3. **Render the result**
+   When the `status` resolves to `done` or `error`, render the matching UI. A `done` isoline contains the `polygons` to draw on the map.
+4. **Re-fetch on demand**
+   A finished isoline is stored with its complete details. To display it again later, use the `isoline` query with the same `id` instead of opening a new subscription.
+
+## Polygons
+
+The result is a list of polygons. Together they describe the reachable area in steps, from close to the origin out to the furthest point the vehicle can drive.
+
+Use `polygon_count` to choose how many polygons you get, up to a maximum of 20.
+
+- **Fewer polygons** give you a simple, coarse picture of the vehicle's reach. They are quicker to draw and easier to read at a glance.
+- **More polygons** give you finer steps between the origin and the maximum range, which is useful for a gradient or a more detailed range map.
+
+Each polygon has an `index` in its `properties` to tell them apart, and `maximum_distance` gives the distance from the origin to the furthest reachable point.
+
+## Create your first isoline
+
+A `vehicle_id` and `origin` are enough to create an isoline. This example also sets the battery level, the number of polygons and the weather, so you can see how the main options fit together.
+
+```graphql Create an isoline
+mutation CreateIsoline {
+  createIsoline(
+    input: {
+      vehicle_id: "607823b2c246f9001b97b1a2"
+      origin: {
+        type: Feature
+        geometry: { type: Point, coordinates: [4.895168, 52.370216] }
+      }
+      state_of_charge: { value: 80, type: percentage }
+      polygon_count: 5
+      weather: { type: winter }
+    }
+  )
+}
+```
+
+The mutation returns the isoline `id`. Pass it to the `isoline` subscription to follow the calculation and receive the result:
+
+```graphql Subscribe to the isoline
+subscription Isoline {
+  isoline(id: "65f1a2b3c4d5e6f7a8b9c0d1") {
+    id
+    status
+    maximum_distance
+    polygons {
+      properties {
+        index
+      }
+      geometry {
+        type
+        coordinates
+      }
+    }
+  }
+}
+```
+
+In this request:
+
+- `state_of_charge` starts the vehicle at 80% battery. Without it, the isoline uses the vehicle's full usable battery capacity.
+- `polygon_count` returns five polygons, from close to the origin to the maximum range.
+- `weather` uses the `winter` preset, which assumes cold conditions and typically gives a smaller reachable area than the default of real-time weather.
+
+## Customize your isoline
+
+`createIsoline` accepts a range of optional input to fine-tune the calculation. More details on each field can be found in the [API reference](/api-reference/isoline/mutation-create-isoline).
+
+| Feature | Description |
+| --- | --- |
+| [Battery level](/api-reference/isoline/mutation-create-isoline#arg-input-state_of_charge) | Set the starting battery with `state_of_charge`, as a percentage, kilowatt hours, kilometers or miles. Defaults to the vehicle's usable battery capacity. |
+| [Minimum final charge](/api-reference/isoline/mutation-create-isoline#arg-input-final_state_of_charge) | Keep a reserve with `final_state_of_charge`. The isoline only includes points the vehicle can reach while staying above it. Defaults to 0. |
+| [Polygon count](/api-reference/isoline/mutation-create-isoline#arg-input-polygon_count) | Choose the number of polygons, up to 20. |
+| [Round trip](/api-reference/isoline/mutation-create-isoline#arg-input-round_trip) | Only include points the vehicle can also drive back from to the origin, using `round_trip`. |
+| [Quality](/api-reference/isoline/mutation-create-isoline#arg-input-quality) | Trade precision for speed with `quality`, set to `high` or `low`. |
+| [Ferry connections](/api-reference/isoline/mutation-create-isoline#arg-input-ferry_connections) | Include ferries with `ferry_connections`, set to `none` or `single`. Ferries increase the calculation time and the number of polygons. |
+| [Weather](/api-reference/isoline/mutation-create-isoline#arg-input-weather) | Apply a `summer`, `winter`, or `actual` weather preset, or custom conditions. Defaults to real-time weather data. |
+| [Season](/api-reference/isoline/mutation-create-isoline#arg-input-season) | Assume `summer`, `winter`, or `current` conditions, as a simpler alternative to `weather`. |
+| [Vehicle load](/api-reference/isoline/mutation-create-isoline#arg-input-occupants) | Set `occupants`, `total_occupant_weight`, and `total_cargo_weight` to account for the weight the vehicle carries. |
+| [Climate control](/api-reference/isoline/mutation-create-isoline#arg-input-climate_control) | Turn on `climate_control`, and describe the `heat_pump` and `cabin` setup, to include heating and cooling in the consumption. |
