@@ -1,5 +1,6 @@
 ---
 title: Error handling
+description: "Understand how the API returns errors alongside partial data, and why you should check the response body instead of relying on the HTTP status code."
 ---
 
 The API returns errors as part of a normal response, alongside any data that was still resolved. A request can partially succeed, so checking the HTTP status code alone is not enough to detect an error.

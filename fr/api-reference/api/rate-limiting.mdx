@@ -1,5 +1,6 @@
 ---
 title: Limitation de débit
+description: "Découvrez comment l'API utilise un algorithme leaky bucket pour limiter les requêtes, et comment fonctionnent le coût et les limites pour les API GraphQL et REST."
 ---
 
 L'API limite le débit des requêtes à l'aide d'un <a href="https://en.wikipedia.org/wiki/Leaky_bucket" target="_blank" rel="noopener noreferrer">algorithme du seau percé</a>. Chaque requête coûte un certain nombre d'unités, et ces unités s'écoulent du seau à un rythme constant. Cela maintient un trafic régulier tout en autorisant de brefs pics.

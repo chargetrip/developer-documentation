@@ -1,5 +1,6 @@
 ---
-title: Rate Limiting
+title: "Rate Limiting"
+description: "Erfahren Sie, wie die API mit einem Leaky-Bucket-Algorithmus Anfragen begrenzt und wie Anfragekosten und Limits für die GraphQL- und REST-API funktionieren."
 ---
 
 Die API begrenzt Anfragen mithilfe eines <a href="https://en.wikipedia.org/wiki/Leaky_bucket" target="_blank" rel="noopener noreferrer">Leaky-Bucket-Algorithmus</a>. Jede Anfrage kostet eine bestimmte Anzahl an Einheiten, und diese Einheiten fließen mit konstanter Rate aus dem Bucket ab. So bleibt der Datenverkehr gleichmäßig, während kurze Lastspitzen weiterhin möglich sind.

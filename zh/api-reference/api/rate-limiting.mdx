@@ -1,5 +1,6 @@
 ---
 title: 速率限制
+description: "了解 API 如何使用漏桶算法对请求进行速率限制，以及请求成本和限制在 GraphQL 和 REST API 中如何运作。"
 ---
 
 API 使用<a href="https://en.wikipedia.org/wiki/Leaky_bucket" target="_blank" rel="noopener noreferrer">漏桶算法</a>对请求进行速率限制。每个请求会消耗一定数量的单位，这些单位以恒定速率从桶中漏出。这样既能保持流量平稳，又允许短时间的突发请求。

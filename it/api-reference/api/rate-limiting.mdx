@@ -1,5 +1,6 @@
 ---
 title: Limitazione della frequenza
+description: "Scopri come l'API usa un algoritmo leaky bucket per limitare le richieste e come funzionano costo e limiti per le API GraphQL e REST."
 ---
 
 L'API limita la frequenza delle richieste utilizzando un <a href="https://en.wikipedia.org/wiki/Leaky_bucket" target="_blank" rel="noopener noreferrer">algoritmo leaky bucket</a>. Ogni richiesta costa un certo numero di unità, che fuoriescono dal bucket a una velocità costante. In questo modo il traffico scorre a un ritmo regolare, consentendo comunque brevi picchi.
