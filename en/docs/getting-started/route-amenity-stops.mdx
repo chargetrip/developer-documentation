@@ -1,0 +1,111 @@
+---
+title: Amenity stops along the route
+---
+
+When planning an EV route, drivers often want that some of their charging stops to line up with a break, such as grabbing a coffee, having lunch, use the playground or a walk in the park. The `getRouteStationsWithAmenities` query helps you find charging stations along an existing route that are within walking distance of a specific type of amenity.
+
+The query is both **route-aware** and **amenity-aware**. It only returns stations that are close to choosen route's path and compatible with the route's vehicle, and it makes sure each station has the requested amenity within walking distance.
+
+## How it works
+ 
+Adding an amenity stop to a route takes four steps:
+ 
+1. **Create a route.** Request a route with `createRoute`.
+2. **Select a route option.** Select one of the route options returned by the `route` subscription or the `getRoute` query.
+3. **Search for stations with amenities.** Pass the selected route option as `route_id` and the route request id returned by `createRoute` as `route_request_id` to `getRouteStationsWithAmenities`. You'll get a list of compatible stations and their amenities along the route.
+4. **Recalculate the route with the selected station.** Once the driver picks the station, call `createRoute` again and add the station to the `via` input as a charging stop using `via.properties.station.station_id`.
+<Callout type="tip">
+  Set `via.properties.station.stop_duration` to the time the driver plans to stay at the station. See [Route with stops](/guides/route-with-stops) for details on how this works.
+</Callout>
+## How stations are selected
+ 
+A station is included in the results only if it meets **all** of the following criteria:
+ 
+| Criterion | Description |
+|---|---|
+| Travel window | The station is reached within the requested time window (`center` ± `margin`), measured in seconds of travel time from the start of the route. |
+| Compatibility | The station has at least one connector compatible with the vehicle used in the original route. |
+| Distance from route | The station is within the maximum allowed distance from the route path. |
+| Amenity match | At least one amenity of the requested type is within the allowed walking distance of the station. |
+ 
+If no stations meet all criteria, try widening your time window `margin` or relaxing your `filters`.
+ 
+## Examples
+ 
+<details>
+  <summary>Search for stations with a coffee shop around 1 hour into the trip</summary>
+  Search for compatible stations with a coffee shop within walking distance, reached between 45 and 75 minutes into the trip (`center: 3600`, `margin: 900`).
+```graphql Example request  {{ mark: [5,6] }}
+getRouteStationsWithAmenities(
+  input: {
+    route_id: "6527e1f1a8b4c2d3e4f5a6b7"
+    route_request_id: "6527e1f1a8b4c2d3e4f5a6b8"
+    amenity_type: coffee
+    time_window: { center: 3600, margin: 900 }
+  }
+) {
+  id
+  name
+  amenities {
+    type
+    name
+    distance
+  }
+}
+```
+ 
+```json Example response
+{
+  "data": {
+    "getRouteStationsWithAmenities": [
+      {
+        "id": "5e5f3e8f8e0c1a0012345678",
+        "name": "Highway Charging Hub",
+        "amenities": [
+          {
+            "type": "coffee",
+            "name": "Roadside Coffee Bar",
+            "distance": 120
+          }, 
+          {
+            "type": "coffee",
+            "name": "Starbucks",
+            "distance": 500
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+<details>
+  <summary>Recalculate a route with the selected amenity station and a 45-minute stop</summary>
+  After the driver selects a station, create a new route that includes it as a charging stop. Setting `stop_duration` to `2700` tells the route planner the driver will stay at least 45 minutes, so charging is optimized around the lunch break.
+```graphql Example request  {{ mark: [12,13,14,15,16,17,18,19,20,21,22] }}
+createRoute(
+  input: {
+    vehicle: { id: "607823b2c246f9001b97b1a2" }
+    origin: {
+      type: Feature
+      geometry: { type: Point, coordinates: [4.895168, 52.370216] }
+    }
+    destination: {
+      type: Feature
+      geometry: { type: Point, coordinates: [6.773456, 51.227741] }
+    }
+    via: [
+      {
+        type: Feature
+        properties: {
+          station: {
+            station_id: "5e5f3e8f8e0c1a0012345678"
+            stop_duration: 2700
+          }
+        }
+      }
+    ]
+  }
+)
+```
+</details>
