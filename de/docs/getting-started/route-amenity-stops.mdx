@@ -1,0 +1,110 @@
+---
+title: Stopps mit Annehmlichkeiten entlang der Route
+---
+
+E-Auto-Fahrer wählen Ladestandorte häufig gezielt nach bestimmten Annehmlichkeiten in der Nähe aus.
+
+Die Abfrage `getRouteStationsWithAmenities` gibt Ladestationen entlang einer bestehenden Route zurück, die sich in Gehweite zu bestimmten Kategorien von Annehmlichkeiten befinden, und listet für jede Station die nahegelegenen Annehmlichkeiten mit Namen auf. So können Fahrer ihren Ladestopp um eine bestimmte Annehmlichkeit herum planen, etwa ihre Lieblingsrestaurantkette oder ein Café mit Außenbereich.
+
+## So funktioniert es
+ 
+Das Hinzufügen eines Stopps mit Annehmlichkeiten zu einer Route erfolgt in vier Schritten:
+ 
+1. **Route erstellen.** Fordern Sie mit `createRoute` eine Route an.
+2. **Routenoption auswählen.** Wählen Sie eine der Routenoptionen aus, die von der `route`-Subscription oder der `getRoute`-Abfrage zurückgegeben werden.
+3. **Nach Stationen mit Annehmlichkeiten suchen.** Übergeben Sie an `getRouteStationsWithAmenities` die gewählte Routenoption als `route_id` und die von `createRoute` zurückgegebene Routenanfrage-ID als `route_request_id`, dazu den gesuchten `amenity_type` sowie ein `time_window`, das festlegt, wie weit in die Fahrt hinein gesucht werden soll. Sie erhalten eine Liste kompatibler Stationen entlang der Route, jeweils mit den konkreten Annehmlichkeiten in der Nähe.
+4. **Route mit der ausgewählten Station neu berechnen.** Sobald der Fahrer die Station ausgewählt hat, rufen Sie `createRoute` erneut auf und fügen die Station über `via.properties.station.station_id` als Ladestopp zur `via`-Eingabe hinzu. Weitere Informationen zur Funktionsweise finden Sie unter [Route mit Stopps](/guides/route-with-stops).
+
+## So werden Stationen ausgewählt
+
+Eine Station wird nur dann in die Ergebnisse aufgenommen, wenn sie **alle** folgenden Kriterien erfüllt:
+ 
+| Kriterium | Beschreibung |
+|---|---|
+| Fahrtzeitfenster | Die Station wird innerhalb des angeforderten Zeitfensters (`center` ± `margin`) erreicht, gemessen in Sekunden Fahrtzeit ab dem Start der Route. |
+| Fahrzeugkompatibilität | Die Station verfügt über mindestens einen Anschluss, der mit dem in der ursprünglichen Route verwendeten Fahrzeug kompatibel ist. |
+| Entfernung zur Route | Die Station liegt innerhalb der maximal zulässigen Entfernung zum Routenverlauf. |
+| Übereinstimmende Annehmlichkeit | Mindestens eine Annehmlichkeit des angeforderten Typs befindet sich innerhalb der zulässigen Gehentfernung zur Station. |
+ 
+Wenn keine Station alle Kriterien erfüllt, vergrößern Sie die `margin` Ihres Zeitfensters oder lockern Sie Ihre `filters`.
+ 
+## Beispiele
+ 
+<details>
+  <summary>Nach Stationen mit einem Café nach etwa 1 Stunde Fahrt suchen</summary>
+  Suchen Sie nach kompatiblen Stationen mit einem Café in Gehweite, die zwischen 45 und 75 Minuten nach Fahrtbeginn erreicht werden (`center: 3600`, `margin: 900`).
+```graphql Beispielanfrage  {{ mark: [5,6] }}
+getRouteStationsWithAmenities(
+  input: {
+    route_id: "6527e1f1a8b4c2d3e4f5a6b7"
+    route_request_id: "6527e1f1a8b4c2d3e4f5a6b8"
+    amenity_type: coffee
+    time_window: { center: 3600, margin: 900 }
+  }
+) {
+  id
+  name
+  amenities {
+    type
+    name
+    distance
+  }
+}
+```
+ 
+```json Beispielantwort
+{
+  "data": {
+    "getRouteStationsWithAmenities": [
+      {
+        "id": "5e5f3e8f8e0c1a0012345678",
+        "name": "Highway Charging Hub",
+        "amenities": [
+          {
+            "type": "coffee",
+            "name": "Roadside Coffee Bar",
+            "distance": 120
+          }, 
+          {
+            "type": "coffee",
+            "name": "Starbucks",
+            "distance": 500
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+</details>
+
+<details>
+  <summary>Route mit der ausgewählten Station und einem 45-minütigen Stopp neu berechnen</summary>
+  Nachdem der Fahrer eine Station ausgewählt hat, erstellen Sie eine neue Route, die diese als Ladestopp enthält. Wenn Sie `stop_duration` auf `2700` setzen, weiß der Routenplaner, dass der Fahrer mindestens 45 Minuten bleibt, sodass das Laden rund um die Mittagspause optimiert wird.
+```graphql Beispielanfrage  {{ mark: [12,13,14,15,16,17,18,19,20,21,22] }}
+createRoute(
+  input: {
+    vehicle: { id: "607823b2c246f9001b97b1a2" }
+    origin: {
+      type: Feature
+      geometry: { type: Point, coordinates: [4.895168, 52.370216] }
+    }
+    destination: {
+      type: Feature
+      geometry: { type: Point, coordinates: [6.773456, 51.227741] }
+    }
+    via: [
+      {
+        type: Feature
+        properties: {
+          station: {
+            station_id: "5e5f3e8f8e0c1a0012345678"
+            stop_duration: 2700
+          }
+        }
+      }
+    ]
+  }
+)
+```
+</details>
