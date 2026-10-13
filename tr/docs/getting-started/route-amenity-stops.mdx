@@ -1,0 +1,110 @@
+---
+title: Rota üzerindeki olanaklı duraklar
+---
+
+Elektrikli araç sürücüleri, şarj noktalarını genellikle yakındaki belirli olanaklara göre kendileri seçmek ister.
+
+`getRouteStationsWithAmenities` sorgusu, mevcut bir rota üzerinde belirli olanak kategorilerine yürüme mesafesinde bulunan şarj istasyonlarını döndürür ve her istasyon için yakındaki olanakları adlarıyla listeler. Böylece sürücüler şarj molalarını en sevdikleri restoran zinciri veya açık oturma alanı olan bir kahveci gibi belirli bir olanağa göre planlayabilir.
+
+## Nasıl çalışır
+ 
+Bir rotaya olanaklı durak eklemek dört adımda gerçekleşir:
+ 
+1. **Rota oluşturun.** `createRoute` ile bir rota isteyin.
+2. **Bir rota seçeneği seçin.** `route` aboneliği veya `getRoute` sorgusu tarafından döndürülen rota seçeneklerinden birini seçin.
+3. **Olanaklara sahip istasyonları arayın.** Seçilen rota seçeneğini `route_id` olarak ve `createRoute` tarafından döndürülen rota isteği kimliğini `route_request_id` olarak, aradığınız `amenity_type` ve yolculuğun ne kadar ilerisinde arama yapılacağını belirleyen bir `time_window` ile birlikte `getRouteStationsWithAmenities` sorgusuna iletin. Rota üzerindeki uyumlu istasyonların bir listesini, her biri yakındaki belirli olanak noktalarıyla birlikte alırsınız.
+4. **Rotayı seçilen istasyonla yeniden hesaplayın.** Sürücü istasyonu seçtikten sonra `createRoute` sorgusunu tekrar çağırın ve istasyonu `via.properties.station.station_id` kullanarak şarj durağı olarak `via` girdisine ekleyin. Bunun nasıl çalıştığına dair ayrıntılar için [Duraklı rota](/guides/route-with-stops) bölümüne bakın.
+
+## İstasyonlar nasıl seçilir
+
+Bir istasyon, yalnızca aşağıdaki kriterlerin **tümünü** karşılıyorsa sonuçlara dahil edilir:
+ 
+| Kriter | Açıklama |
+|---|---|
+| Yolculuk zaman aralığı | İstasyona, rotanın başlangıcından itibaren saniye cinsinden yolculuk süresiyle ölçülen istenen zaman aralığı (`center` ± `margin`) içinde ulaşılır. |
+| Araç uyumluluğu | İstasyonda, orijinal rotada kullanılan araçla uyumlu en az bir konektör bulunur. |
+| Rotaya uzaklık | İstasyon, rota güzergâhına izin verilen maksimum uzaklık içindedir. |
+| Olanak eşleşmesi | İstenen türde en az bir olanak, istasyona izin verilen yürüme mesafesi içindedir. |
+ 
+Hiçbir istasyon tüm kriterleri karşılamıyorsa zaman aralığınızın `margin` değerini genişletmeyi veya `filters` ayarlarınızı esnetmeyi deneyin.
+ 
+## Örnekler
+ 
+<details>
+  <summary>Yolculuğun yaklaşık 1. saatinde kahvecisi olan istasyonları arayın</summary>
+  Yürüme mesafesinde kahvecisi bulunan ve yolculuğun 45. ile 75. dakikaları arasında ulaşılan uyumlu istasyonları arayın (`center: 3600`, `margin: 900`).
+```graphql Örnek istek  {{ mark: [5,6] }}
+getRouteStationsWithAmenities(
+  input: {
+    route_id: "6527e1f1a8b4c2d3e4f5a6b7"
+    route_request_id: "6527e1f1a8b4c2d3e4f5a6b8"
+    amenity_type: coffee
+    time_window: { center: 3600, margin: 900 }
+  }
+) {
+  id
+  name
+  amenities {
+    type
+    name
+    distance
+  }
+}
+```
+ 
+```json Örnek yanıt
+{
+  "data": {
+    "getRouteStationsWithAmenities": [
+      {
+        "id": "5e5f3e8f8e0c1a0012345678",
+        "name": "Highway Charging Hub",
+        "amenities": [
+          {
+            "type": "coffee",
+            "name": "Roadside Coffee Bar",
+            "distance": 120
+          }, 
+          {
+            "type": "coffee",
+            "name": "Starbucks",
+            "distance": 500
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+</details>
+
+<details>
+  <summary>Rotayı seçilen olanaklı istasyon ve 45 dakikalık bir mola ile yeniden hesaplayın</summary>
+  Sürücü bir istasyon seçtikten sonra, bu istasyonu şarj durağı olarak içeren yeni bir rota oluşturun. `stop_duration` değerini `2700` olarak ayarlamak, rota planlayıcıya sürücünün en az 45 dakika kalacağını bildirir; böylece şarj, öğle molasına göre optimize edilir.
+```graphql Örnek istek  {{ mark: [12,13,14,15,16,17,18,19,20,21,22] }}
+createRoute(
+  input: {
+    vehicle: { id: "607823b2c246f9001b97b1a2" }
+    origin: {
+      type: Feature
+      geometry: { type: Point, coordinates: [4.895168, 52.370216] }
+    }
+    destination: {
+      type: Feature
+      geometry: { type: Point, coordinates: [6.773456, 51.227741] }
+    }
+    via: [
+      {
+        type: Feature
+        properties: {
+          station: {
+            station_id: "5e5f3e8f8e0c1a0012345678"
+            stop_duration: 2700
+          }
+        }
+      }
+    ]
+  }
+)
+```
+</details>
