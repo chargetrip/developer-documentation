@@ -1,0 +1,110 @@
+---
+title: 沿途的便利设施停靠站
+---
+
+电动汽车司机常常希望根据附近的特定便利设施来亲自挑选充电地点。
+
+`getRouteStationsWithAmenities` 查询会返回现有路线沿途、步行可达特定便利设施类别的充电站，并为每个充电站按名称列出附近的便利设施。这样，司机就可以围绕某个特定的便利设施来规划充电停靠，例如他们最喜欢的连锁餐厅，或带户外区域的咖啡店。
+
+## 工作原理
+ 
+为路线添加便利设施停靠站需要四个步骤：
+ 
+1. **创建路线。** 使用 `createRoute` 请求一条路线。
+2. **选择路线方案。** 从 `route` 订阅或 `getRoute` 查询返回的路线方案中选择一个。
+3. **搜索带有便利设施的充电站。** 将所选路线方案作为 `route_id`、将 `createRoute` 返回的路线请求 ID 作为 `route_request_id` 传给 `getRouteStationsWithAmenities`，同时传入你要查找的 `amenity_type`，以及用于设定在行程中多远范围内搜索的 `time_window`。你将获得路线沿途兼容充电站的列表，每个充电站都附有附近具体的便利设施地点。
+4. **使用所选充电站重新计算路线。** 司机选定充电站后，再次调用 `createRoute`，并通过 `via.properties.station.station_id` 将该充电站作为充电停靠点添加到 `via` 输入中。有关其工作方式的详细信息，请参阅[带停靠点的路线](/guides/route-with-stops)。
+
+## 充电站的筛选方式
+
+只有满足以下**所有**条件的充电站才会包含在结果中：
+ 
+| 条件 | 说明 |
+|---|---|
+| 行驶时间窗口 | 在请求的时间窗口（`center` ± `margin`）内到达该充电站，以从路线起点开始的行驶时间秒数计算。 |
+| 车辆兼容性 | 该充电站至少有一个与原始路线所用车辆兼容的充电接口。 |
+| 与路线的距离 | 该充电站与路线路径的距离在允许的最大范围内。 |
+| 便利设施匹配 | 在该充电站允许的步行距离内，至少有一个所请求类型的便利设施。 |
+ 
+如果没有充电站满足所有条件，请尝试扩大时间窗口的 `margin` 或放宽 `filters`。
+ 
+## 示例
+ 
+<details>
+  <summary>搜索行程约 1 小时处附近有咖啡店的充电站</summary>
+  搜索步行范围内有咖啡店、并在行程开始后 45 至 75 分钟之间到达的兼容充电站（`center: 3600`，`margin: 900`）。
+```graphql 请求示例  {{ mark: [5,6] }}
+getRouteStationsWithAmenities(
+  input: {
+    route_id: "6527e1f1a8b4c2d3e4f5a6b7"
+    route_request_id: "6527e1f1a8b4c2d3e4f5a6b8"
+    amenity_type: coffee
+    time_window: { center: 3600, margin: 900 }
+  }
+) {
+  id
+  name
+  amenities {
+    type
+    name
+    distance
+  }
+}
+```
+ 
+```json 响应示例
+{
+  "data": {
+    "getRouteStationsWithAmenities": [
+      {
+        "id": "5e5f3e8f8e0c1a0012345678",
+        "name": "Highway Charging Hub",
+        "amenities": [
+          {
+            "type": "coffee",
+            "name": "Roadside Coffee Bar",
+            "distance": 120
+          }, 
+          {
+            "type": "coffee",
+            "name": "Starbucks",
+            "distance": 500
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+</details>
+
+<details>
+  <summary>使用所选便利设施充电站和 45 分钟停靠时间重新计算路线</summary>
+  司机选定充电站后，创建一条将其作为充电停靠点的新路线。将 `stop_duration` 设置为 `2700` 会告知路线规划器司机将至少停留 45 分钟，从而围绕午餐休息时间优化充电。
+```graphql 请求示例  {{ mark: [12,13,14,15,16,17,18,19,20,21,22] }}
+createRoute(
+  input: {
+    vehicle: { id: "607823b2c246f9001b97b1a2" }
+    origin: {
+      type: Feature
+      geometry: { type: Point, coordinates: [4.895168, 52.370216] }
+    }
+    destination: {
+      type: Feature
+      geometry: { type: Point, coordinates: [6.773456, 51.227741] }
+    }
+    via: [
+      {
+        type: Feature
+        properties: {
+          station: {
+            station_id: "5e5f3e8f8e0c1a0012345678"
+            stop_duration: 2700
+          }
+        }
+      }
+    ]
+  }
+)
+```
+</details>

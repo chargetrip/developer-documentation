@@ -2,29 +2,27 @@
 title: Amenity stops along the route
 ---
 
-When planning an EV route, drivers often want that some of their charging stops to line up with a break, such as grabbing a coffee, having lunch, use the playground or a walk in the park. The `getRouteStationsWithAmenities` query helps you find charging stations along an existing route that are within walking distance of a specific type of amenity.
+EV drivers frequently like to hand pick charging locations based on specific nearby amenities.
 
-The query is both **route-aware** and **amenity-aware**. It only returns stations that are close to choosen route's path and compatible with the route's vehicle, and it makes sure each station has the requested amenity within walking distance.
+The `getRouteStationsWithAmenities` query returns charging stations along an existing route that are within walking distance of specific amenity categories, while also listing for each station the nearby amenities by name. This lets drivers plan their charging stop around a specific amenity, like their favorite restaurant chain or a coffee place with outdoor area.
 
 ## How it works
  
 Adding an amenity stop to a route takes four steps:
  
 1. **Create a route.** Request a route with `createRoute`.
-2. **Select a route option.** Select one of the route options returned by the `route` subscription or the `getRoute` query.
-3. **Search for stations with amenities.** Pass the selected route option as `route_id` and the route request id returned by `createRoute` as `route_request_id` to `getRouteStationsWithAmenities`. You'll get a list of compatible stations and their amenities along the route.
-4. **Recalculate the route with the selected station.** Once the driver picks the station, call `createRoute` again and add the station to the `via` input as a charging stop using `via.properties.station.station_id`.
-<Callout type="tip">
-  Set `via.properties.station.stop_duration` to the time the driver plans to stay at the station. See [Route with stops](/guides/route-with-stops) for details on how this works.
-</Callout>
+2. **Select a route option.** Select one of the route options returned by the `route` subscription or `getRoute` query.
+3. **Search for stations with amenities.** Pass the choosen route option as `route_id` and the route request id returned by `createRoute` as `route_request_id` to `getRouteStationsWithAmenities`, . You'll get a list of compatible stations along the route, each with the specific amenity places nearby .
+4. **Recalculate the route with the selected station.** Once the driver picks the station, call `createRoute` again and add the station to the `via` input as a charging stop using `via.properties.station.station_id`. See [Route with stops](/guides/route-with-stops) for details on how this works.
+
 ## How stations are selected
- 
+
 A station is included in the results only if it meets **all** of the following criteria:
  
 | Criterion | Description |
 |---|---|
 | Travel window | The station is reached within the requested time window (`center` ± `margin`), measured in seconds of travel time from the start of the route. |
-| Compatibility | The station has at least one connector compatible with the vehicle used in the original route. |
+| Vehicle compatibility | The station has at least one connector compatible with the vehicle used in the original route. |
 | Distance from route | The station is within the maximum allowed distance from the route path. |
 | Amenity match | At least one amenity of the requested type is within the allowed walking distance of the station. |
  
@@ -78,6 +76,7 @@ getRouteStationsWithAmenities(
   }
 }
 ```
+</details>
 
 <details>
   <summary>Recalculate a route with the selected amenity station and a 45-minute stop</summary>
