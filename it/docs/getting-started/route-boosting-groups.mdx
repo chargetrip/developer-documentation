@@ -1,0 +1,115 @@
+````
+---
+title: Dare priorità a singole stazioni di ricarica
+---
+
+I Boosting Groups ti consentono di orientare la selezione delle stazioni verso specifiche posizioni di ricarica in base alle tue regole aziendali.
+
+Mentre le [preferenze operatore](docs/getting-started/route-operators) ti permettono di dare priorità a intere reti di ricarica, i Boosting Groups ti offrono un controllo granulare a livello di singola stazione. Qualunque sia il motivo per cui desideri favorire determinate stazioni — come prezzi più bassi, minore utilizzo o un accordo commerciale migliore — puoi promuoverle in cima alla gerarchia delle stazioni.
+
+## Come promuovere le stazioni
+
+Per iniziare, contatta semplicemente il [Supporto](https://www.chargetrip.com/contact/support) inviando l'elenco delle stazioni a cui desideri dare priorità.
+
+Una volta che il tuo gruppo è stato configurato e abilitato sul tuo progetto, tutti i percorsi calcolati con [createRoute](/api-reference/route/mutation-create-route) lo utilizzeranno automaticamente in background, senza bisogno di modifiche o parametri aggiuntivi nelle tue richieste API.
+
+## Come funziona
+
+I Boosting Groups supportano solo la prioritizzazione positiva: puoi usarli per promuovere le stazioni, ma non per evitarle o escluderle. Quando vengono utilizzati da soli, le stazioni promosse hanno la priorità su tutte le altre stazioni lungo il percorso.
+
+Quando vengono combinati con le preferenze operatore, il pianificatore di percorso assegna la priorità alle stazioni nel seguente ordine (dal più alto al più basso):
+
+- **Boosting Groups attivi** — Singole stazioni promosse, che prevalgono su tutte le preferenze operatore (anche se l'operatore della stazione è impostato su `avoid` o `excluded`).
+- **Operatori preferiti (`high`, `medium`, `low`)** — Stazioni appartenenti a reti di ricarica preferite.
+- **Stazioni non classificate** — Stazioni standard a cui non è applicato alcun Boosting Group o preferenza operatore.
+- **Operatori penalizzati (`avoid`)** — Stazioni appartenenti a operatori contrassegnati come da evitare, utilizzate solo quando non esistono opzioni migliori.
+
+Come per le preferenze operatore, la promozione delle stazioni funziona secondo il principio del best-effort. Il pianificatore di percorso bilancia la priorità della stazione con la densità delle stazioni e l'impatto della deviazione, in modo che la selezione di una stazione promossa non generi mai un percorso inefficiente.
+
+## Esempi
+
+<details>
+  <summary>Calcolare un percorso con Boosting Groups attivi</summary>
+
+  Poiché i Boosting Groups vengono applicati automaticamente a livello di progetto, è sufficiente inviare una normale mutation `createRoute`. Tutti i Boosting Groups attivi ricevono automaticamente la priorità.
+
+```graphql Example request
+mutation CreateRoute {
+  createRoute(
+    input: {
+      vehicle: { id: "607823b2c246f9001b97b1a2" }
+      origin: {
+        type: Feature
+        geometry: { type: Point, coordinates: [4.895168, 52.370216] }
+      }
+      destination: {
+        type: Feature
+        geometry: { type: Point, coordinates: [6.773456, 51.227741] }
+      }
+    }
+  ) {
+    id
+    status
+  }
+}
+
+````
+
+</details>
+
+<details>
+  <summary>Verificare se le stazioni consigliate appartengono a un Boosting Group</summary>
+
+Quando recuperi il percorso calcolato con `getRoute` o con la subscription `route`, richiedi `boosting_group_ids` sulla stazione della tratta (leg) per vedere quali Boosting Groups attivi corrispondono a quella sosta.
+
+```
+query GetRoute {
+  getRoute(id: "6527e1f1a8b4c2d3e4f5a6b7") {
+    status
+    route {
+      id
+      legs {
+        origin {
+          properties {
+            station_id
+            station {
+              boosting_group_ids
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+```
+
+```
+{
+  "data": {
+    "getRoute": {
+      "status": "done",
+      "route": {
+        "id": "6527e1f1a8b4c2d3e4f5a6b8",
+        "legs": [
+          {
+            "origin": {
+              "properties": {
+                "station_id": "5e5f3e8f8e0c1a0012345678",
+                "station": {
+                  "boosting_group_ids": [
+                    "66c4a912e4b0a123456789ab"
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+
+```
+
+</details>
