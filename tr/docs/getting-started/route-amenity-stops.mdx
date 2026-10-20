@@ -13,7 +13,7 @@ Bir rotaya olanaklı durak eklemek dört adımda gerçekleşir:
 1. **Rota oluşturun.** `createRoute` ile bir rota isteyin.
 2. **Bir rota seçeneği seçin.** `route` aboneliği veya `getRoute` sorgusu tarafından döndürülen rota seçeneklerinden birini seçin.
 3. **Olanaklara sahip istasyonları arayın.** Seçilen rota seçeneğini `route_id` olarak ve `createRoute` tarafından döndürülen rota isteği kimliğini `route_request_id` olarak, aradığınız `amenity_type` ve yolculuğun ne kadar ilerisinde arama yapılacağını belirleyen bir `time_window` ile birlikte `getRouteStationsWithAmenities` sorgusuna iletin. Rota üzerindeki uyumlu istasyonların bir listesini, her biri yakındaki belirli olanak noktalarıyla birlikte alırsınız.
-4. **Rotayı seçilen istasyonla yeniden hesaplayın.** Sürücü istasyonu seçtikten sonra `createRoute` sorgusunu tekrar çağırın ve istasyonu `via.properties.station.station_id` kullanarak şarj durağı olarak `via` girdisine ekleyin. Bunun nasıl çalıştığına dair ayrıntılar için [Duraklı rota](/guides/route-with-stops) bölümüne bakın.
+4. **Rotayı seçilen istasyonla yeniden hesaplayın.** Sürücü istasyonu seçtikten sonra `createRoute` sorgusunu tekrar çağırın ve istasyonu `via.properties.station.station_id` kullanarak şarj durağı olarak `via` girdisine ekleyin. Bunun nasıl çalıştığına dair ayrıntılar için [Duraklı rota](/docs/getting-started/route-stop) bölümüne bakın.
 
 ## İstasyonlar nasıl seçilir
 

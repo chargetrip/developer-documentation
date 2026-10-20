@@ -13,7 +13,7 @@ title: 沿途的便利设施停靠站
 1. **创建路线。** 使用 `createRoute` 请求一条路线。
 2. **选择路线方案。** 从 `route` 订阅或 `getRoute` 查询返回的路线方案中选择一个。
 3. **搜索带有便利设施的充电站。** 将所选路线方案作为 `route_id`、将 `createRoute` 返回的路线请求 ID 作为 `route_request_id` 传给 `getRouteStationsWithAmenities`，同时传入你要查找的 `amenity_type`，以及用于设定在行程中多远范围内搜索的 `time_window`。你将获得路线沿途兼容充电站的列表，每个充电站都附有附近具体的便利设施地点。
-4. **使用所选充电站重新计算路线。** 司机选定充电站后，再次调用 `createRoute`，并通过 `via.properties.station.station_id` 将该充电站作为充电停靠点添加到 `via` 输入中。有关其工作方式的详细信息，请参阅[带停靠点的路线](/guides/route-with-stops)。
+4. **使用所选充电站重新计算路线。** 司机选定充电站后，再次调用 `createRoute`，并通过 `via.properties.station.station_id` 将该充电站作为充电停靠点添加到 `via` 输入中。有关其工作方式的详细信息，请参阅[带停靠点的路线](/docs/getting-started/route-stop)。
 
 ## 充电站的筛选方式
 

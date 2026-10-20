@@ -13,7 +13,7 @@ Das Hinzufügen eines Stopps mit Annehmlichkeiten zu einer Route erfolgt in vier
 1. **Route erstellen.** Fordern Sie mit `createRoute` eine Route an.
 2. **Routenoption auswählen.** Wählen Sie eine der Routenoptionen aus, die von der `route`-Subscription oder der `getRoute`-Abfrage zurückgegeben werden.
 3. **Nach Stationen mit Annehmlichkeiten suchen.** Übergeben Sie an `getRouteStationsWithAmenities` die gewählte Routenoption als `route_id` und die von `createRoute` zurückgegebene Routenanfrage-ID als `route_request_id`, dazu den gesuchten `amenity_type` sowie ein `time_window`, das festlegt, wie weit in die Fahrt hinein gesucht werden soll. Sie erhalten eine Liste kompatibler Stationen entlang der Route, jeweils mit den konkreten Annehmlichkeiten in der Nähe.
-4. **Route mit der ausgewählten Station neu berechnen.** Sobald der Fahrer die Station ausgewählt hat, rufen Sie `createRoute` erneut auf und fügen die Station über `via.properties.station.station_id` als Ladestopp zur `via`-Eingabe hinzu. Weitere Informationen zur Funktionsweise finden Sie unter [Route mit Stopps](/guides/route-with-stops).
+4. **Route mit der ausgewählten Station neu berechnen.** Sobald der Fahrer die Station ausgewählt hat, rufen Sie `createRoute` erneut auf und fügen die Station über `via.properties.station.station_id` als Ladestopp zur `via`-Eingabe hinzu. Weitere Informationen zur Funktionsweise finden Sie unter [Route mit Stopps](/docs/getting-started/route-stop).
 
 ## So werden Stationen ausgewählt
 

@@ -13,7 +13,7 @@ L'ajout d'un arrêt avec services à un itinéraire se fait en quatre étapes :
 1. **Créer un itinéraire.** Demandez un itinéraire avec `createRoute`.
 2. **Sélectionner une option d'itinéraire.** Choisissez l'une des options d'itinéraire renvoyées par l'abonnement `route` ou la requête `getRoute`.
 3. **Rechercher des bornes avec services.** Transmettez à `getRouteStationsWithAmenities` l'option d'itinéraire choisie en tant que `route_id` et l'identifiant de demande d'itinéraire renvoyé par `createRoute` en tant que `route_request_id`, ainsi que le `amenity_type` recherché et un `time_window` qui définit jusqu'où chercher dans le trajet. Vous obtiendrez une liste de bornes compatibles le long de l'itinéraire, chacune accompagnée des services précis situés à proximité.
-4. **Recalculer l'itinéraire avec la borne sélectionnée.** Une fois que le conducteur a choisi la borne, appelez à nouveau `createRoute` et ajoutez la borne à l'entrée `via` comme arrêt de recharge à l'aide de `via.properties.station.station_id`. Consultez [Itinéraire avec arrêts](/guides/route-with-stops) pour en savoir plus sur ce fonctionnement.
+4. **Recalculer l'itinéraire avec la borne sélectionnée.** Une fois que le conducteur a choisi la borne, appelez à nouveau `createRoute` et ajoutez la borne à l'entrée `via` comme arrêt de recharge à l'aide de `via.properties.station.station_id`. Consultez [Itinéraire avec arrêts](/docs/getting-started/route-stop) pour en savoir plus sur ce fonctionnement.
 
 ## Sélection des bornes
 

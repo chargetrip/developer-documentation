@@ -13,7 +13,7 @@ Aggiungere una sosta con servizi a un percorso richiede quattro passaggi:
 1. **Crea un percorso.** Richiedi un percorso con `createRoute`.
 2. **Seleziona un'opzione di percorso.** Seleziona una delle opzioni di percorso restituite dalla subscription `route` o dalla query `getRoute`.
 3. **Cerca stazioni con servizi.** Passa a `getRouteStationsWithAmenities` l'opzione di percorso scelta come `route_id` e l'ID della richiesta di percorso restituito da `createRoute` come `route_request_id`, insieme al `amenity_type` che stai cercando e a un `time_window` che stabilisce fino a che punto del viaggio cercare. Otterrai un elenco di stazioni compatibili lungo il percorso, ciascuna con i servizi specifici nelle vicinanze.
-4. **Ricalcola il percorso con la stazione selezionata.** Quando il conducente ha scelto la stazione, chiama di nuovo `createRoute` e aggiungi la stazione all'input `via` come sosta di ricarica usando `via.properties.station.station_id`. Consulta [Percorso con soste](/guides/route-with-stops) per i dettagli sul funzionamento.
+4. **Ricalcola il percorso con la stazione selezionata.** Quando il conducente ha scelto la stazione, chiama di nuovo `createRoute` e aggiungi la stazione all'input `via` come sosta di ricarica usando `via.properties.station.station_id`. Consulta [Percorso con soste](/docs/getting-started/route-stop) per i dettagli sul funzionamento.
 
 ## Come vengono selezionate le stazioni
 
