@@ -32,12 +32,11 @@ Use the `station_properties[]` query parameter to specify the fields returned fo
 
 MVT responses are binary Protocol Buffer payloads containing vector point features. Each feature represents either an individual station (`count: 1`) or a station cluster (`count > 1`).
 
-
 The properties encoded on each feature depend entirely on the feature type and the selectors provided:
 
 - Cluster features: always return `{ "count": N, "expansion_zoom": Z }`.
 
-- Station features: return `{ "count": 1 }` if no selectors are provided, or only the requested fields if [selectors](/api-reference/tiles/selectors) are provided.
+- Station features: return `{ "count": 1, "id": ID}` if no selectors are provided, or only the requested fields if [selectors](/api-reference/tiles/selectors) are provided.
 
 
 
@@ -45,11 +44,12 @@ The properties encoded on each feature depend entirely on the feature type and t
   <summary>Default decoded MVT tile response</summary>
 
 
-
 ```json Example response
 // Station feature
 {
   "count": 1
+  "id": "64997cc0fbca5dbf88ef1fae"
+
 }
 
 // Cluster feature
