@@ -18,10 +18,10 @@ Boosting Groups yalnızca pozitif önceliklendirmeyi destekler; bunları istasyo
 
 Operatör tercihleriyle birlikte kullanıldığında rota planlayıcı, istasyonları aşağıdaki öncelik sırasına göre (en yüksekten en düşüğe doğru) değerlendirir:
 
-- **Aktif Boosting Groups** — Tüm operatör tercihlerini geçersiz kılan bireysel öne çıkarılmış istasyonlar (istasyonun operatörü `avoid` veya `excluded` olarak ayarlanmış olsa bile).
-- **Tercih edilen operatörler (`high`, `medium`, `low`)** — Tercih edilen şarj ağlarına ait istasyonlar.
-- **Sıralanmamış istasyonlar** — Herhangi bir öne çıkarma grubu veya operatör tercihi uygulanmamış standart istasyonlar.
-- **Önceliği düşürülmüş operatörler (`avoid`)** — Kaçınılması gereken olarak işaretlenmiş operatörlere ait, yalnızca daha iyi bir seçenek olmadığında kullanılan istasyonlar.
+- Aktif Boosting Groups, bireysel öne çıkarılmış istasyonlardır. Bunlar, istasyonun operatörü `avoid` veya `excluded` olarak ayarlanmış olsa bile tüm operatör tercihlerini geçersiz kılar.
+- Tercih edilen operatörler (`high`, `medium`, `low`), tercih edilen şarj ağlarına ait istasyonlardır.
+- Sıralanmamış istasyonlar, herhangi bir öne çıkarma grubu veya operatör tercihi uygulanmamış standart istasyonlardır.
+- Önceliği düşürülmüş operatörler (`avoid`), kaçınılması gereken olarak işaretlenmiş operatörlere ait istasyonlardır. Bunlar yalnızca daha iyi bir seçenek olmadığında kullanılır.
 
 Operatör tercihlerinde olduğu gibi, istasyon öne çıkarma işlemi de en iyi çaba (best-effort) esasına göre çalışır. Rota planlayıcı, öne çıkarılan bir istasyonu seçmenin hiçbir zaman verimsiz bir rotayla sonuçlanmaması için istasyon önceliğini istasyon yoğunluğu ve sapma etkisiyle dengeler.
 

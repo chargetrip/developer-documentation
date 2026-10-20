@@ -18,10 +18,10 @@ Les Boosting Groups prennent uniquement en charge la priorisation positive : vou
 
 Lorsqu'ils sont combinés avec des préférences d'opérateurs, le planificateur d'itinéraire priorise les stations dans l'ordre suivant (du plus élevé au plus faible) :
 
-- **Boosting Groups actifs** — Stations individuelles mises en avant, qui prévalent sur toutes les préférences d'opérateurs (même si l'opérateur de la station est défini sur `avoid` ou `excluded`).
-- **Opérateurs préférés (`high`, `medium`, `low`)** — Stations appartenant aux réseaux de recharge préférés.
-- **Stations non classées** — Stations standard auxquelles aucun groupe de mise en avant ni aucune préférence d'opérateur n'est appliqué.
-- **Opérateurs dépriorisés (`avoid`)** — Stations appartenant à des opérateurs marqués comme étant à éviter, utilisées uniquement lorsqu'aucune meilleure option n'existe.
+- Les Boosting Groups actifs sont des stations individuelles mises en avant. Ils prévalent sur toutes les préférences d'opérateurs, même si l'opérateur de la station est défini sur `avoid` ou `excluded`.
+- Les opérateurs préférés (`high`, `medium`, `low`) sont les stations appartenant aux réseaux de recharge préférés.
+- Les stations non classées sont des stations standard auxquelles aucun groupe de mise en avant ni aucune préférence d'opérateur n'est appliqué.
+- Les opérateurs dépriorisés (`avoid`) sont les stations appartenant à des opérateurs marqués comme étant à éviter. Elles sont utilisées uniquement lorsqu'aucune meilleure option n'existe.
 
 Tout comme les préférences d'opérateurs, la mise en avant de stations fonctionne sur le principe du meilleur effort (best-effort). Le planificateur d'itinéraire équilibre la priorité de la station par rapport à la densité des stations et à l'impact du détour, afin que la sélection d'une station mise en avant n'entraîne jamais un itinéraire inefficace.
 

@@ -18,10 +18,10 @@ Boosting Groups only support positive prioritization—you can use them to promo
 
 When combined with operator preferences, the route planner prioritizes stations in the following order of priority (from highest to lowest):
 
-- **Active Boosting Groups** — Individual boosted stations, which override all operator preferences (even if the station's operator is set to `avoid` or `excluded`).
-- **Preferred operators (`high`, `medium`, `low`)** — Stations belonging to preferred charging networks.
-- **Unranked stations** — Standard stations with no boosting group or operator preference applied.
-- **Deprioritized operators (`avoid`)** — Stations belonging to operators marked to avoid, used only when no better options exist.
+- Active Boosting Groups are individual boosted stations. They override all operator preferences, even if the station's operator is set to `avoid` or `excluded`.
+- Preferred operators (`high`, `medium`, `low`) are stations belonging to preferred charging networks.
+- Unranked stations are standard stations with no boosting group or operator preference applied.
+- Deprioritized operators (`avoid`) are stations belonging to operators marked to avoid. They are used only when no better options exist.
 
 Like operator preferences, station boosting operates on a best-effort basis. The route planner balances station priority against station density and detour impact so that selecting a boosted station never results in an inefficient route.
 

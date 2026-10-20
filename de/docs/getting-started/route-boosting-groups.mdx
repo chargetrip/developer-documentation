@@ -18,10 +18,10 @@ Boosting Groups unterstützen ausschließlich eine positive Priorisierung – Si
 
 In Kombination mit Betreiberpräferenzen priorisiert der Routenplaner die Stationen in der folgenden Reihenfolge (von der höchsten zur niedrigsten Priorität):
 
-- **Aktive Boosting Groups** — Einzeln hervorgehobene Stationen, die alle Betreiberpräferenzen überschreiben (selbst wenn der Betreiber der Station auf `avoid` oder `excluded` gesetzt ist).
-- **Bevorzugte Betreiber (`high`, `medium`, `low`)** — Stationen, die zu bevorzugten Ladenetzwerken gehören.
-- **Nicht eingestufte Stationen** — Standardstationen, auf die weder eine Boosting Group noch eine Betreiberpräferenz angewendet wurde.
-- **Herabgestufte Betreiber (`avoid`)** — Stationen von Betreibern, die als zu vermeiden markiert sind; diese werden nur genutzt, wenn keine besseren Optionen verfügbar sind.
+- Aktive Boosting Groups sind einzeln hervorgehobene Stationen. Sie überschreiben alle Betreiberpräferenzen, selbst wenn der Betreiber der Station auf `avoid` oder `excluded` gesetzt ist.
+- Bevorzugte Betreiber (`high`, `medium`, `low`) sind Stationen, die zu bevorzugten Ladenetzwerken gehören.
+- Nicht eingestufte Stationen sind Standardstationen, auf die weder eine Boosting Group noch eine Betreiberpräferenz angewendet wurde.
+- Herabgestufte Betreiber (`avoid`) sind Stationen von Betreibern, die als zu vermeiden markiert sind. Sie werden nur genutzt, wenn keine besseren Optionen verfügbar sind.
 
 Wie die Betreiberpräferenzen arbeitet auch die Stationspriorisierung nach dem Best-Effort-Prinzip. Der Routenplaner wägt die Stationspriorität gegen die Stationsdichte und den Umwegaufwand ab, sodass die Auswahl einer priorisierten Station niemals zu einer ineffizienten Route führt.
 
