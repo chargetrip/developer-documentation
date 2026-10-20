@@ -1,0 +1,23 @@
+---
+title: Isoline introduction
+heading: Introduction
+description: Show the area an EV can reach from a given point, and tune it for starting battery, weather, reserve and level of detail.
+---
+
+An isoline, also known as a range spider, shows the area an EV can reach from a given point with the energy it has on board. Select a vehicle and an origin, and the API calculates the isolines that mark the travel distance limit, as shapes you can place on a map. The calculation uses the real road network as its reference: it finds the furthest points the vehicle can reach by road, and the outline connects those points. The result is a filled area, not a line that follows roads, so the stretches between roads, such as forests or fields, can fall inside it.
+
+## Optimize an isoline for your goal
+
+The same request can produce different isolines depending on what you optimize for. These are the most common goals, and the options that shape each.
+
+Range map
+: Show how far a vehicle can drive from a point, for example around a city, as an area on a map. Choose how many polygons you get, up to 20, from a simple picture of the vehicle's reach to finer steps for a gradient. Trade precision for speed with `quality`, and include ferries with `ferry_connections`, which increase the calculation time and the number of polygons. See [visualize vehicle range](/docs/getting-started/vehicle-range).
+
+Reachability check
+: Answer "can I make it there without charging?" for a specific vehicle, which helps address range anxiety. Start from the actual battery level with `state_of_charge`, keep a reserve with `final_state_of_charge`, or use `round_trip` to only include points the vehicle can also drive back to the origin from.
+
+Reachable stations
+: Filter charging stations to the ones a vehicle can actually reach from where it is. Combine it with `final_state_of_charge` so a station only counts when the vehicle arrives with charge to spare.
+
+Realistic conditions
+: Account for what changes consumption: weather or season, the weight the vehicle carries, and heating and cooling with climate control. Without a battery level, the isoline uses the vehicle's full usable battery capacity, and weather defaults to real-time data.
