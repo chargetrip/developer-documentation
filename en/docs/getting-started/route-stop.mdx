@@ -32,7 +32,7 @@ The stop duration is configured at `input.via.properties.station.stop_duration`.
 
   * `ALWAYS_TO_MAX_CHARGE`: Extends charging time if needed to reach the maximum configured SoC. If the requested `stop_duration` exceeds the time required to reach the maximum SoC, the remaining time is logged as idle stopover.
 
-  * `OPTIMIZE_TRAVEL_TIME`: Extends the stay beyond `stop_duration` only if doing so reduces overall trip time (for example, by eliminating a subsequent charging stop). Otherwise, charges for the exact requested duration. If the requested `stop_duration` exceeds the time required to reach the maximum SoC, the remaining time is logged as idle stopover.
+  * `OPTIMIZE_TRAVEL_TIME`: Extends the stay beyond `stop_duration` only if doing so reduces overall trip time (for example, by eliminating a subsequent charging stop). Otherwise, charges for the exact requested duration. If the requested `stop_duration` exceeds the time required to reach the optimal SoC, the remaining time is logged as idle stopover.
 
 If no value is provided, the planner optimizes charging duration purely based on the route's `charge_mode`.
 
@@ -41,7 +41,7 @@ If no value is provided, the planner optimizes charging duration purely based on
 
 <details>
   <summary>Calculate a route with a 30-minute non-charging stop.</summary>
-  On this stop, a `stop_duration` of 1800 seconds (30 minutes) has been added. This will be the stop duration, since there cannot be an added benefit.
+  On this stop, a `stop_duration` of 1800 seconds (30 minutes) has been added. This will be the exact stop duration.
 
 ```graphql Example request
 mutation CreateRouteWithWaypoint {
@@ -85,7 +85,7 @@ mutation CreateRouteWithWaypoint {
 
 <details>
   <summary>Calculate a route with a charging stop of at least 30 minutes.</summary>
-  On this stop, a `stop_duration` of 1800 seconds (30 minutes) has been added. This will be the **minimum** stop duration. If charging for longer benefits the itinerary, it will increase.
+  On this stop, a `stop_duration` of 1800 seconds (30 minutes) has been added. This will be the **minimum** stop duration. Because the `vehicle.charging.mode:OPTIMIZE_TRAVEL_TIME`, if charging longer benefits the travel time, the duration will automaticly be increased.
   
 ```graphql Example request
 mutation CreateRouteWithChargingVia {
@@ -125,7 +125,7 @@ mutation CreateRouteWithChargingVia {
 
 <details>
   <summary>Calculate a route with a charging stop without a minimum stop duration.</summary>
-  On this stop, `stop_duration` is omitted: the planner calculates optimal charging time based on charging mode.
+  On this stop, `stop_duration` is omitted. The planner calculates optimal charging time exclusively based on the choosen charging mode (`OPTIMIZE_TRAVEL_TIME`).
 
 ```graphql Example request
 mutation CreateRouteWithChargingVia {

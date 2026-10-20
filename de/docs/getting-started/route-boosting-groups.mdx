@@ -1,0 +1,109 @@
+---
+title: Einzelne Ladestationen priorisieren
+---
+
+Mit Boosting Groups können Sie die Stationsauswahl anhand Ihrer eigenen Geschäftsregeln gezielt auf bestimmte Ladestandorte lenken.
+
+Während Sie mit [Betreiberpräferenzen](docs/getting-started/route-operators) ganze Ladenetzwerke priorisieren können, bieten Ihnen Boosting Groups eine detaillierte Steuerung auf Stationsebene. Unabhängig davon, warum Sie bestimmte Stationen bevorzugen – etwa aufgrund günstigerer Preise, geringer Auslastung oder besserer kommerzieller Konditionen –, können Sie diese ganz nach oben in der Stationshierarchie setzen.
+
+## So priorisieren Sie Stationen
+
+Kontaktieren Sie zum Einstieg einfach den [Support](https://www.chargetrip.com/contact/support) mit der Liste der Stationen, die Sie priorisieren möchten.
+
+Sobald Ihre Gruppe eingerichtet und für Ihr Projekt aktiviert wurde, wird sie bei allen mit [createRoute](/api-reference/route/mutation-create-route) berechneten Routen automatisch im Hintergrund berücksichtigt – es sind keine Änderungen oder zusätzlichen Parameter in Ihren API-Anfragen erforderlich.
+
+## Funktionsweise
+
+Boosting Groups unterstützen ausschließlich eine positive Priorisierung – Sie können damit Stationen hervorheben, jedoch nicht vermeiden oder ausschließen. Werden sie allein verwendet, erhalten hervorgehobene Stationen Vorrang vor allen anderen Stationen entlang der Route.
+
+In Kombination mit Betreiberpräferenzen priorisiert der Routenplaner die Stationen in der folgenden Reihenfolge (von der höchsten zur niedrigsten Priorität):
+
+- **Aktive Boosting Groups** — Einzeln hervorgehobene Stationen, die alle Betreiberpräferenzen überschreiben (selbst wenn der Betreiber der Station auf `avoid` oder `excluded` gesetzt ist).
+- **Bevorzugte Betreiber (`high`, `medium`, `low`)** — Stationen, die zu bevorzugten Ladenetzwerken gehören.
+- **Nicht eingestufte Stationen** — Standardstationen, auf die weder eine Boosting Group noch eine Betreiberpräferenz angewendet wurde.
+- **Herabgestufte Betreiber (`avoid`)** — Stationen von Betreibern, die als zu vermeiden markiert sind; diese werden nur genutzt, wenn keine besseren Optionen verfügbar sind.
+
+Wie die Betreiberpräferenzen arbeitet auch die Stationspriorisierung nach dem Best-Effort-Prinzip. Der Routenplaner wägt die Stationspriorität gegen die Stationsdichte und den Umwegaufwand ab, sodass die Auswahl einer priorisierten Station niemals zu einer ineffizienten Route führt.
+
+## Beispiele
+
+<details>
+  <summary>Eine Route mit aktiven Boosting Groups berechnen</summary>
+
+  Da Boosting Groups automatisch auf Projektebene angewendet werden, müssen Sie lediglich eine reguläre `createRoute`-Mutation senden. Alle aktiven Boosting Groups werden automatisch priorisiert.
+
+```graphql Example request
+mutation CreateRoute {
+  createRoute(
+    input: {
+      vehicle: { id: "607823b2c246f9001b97b1a2" }
+      origin: {
+        type: Feature
+        geometry: { type: Point, coordinates: [4.895168, 52.370216] }
+      }
+      destination: {
+        type: Feature
+        geometry: { type: Point, coordinates: [6.773456, 51.227741] }
+      }
+    }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>
+
+<details>
+  <summary>Prüfen, ob empfohlene Stationen zu einer Boosting Group gehören</summary>
+
+  Wenn Sie die berechnete Route über `getRoute` oder das `route`-Abonnement (Subscription) abrufen, fragen Sie `boosting_group_ids` bei der Station des Routenabschnitts (Leg) ab, um zu sehen, welche aktiven Boosting Groups mit diesem Ladestopp übereinstimmen.
+
+```graphql Example request {{ mark: [11] }}
+query GetRoute {
+  getRoute(id: "6527e1f1a8b4c2d3e4f5a6b7") {
+    status
+    route {
+      id
+      legs {
+        origin {
+          properties {
+            station_id
+            station {
+              boosting_group_ids
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+```json Example response
+{
+  "data": {
+    "getRoute": {
+      "status": "done",
+      "route": {
+        "id": "6527e1f1a8b4c2d3e4f5a6b8",
+        "legs": [
+          {
+            "origin": {
+              "properties": {
+                "station_id": "5e5f3e8f8e0c1a0012345678",
+                "station": {
+                  "boosting_group_ids": [
+                    "66c4a912e4b0a123456789ab"
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+```
+</details>

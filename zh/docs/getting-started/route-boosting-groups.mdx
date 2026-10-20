@@ -1,0 +1,113 @@
+---
+title: 优先选择特定的充电站
+---
+
+优先群组（Boosting Groups）允许您根据自身的业务规则，将充电站选择引导至特定的充电位置。
+
+虽然[运营商偏好](docs/getting-started/route-operators)允许您优先选择整个充电网络，但 Boosting Groups 为您提供了精细的站点级控制。无论您出于何种原因青睐这些充电站——例如更低的价格、较低的使用率或更优惠的商业合作协议——您都可以将它们提升至充电站优先级层级的顶端。
+
+## 如何提升充电站优先级
+
+要开始使用，只需联系[客户支持](https://www.chargetrip.com/contact/support)并提供您希望优先推荐的充电站列表。
+
+一旦您的群组在项目中设置并启用，使用 [createRoute](/api-reference/route/mutation-create-route) 计算的所有路线都将在后台自动应用该配置——您的 API 请求无需任何更改或添加额外参数。
+
+## 工作原理
+
+Boosting Groups 仅支持正向优先排序——您可以使用它们来优先推荐充电站，但不能用于避开或排除充电站。当单独使用时，被提升优先级的充电站将优先于沿途的所有其他充电站。
+
+当与运营商偏好结合使用时，路线规划器会按照以下优先级顺序（从高到低）对充电站进行排序：
+
+- **已启用的优先群组（Active Boosting Groups）** — 单独提升优先级的充电站，其优先级高于所有运营商偏好（即使该充电站所属的运营商被设置为 `avoid` 或 `excluded`）。
+- **首选运营商（`high`、`medium`、`low`）** — 属于首选充电网络的充电站。
+- **未分级的充电站** — 未应用任何优先群组或运营商偏好的标准充电站。
+- **降低优先级的运营商（`avoid`）** — 属于被标记为尽量避开的运营商的充电站，仅在没有更好选择时使用。
+
+与运营商偏好一样，充电站优先级提升基于“尽力而为”（best-effort）原则运行。路线规划器会在充电站优先级与站点密度及绕行影响之间取得平衡，确保选择优先充电站绝不会导致路线效率低下。
+
+## 示例
+
+<details>
+  <summary>使用已启用的优先群组计算路线</summary>
+
+  由于 Boosting Groups 在项目级别自动应用，您只需发送标准的 `createRoute` 变更（mutation）请求即可。所有已启用的 Boosting Groups 都会自动获得优先权。
+
+```graphql Example request
+mutation CreateRoute {
+  createRoute(
+    input: {
+      vehicle: { id: "607823b2c246f9001b97b1a2" }
+      origin: {
+        type: Feature
+        geometry: { type: Point, coordinates: [4.895168, 52.370216] }
+      }
+      destination: {
+        type: Feature
+        geometry: { type: Point, coordinates: [6.773456, 51.227741] }
+      }
+    }
+  ) {
+    id
+    status
+  }
+}
+
+````
+
+</details>
+
+<details>
+  <summary>检查推荐的充电站是否属于某个优先群组</summary>
+
+在使用 `getRoute` 或 `route` 订阅（subscription）获取计算出的路线时，在路段（leg）充电站中请求 `boosting_group_ids`，即可查看该停靠点匹配了哪些已启用的 Boosting Groups。
+
+```
+query GetRoute {
+  getRoute(id: "6527e1f1a8b4c2d3e4f5a6b7") {
+    status
+    route {
+      id
+      legs {
+        origin {
+          properties {
+            station_id
+            station {
+              boosting_group_ids
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+```
+
+```
+{
+  "data": {
+    "getRoute": {
+      "status": "done",
+      "route": {
+        "id": "6527e1f1a8b4c2d3e4f5a6b8",
+        "legs": [
+          {
+            "origin": {
+              "properties": {
+                "station_id": "5e5f3e8f8e0c1a0012345678",
+                "station": {
+                  "boosting_group_ids": [
+                    "66c4a912e4b0a123456789ab"
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+
+```
+</details>

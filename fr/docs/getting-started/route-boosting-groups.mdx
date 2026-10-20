@@ -1,0 +1,115 @@
+---
+title: Prioriser des stations de recharge individuelles
+---
+
+Les groupes de mise en avant (Boosting Groups) vous permettent d'orienter la sélection des stations vers des emplacements de recharge spécifiques selon vos propres règles commerciales.
+
+Alors que les [préférences d'opérateurs](docs/getting-started/route-operators) vous permettent de prioriser des réseaux de recharge entiers, les Boosting Groups vous offrent un contrôle granulaire au niveau de chaque station. Quelle que soit la raison pour laquelle vous privilégiez ces stations — tarifs plus avantageux, faible taux d'occupation ou meilleur accord commercial — vous pouvez les placer tout en haut de la hiérarchie des stations.
+
+## Comment mettre en avant des stations
+
+Pour commencer, contactez simplement le [Support](https://www.chargetrip.com/contact/support) avec la liste des stations que vous souhaitez prioriser.
+
+Une fois votre groupe configuré et activé sur votre projet, tous les itinéraires calculés avec [createRoute](/api-reference/route/mutation-create-route) l'utiliseront automatiquement en arrière-plan — aucune modification ni aucun paramètre supplémentaire n'est requis dans vos requêtes API.
+
+## Fonctionnement
+
+Les Boosting Groups prennent uniquement en charge la priorisation positive : vous pouvez les utiliser pour promouvoir des stations, mais pas pour les éviter ou les exclure. Lorsqu'ils sont utilisés seuls, les stations mises en avant sont priorisées par rapport à toutes les autres stations situées le long de l'itinéraire.
+
+Lorsqu'ils sont combinés avec des préférences d'opérateurs, le planificateur d'itinéraire priorise les stations dans l'ordre suivant (du plus élevé au plus faible) :
+
+- **Boosting Groups actifs** — Stations individuelles mises en avant, qui prévalent sur toutes les préférences d'opérateurs (même si l'opérateur de la station est défini sur `avoid` ou `excluded`).
+- **Opérateurs préférés (`high`, `medium`, `low`)** — Stations appartenant aux réseaux de recharge préférés.
+- **Stations non classées** — Stations standard auxquelles aucun groupe de mise en avant ni aucune préférence d'opérateur n'est appliqué.
+- **Opérateurs dépriorisés (`avoid`)** — Stations appartenant à des opérateurs marqués comme étant à éviter, utilisées uniquement lorsqu'aucune meilleure option n'existe.
+
+Tout comme les préférences d'opérateurs, la mise en avant de stations fonctionne sur le principe du meilleur effort (best-effort). Le planificateur d'itinéraire équilibre la priorité de la station par rapport à la densité des stations et à l'impact du détour, afin que la sélection d'une station mise en avant n'entraîne jamais un itinéraire inefficace.
+
+## Exemples
+
+````
+<details>
+  <summary>Calculer un itinéraire avec des groupes de mise en avant actifs</summary>
+
+  Étant donné que les Boosting Groups sont appliqués automatiquement au niveau du projet, il vous suffit d'envoyer une mutation `createRoute` standard. Tous les Boosting Groups actifs sont priorisés automatiquement.
+
+```graphql Example request
+mutation CreateRoute {
+  createRoute(
+    input: {
+      vehicle: { id: "607823b2c246f9001b97b1a2" }
+      origin: {
+        type: Feature
+        geometry: { type: Point, coordinates: [4.895168, 52.370216] }
+      }
+      destination: {
+        type: Feature
+        geometry: { type: Point, coordinates: [6.773456, 51.227741] }
+      }
+    }
+  ) {
+    id
+    status
+  }
+}
+
+````
+
+</details>
+
+<details>
+  <summary>Vérifier si les stations recommandées appartiennent à un groupe de mise en avant</summary>
+
+Lors de la récupération de l'itinéraire calculé avec `getRoute` ou la souscription `route`, demandez le champ `boosting_group_ids` sur la station de l'étape (leg) pour voir quels Boosting Groups actifs correspondent à cet arrêt.
+
+```
+query GetRoute {
+  getRoute(id: "6527e1f1a8b4c2d3e4f5a6b7") {
+    status
+    route {
+      id
+      legs {
+        origin {
+          properties {
+            station_id
+            station {
+              boosting_group_ids
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+```
+
+```
+{
+  "data": {
+    "getRoute": {
+      "status": "done",
+      "route": {
+        "id": "6527e1f1a8b4c2d3e4f5a6b8",
+        "legs": [
+          {
+            "origin": {
+              "properties": {
+                "station_id": "5e5f3e8f8e0c1a0012345678",
+                "station": {
+                  "boosting_group_ids": [
+                    "66c4a912e4b0a123456789ab"
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+
+```
+</details>
+

@@ -1,0 +1,113 @@
+---
+title: Bireysel şarj istasyonlarına öncelik verin
+---
+
+Öne Çıkarma Grupları (Boosting Groups), kendi iş kurallarınıza göre istasyon seçimini belirli şarj noktalarına yönlendirmenize olanak tanır.
+
+[Operatör tercihleri](docs/getting-started/route-operators) tüm şarj ağlarına öncelik vermenizi sağlarken, Boosting Groups size istasyon düzeyinde ayrıntılı kontrol sunar. Bu istasyonları tercih etme nedeniniz ne olursa olsun — daha düşük fiyatlandırma, düşük kullanım oranı veya daha iyi bir ticari anlaşma gibi — bunları istasyon hiyerarşisinin en üstüne taşıyabilirsiniz.
+
+## İstasyonlar nasıl öne çıkarılır
+
+Başlamak için önceliklendirmek istediğiniz istasyonların listesiyle birlikte [Destek](https://www.chargetrip.com/contact/support) ekibiyle iletişime geçmeniz yeterlidir.
+
+Grubunuz projenizde kurulup etkinleştirildikten sonra, [createRoute](/api-reference/route/mutation-create-route) ile hesaplanan tüm rotalar bunu arka planda otomatik olarak kullanacaktır; API isteklerinizde herhangi bir değişiklik veya ek parametre gerekmez.
+
+## Nasıl çalışır
+
+Boosting Groups yalnızca pozitif önceliklendirmeyi destekler; bunları istasyonları öne çıkarmak için kullanabilirsiniz ancak istasyonlardan kaçınmak veya onları hariç tutmak için kullanamazsınız. Tek başına kullanıldığında, öne çıkarılan istasyonlara rota üzerindeki diğer tüm istasyonlara kıyasla öncelik verilir.
+
+Operatör tercihleriyle birlikte kullanıldığında rota planlayıcı, istasyonları aşağıdaki öncelik sırasına göre (en yüksekten en düşüğe doğru) değerlendirir:
+
+- **Aktif Boosting Groups** — Tüm operatör tercihlerini geçersiz kılan bireysel öne çıkarılmış istasyonlar (istasyonun operatörü `avoid` veya `excluded` olarak ayarlanmış olsa bile).
+- **Tercih edilen operatörler (`high`, `medium`, `low`)** — Tercih edilen şarj ağlarına ait istasyonlar.
+- **Sıralanmamış istasyonlar** — Herhangi bir öne çıkarma grubu veya operatör tercihi uygulanmamış standart istasyonlar.
+- **Önceliği düşürülmüş operatörler (`avoid`)** — Kaçınılması gereken olarak işaretlenmiş operatörlere ait, yalnızca daha iyi bir seçenek olmadığında kullanılan istasyonlar.
+
+Operatör tercihlerinde olduğu gibi, istasyon öne çıkarma işlemi de en iyi çaba (best-effort) esasına göre çalışır. Rota planlayıcı, öne çıkarılan bir istasyonu seçmenin hiçbir zaman verimsiz bir rotayla sonuçlanmaması için istasyon önceliğini istasyon yoğunluğu ve sapma etkisiyle dengeler.
+
+## Örnekler
+
+<details>
+  <summary>Aktif öne çıkarma gruplarıyla bir rota hesaplayın</summary>
+
+  Boosting Groups proje düzeyinde otomatik olarak uygulandığından, yalnızca standart bir `createRoute` mutasyonu göndermeniz yeterlidir. Aktif olan tüm Boosting Groups otomatik olarak önceliklendirilir.
+
+```graphql Example request
+mutation CreateRoute {
+  createRoute(
+    input: {
+      vehicle: { id: "607823b2c246f9001b97b1a2" }
+      origin: {
+        type: Feature
+        geometry: { type: Point, coordinates: [4.895168, 52.370216] }
+      }
+      destination: {
+        type: Feature
+        geometry: { type: Point, coordinates: [6.773456, 51.227741] }
+      }
+    }
+  ) {
+    id
+    status
+  }
+}
+
+````
+
+</details>
+
+<details>
+  <summary>Önerilen istasyonların bir öne çıkarma grubuna ait olup olmadığını kontrol edin</summary>
+
+Hesaplanan rotayı `getRoute` veya `route` aboneliği ile alırken, ilgili durakla hangi aktif Boosting Groups'un eşleştiğini görmek için rota bacağı (leg) istasyonunda `boosting_group_ids` alanını sorgulayın.
+
+```
+query GetRoute {
+  getRoute(id: "6527e1f1a8b4c2d3e4f5a6b7") {
+    status
+    route {
+      id
+      legs {
+        origin {
+          properties {
+            station_id
+            station {
+              boosting_group_ids
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+```
+
+```
+{
+  "data": {
+    "getRoute": {
+      "status": "done",
+      "route": {
+        "id": "6527e1f1a8b4c2d3e4f5a6b8",
+        "legs": [
+          {
+            "origin": {
+              "properties": {
+                "station_id": "5e5f3e8f8e0c1a0012345678",
+                "station": {
+                  "boosting_group_ids": [
+                    "66c4a912e4b0a123456789ab"
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+
+```
+</details>
