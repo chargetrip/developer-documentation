@@ -1,0 +1,25 @@
+---
+title: Introduction aux véhicules connectés
+heading: Introduction
+description: Comment intégrer des données de véhicule en temps réel, comme l'état de charge, la position et le statut de recharge, dans votre application, et quelles données sont disponibles.
+---
+
+Une application de navigation pour véhicules électriques a besoin de données de véhicule en temps réel, comme l'état de charge, pour planifier des itinéraires. Presque tous les EV en circulation aujourd'hui possèdent un modem capable d'envoyer ces données à des applications externes, mais les standards et les modes d'exposition diffèrent d'un constructeur à l'autre.
+
+La connectivité véhicule apporte ces données dans votre application via une source unique. Une couche d'abstraction ingère, nettoie et prépare les données de nombreux fournisseurs pour le moteur de routage, et une page d'accueil personnalisable à votre marque permet à vos utilisateurs de s'authentifier et de donner leur consentement. Elle fonctionne avec votre fournisseur actuel de données de véhicules connectés, votre API de télémétrie ou votre dongle OBD-II, et est préintégrée avec [Enode](https://enode.io), qui donne accès à plus de 130 modèles d'EV.
+
+Pour obtenir l'accès, ou pour utiliser un autre fournisseur de données ou votre propre API, contactez [sales@chargetrip.com](mailto:sales@chargetrip.com).
+
+## Sources de données prises en charge
+
+Plateforme de données de véhicules connectés
+: Des solutions cloud qui se connectent aux API des constructeurs et exposent ces données à des tiers. Elles gèrent le consentement des propriétaires de véhicules et standardisent le format des données. Les marques prises en charge et les tarifs varient considérablement d'une plateforme à l'autre. Cela convient aux développeurs d'applications, par exemple pour un CPO ou un eMSP. Les plateformes prises en charge sont [Enode](https://enode.io), [High Mobility](https://high-mobility.com), [Smartcar](https://smartcar.com), [Otonomo](https://otonomo.io) et [WirelessCar](https://wirelesscar.com).
+
+Dongle matériel
+: Des dongles Bluetooth installés manuellement dans le véhicule. Ils ont un coût initial relativement élevé mais des coûts récurrents faibles, ce qui les rend populaires auprès des gestionnaires de flottes logistiques. Le [Geotab Go9](https://support.geotab.com/go-devices/go9/doc/go9-document) est pris en charge dans le monde entier.
+
+Votre propre API ou une API propre à une marque
+: Un constructeur peut diffuser les données du véhicule via le modem du véhicule et les exposer via une API. Cela s'applique aussi si vous souhaitez uniquement prendre en charge une marque de véhicule précise. [Disponible sur demande](mailto:sales@chargetrip.com).
+
+Un autre fournisseur de données de télémétrie
+: Ajouté via un flux d'intégration de données personnalisé. [Disponible sur demande](mailto:sales@chargetrip.com).

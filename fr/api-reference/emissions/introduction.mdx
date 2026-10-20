@@ -1,0 +1,20 @@
+---
+title: Introduction aux émissions
+heading: Introduction
+description: Une ventilation des émissions produites par un véhicule pendant un trajet, selon les périmètres de fabrication, d'exploitation et de fin de vie.
+---
+
+Les émissions d'un itinéraire fournissent une ventilation détaillée des émissions de gaz à effet de serre (GES) produites par un véhicule pendant un trajet, en tenant compte des périmètres de fabrication, d'exploitation et de fin de vie. Les émissions peuvent être récupérées pour tout itinéraire calculé avec l'API Chargetrip. Elles sont exprimées en grammes d'équivalent dioxyde de carbone (gCO₂eq). Les données au niveau des composants vous permettent de construire votre propre synthèse des émissions.
+
+Une description plus détaillée de la méthode est disponible dans [cet article de blog](https://www.chargetrip.com/newsroom/abstract-a-generalized-method-for-estimating-comprehensive-emissions-for-electric-vehicles-on-a-per-trip-basis). Pour plus de détails, [demandez le livre blanc](https://www.chargetrip.com/newsroom/abstract-a-generalized-method-for-estimating-comprehensive-emissions-for-electric-vehicles-on-a-per-trip-basis#download-paper).
+
+## Périmètres
+
+Fabrication
+: La part des émissions produites lors de la fabrication du véhicule. Elle comprend l'acquisition des matériaux, le transport et la production des composants, l'assemblage du véhicule et de la batterie, ainsi que la distribution initiale du véhicule.
+
+Exploitation
+: Les émissions directes et indirectes résultant de la conduite du véhicule sur l'itinéraire. Le principal composant est la production, la distribution et la consommation de carburant ou d'électricité. Les autres composants sont l'entretien du véhicule et l'infrastructure routière. L'estimation tient compte de la demande projetée sur le réseau électrique, ainsi que du climat local et de la saison.
+
+Fin de vie
+: La part des émissions qui seront produites lors de la mise hors service du véhicule, pour l'itinéraire donné. Elle comprend l'élimination des principaux composants et de la carrosserie du véhicule.

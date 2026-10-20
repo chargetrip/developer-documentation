@@ -1,0 +1,28 @@
+---
+title: Route introduction
+heading: Introduction
+description: How EV routes are calculated, and how to tune them for fastest arrival, your own charging network, amenity stops or your own itinerary.
+---
+
+Planning routes for EVs comes with unique challenges. Factors like battery capacity, real-world energy consumption, topography, weather, and charging network availability all determine whether a vehicle will reach its destination.
+
+The routing service considers all these variables to find optimal EV routes. Using a world-class energy consumption model, it automatically places charging stops exactly when and where they're needed. Routes are also fully customizable, so you can adjust them to the business rules, networks and driver preferences that matter to you.
+
+> [!WARNING] Hybrid vehicles
+> Hybrid and plug-in hybrid vehicles don't rely solely on their battery, so their routes don't include charging stops.
+
+## Optimize a route for your goal
+
+The same request can produce different routes depending on what you optimize for. These are the most common goals, and the guides that cover each in depth.
+
+Fastest arrival
+: Adjust the driving style with `speed_factor`, `maximum_speed` or a `style` of `eco` or `sport`. Add real-time traffic and a departure time for accurate arrival times, and prefer stations directly on the highway to avoid detours. See [create a route](/docs/getting-started/route).
+
+Your own network or a driver's charge card
+: Steer drivers to the networks you want them to use. Prefer or require specific operators, rank them as `high`, `medium` or `low`, scope rankings per country, or exclude and avoid operators entirely. Set defaults for your project in the dashboard, and override them per request. See [operator preferred routing](/docs/getting-started/route-operators).
+
+Charging near amenities
+: Find stations along a route that are within walking distance of restaurants, coffee places or shops, so drivers can plan a charging stop around what they want to do. See [amenity stops along the route](/docs/getting-started/route-amenity-stops).
+
+Your own itinerary
+: Add waypoints, either as plain location stops such as a delivery or pick-up, or as charging stops at a specific station. Set how long the vehicle stays at each stop, and the load it carries from there on. See [route with stops](/docs/getting-started/route-stop).

@@ -1,0 +1,25 @@
+---
+title: 联网车辆简介
+heading: 简介
+description: 如何将电量状态、位置和充电状态等实时车辆数据接入您的应用程序，以及有哪些可用数据。
+---
+
+电动汽车导航应用需要电量状态等实时车辆数据来规划路线。如今道路上几乎所有 EV 都配备了可以向外部应用发送这些数据的调制解调器，但不同厂商的标准和数据开放方式各不相同。
+
+车辆连接功能通过单一来源将这些数据引入您的应用程序。抽象层会接收、清洗来自众多厂商的数据，并将其准备好供路线引擎使用；同时，可自定义品牌的登录页面让用户完成身份验证并授予同意。它可与您现有的联网车辆数据供应商、遥测 API 或 OBD-II 加密狗配合使用，并已预集成 [Enode](https://enode.io)，可访问 130 多种 EV 车型。
+
+如需获取访问权限，或使用其他数据提供商或您自己的 API，请联系 [sales@chargetrip.com](mailto:sales@chargetrip.com)。
+
+## 支持的数据源
+
+联网车辆数据平台
+: 连接车辆制造商 API 并向第三方开放这些数据的云解决方案。它们负责处理车主同意并统一数据格式。不同平台支持的品牌和价格差异很大。这适合应用开发者，例如 CPO 或 eMSP。支持的平台有 [Enode](https://enode.io)、[High Mobility](https://high-mobility.com)、[Smartcar](https://smartcar.com)、[Otonomo](https://otonomo.io) 和 [WirelessCar](https://wirelesscar.com)。
+
+硬件加密狗
+: 手动安装在车辆上的蓝牙加密狗。其前期成本相对较高，但后续成本较低，因此深受物流车队运营商的欢迎。[Geotab Go9](https://support.geotab.com/go-devices/go9/doc/go9-document) 在全球范围内均受支持。
+
+您自己的 API 或特定品牌的 API
+: 车辆制造商可能通过车辆调制解调器广播车辆数据，并通过 API 开放这些数据。如果您只想支持特定的车辆品牌，也适用这种方式。[可按需提供](mailto:sales@chargetrip.com)。
+
+其他遥测数据提供商
+: 通过自定义数据集成流程添加。[可按需提供](mailto:sales@chargetrip.com)。
