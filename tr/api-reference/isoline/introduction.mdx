@@ -1,0 +1,23 @@
+---
+title: İzoline girişi
+heading: Giriş
+description: "Bir EV'nin belirli bir noktadan ulaşabileceği alanı gösterin ve başlangıç bataryası, hava durumu, yedek şarj ve ayrıntı düzeyi için ince ayar yapın."
+---
+
+Menzil örümceği olarak da bilinen izoline, bir EV'nin üzerindeki enerjiyle belirli bir noktadan ulaşabileceği alanı gösterir. Bir araç ve bir başlangıç noktası seçin; API, seyahat mesafesi sınırını işaretleyen izolineleri, haritaya yerleştirebileceğiniz şekiller olarak hesaplar. Hesaplama, referans olarak gerçek yol ağını kullanır: aracın yolla ulaşabileceği en uzak noktaları bulur ve dış hat bu noktaları birbirine bağlar. Sonuç, yolları izleyen bir çizgi değil dolu bir alandır; bu nedenle ormanlar veya tarlalar gibi yollar arasındaki alanlar da içine dahil olabilir.
+
+## Bir izolineyi hedefiniz için optimize edin
+
+Aynı istek, neyi optimize ettiğinize bağlı olarak farklı izolineler üretebilir. Bunlar en yaygın hedefler ve her birini şekillendiren seçeneklerdir.
+
+Menzil haritası
+: Bir aracın bir noktadan, örneğin bir şehrin çevresinde, ne kadar yol gidebileceğini haritada bir alan olarak gösterin. Kaç poligon alacağınızı, aracın erişiminin basit bir görüntüsünden bir renk geçişi için daha ince adımlara kadar, en fazla 20 olmak üzere seçin. Hassasiyetten `quality` ile hız karşılığında ödün verin ve `ferry_connections` ile feribotları dahil edin; bu, hesaplama süresini ve poligon sayısını artırır. Bkz. [araç menzilini görselleştirin](/docs/getting-started/vehicle-range).
+
+Erişilebilirlik kontrolü
+: Belirli bir araç için "şarj etmeden oraya ulaşabilir miyim?" sorusunu yanıtlayın; bu, menzil kaygısını gidermeye yardımcı olur. Gerçek batarya seviyesinden `state_of_charge` ile başlayın, `final_state_of_charge` ile yedek şarj bırakın veya yalnızca aracın başlangıç noktasına geri de sürebileceği noktaları dahil etmek için `round_trip` kullanın.
+
+Ulaşılabilir istasyonlar
+: Şarj istasyonlarını, bir aracın bulunduğu yerden gerçekten ulaşabileceği istasyonlara göre filtreleyin. Bir istasyonun yalnızca araç yeterli şarjla vardığında sayılması için bunu `final_state_of_charge` ile birleştirin.
+
+Gerçekçi koşullar
+: Tüketimi değiştiren etkenleri hesaba katın: hava durumu veya mevsim, aracın taşıdığı ağırlık ve klima ile ısıtma ve soğutma. Batarya seviyesi verilmezse izoline aracın tam kullanılabilir batarya kapasitesini kullanır ve hava durumu varsayılan olarak gerçek zamanlı verileri kullanır.

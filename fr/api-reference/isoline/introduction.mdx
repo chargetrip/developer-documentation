@@ -1,0 +1,23 @@
+---
+title: Introduction aux isolines
+heading: Introduction
+description: Affichez la zone qu'un EV peut atteindre depuis un point donné, et ajustez-la selon la batterie de départ, la météo, la réserve et le niveau de détail.
+---
+
+Une isoline, aussi appelée carte d'autonomie, montre la zone qu'un EV peut atteindre depuis un point donné avec l'énergie dont il dispose à bord. Sélectionnez un véhicule et une origine, et l'API calcule les isolines qui marquent la limite de distance de trajet, sous forme de formes que vous pouvez placer sur une carte. Le calcul s'appuie sur le réseau routier réel comme référence : il détermine les points les plus éloignés que le véhicule peut atteindre par la route, et le contour relie ces points entre eux. Le résultat est une zone remplie, et non une ligne qui suit les routes ; les espaces entre les routes, comme les forêts ou les champs, peuvent donc s'y trouver.
+
+## Optimiser une isoline selon votre objectif
+
+La même requête peut produire des isolines différentes selon ce que vous optimisez. Voici les objectifs les plus courants, et les options qui façonnent chacun.
+
+Carte d'autonomie
+: Montrez jusqu'où un véhicule peut aller depuis un point, par exemple autour d'une ville, sous forme de zone sur une carte. Choisissez le nombre de polygones obtenus, jusqu'à 20, d'une image simple de l'autonomie du véhicule à des paliers plus fins pour un dégradé. Échangez de la précision contre de la vitesse avec `quality`, et incluez les ferries avec `ferry_connections`, ce qui augmente le temps de calcul et le nombre de polygones. Consultez [visualiser l'autonomie d'un véhicule](/docs/getting-started/vehicle-range).
+
+Vérification d'accessibilité
+: Répondez à « puis-je y arriver sans recharger ? » pour un véhicule précis, ce qui aide à répondre à l'anxiété d'autonomie. Partez du niveau de batterie réel avec `state_of_charge`, conservez une réserve avec `final_state_of_charge`, ou utilisez `round_trip` pour n'inclure que les points depuis lesquels le véhicule peut aussi revenir à l'origine.
+
+Stations accessibles
+: Filtrez les stations de recharge pour ne garder que celles qu'un véhicule peut réellement atteindre depuis sa position. Combinez-le avec `final_state_of_charge` pour qu'une station ne soit comptée que si le véhicule y arrive avec de la charge en réserve.
+
+Conditions réalistes
+: Tenez compte de ce qui modifie la consommation : la météo ou la saison, le poids transporté par le véhicule, et le chauffage et la climatisation. Sans niveau de batterie, l'isoline utilise toute la capacité de batterie utilisable du véhicule, et la météo utilise par défaut les données en temps réel.
