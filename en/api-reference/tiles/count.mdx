@@ -15,3 +15,13 @@ https://api.chargetrip.io/v2/station/count
 
 ### Filtering
 Use the `filter` query parameter to narrow the count down based on specific criteria. See the [filters documentation](/api-reference/tiles/filters) for more information.
+
+
+## Response
+
+The endpoint returns a JSON object containing the total count of matching stations:
+
+`count` · `integer`
+: Total number of charging stations matching the request filters (or all available stations if no filters are provided).
+
+

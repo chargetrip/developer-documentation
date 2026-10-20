@@ -4,26 +4,35 @@ description: "Include additional data points in the MVT and JSON tile responses 
 tag: Rest
 ---
 
-To optimize response time and size, by default, the MVT and JSON API return a minimized response. This approach ensures peak performance and reduces tile payload sizes, which is critical for smooth map interactions. By using selectors, you can include the additional data points your application specifically requires.
+To optimize network latency and rendering performance, Chargetrip MVT and JSON tile services return a minimal payload by default. This default payload provides essential geometry and clustering data needed to render map tiles quickly.
+
+By using selectors, you can request the specific station data attributes your client application needs without incurring unnecessary payload overhead.
+
+
+
+## Implementation
+
+To request specific station attributes, append the `station_properties[]` query parameter to your tile request URL. Repeat the parameter for each selector you want to include:
+
+```bash Tile / Selectors / Example
+https://api.chargetrip.io/v2/station/...?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
+```
 
 ## Available selectors
+Selectors only apply to **station features**, cluster features are unaffected and always return `count` and `expansion_zoom`.
 
-Any field listed in the station properties for MVT and JSON tiles can be used as a selector in its respective service, with the exception of the mandatory GeoJSON fields returned in the JSON endpoint.
 
 `count` · `integer` · <span class="text-accent">default</span>
-: The count of stations within a cluster. A count of 1 means a Station feature, whereas a count greater than 1 means a Cluster feature.
-
-`expansion_zoom` · `integer` · <span class="text-accent">default</span>
-: The zoom level at which a cluster splits into multiple smaller clusters or stations.
+: The count of stations within a cluster. A count of 1 indicates a Station feature, whereas a count greater than 1 indicates a Cluster feature.
 
 `id` · `string`
-: The identifier of the station.
+: The unique Chargetrip identifier of the station. Only applicable to [MVT Tiles](/api-reference/tiles/mvt).
 
 `lng` · `float`
-: The longitude of the station.
+: The longitude of the station. Only applicable to [MVT Tiles](/api-reference/tiles/mvt).
 
 `lat` · `float`
-: The latitude of the station.
+: The latitude of the station. Only applicable to [MVT Tiles](/api-reference/tiles/mvt).
 
 `station_maximum_power` · `integer`
 : The station’s maximum charging power (in kW) available at the station. This value is static and always reflects the station's highest capability, regardless of connector filters.
@@ -32,10 +41,10 @@ Any field listed in the station properties for MVT and JSON tiles can be used as
 : The maximum charging power (in kW) available from the connectors matching the `connectors[]` filter. If no filter is provided, all connectors are considered and it matches `station_maximum_power`.
 
 `preferred_operator` · `boolean`
-: Indicates if the operator of a station is a preferred operator. Preferred operators can be managed on project level in the Dashboard.
+: Indicates if the operator of a station is a preferred operator. Operator preferences can be managed in [Chargetrip's dashboard](https://account.chargetrip.io/projects).
 
 `evse_status_blocked` · `integer`
-: The number of EVSEs in blocked status. If a `connectors[]` filter is provided, it only counts blocked EVSEs that match the selected connector types.
+: Number of EVSEs physically or electronically blocked. If a `connectors[]` filter is provided, it only counts blocked EVSEs that have at least one of selected connector types.
 
 `evse_status_planned` · `integer`
 : Number of EVSEs in planned status. If a `connectors[]` filter is provided, it only counts planned EVSEs that have at least one of selected connector types.
@@ -44,88 +53,126 @@ Any field listed in the station properties for MVT and JSON tiles can be used as
 : Number of EVSEs in status available. If a `connectors[]` filter is provided, it only counts available EVSEs that have at least one of selected connector types.
 
 `evse_status_charging` · `integer`
-: Number of EVSEs in status charging. If a `connectors[]` filter is provided, it only counts charging EVSEs that have at least one of selected connector types.
+: Number of EVSEs currently occupied. If a `connectors[]` filter is provided, it only counts charging EVSEs that have at least one of selected connector types.
 
 `evse_status_unknown` · `integer`
-: Number of EVSEs in status unknown. If a `connectors[]` filter is provided, it only counts unknown EVSEs that have at least one of selected connector types.
+: Number of EVSEs whose real-time status is currently unknown. If a `connectors[]` filter is provided, it only counts unknown EVSEs that have at least one of selected connector types.
 
 `evse_status_reserved` · `integer`
-: Number of EVSEs in status reserved. If a `connectors[]` filter is provided, it only counts reserved EVSEs that have at least one of selected connector types.
+: Number of EVSEs reserved for a driver. If a `connectors[]` filter is provided, it only counts reserved EVSEs that have at least one of selected connector types.
 
 `evse_status_out_of_order` · `integer`
-: Number of EVSEs in status out_of_order. If a `connectors[]` filter is provided, it only counts out of order EVSEs that have at least one of selected connector types.
+: Number of EVSEs marked as out of order. If a `connectors[]` filter is provided, it only counts out of order EVSEs that have at least one of selected connector types.
 
 `evse_status_inoperative` · `integer`
-: Number of EVSEs in status inoperative. If a `connectors[]` filter is provided, it only counts inoperative EVSEs that have at least one of selected connector types.
+: Number of EVSEs temporarily inoperative. If a `connectors[]` filter is provided, it only counts inoperative EVSEs that have at least one of selected connector types.
 
-## Implementation
+## Examples
 
-To request specific properties, append `station_properties[]` query parameter to the tile request URL.
+<details>
+  <summary>Request station power and operator preference in JSON tiles</summary>
 
-```bash Tile / Selectors / Example
-https://api.chargetrip.io/v2/station/.../?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
+In JSON tiles, the mandatory feature structure (`type`, `geometry`, `id`) is always preserved on station features, while `properties` contains only the requested selectors (the default `count` property is omitted because it was not requested). Cluster features are unaffected by selectors and still return `count` and `expansion_zoom`.
+
+```bash Example request {{ mark: [2,3] }}
+https://api.chargetrip.io/v2/station/10/582/325/tile.json
+  ?station_properties[]=station_maximum_power
+  &station_properties[]=preferred_operator
 ```
 
-## Behavior examples
-
-When selectors are provided, the request returns only the specified fields.
-
-### GeoJSON
-
-In the GeoJSON endpoint, the mandatory GeoJSON fields (`type` and `geometry` and `id`) are always returned regardless of the selectors chosen.
-
-```json JSON Selectors example
+```json Example response {{ mark: [13,14,15,16] }}
 {
   "type": "FeatureCollection",
   "features": [
-    // Station feature
+    // Station feature (count = 1)
     {
-      "id": "132313",
+      "id": "5e5f3e8f8e0c1a0012345678",
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [6.789, 52.234]
+        "coordinates": [4.895168, 52.370216]
       },
-      // 'count' is missing because it wasn't provided as selector
       "properties": {
         "station_maximum_power": 350,
         "preferred_operator": true
       }
     },
-    // Cluster feature
-    // Cluster feature is not modified, as it's not affected by the selectors.
+   // Cluster feature (unaffected by selectors)
     {
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [6.723, 50.0]
+        "coordinates": [5.1214, 52.0907]
       },
       "properties": {
-        "count": 3,
-        "expansion_zoom": 18
+        "count": 4,
+        "expansion_zoom": 14
       }
     }
   ]
 }
 ```
 
-### MVT
+</details>
 
-In the MVT endpoint, only the parameters explicitly selected are returned as there are no mandatory fields.
+<details>
+  <summary>Request station ID, power and operator preference in MVT vector tiles</summary>
 
-```json MVT Selectors example
-// Station feature
-// 'count' is missing because it wasn't provided as a selector.
+ In MVT tiles, only explicitly requested selectors are encoded into the station feature (omitting the default `count` property), while cluster features are unaffected by selectors and always retain `count` and `expansion_zoom`.
+
+```bash Example request {{ mark: [2,3,4] }}
+https://api.chargetrip.io/v2/station/10/582/325/tile.mvt
+  ?station_properties[]=id
+  &station_properties[]=station_maximum_power
+  &station_properties[]=preferred_operator
+```
+
+```json Example response {{ mark: [2,3,4,5,6] }}
+// Station feature ('count' is omitted because it wasn't requested as a selector)
 {
-  "id": "132313",
-  "preferred_operator": false,
+  "id": "5e5f3e8f8e0c1a0012345678",
+  "preferred_operator": true,
   "station_maximum_power": 350
 }
 
-// Cluster feature
-// Cluster feature is not modified, as it's not affected by the selectors.
+// Cluster feature (unaffected by selectors)
 {
-  "count": 3,
-  "expansion_zoom": 32
+  "count": 4,
+  "expansion_zoom": 14
 }
 ```
+
+</details>
+
+<details>
+  <summary>Combine selectors with connector filters for real-time EVSE status</summary>
+
+  When filtering by a specific connector type (e.g., CCS / `IEC_62196_T2_COMBO`), the `connector_maximum_power` and `evse_status_available` counts reflect only EVSEs matching that connector filter.
+
+```bash Example request {{ mark: [2,3,4] }}
+https://api.chargetrip.io/v2/station/10/582/325/tile.json
+  ?connectors[]=IEC_62196_T2_COMBO
+  &station_properties[]=connector_maximum_power
+  &station_properties[]=evse_status_available
+```
+
+```json Example response {{ mark: [12,13,14,15] }}
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "id": "5e5f3e8f8e0c1a0012345678",
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [4.895168, 52.370216]
+      },
+      "properties": {
+        "connector_maximum_power": 300,
+        "evse_status_available": 2
+      }
+    }
+  ]
+}
+```
+</details>
