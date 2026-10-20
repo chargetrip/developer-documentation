@@ -13,7 +13,7 @@ Adding an amenity stop to a route takes four steps:
 1. **Create a route.** Request a route with `createRoute`.
 2. **Select a route option.** Select one of the route options returned by the `route` subscription or `getRoute` query.
 3. **Search for stations with amenities.** Pass the choosen route option as `route_id` and the route request id returned by `createRoute` as `route_request_id` to `getRouteStationsWithAmenities`, . You'll get a list of compatible stations along the route, each with the specific amenity places nearby .
-4. **Recalculate the route with the selected station.** Once the driver picks the station, call `createRoute` again and add the station to the `via` input as a charging stop using `via.properties.station.station_id`. See [Route with stops](/guides/route-with-stops) for details on how this works.
+4. **Recalculate the route with the selected station.** Once the driver picks the station, call `createRoute` again and add the station to the `via` input as a charging stop using `via.properties.station.station_id`. See [Route with stops](/docs/getting-started/route-stop) for details on how this works.
 
 ## How stations are selected
 
