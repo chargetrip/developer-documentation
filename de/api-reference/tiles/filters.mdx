@@ -20,7 +20,7 @@ Wenn eine Anfrage Filter enthält, führt der Tile Service zwei unterschiedliche
 Filterparameter können als Query-Strings an die Anfrage-URL jedes Tile-Service-Endpoints (MVT, JSON oder Count) angehängt werden. Wenn keine Filter angewendet werden, werden alle verfügbaren Ladestationen zurückgegeben, und es erfolgen keine Datentransformationen.
 
 ```bash Tile / Filter / Example
-https://api.chargetrip.io/v2/station/..../?{filter_1}&{filter_2}&{filter_n}
+https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?{filter_1}&{filter_2}&{filter_n}
 ```
 
 ## Ebenen
@@ -31,28 +31,73 @@ Filter können auf zwei Ebenen existieren: auf EVSE-Ebene oder auf Stationsebene
 
 Filter, die die globalen Attribute der Station auswerten. Diese Filter schließen nur aus: Sie schließen nicht passende Stationen aus, verändern aber nie die zurückgegebenen Datenfelder.
 
-`amenities` · `enum` · [Beispiel-URL anzeigen](tip:https://api.chargetrip.io/v2/station?amenities[]=HOTEL)
+`amenities` · `enum` · [Beispiel-URL anzeigen](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?amenities[]=HOTEL)
 : Filtert so, dass nur Stationen enthalten sind, die die angegebenen Ausstattungen bieten.
-: `HOTEL`, `SHOPPING`, `BATHROOM`, `SUPERMARKET`, `PLAYGROUND`, `PHARMACY`, `MUSEUM`, `COFFEE`, `RESTAURANT`
+: `HOTEL`, `SHOPPING`, `BATHROOM`, `SUPERMARKET`, `PLAYGROUND`, `PHARMACY`, `MUSEUM`, `COFFEE`, `PARK`, `RESTAURANT`
 
-`preferred_operators` · `boolean` · [Beispiel-URL anzeigen](tip:https://api.chargetrip.io/v2/station?preferred_operators=true)
+`preferred_operators` · `boolean` · [Beispiel-URL anzeigen](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?preferred_operators=true)
 : Filtert so, dass nur Stationen enthalten sind, die von Betreibern betrieben werden, die als bevorzugt konfiguriert sind. Bevorzugte Betreiber können in den Projekteinstellungen im Dashboard festgelegt werden.
 : `true`, `false`
 
-`truck_dedicated` · `boolean` · [Beispiel-URL anzeigen](tip:https://api.chargetrip.io/v2/station?truck_dedicated=true)
+`hide_excluded_operators` · `boolean` · [Beispiel-URL anzeigen](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?hide_excluded_operators=true)
+: Filtert so, dass Stationen ausgeschlossen werden, die von Betreibern betrieben werden, die als ausgeschlossen konfiguriert sind. Ausgeschlossene Betreiber können in den Projekteinstellungen im Dashboard festgelegt werden.
+: `true`, `false`
+
+`operator_ids` · `string` · [Beispiel-URL anzeigen](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?operator_ids[]=631834841e604d2273ffb2b5&operator_ids[]=64e6979d49ed0ae2316ec052)
+: Filtert so, dass nur Stationen enthalten sind, die von bestimmten Betreiber-IDs betrieben werden. Akzeptiert ein Array von Betreiber-IDs.
+
+`truck_dedicated` · `boolean` · [Beispiel-URL anzeigen](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?truck_dedicated=true)
 : Filtert so, dass nur Stationen enthalten sind, die speziell oder hauptsächlich zum Laden von Lkw vorgesehen sind. **Nur anwendbar, wenn die Eco-Movement-Stationsdatenbank verwendet wird, andernfalls wird er ignoriert.**
 : `true`, `false`
+
+`vehicle_types` · `enum` · [Beispiel-URL anzeigen](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?vehicle_types[]=VAN&vehicle_types[]=RIGID)
+: Filtert so, dass nur Stationen enthalten sind, die die angegebenen OCPI-Fahrzeugtypen unterstützen. Standardmäßig sind alle Fahrzeugtypen enthalten. **Nur anwendbar, wenn die Eco-Movement-Stationsdatenbank verwendet wird, andernfalls wird er ignoriert.**
+: `VAN`, `RIGID`, `TRUCK_WITH_TRAILER`
 
 ### EVSE-Ebene
 
 Filter, die die spezifischen Ladefähigkeiten der Station auswerten. Diese Filter schließen aus und führen eine [Transformation](/api-reference/tiles/filters#beispiele-für-datentransformation) durch: Nicht passende Stationen werden ausgeschlossen, und bei passenden Stationen werden die dynamischen Felder neu berechnet.
 
-`connectors` · `enum` · [Beispiel-URL anzeigen](tip:https://api.chargetrip.io/v2/station?connectors[]=CHADEMO)
+`minimum_power` · `integer` · [Beispiel-URL anzeigen](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?minimum_power=50)
+: Filtert so, dass nur Stationen enthalten sind, bei denen mindestens ein Anschluss den angegebenen Leistungswert (in kW) erreicht oder überschreitet. Akzeptiert eine ganze Zahl größer als 0.
+
+`maximum_power` · `integer` · [Beispiel-URL anzeigen](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?maximum_power=150)
+: Filtert so, dass nur Stationen enthalten sind, bei denen die maximale Ladeleistung keines Anschlusses den angegebenen Leistungswert (in kW) überschreitet. Akzeptiert eine ganze Zahl größer als 0.
+
+`minimum_energy_price` · `number` · [beta](tip:Beta;;Dieser Filter befindet sich in der Beta-Phase und kann sich ändern, bevor er stabil wird.) · [Beispiel-URL anzeigen](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?minimum_energy_price=0.2&currency=EUR)
+: Filtert so, dass nur Stationen enthalten sind, deren kompatible Anschlüsse mindestens einen aktiven Preis haben, der größer oder gleich dem angegebenen Wert ist, ausgewertet in der über `currency` festgelegten Währung. Siehe [Stationspreise](/docs/getting-started/station-pricing).
+
+`maximum_energy_price` · `number` · [beta](tip:Beta;;Dieser Filter befindet sich in der Beta-Phase und kann sich ändern, bevor er stabil wird.) · [Beispiel-URL anzeigen](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?maximum_energy_price=0.5&currency=EUR)
+: Filtert so, dass nur Stationen enthalten sind, deren kompatible Anschlüsse mindestens einen aktiven Preis haben, der kleiner oder gleich dem angegebenen Wert ist, ausgewertet in der über `currency` festgelegten Währung. Siehe [Stationspreise](/docs/getting-started/station-pricing).
+
+`connectors` · `enum` · [Beispiel-URL anzeigen](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=CHADEMO)
 : Filtert so, dass nur Stationen enthalten sind, die EVSEs mit den angegebenen Anschlusstypen haben. Akzeptiert ein Array von Strings mit beliebigen OCPI-2.2.1-Anschlusswerten.
 : `CHADEMO`, `DOMESTIC_A`, `DOMESTIC_B`, `DOMESTIC_C`, `DOMESTIC_D`, `DOMESTIC_E`, `DOMESTIC_F`, `DOMESTIC_G`, `DOMESTIC_H`, `DOMESTIC_I`, `DOMESTIC_J`, `DOMESTIC_K`,
 `DOMESTIC_L`, `DOMESTIC_M`, `DOMESTIC_N`, `DOMESTIC_O`, `IEC_60309_2_single_16`, `IEC_60309_2_three_16`, `IEC_60309_2_three_32`, `IEC_60309_2_three_64`, `IEC_62196_T1`,
 `IEC_62196_T1_COMBO`, `IEC_62196_T2`, `IEC_62196_T2_COMBO`, `IEC_62196_T3A`, `IEC_62196_T3C`, `PANTOGRAPH_BOTTOM_UP`, `PANTOGRAPH_TOP_DOWN`, `TESLA_R`, `TESLA_S`, `GB_T`,
 `CHAOJI`, `NEMA_5_20`, `NEMA_6_30`, `NEMA_6_50`, `NEMA_10_30`, `NEMA_10_50`, `NEMA_14_30`, `NEMA_14_50`
+
+`evse_statuses` · `enum` · [Beispiel-URL anzeigen](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?evse_statuses[]=AVAILABLE&evse_statuses[]=CHARGING)
+: Filtert so, dass nur Stationen enthalten sind, die EVSEs mit den angegebenen Status haben.
+: `BLOCKED`, `PLANNED`, `AVAILABLE`, `CHARGING`, `UNKNOWN`, `RESERVED`, `OUT_OF_ORDER`, `INOPERATIVE`
+
+## Währungsumrechnung
+
+Der Query-Parameter `currency` wird vom Tile-Service-Endpoint unterstützt (`tile.json`, `tile.mvt` und `count`). Er legt die Währung der Energiepreise fest, die zurückgegeben und nach denen gefiltert wird.
+
+- Wenn `currency` weggelassen wird, werden `connector_minimum_energy_price` und `connector_maximum_energy_price` in EUR zurückgegeben.
+- Wenn `currency` ein gültiger ISO-4217-Währungscode ist, etwa `USD`, `GBP`, `DKK` oder `EUR`:
+  - Die in `connector_minimum_energy_price` und `connector_maximum_energy_price` zurückgegebenen Werte werden serverseitig mit dem aktuellen Umrechnungskurs von ihrer Ursprungswährung in die angeforderte Währung umgerechnet.
+  - Die Filter `minimum_energy_price` und `maximum_energy_price` werden anhand der umgerechneten Preise in der angeforderten Währung ausgewertet, bzw. in EUR, wenn `currency` weggelassen wird.
+- Wenn die ursprüngliche Währung der angeforderten Währung entspricht, wird `price_conversion_rate` als `1.0` zurückgegeben.
+- Wenn `currency` kein gültiger ISO-4217-Währungscode ist, gibt der Tile-Service einen Fehler mit folgenden Details zurück:
+  - Status: `400 Bad Request`
+  - Code: `TILE_INVALID_PARAMETER_VALUE`
+  - Nachricht: `Invalid parameter 'currency': found string {invalid currency} but expected one of {supported currencies}.`
+
+```bash Example URL
+https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?maximum_energy_price=0.5&currency=USD
+```
 
 ## Beispiele
 
@@ -66,7 +111,7 @@ Filter können auf zwei Ebenen existieren: auf EVSE-Ebene oder auf Stationsebene
   <summary>Gleicher Filtertyp, unterschiedliche Werte</summary>
 
 ```bash Example URL
-https://api.chargetrip.io/v2/station?connectors[]=IEC_62196_T1_COMBO&connectors[]=CHADEMO
+https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=IEC_62196_T1_COMBO&connectors[]=CHADEMO
 ```
 
   | Station | Eigenschaften                                                                         | Treffer                                                                |
@@ -80,7 +125,7 @@ https://api.chargetrip.io/v2/station?connectors[]=IEC_62196_T1_COMBO&connectors[
   <summary>Mehrere unterschiedliche Filtertypen</summary>
 
 ```bash Example URL
-https://api.chargetrip.io/v2/station?minimum_power=120&evse_statuses[]=AVAILABLE&connectors[]=IEC_62196_T1_COMBO
+https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?minimum_power=120&evse_statuses[]=AVAILABLE&connectors[]=IEC_62196_T1_COMBO
 ```
   | Station | Eigenschaften                                                                         | Treffer                                                                |
   |---------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------|
@@ -92,14 +137,14 @@ https://api.chargetrip.io/v2/station?minimum_power=120&evse_statuses[]=AVAILABLE
 ### Beispiele für Datentransformation
 
 Einige Ausgaben werden neu berechnet, wenn Filter auf EVSE-Ebene angewendet werden. Diese Felder werden „transformiert“, damit Anschlüsse ignoriert werden, die nicht den Suchkriterien des Nutzers entsprechen.
-Diese „dynamischen“ Ausgabefelder sind `connector_maximum_power` und `evse_status_*`.
+Diese „dynamischen“ Ausgabefelder sind `connector_maximum_power`, `connector_minimum_energy_price`, `connector_maximum_energy_price` und `evse_status_*`.
 
 <details>
   <summary>Gleicher Filtertyp, unterschiedliche Werte</summary>
   Die Anfrage enthält einen CHADEMO-Anschlussfilter. Die Station ist enthalten, weil sie einen CHADEMO-Anschluss hat, aber die dynamischen Felder werden so transformiert, dass die Combo-Typ-1-Lader ignoriert werden.
 
 ```bash Example URL
-https://api.chargetrip.io/v2/station?connectors[]=IEC_62196_T1_COMBO&connectors[]=CHADEMO
+https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=IEC_62196_T1_COMBO&connectors[]=CHADEMO
 ```
 
 ```json Response
@@ -115,4 +160,82 @@ https://api.chargetrip.io/v2/station?connectors[]=IEC_62196_T1_COMBO&connectors[
   "evse_status_available": 1
 }
 ```
+</details>
+
+<details>
+  <summary>Preisfilter</summary>
+  Die Anfrage enthält einen `maximum_energy_price`-Filter, optional kombiniert mit anderen Filtern auf EVSE-Ebene. Ein Anschluss passt nur, wenn er alle Filter gleichzeitig erfüllt, und die dynamischen Preisfelder werden nur für die passenden Anschlüsse neu berechnet.
+
+
+**Ausgangsstation A**
+
+- **EVSE 1:** CCS • 150 kW • Verfügbar • 0,65 €
+- **EVSE 2:** CCS • 50 kW • Verfügbar • 0,35 €
+- **EVSE 3:** Typ 2 • 22 kW • Verfügbar • 0,25 €
+
+**Szenario 1: nur Preisfilter**
+
+```bash Example URL
+https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?maximum_energy_price=0.40
+```
+
+Treffer: EVSE 2 und 3 qualifizieren sich. EVSE 1 wird ausgeschlossen.
+
+```json Response
+{
+  "connector_maximum_power": 50,
+  "evse_status_available": 2,
+  // Dynamic: lowest price of the matching connectors, not of the entire station
+  "connector_minimum_energy_price": 0.25,
+  // Dynamic: highest price of the matching connectors, not of the entire station
+  "connector_maximum_energy_price": 0.35
+}
+```
+
+**Szenario 2: nur Anschlussfilter**
+
+```bash Example URL
+https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=CCS
+```
+
+Treffer: EVSE 1 und 2 qualifizieren sich.
+
+```json Response
+{
+  "connector_maximum_power": 150,
+  "evse_status_available": 2,
+  // Dynamic: lowest price of the CCS connectors
+  "connector_minimum_energy_price": 0.35,
+  // Dynamic: highest price of the CCS connectors
+  "connector_maximum_energy_price": 0.65
+}
+```
+
+**Szenario 3: Preis- und Anschlussfilter**
+
+```bash Example URL
+https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=CCS&maximum_energy_price=0.30
+```
+
+Treffer:
+
+- Ausgewertet wird `connector == CCS AND price <= 0.30`.
+- Die CCS-Anschlüsse (EVSE 1 und 2) kosten 0,65 € und 0,35 € und erfüllen den Preisfilter daher nicht.
+- Der Typ-2-Anschluss (EVSE 3) erfüllt den Preis, aber nicht den Anschlussfilter.
+
+Ergebnis: Station ausgeschlossen (0 passende EVSEs).
+
+**Szenario 4: Preis- und Leistungsfilter**
+
+```bash Example URL
+https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?minimum_power=100&maximum_energy_price=0.40
+```
+
+Treffer:
+
+- Ausgewertet wird `power >= 100 kW AND price <= 0.40 €` auf **demselben EVSE**.
+- Der 150-kW-Anschluss ist zu teuer (0,65 €).
+- Die günstigeren Anschlüsse (0,25 € bis 0,35 €) sind zu langsam (50 kW oder weniger).
+
+Ergebnis: Station ausgeschlossen (0 passende EVSEs).
 </details>

@@ -7,10 +7,10 @@ Ladepreise lassen sich auf zwei Ebenen anzeigen: direkt auf einer Karte über de
 
 ## Tile-Service
 
-Der Tile-Service stellt `minimum_station_price` und `maximum_station_price` sowohl als Filter als auch als Antwortfeld bereit.
+Der Tile-Service unterstützt Preise sowohl als Filter als auch als Selektoren.
 
-- Als [Filter](/api-reference/tiles/filters) übergeben Sie `minimum_station_price` und `maximum_station_price` zusammen mit `price_currency`, um den Bereich in die richtige Währung umzurechnen, und schließen so Stationen, deren Preis in diesen Bereich fällt, dynamisch ein oder aus.
-- Als [Selektor](/api-reference/tiles/selectors) fordern Sie `minimum_station_price` und `maximum_station_price` an, um die Preisspanne jeder Station direkt auf der Karte darzustellen.
+- Als [Filter](/api-reference/tiles/filters) übergeben Sie `minimum_energy_price` und `maximum_energy_price` zusammen mit `currency`, um den Bereich in die richtige Währung umzurechnen, und schließen so Stationen, deren Preis in diesen Bereich fällt, dynamisch ein oder aus.
+- Als [Selektor](/api-reference/tiles/selectors) fordern Sie `connector_minimum_energy_price`, `connector_maximum_energy_price`, `price_vat`, `price_valid_until`, `price_original_currency` und `price_conversion_rate` an, um Preisdetails anzuzeigen. Sie werden in den Eigenschaften des Station-Features zurückgegeben (`properties.count == 1`). Der Preis ist immer der Stationspreis, und mit `price_original_currency` und `price_conversion_rate` können Sie ihn an Ihre eigene Umrechnung anpassen.
 
 ## Stationspreise
 

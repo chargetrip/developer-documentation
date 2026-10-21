@@ -4,13 +4,13 @@ title: Prioriser des stations de recharge individuelles
 
 Les groupes de mise en avant (Boosting Groups) vous permettent d'orienter la sélection des stations vers des emplacements de recharge spécifiques selon vos propres règles commerciales.
 
-Alors que les [préférences d'opérateurs](/docs/getting-started/route-operators) vous permettent de prioriser des réseaux de recharge entiers, les Boosting Groups vous offrent un contrôle granulaire au niveau de chaque station. Quelle que soit la raison pour laquelle vous privilégiez ces stations — tarifs plus avantageux, faible taux d'occupation ou meilleur accord commercial — vous pouvez les placer tout en haut de la hiérarchie des stations.
+Alors que les [préférences d'opérateurs](/docs/getting-started/route-operators) vous permettent de prioriser des réseaux de recharge entiers, les Boosting Groups vous offrent un contrôle granulaire au niveau de chaque station. Quelle que soit la raison pour laquelle vous privilégiez ces stations (tarifs plus avantageux, faible taux d'occupation ou meilleur accord commercial), vous pouvez les placer tout en haut de la hiérarchie des stations.
 
 ## Comment mettre en avant des stations
 
-Pour commencer, contactez simplement le [Support](https://www.chargetrip.com/contact/support) avec la liste des stations que vous souhaitez prioriser.
+Pour commencer, contactez simplement le [support](https://www.chargetrip.com/contact/support) avec la liste des stations que vous souhaitez prioriser.
 
-Une fois votre groupe configuré et activé sur votre projet, tous les itinéraires calculés avec [createRoute](/api-reference/route/mutation-create-route) l'utiliseront automatiquement en arrière-plan — aucune modification ni aucun paramètre supplémentaire n'est requis dans vos requêtes API.
+Une fois votre groupe configuré et activé sur votre projet, tous les itinéraires calculés avec [createRoute](/api-reference/route/mutation-create-route) l'utiliseront automatiquement en arrière-plan : aucune modification ni aucun paramètre supplémentaire n'est requis dans vos requêtes API.
 
 ## Fonctionnement
 
@@ -51,9 +51,7 @@ mutation CreateRoute {
     status
   }
 }
-
 ```
-
 </details>
 
 <details>
@@ -61,7 +59,7 @@ mutation CreateRoute {
 
 Lors de la récupération de l'itinéraire calculé avec `getRoute` ou la souscription `route`, demandez le champ `boosting_group_ids` sur la station de l'étape (leg) pour voir quels Boosting Groups actifs correspondent à cet arrêt.
 
-```
+```graphql Example request {{ mark: [11] }}
 query GetRoute {
   getRoute(id: "6527e1f1a8b4c2d3e4f5a6b7") {
     status
@@ -80,35 +78,5 @@ query GetRoute {
     }
   }
 }
-
-```
-
-```
-{
-  "data": {
-    "getRoute": {
-      "status": "done",
-      "route": {
-        "id": "6527e1f1a8b4c2d3e4f5a6b8",
-        "legs": [
-          {
-            "origin": {
-              "properties": {
-                "station_id": "5e5f3e8f8e0c1a0012345678",
-                "station": {
-                  "boosting_group_ids": [
-                    "66c4a912e4b0a123456789ab"
-                  ]
-                }
-              }
-            }
-          }
-        ]
-      }
-    }
-  }
-}
-
 ```
 </details>
-

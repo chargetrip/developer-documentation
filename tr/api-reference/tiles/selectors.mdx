@@ -34,6 +34,24 @@ MVT ve JSON karoları için istasyon özelliklerinde listelenen herhangi bir ala
 `preferred_operator` · `boolean`
 : Bir istasyonun operatörünün tercih edilen operatör olup olmadığını belirtir. Tercih edilen operatörler Dashboard'da proje düzeyinde yönetilebilir.
 
+`connector_minimum_energy_price` · `float` · [beta](tip:Beta;;Bu alan beta aşamasındadır ve kararlı hale gelmeden önce değişebilir.)
+: İstasyonun konektörleri arasındaki en düşük enerji fiyatı. Mevcut değilse döndürülmez.
+
+`connector_maximum_energy_price` · `float` · [beta](tip:Beta;;Bu alan beta aşamasındadır ve kararlı hale gelmeden önce değişebilir.)
+: İstasyonun konektörleri arasındaki en yüksek enerji fiyatı. Mevcut değilse döndürülmez.
+
+`price_vat` · `float` · [beta](tip:Beta;;Bu alan beta aşamasındadır ve kararlı hale gelmeden önce değişebilir.)
+: Fiyata uygulanan KDV. Mevcut değilse döndürülmez.
+
+`price_valid_until` · `string` · [beta](tip:Beta;;Bu alan beta aşamasındadır ve kararlı hale gelmeden önce değişebilir.)
+: Fiyatın geçerli olduğu son tarih ve saat. Mevcut değilse döndürülmez.
+
+`price_original_currency` · `string` · [beta](tip:Beta;;Bu alan beta aşamasındadır ve kararlı hale gelmeden önce değişebilir.)
+: Fiyatın `currency` birimine dönüştürülmeden önce başlangıçta tanımlandığı para birimi. Mevcut değilse döndürülmez.
+
+`price_conversion_rate` · `float` · [beta](tip:Beta;;Bu alan beta aşamasındadır ve kararlı hale gelmeden önce değişebilir.)
+: Fiyatın özgün para biriminden `currency` birimine dönüştürülmesinde kullanılan kur. Mevcut değilse döndürülmez.
+
 `evse_status_blocked` · `integer`
 : Engellenmiş durumdaki EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türleriyle eşleşen engellenmiş EVSE'leri sayar.
 
@@ -63,7 +81,7 @@ MVT ve JSON karoları için istasyon özelliklerinde listelenen herhangi bir ala
 Belirli özellikleri istemek için karo isteği URL'sine `station_properties[]` sorgu parametresini ekleyin.
 
 ```bash Tile / Selectors / Example
-https://api.chargetrip.io/v2/station/.../?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
+https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
 ```
 
 ## Davranış örnekleri

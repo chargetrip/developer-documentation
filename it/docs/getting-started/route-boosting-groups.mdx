@@ -4,11 +4,11 @@ title: Dare priorità a singole stazioni di ricarica
 
 I Boosting Groups ti consentono di orientare la selezione delle stazioni verso specifiche posizioni di ricarica in base alle tue regole aziendali.
 
-Mentre le [preferenze operatore](/docs/getting-started/route-operators) ti permettono di dare priorità a intere reti di ricarica, i Boosting Groups ti offrono un controllo granulare a livello di singola stazione. Qualunque sia il motivo per cui desideri favorire determinate stazioni — come prezzi più bassi, minore utilizzo o un accordo commerciale migliore — puoi promuoverle in cima alla gerarchia delle stazioni.
+Mentre le [preferenze operatore](/docs/getting-started/route-operators) ti permettono di dare priorità a intere reti di ricarica, i Boosting Groups ti offrono un controllo granulare a livello di singola stazione. Qualunque sia il motivo per cui desideri favorire determinate stazioni, come prezzi più bassi, minore utilizzo o un accordo commerciale migliore, puoi promuoverle in cima alla gerarchia delle stazioni.
 
 ## Come promuovere le stazioni
 
-Per iniziare, contatta semplicemente il [Supporto](https://www.chargetrip.com/contact/support) inviando l'elenco delle stazioni a cui desideri dare priorità.
+Per iniziare, contatta semplicemente il [supporto](https://www.chargetrip.com/contact/support) inviando l'elenco delle stazioni a cui desideri dare priorità.
 
 Una volta che il tuo gruppo è stato configurato e abilitato sul tuo progetto, tutti i percorsi calcolati con [createRoute](/api-reference/route/mutation-create-route) lo utilizzeranno automaticamente in background, senza bisogno di modifiche o parametri aggiuntivi nelle tue richieste API.
 
@@ -51,9 +51,7 @@ mutation CreateRoute {
     status
   }
 }
-
 ```
-
 </details>
 
 <details>
@@ -61,7 +59,7 @@ mutation CreateRoute {
 
 Quando recuperi il percorso calcolato con `getRoute` o con la subscription `route`, richiedi `boosting_group_ids` sulla stazione della tratta (leg) per vedere quali Boosting Groups attivi corrispondono a quella sosta.
 
-```
+```graphql Example request {{ mark: [11] }}
 query GetRoute {
   getRoute(id: "6527e1f1a8b4c2d3e4f5a6b7") {
     status
@@ -80,35 +78,5 @@ query GetRoute {
     }
   }
 }
-
 ```
-
-```
-{
-  "data": {
-    "getRoute": {
-      "status": "done",
-      "route": {
-        "id": "6527e1f1a8b4c2d3e4f5a6b8",
-        "legs": [
-          {
-            "origin": {
-              "properties": {
-                "station_id": "5e5f3e8f8e0c1a0012345678",
-                "station": {
-                  "boosting_group_ids": [
-                    "66c4a912e4b0a123456789ab"
-                  ]
-                }
-              }
-            }
-          }
-        ]
-      }
-    }
-  }
-}
-
-```
-
 </details>

@@ -7,10 +7,10 @@ Les prix de recharge peuvent être affichés à deux niveaux : directement sur u
 
 ## Service de tuiles
 
-Le service de tuiles expose `minimum_station_price` et `maximum_station_price` à la fois comme filtre et comme champ de réponse.
+Le service de tuiles prend en charge les prix à la fois comme filtres et comme sélecteurs.
 
-- En tant que [filtre](/api-reference/tiles/filters), transmettez `minimum_station_price` et `maximum_station_price`, ainsi que `price_currency` pour convertir la plage dans la bonne devise, afin d'inclure ou d'exclure dynamiquement les stations dont le prix se situe dans cette plage.
-- En tant que [sélecteur](/api-reference/tiles/selectors), demandez `minimum_station_price` et `maximum_station_price` pour afficher directement sur la carte la fourchette de prix de chaque station.
+- En tant que [filtre](/api-reference/tiles/filters), transmettez `minimum_energy_price` et `maximum_energy_price`, ainsi que `currency` pour convertir la plage dans la bonne devise, afin d'inclure ou d'exclure dynamiquement les stations dont le prix se situe dans cette plage.
+- En tant que [sélecteur](/api-reference/tiles/selectors), demandez `connector_minimum_energy_price`, `connector_maximum_energy_price`, `price_vat`, `price_valid_until`, `price_original_currency` et `price_conversion_rate` pour afficher les détails de prix. Ils sont renvoyés dans les propriétés de la feature de station (`properties.count == 1`). Le prix est toujours celui de la station, et vous pouvez utiliser `price_original_currency` et `price_conversion_rate` pour l'ajuster avec votre propre conversion.
 
 ## Tarification des stations
 

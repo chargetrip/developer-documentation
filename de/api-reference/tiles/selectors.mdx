@@ -34,6 +34,24 @@ Jedes Feld, das in den Stationseigenschaften für MVT- und JSON-Kacheln aufgefü
 `preferred_operator` · `boolean`
 : Gibt an, ob der Betreiber einer Station ein bevorzugter Betreiber ist. Bevorzugte Betreiber können auf Projektebene im Dashboard verwaltet werden.
 
+`connector_minimum_energy_price` · `float` · [beta](tip:Beta;;Dieses Feld befindet sich in der Beta-Phase und kann sich ändern, bevor es stabil wird.)
+: Der niedrigste Energiepreis unter den Anschlüssen der Station. Wird nicht zurückgegeben, wenn nicht verfügbar.
+
+`connector_maximum_energy_price` · `float` · [beta](tip:Beta;;Dieses Feld befindet sich in der Beta-Phase und kann sich ändern, bevor es stabil wird.)
+: Der höchste Energiepreis unter den Anschlüssen der Station. Wird nicht zurückgegeben, wenn nicht verfügbar.
+
+`price_vat` · `float` · [beta](tip:Beta;;Dieses Feld befindet sich in der Beta-Phase und kann sich ändern, bevor es stabil wird.)
+: Die auf den Preis angewendete Mehrwertsteuer. Wird nicht zurückgegeben, wenn nicht verfügbar.
+
+`price_valid_until` · `string` · [beta](tip:Beta;;Dieses Feld befindet sich in der Beta-Phase und kann sich ändern, bevor es stabil wird.)
+: Datum und Uhrzeit, bis zu denen der Preis gültig ist. Wird nicht zurückgegeben, wenn nicht verfügbar.
+
+`price_original_currency` · `string` · [beta](tip:Beta;;Dieses Feld befindet sich in der Beta-Phase und kann sich ändern, bevor es stabil wird.)
+: Die Währung, in der der Preis ursprünglich definiert war, vor der Umrechnung in `currency`. Wird nicht zurückgegeben, wenn nicht verfügbar.
+
+`price_conversion_rate` · `float` · [beta](tip:Beta;;Dieses Feld befindet sich in der Beta-Phase und kann sich ändern, bevor es stabil wird.)
+: Der Kurs, mit dem der Preis von seiner ursprünglichen Währung in `currency` umgerechnet wurde. Wird nicht zurückgegeben, wenn nicht verfügbar.
+
 `evse_status_blocked` · `integer`
 : Die Anzahl der EVSEs im Status „blocked“. Wenn ein Filter `connectors[]` angegeben ist, werden nur blockierte EVSEs gezählt, die den ausgewählten Anschlusstypen entsprechen.
 
@@ -63,7 +81,7 @@ Jedes Feld, das in den Stationseigenschaften für MVT- und JSON-Kacheln aufgefü
 Um bestimmte Eigenschaften anzufordern, hängen Sie den Query-Parameter `station_properties[]` an die URL der Kachelanfrage an.
 
 ```bash Tile / Selectors / Example
-https://api.chargetrip.io/v2/station/.../?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
+https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
 ```
 
 ## Verhaltensbeispiele

@@ -43,6 +43,24 @@ Selectors only apply to **station features**, cluster features are unaffected an
 `preferred_operator` · `boolean`
 : Indicates if the operator of a station is a preferred operator. Operator preferences can be managed in [Chargetrip's dashboard](https://account.chargetrip.io/projects).
 
+`connector_minimum_energy_price` · `float` · [beta](tip:Beta;;This field is in beta and may change before it becomes stable.)
+: The lowest energy price among the station's connectors. Not returned if unavailable.
+
+`connector_maximum_energy_price` · `float` · [beta](tip:Beta;;This field is in beta and may change before it becomes stable.)
+: The highest energy price among the station's connectors. Not returned if unavailable.
+
+`price_vat` · `float` · [beta](tip:Beta;;This field is in beta and may change before it becomes stable.)
+: The VAT applied to the price. Not returned if unavailable.
+
+`price_valid_until` · `string` · [beta](tip:Beta;;This field is in beta and may change before it becomes stable.)
+: The date and time until which the price is valid. Not returned if unavailable.
+
+`price_original_currency` · `string` · [beta](tip:Beta;;This field is in beta and may change before it becomes stable.)
+: The currency the price was originally defined in, before conversion to `currency`. Not returned if unavailable.
+
+`price_conversion_rate` · `float` · [beta](tip:Beta;;This field is in beta and may change before it becomes stable.)
+: The rate used to convert the price from its original currency to `currency`. Not returned if unavailable.
+
 `evse_status_blocked` · `integer`
 : Number of EVSEs physically or electronically blocked. If a `connectors[]` filter is provided, it only counts blocked EVSEs that have at least one of selected connector types.
 

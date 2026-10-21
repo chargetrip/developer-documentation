@@ -7,10 +7,10 @@ I prezzi di ricarica possono essere mostrati a due livelli: direttamente su una 
 
 ## Servizio Tile
 
-Il servizio Tile espone `minimum_station_price` e `maximum_station_price` sia come filtro sia come campo di risposta.
+Il servizio Tile supporta i prezzi sia come filtri sia come selettori.
 
-- Come [filtro](/api-reference/tiles/filters), passa `minimum_station_price` e `maximum_station_price`, insieme a `price_currency` per convertire l'intervallo nella valuta corretta, per includere o escludere dinamicamente le stazioni il cui prezzo rientra in quell'intervallo.
-- Come [selettore](/api-reference/tiles/selectors), richiedi `minimum_station_price` e `maximum_station_price` per mostrare l'intervallo di prezzo di ogni stazione direttamente sulla mappa.
+- Come [filtro](/api-reference/tiles/filters), passa `minimum_energy_price` e `maximum_energy_price`, insieme a `currency` per convertire l'intervallo nella valuta corretta, per includere o escludere dinamicamente le stazioni il cui prezzo rientra in quell'intervallo.
+- Come [selettore](/api-reference/tiles/selectors), richiedi `connector_minimum_energy_price`, `connector_maximum_energy_price`, `price_vat`, `price_valid_until`, `price_original_currency` e `price_conversion_rate` per mostrare i dettagli di prezzo. Vengono restituiti nelle proprietà della feature della stazione (`properties.count == 1`). Il prezzo è sempre quello della stazione e puoi usare `price_original_currency` e `price_conversion_rate` per adattarlo alla tua conversione.
 
 ## Tariffe delle stazioni
 

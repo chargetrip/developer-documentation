@@ -4,17 +4,17 @@ title: Einzelne Ladestationen priorisieren
 
 Mit Boosting Groups können Sie die Stationsauswahl anhand Ihrer eigenen Geschäftsregeln gezielt auf bestimmte Ladestandorte lenken.
 
-Während Sie mit [Betreiberpräferenzen](/docs/getting-started/route-operators) ganze Ladenetzwerke priorisieren können, bieten Ihnen Boosting Groups eine detaillierte Steuerung auf Stationsebene. Unabhängig davon, warum Sie bestimmte Stationen bevorzugen – etwa aufgrund günstigerer Preise, geringer Auslastung oder besserer kommerzieller Konditionen –, können Sie diese ganz nach oben in der Stationshierarchie setzen.
+Während Sie mit [Betreiberpräferenzen](/docs/getting-started/route-operators) ganze Ladenetzwerke priorisieren können, bieten Ihnen Boosting Groups eine detaillierte Steuerung auf Stationsebene. Unabhängig davon, warum Sie bestimmte Stationen bevorzugen, etwa aufgrund günstigerer Preise, geringer Auslastung oder besserer kommerzieller Konditionen, können Sie diese ganz nach oben in der Stationshierarchie setzen.
 
 ## So priorisieren Sie Stationen
 
 Kontaktieren Sie zum Einstieg einfach den [Support](https://www.chargetrip.com/contact/support) mit der Liste der Stationen, die Sie priorisieren möchten.
 
-Sobald Ihre Gruppe eingerichtet und für Ihr Projekt aktiviert wurde, wird sie bei allen mit [createRoute](/api-reference/route/mutation-create-route) berechneten Routen automatisch im Hintergrund berücksichtigt – es sind keine Änderungen oder zusätzlichen Parameter in Ihren API-Anfragen erforderlich.
+Sobald Ihre Gruppe eingerichtet und für Ihr Projekt aktiviert wurde, wird sie bei allen mit [createRoute](/api-reference/route/mutation-create-route) berechneten Routen automatisch im Hintergrund berücksichtigt, es sind keine Änderungen oder zusätzlichen Parameter in Ihren API-Anfragen erforderlich.
 
 ## Funktionsweise
 
-Boosting Groups unterstützen ausschließlich eine positive Priorisierung – Sie können damit Stationen hervorheben, jedoch nicht vermeiden oder ausschließen. Werden sie allein verwendet, erhalten hervorgehobene Stationen Vorrang vor allen anderen Stationen entlang der Route.
+Boosting Groups unterstützen ausschließlich eine positive Priorisierung. Sie können damit Stationen hervorheben, jedoch nicht vermeiden oder ausschließen. Werden sie allein verwendet, erhalten hervorgehobene Stationen Vorrang vor allen anderen Stationen entlang der Route.
 
 In Kombination mit Betreiberpräferenzen priorisiert der Routenplaner die Stationen in der folgenden Reihenfolge (von der höchsten zur niedrigsten Priorität):
 
@@ -74,33 +74,6 @@ query GetRoute {
             }
           }
         }
-      }
-    }
-  }
-}
-```
-
-```json Example response
-{
-  "data": {
-    "getRoute": {
-      "status": "done",
-      "route": {
-        "id": "6527e1f1a8b4c2d3e4f5a6b8",
-        "legs": [
-          {
-            "origin": {
-              "properties": {
-                "station_id": "5e5f3e8f8e0c1a0012345678",
-                "station": {
-                  "boosting_group_ids": [
-                    "66c4a912e4b0a123456789ab"
-                  ]
-                }
-              }
-            }
-          }
-        ]
       }
     }
   }

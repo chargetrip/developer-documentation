@@ -34,6 +34,24 @@ Tout champ listé dans les propriétés de station des tuiles MVT et JSON peut �
 `preferred_operator` · `boolean`
 : Indique si l'opérateur d'une station est un opérateur préféré. Les opérateurs préférés peuvent être gérés au niveau du projet dans le Dashboard.
 
+`connector_minimum_energy_price` · `float` · [beta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
+: Le prix de l'énergie le plus bas parmi les connecteurs de la station. Non renvoyé s'il n'est pas disponible.
+
+`connector_maximum_energy_price` · `float` · [beta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
+: Le prix de l'énergie le plus élevé parmi les connecteurs de la station. Non renvoyé s'il n'est pas disponible.
+
+`price_vat` · `float` · [beta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
+: La TVA appliquée au prix. Non renvoyé s'il n'est pas disponible.
+
+`price_valid_until` · `string` · [beta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
+: La date et l'heure jusqu'auxquelles le prix est valable. Non renvoyé s'il n'est pas disponible.
+
+`price_original_currency` · `string` · [beta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
+: La devise dans laquelle le prix était initialement défini, avant conversion en `currency`. Non renvoyé s'il n'est pas disponible.
+
+`price_conversion_rate` · `float` · [beta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
+: Le taux utilisé pour convertir le prix de sa devise d'origine en `currency`. Non renvoyé s'il n'est pas disponible.
+
 `evse_status_blocked` · `integer`
 : Le nombre d'EVSE au statut bloqué. Si un filtre `connectors[]` est fourni, seuls les EVSE bloqués correspondant aux types de connecteurs sélectionnés sont comptés.
 
@@ -63,7 +81,7 @@ Tout champ listé dans les propriétés de station des tuiles MVT et JSON peut �
 Pour demander des propriétés spécifiques, ajoutez le paramètre de requête `station_properties[]` à l'URL de la requête de tuile.
 
 ```bash Tile / Selectors / Example
-https://api.chargetrip.io/v2/station/.../?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
+https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
 ```
 
 ## Exemples de comportement

@@ -4,17 +4,17 @@ title: Prioritize individual charging stations
 
 Boosting Groups allow you to steer station selection toward specific charging locations based on your own business rules.
 
-While [operator preferences](/docs/getting-started/route-operators) allow you to prioritize entire charging networks, Boosting Groups give you granular, station-level control. Whatever your reason for favoring these stations—such as lower pricing, low utilization, or a better commercial deal—you can boost them to the top of the station hierarchy.
+While [operator preferences](/docs/getting-started/route-operators) allow you to prioritize entire charging networks, Boosting Groups give you granular, station-level control. Whatever your reason for favoring these stations, such as lower pricing, low utilization, or a better commercial deal, you can boost them to the top of the station hierarchy.
 
 ## How to boost stations
 
-To get started, simply contact [Support](https://www.chargetrip.com/contact/support) with the list of stations you want to prioritize.
+To get started, simply contact [support](https://www.chargetrip.com/contact/support) with the list of stations you want to prioritize.
 
-Once your group is set up and enabled on your project, all routes calculated with [createRoute](/api-reference/route/mutation-create-route) will automatically use it in the background—no changes or additional parameters are needed in your API requests.
+Once your group is set up and enabled on your project, all routes calculated with [createRoute](/api-reference/route/mutation-create-route) will automatically use it in the background, so no changes or additional parameters are needed in your API requests.
 
 ## How it works
 
-Boosting Groups only support positive prioritization—you can use them to promote stations, but not to avoid or exclude them. When used on their own, boosted stations are prioritized over all other stations along the route.
+Boosting Groups only support positive prioritization. You can use them to promote stations, but not to avoid or exclude them. When used on their own, boosted stations are prioritized over all other stations along the route.
 
 When combined with operator preferences, the route planner prioritizes stations in the following order of priority (from highest to lowest):
 
@@ -74,33 +74,6 @@ query GetRoute {
             }
           }
         }
-      }
-    }
-  }
-}
-```
-
-```json Example response
-{
-  "data": {
-    "getRoute": {
-      "status": "done",
-      "route": {
-        "id": "6527e1f1a8b4c2d3e4f5a6b8",
-        "legs": [
-          {
-            "origin": {
-              "properties": {
-                "station_id": "5e5f3e8f8e0c1a0012345678",
-                "station": {
-                  "boosting_group_ids": [
-                    "66c4a912e4b0a123456789ab"
-                  ]
-                }
-              }
-            }
-          }
-        ]
       }
     }
   }

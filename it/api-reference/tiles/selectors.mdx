@@ -34,6 +34,24 @@ Qualsiasi campo elencato nelle proprietà della stazione per i tile MVT e JSON p
 `preferred_operator` · `boolean`
 : Indica se l'operatore di una stazione è un operatore preferito. Gli operatori preferiti possono essere gestiti a livello di progetto nel Dashboard.
 
+`connector_minimum_energy_price` · `float` · [beta](tip:Beta;;Questo campo è in beta e potrebbe cambiare prima di diventare stabile.)
+: Il prezzo dell'energia più basso tra i connettori della stazione. Non viene restituito se non disponibile.
+
+`connector_maximum_energy_price` · `float` · [beta](tip:Beta;;Questo campo è in beta e potrebbe cambiare prima di diventare stabile.)
+: Il prezzo dell'energia più alto tra i connettori della stazione. Non viene restituito se non disponibile.
+
+`price_vat` · `float` · [beta](tip:Beta;;Questo campo è in beta e potrebbe cambiare prima di diventare stabile.)
+: L'IVA applicata al prezzo. Non viene restituito se non disponibile.
+
+`price_valid_until` · `string` · [beta](tip:Beta;;Questo campo è in beta e potrebbe cambiare prima di diventare stabile.)
+: La data e l'ora fino alle quali il prezzo è valido. Non viene restituito se non disponibile.
+
+`price_original_currency` · `string` · [beta](tip:Beta;;Questo campo è in beta e potrebbe cambiare prima di diventare stabile.)
+: La valuta in cui il prezzo era originariamente definito, prima della conversione in `currency`. Non viene restituito se non disponibile.
+
+`price_conversion_rate` · `float` · [beta](tip:Beta;;Questo campo è in beta e potrebbe cambiare prima di diventare stabile.)
+: Il tasso utilizzato per convertire il prezzo dalla valuta originale a `currency`. Non viene restituito se non disponibile.
+
 `evse_status_blocked` · `integer`
 : Il numero di EVSE con stato bloccato. Se viene fornito un filtro `connectors[]`, conta solo gli EVSE bloccati che corrispondono ai tipi di connettore selezionati.
 
@@ -63,7 +81,7 @@ Qualsiasi campo elencato nelle proprietà della stazione per i tile MVT e JSON p
 Per richiedere proprietà specifiche, aggiungi il parametro di query `station_properties[]` all'URL della richiesta del tile.
 
 ```bash Tile / Selectors / Example
-https://api.chargetrip.io/v2/station/.../?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
+https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
 ```
 
 ## Esempi di comportamento

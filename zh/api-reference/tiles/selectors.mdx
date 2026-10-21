@@ -34,6 +34,24 @@ MVT 和 JSON 瓦片的充电站属性中列出的任何字段，都可以在其�
 `preferred_operator` · `boolean`
 : 表示充电站的运营商是否为首选运营商。可以在 Dashboard 的项目级别管理首选运营商。
 
+`connector_minimum_energy_price` · `float` · [beta](tip:Beta;;此字段处于 Beta 阶段，在稳定之前可能会发生变化。)
+: 充电站各充电接口中的最低能源价格。如果不可用，则不会返回。
+
+`connector_maximum_energy_price` · `float` · [beta](tip:Beta;;此字段处于 Beta 阶段，在稳定之前可能会发生变化。)
+: 充电站各充电接口中的最高能源价格。如果不可用，则不会返回。
+
+`price_vat` · `float` · [beta](tip:Beta;;此字段处于 Beta 阶段，在稳定之前可能会发生变化。)
+: 适用于该价格的增值税。如果不可用，则不会返回。
+
+`price_valid_until` · `string` · [beta](tip:Beta;;此字段处于 Beta 阶段，在稳定之前可能会发生变化。)
+: 价格的有效截止日期和时间。如果不可用，则不会返回。
+
+`price_original_currency` · `string` · [beta](tip:Beta;;此字段处于 Beta 阶段，在稳定之前可能会发生变化。)
+: 价格最初定义时使用的货币，即转换为 `currency` 之前的货币。如果不可用，则不会返回。
+
+`price_conversion_rate` · `float` · [beta](tip:Beta;;此字段处于 Beta 阶段，在稳定之前可能会发生变化。)
+: 将价格从原始货币转换为 `currency` 所使用的汇率。如果不可用，则不会返回。
+
 `evse_status_blocked` · `integer`
 : 处于 blocked 状态的 EVSE 数量。如果提供了 `connectors[]` 筛选，则只统计与所选连接器类型匹配的 blocked EVSE。
 
@@ -63,7 +81,7 @@ MVT 和 JSON 瓦片的充电站属性中列出的任何字段，都可以在其�
 要请求特定属性，请在瓦片请求 URL 后附加 `station_properties[]` 查询参数。
 
 ```bash Tile / Selectors / Example
-https://api.chargetrip.io/v2/station/.../?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
+https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
 ```
 
 ## 行为示例

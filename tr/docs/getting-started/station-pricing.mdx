@@ -7,10 +7,10 @@ description: "Şarj fiyatlarını Tile servisi üzerinden haritada veya bir kone
 
 ## Tile hizmeti
 
-Tile hizmeti, `minimum_station_price` ve `maximum_station_price` değerlerini hem filtre hem de yanıt alanı olarak sunar.
+Tile hizmeti, fiyatları hem filtre hem de seçici olarak destekler.
 
-- Bir [filtre](/api-reference/tiles/filters) olarak, fiyatı bu aralığa düşen istasyonları dinamik olarak dahil etmek veya hariç tutmak için `minimum_station_price` ve `maximum_station_price` değerlerini, aralığı doğru para birimine dönüştürmek üzere `price_currency` ile birlikte gönderin.
-- Bir [seçici](/api-reference/tiles/selectors) olarak, her istasyonun fiyat aralığını doğrudan haritada göstermek için `minimum_station_price` ve `maximum_station_price` değerlerini isteyin.
+- Bir [filtre](/api-reference/tiles/filters) olarak, fiyatı bu aralığa düşen istasyonları dinamik olarak dahil etmek veya hariç tutmak için `minimum_energy_price` ve `maximum_energy_price` değerlerini, aralığı doğru para birimine dönüştürmek üzere `currency` ile birlikte gönderin.
+- Bir [seçici](/api-reference/tiles/selectors) olarak `connector_minimum_energy_price`, `connector_maximum_energy_price`, `price_vat`, `price_valid_until`, `price_original_currency` ve `price_conversion_rate` değerlerini isteyin. Bunlar istasyon feature özelliklerinde (`properties.count == 1`) döndürülür. Fiyat her zaman istasyon fiyatıdır ve kendi dönüşümünüze göre ayarlamak için `price_original_currency` ve `price_conversion_rate` değerlerini kullanabilirsiniz.
 
 ## İstasyon fiyatlandırması
 
