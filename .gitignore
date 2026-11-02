@@ -1,5 +1,7 @@
 .astro/
-.claude/
+.claude/*
+!.claude/skills/
+!.claude/agents/
 .zed/
 .pnpm-store/
 src/.DS_Store
