@@ -1,8 +1,8 @@
 ---
-title: How alternative routes work
+title: How via occupants work
 slug: route-via-properties-vehicle-occupants
 fieldName: RoutePropertiesVehicleInput.occupants
 variant: tooltip
 position: top
 ---
-Set the number of geographical alternative routes to request additional route options. This is a best-effort calculation, the API may return fewer alternatives than requested depending on road topology and charging density.
+Set the number of occupants in the vehicle from this via point onwards. This overrides the origin's value, accounts for the added weight in the vehicle's energy consumption, and persists through all remaining legs unless updated at a later via point.

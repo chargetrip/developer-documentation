@@ -37,6 +37,27 @@ Durak süresi `input.via.properties.station.stop_duration` konumunda yapılandı
 Herhangi bir değer verilmezse, planlayıcı şarj süresini yalnızca rotanın `charge_mode` değerine göre optimize eder.
 
 
+## Mevcut bir rotaya istasyon ekleme
+
+Yaygın bir senaryo, kullanıcının zaten duraklara sahip bir rota için şarj istasyonu seçmesidir, örneğin arayüzünüzde gösterilen alternatif bir istasyon. Kodsuz çözüm, bir istasyonu yeniden sıralama mantığı olmadan otomatik olarak `via` durağı olarak eklemek için bu yaklaşımı kullanır, böylece rota sorunsuz biçimde güncellenir.
+
+`via` dizisinin sırası, durakların ziyaret edildiği sıradır. Sona eklenen bir istasyon, rotanın başına yakın olsa bile en son ziyaret edilir. İstasyonu doğru konuma eklemek için, istasyonun konumunu rotada zaten bulunan yol noktalarıyla karşılaştırın:
+
+1. **Yol noktalarını sırayla toplayın.** Değiştirmek istediğiniz rotanın `request_input` alanından `origin`, mevcut her `via` durağını ve `destination` değerini alın. `request_input` içindeki her yol noktasının `geometry` değeri mevcuttur, yalnızca `station_id` ile oluşturulan duraklar da dahil.
+
+2. **Yol noktalarından geçen bir çizgi çizin.** Yol noktalarını sırayla birleştirerek bir çizgi oluşturun. Bu çizginin iki yol noktası arasındaki her parçası bir segmenttir.
+
+3. **İstasyona en yakın segmenti bulun.** Çizgi üzerinde istasyonun koordinatlarına en yakın noktayı bulmak için bir coğrafi konum kütüphanesi kullanın. Örneğin <a href="https://turfjs.org" target="_blank" rel="noopener noreferrer">turf.js</a>, bu noktayı içeren segmentin indeksini de döndüren `nearestPointOnLine` işlevini sunar. Bu indeks, segmentin başladığı yol noktasının indeksidir.
+
+4. **İstasyonu bu yol noktasından sonra ekleyin.** Yol noktası listesi `origin` ile başlar, bu nedenle bu listedeki bir yol noktasının indeksi, `via` içine eklenecek yeni öğenin hemen ardından yer alması için gereken konuma karşılık gelir. `0` indeksi, istasyonun ilk durak olarak eklendiği anlamına gelir.
+
+5. **Varıştan sonra asla eklemeyin.** En yakın nokta son segmentteyse indeks `destination` değerini gösterebilir. Buraya eklemek istasyonu rotanın sonundan sonraya yerleştirir. Bunun yerine önceki yol noktasını kullanın, böylece istasyon `destination` öncesindeki son durak olarak eklenir.
+
+### Dikkat edilmesi gerekenler
+
+* Çizgi, yol noktalarını düz segmentlerle birleştirir ve rotanın yollarını takip etmez. Alternatif istasyonlar her zaman rotanın çevresindeki 5 ila 10 km'lik bir koridorda yer alır, bu nedenle rotadan fazla sapmazlar ve en yakın segment çoğunlukla doğrudur. Bu koridorun dışındaki istasyonlar için başka çözümler daha uygun olabilir.
+* Rotanın `request_input` alanı esas kaynaktır. Yeni isteği bu alandan oluşturun ve `vehicle` ile `charging` ayarları gibi diğer tüm alanları değiştirmeden bırakın.
+
 ## Örnekler
 
 <details>

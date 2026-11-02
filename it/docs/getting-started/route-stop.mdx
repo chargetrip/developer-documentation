@@ -37,6 +37,27 @@ La durata della tappa viene configurata in `input.via.properties.station.stop_du
 Se non viene fornito alcun valore, il pianificatore ottimizza la durata della ricarica basandosi esclusivamente sul `charge_mode` del percorso.
 
 
+## Aggiungere una stazione a un percorso esistente
+
+Uno scenario comune: un utente sceglie una stazione di ricarica per un percorso che ha già delle tappe, ad esempio una stazione alternativa mostrata nella tua UI. La soluzione no-code usa questo approccio per aggiungere automaticamente una stazione come tappa `via`, senza logica di riordino, in modo che il percorso si aggiorni senza interruzioni.
+
+L'ordine dell'array `via` è l'ordine in cui le tappe vengono raggiunte. Una stazione aggiunta in fondo viene raggiunta per ultima, anche se si trova vicino all'inizio del percorso. Per inserirla nella posizione giusta, confronta la posizione della stazione con i punti di passaggio già presenti sul percorso:
+
+1. **Raccogli i punti di passaggio in ordine.** Prendi `origin`, ogni tappa `via` esistente e `destination` dal `request_input` del percorso che vuoi modificare. Ogni punto di passaggio nel `request_input` ha la sua `geometry` disponibile, comprese le tappe create solo con una `station_id`.
+
+2. **Traccia una linea che attraversa i punti di passaggio.** Collega i punti di passaggio in ordine per formare una linea. Ogni parte di questa linea tra due punti di passaggio è un segmento.
+
+3. **Trova il segmento più vicino alla stazione.** Usa una libreria geospaziale per trovare il punto della linea più vicino alle coordinate della stazione. <a href="https://turfjs.org" target="_blank" rel="noopener noreferrer">turf.js</a> offre ad esempio `nearestPointOnLine`, che restituisce anche l'indice del segmento che contiene questo punto. Quell'indice è l'indice del punto di passaggio da cui inizia il segmento.
+
+4. **Inserisci la stazione dopo quel punto di passaggio.** L'elenco dei punti di passaggio inizia con `origin`, quindi l'indice di un punto di passaggio in questo elenco corrisponde alla posizione in cui inserire un nuovo elemento in `via` per ritrovarlo subito dopo. Un indice `0` significa che la stazione viene inserita come prima tappa.
+
+5. **Non inserire mai dopo la destinazione.** Quando il punto più vicino si trova sull'ultimo segmento, l'indice può puntare a `destination`. Inserirla lì collocherebbe la stazione dopo la fine del percorso. Usa invece il punto di passaggio precedente, così la stazione viene inserita come ultima tappa prima di `destination`.
+
+### Da tenere a mente
+
+* La linea collega i punti di passaggio con segmenti rettilinei e non segue le strade del percorso. Le stazioni alternative si trovano sempre in un corridoio di 5-10 km attorno al percorso, quindi non se ne discostano mai di molto e il segmento più vicino è per lo più accurato. Per le stazioni fuori da questo corridoio potrebbero essere più adatte altre soluzioni.
+* Il `request_input` del percorso è la fonte di riferimento. Costruisci la nuova richiesta a partire da esso e lascia invariati tutti gli altri campi, come `vehicle` e le impostazioni `charging`.
+
 ## Esempi
 
 <details>

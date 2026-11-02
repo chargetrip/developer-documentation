@@ -37,6 +37,27 @@ La durée d'arrêt est configurée dans `input.via.properties.station.stop_durat
 Si aucune valeur n'est fournie, le planificateur optimise la durée de recharge uniquement en fonction du `charge_mode` de l'itinéraire.
 
 
+## Ajouter une station à un itinéraire existant
+
+Un scénario courant : un utilisateur choisit une station de recharge pour un itinéraire qui comporte déjà des arrêts, par exemple une station alternative affichée dans votre interface. La solution no-code utilise cette approche pour ajouter automatiquement une station comme arrêt `via`, sans logique de réorganisation, afin que l'itinéraire se mette à jour de façon fluide.
+
+L'ordre du tableau `via` correspond à l'ordre dans lequel les arrêts sont parcourus. Une station ajoutée à la fin est visitée en dernier, même si elle se trouve près du début de l'itinéraire. Pour l'insérer à la bonne position, comparez l'emplacement de la station avec les points de passage déjà présents sur l'itinéraire :
+
+1. **Rassemblez les points de passage dans l'ordre.** Prenez `origin`, chaque arrêt `via` existant et `destination` dans le `request_input` de l'itinéraire à modifier. Chaque point de passage du `request_input` dispose de sa `geometry`, y compris les arrêts créés avec une simple `station_id`.
+
+2. **Tracez une ligne passant par les points de passage.** Reliez les points de passage dans l'ordre pour former une ligne. Chaque partie de cette ligne entre deux points de passage est un segment.
+
+3. **Trouvez le segment le plus proche de la station.** Utilisez une bibliothèque géospatiale pour trouver le point de la ligne le plus proche des coordonnées de la station. <a href="https://turfjs.org" target="_blank" rel="noopener noreferrer">turf.js</a> propose par exemple `nearestPointOnLine`, qui renvoie aussi l'index du segment contenant ce point. Cet index est celui du point de passage où commence le segment.
+
+4. **Insérez la station après ce point de passage.** La liste des points de passage commence par `origin` : l'index d'un point de passage dans cette liste correspond donc à la position où insérer un nouvel élément dans `via` pour qu'il se place juste après. Un index de `0` signifie que la station est insérée comme premier arrêt.
+
+5. **N'insérez jamais après la destination.** Lorsque le point le plus proche se trouve sur le dernier segment, l'index peut pointer vers `destination`. L'insérer ainsi placerait la station après la fin de l'itinéraire. Utilisez plutôt le point de passage précédent, afin que la station soit insérée comme dernier arrêt avant `destination`.
+
+### À garder à l'esprit
+
+* La ligne relie les points de passage par des segments droits et ne suit pas les routes de l'itinéraire. Les stations alternatives se trouvent toujours dans un couloir de 5 à 10 km autour de l'itinéraire : elles ne s'en écartent donc jamais beaucoup et le segment le plus proche est généralement exact. Pour les stations situées hors de ce couloir, d'autres solutions peuvent être plus adaptées.
+* Le `request_input` de l'itinéraire fait foi. Construisez la nouvelle requête à partir de lui et laissez tous les autres champs, comme `vehicle` et les paramètres `charging`, inchangés.
+
 ## Exemples
 
 <details>

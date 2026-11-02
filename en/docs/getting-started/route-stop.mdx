@@ -37,6 +37,27 @@ The stop duration is configured at `input.via.properties.station.stop_duration`.
 If no value is provided, the planner optimizes charging duration purely based on the route's `charge_mode`.
 
 
+## Add a station to an existing route
+
+A common scenario is a user picking a charging station for a route that already has stops, for example an alternative station that is shown in your UI. The no-code solution uses this approach to add a station as a `via` stop automatically, without any re-ordering logic, so the route updates seamlessly.
+
+The order of the `via` array is the order in which the stops are visited. A station that is appended at the end is visited last, even if it is located near the start of the route. To insert it at the right position, compare the location of the station with the waypoints that are already on the route:
+
+1. **Collect the waypoints in order.** Take the `origin`, every existing `via` stop and the `destination` from the `request_input` of the route you want to change. Every waypoint on the `request_input` has its `geometry` available, including stops that were created with only a `station_id`.
+
+2. **Draw a line through the waypoints.** Connect the waypoints in order to form a line. Each part of this line between two waypoints is a segment.
+
+3. **Find the segment closest to the station.** Use a geospatial library to find the point on the line that is nearest to the coordinates of the station. For example, <a href="https://turfjs.org" target="_blank" rel="noopener noreferrer">turf.js</a> offers `nearestPointOnLine`, which also returns the index of the segment that contains this point. That index is the index of the waypoint the segment starts at.
+
+4. **Insert the station after that waypoint.** The waypoint list starts with the `origin`, so the index of a waypoint in this list matches the position where a new item is inserted into `via` to end up right after it. An index of `0` means the station is inserted as the first stop.
+
+5. **Never insert after the destination.** When the nearest point is on the last segment, the index can point at the `destination`. Inserting there would place the station after the end of the route, so use the previous waypoint instead. This way the station is inserted as the last stop before the `destination`.
+
+### Things to keep in mind
+
+* The line connects the waypoints with straight segments and does not follow the roads of the route. Alternative stations are always within a corridor of 5 to 10 km around the route, so they never deviate much from it and the closest segment is mostly accurate. For stations outside this corridor, other solutions might be more suitable.
+* The `request_input` of the route is the source of truth. Build the new request from it and keep all other fields, such as the `vehicle` and the `charging` settings, unchanged.
+
 ## Examples
 
 <details>

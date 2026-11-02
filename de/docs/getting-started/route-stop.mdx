@@ -37,6 +37,27 @@ Die Stoppdauer wird unter `input.via.properties.station.stop_duration` konfiguri
 Wird kein Wert angegeben, optimiert der Planer die Ladedauer allein anhand des `charge_mode` der Route.
 
 
+## Eine Station zu einer bestehenden Route hinzufügen
+
+Ein häufiges Szenario: Ein Nutzer wählt eine Ladestation für eine Route, die bereits Zwischenstopps enthält, zum Beispiel eine alternative Station, die in Ihrer UI angezeigt wird. Die No-Code-Lösung nutzt diesen Ansatz, um eine Station automatisch als `via`-Stopp hinzuzufügen, ganz ohne Logik zur Neuordnung, sodass sich die Route nahtlos aktualisiert.
+
+Die Reihenfolge des `via`-Arrays entspricht der Reihenfolge, in der die Stopps angefahren werden. Eine Station, die am Ende angehängt wird, wird zuletzt angefahren, auch wenn sie nahe am Start der Route liegt. Um sie an der richtigen Position einzufügen, vergleichen Sie den Standort der Station mit den Wegpunkten, die bereits auf der Route liegen:
+
+1. **Wegpunkte der Reihe nach sammeln.** Nehmen Sie `origin`, jeden vorhandenen `via`-Stopp und `destination` aus dem `request_input` der Route, die Sie ändern möchten. Jeder Wegpunkt im `request_input` hat seine `geometry` verfügbar, auch Stopps, die nur mit einer `station_id` erstellt wurden.
+
+2. **Eine Linie durch die Wegpunkte ziehen.** Verbinden Sie die Wegpunkte der Reihe nach zu einer Linie. Jeder Abschnitt dieser Linie zwischen zwei Wegpunkten ist ein Segment.
+
+3. **Das Segment finden, das der Station am nächsten liegt.** Verwenden Sie eine Geodaten-Bibliothek, um den Punkt auf der Linie zu finden, der den Koordinaten der Station am nächsten liegt. <a href="https://turfjs.org" target="_blank" rel="noopener noreferrer">turf.js</a> bietet zum Beispiel `nearestPointOnLine`, das auch den Index des Segments zurückgibt, das diesen Punkt enthält. Dieser Index ist der Index des Wegpunkts, an dem das Segment beginnt.
+
+4. **Die Station nach diesem Wegpunkt einfügen.** Die Liste der Wegpunkte beginnt mit `origin`. Der Index eines Wegpunkts in dieser Liste entspricht daher der Position, an der ein neues Element in `via` eingefügt wird, damit es direkt danach steht. Ein Index von `0` bedeutet, dass die Station als erster Stopp eingefügt wird.
+
+5. **Niemals nach dem Ziel einfügen.** Liegt der nächstgelegene Punkt auf dem letzten Segment, kann der Index auf `destination` zeigen. Ein Einfügen an dieser Stelle würde die Station hinter das Ende der Route setzen. Verwenden Sie stattdessen den vorherigen Wegpunkt, damit die Station als letzter Stopp vor `destination` eingefügt wird.
+
+### Das sollten Sie beachten
+
+* Die Linie verbindet die Wegpunkte mit geraden Segmenten und folgt nicht den Straßen der Route. Alternative Stationen liegen immer in einem Korridor von 5 bis 10 km um die Route, weichen also nie stark von ihr ab, und das nächstgelegene Segment ist meist treffsicher. Für Stationen außerhalb dieses Korridors sind unter Umständen andere Lösungen besser geeignet.
+* Der `request_input` der Route ist die maßgebliche Quelle. Erstellen Sie die neue Anfrage daraus und lassen Sie alle anderen Felder, etwa `vehicle` und die `charging`-Einstellungen, unverändert.
+
 ## Beispiele
 
 <details>
