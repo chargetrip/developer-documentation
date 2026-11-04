@@ -1,0 +1,16 @@
+---
+title: "Référence de l'API legacy"
+description: "Parcourez les queries, mutations et subscriptions dépréciées et trouvez l'opération qui remplace chacune d'elles."
+---
+
+Ces opérations sont dépréciées. Une opération dépréciée continue de fonctionner normalement pendant au moins 12 mois. Passé ce délai, elle est supprimée et les requêtes qui l'utilisent retournent des erreurs GraphQL. Consultez les [dépréciations](/deprecations) pour le calendrier.
+
+Les nouvelles intégrations doivent utiliser les opérations de remplacement ci-dessous.
+
+| Opération legacy | Remplacement |
+| --- | --- |
+| [`newRoute` mutation](/api-reference/legacy/route/mutation-new-route) | [`createRoute` mutation](/api-reference/route/mutation-create-route) |
+| [`route` query](/api-reference/legacy/route/query-route) | [`getRoute` query](/api-reference/route/query-get-route) |
+| [`routePath` query](/api-reference/legacy/route/query-route-path) | champ `RouteDetails.path_plot` |
+| [`routeEmissions` query](/api-reference/legacy/route/query-route-emissions) | [`getRouteEmissions` query](/api-reference/emissions/query-emissions) |
+| [`routeUpdatedById` subscription](/api-reference/legacy/route/subscription-route-updated-by-id) | [`route` subscription](/api-reference/route/subscription-route) |

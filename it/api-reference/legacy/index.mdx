@@ -1,0 +1,16 @@
+---
+title: API Reference legacy
+description: "Esplora le query, le mutation e le subscription deprecate e trova l'operazione che sostituisce ciascuna."
+---
+
+Queste operazioni sono deprecate. Un'operazione deprecata continua a funzionare normalmente per almeno 12 mesi. Dopo questo periodo viene rimossa e le richieste che la utilizzano restituiscono errori GraphQL. Consulta le [deprecazioni](/deprecations) per le scadenze.
+
+Le nuove integrazioni dovrebbero usare le operazioni sostitutive indicate di seguito.
+
+| Operazione legacy | Sostituzione |
+| --- | --- |
+| [mutation `newRoute`](/api-reference/legacy/route/mutation-new-route) | [mutation `createRoute`](/api-reference/route/mutation-create-route) |
+| [query `route`](/api-reference/legacy/route/query-route) | [query `getRoute`](/api-reference/route/query-get-route) |
+| [query `routePath`](/api-reference/legacy/route/query-route-path) | campo `RouteDetails.path_plot` |
+| [query `routeEmissions`](/api-reference/legacy/route/query-route-emissions) | [query `getRouteEmissions`](/api-reference/emissions/query-emissions) |
+| [subscription `routeUpdatedById`](/api-reference/legacy/route/subscription-route-updated-by-id) | [subscription `route`](/api-reference/route/subscription-route) |

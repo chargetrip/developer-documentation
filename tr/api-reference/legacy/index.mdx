@@ -1,0 +1,16 @@
+---
+title: Eski API referansı
+description: "Kullanımdan kaldırılan sorguları, mutasyonları ve abonelikleri inceleyin ve her birinin yerini alan işlemi bulun."
+---
+
+Bu işlemler kullanımdan kaldırılmıştır. Kullanımdan kaldırılan bir işlem en az 12 ay boyunca normal şekilde çalışmaya devam eder. Bu sürenin ardından kaldırılır ve onu kullanan istekler GraphQL hataları döndürür. Takvim için [kullanımdan kaldırılanlar](/deprecations) sayfasına bakın.
+
+Yeni entegrasyonlar aşağıdaki yerine geçen işlemleri kullanmalıdır.
+
+| Eski işlem | Yerine geçen işlem |
+| --- | --- |
+| [`newRoute` mutasyonu](/api-reference/legacy/route/mutation-new-route) | [`createRoute` mutasyonu](/api-reference/route/mutation-create-route) |
+| [`route` sorgusu](/api-reference/legacy/route/query-route) | [`getRoute` sorgusu](/api-reference/route/query-get-route) |
+| [`routePath` sorgusu](/api-reference/legacy/route/query-route-path) | `RouteDetails.path_plot` alanı |
+| [`routeEmissions` sorgusu](/api-reference/legacy/route/query-route-emissions) | [`getRouteEmissions` sorgusu](/api-reference/emissions/query-emissions) |
+| [`routeUpdatedById` aboneliği](/api-reference/legacy/route/subscription-route-updated-by-id) | [`route` aboneliği](/api-reference/route/subscription-route) |
