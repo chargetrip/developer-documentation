@@ -25,6 +25,9 @@ MVT ve JSON karoları için istasyon özelliklerinde listelenen herhangi bir ala
 `lat` · `float`
 : İstasyonun enlemi.
 
+`operator_id` · `string`
+: İstasyonun operatörünün benzersiz Chargetrip kimliği. Operatör bilinmiyorsa döndürülmez.
+
 `station_maximum_power` · `integer`
 : İstasyonda sunulan maksimum şarj gücü (kW cinsinden). Bu değer statiktir ve konnektör filtrelerinden bağımsız olarak her zaman istasyonun en yüksek kapasitesini yansıtır.
 
@@ -35,45 +38,45 @@ MVT ve JSON karoları için istasyon özelliklerinde listelenen herhangi bir ala
 : Bir istasyonun operatörünün tercih edilen operatör olup olmadığını belirtir. Tercih edilen operatörler Dashboard'da proje düzeyinde yönetilebilir.
 
 `connector_minimum_energy_price` · `float` · [beta](tip:Beta;;Bu alan beta aşamasındadır ve kararlı hale gelmeden önce değişebilir.)
-: İstasyonun konektörleri arasındaki en düşük enerji fiyatı. Mevcut değilse döndürülmez.
+: İstasyonun konektörleri arasındaki en düşük enerji fiyatı. Mevcut değilse döndürülmez. Yalnızca Eco-Movement istasyon veritabanı kullanılıyorsa geçerlidir; aksi halde yok sayılır.
 
 `connector_maximum_energy_price` · `float` · [beta](tip:Beta;;Bu alan beta aşamasındadır ve kararlı hale gelmeden önce değişebilir.)
-: İstasyonun konektörleri arasındaki en yüksek enerji fiyatı. Mevcut değilse döndürülmez.
+: İstasyonun konektörleri arasındaki en yüksek enerji fiyatı. Mevcut değilse döndürülmez. Yalnızca Eco-Movement istasyon veritabanı kullanılıyorsa geçerlidir; aksi halde yok sayılır.
 
 `price_vat` · `float` · [beta](tip:Beta;;Bu alan beta aşamasındadır ve kararlı hale gelmeden önce değişebilir.)
-: Fiyata uygulanan KDV. Mevcut değilse döndürülmez.
+: Fiyata uygulanan KDV. Mevcut değilse döndürülmez. Yalnızca Eco-Movement istasyon veritabanı kullanılıyorsa geçerlidir; aksi halde yok sayılır.
 
 `price_valid_until` · `string` · [beta](tip:Beta;;Bu alan beta aşamasındadır ve kararlı hale gelmeden önce değişebilir.)
-: Fiyatın geçerli olduğu son tarih ve saat. Mevcut değilse döndürülmez.
+: Fiyatın geçerli olduğu son tarih ve saat. Mevcut değilse döndürülmez. Yalnızca Eco-Movement istasyon veritabanı kullanılıyorsa geçerlidir; aksi halde yok sayılır.
 
 `price_original_currency` · `string` · [beta](tip:Beta;;Bu alan beta aşamasındadır ve kararlı hale gelmeden önce değişebilir.)
-: Fiyatın `currency` birimine dönüştürülmeden önce başlangıçta tanımlandığı para birimi. Mevcut değilse döndürülmez.
+: Fiyatın `currency` birimine dönüştürülmeden önce başlangıçta tanımlandığı para birimi. Mevcut değilse döndürülmez. Yalnızca Eco-Movement istasyon veritabanı kullanılıyorsa geçerlidir; aksi halde yok sayılır.
 
 `price_conversion_rate` · `float` · [beta](tip:Beta;;Bu alan beta aşamasındadır ve kararlı hale gelmeden önce değişebilir.)
-: Fiyatın özgün para biriminden `currency` birimine dönüştürülmesinde kullanılan kur. Mevcut değilse döndürülmez.
+: Fiyatın özgün para biriminden `currency` birimine dönüştürülmesinde kullanılan kur. Mevcut değilse döndürülmez. Yalnızca Eco-Movement istasyon veritabanı kullanılıyorsa geçerlidir; aksi halde yok sayılır.
 
-`evse_status_blocked` · `integer`
+`evses_blocked` · `integer`
 : Engellenmiş durumdaki EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türleriyle eşleşen engellenmiş EVSE'leri sayar.
 
-`evse_status_planned` · `integer`
+`evses_planned` · `integer`
 : Planlanmış durumdaki EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türlerinden en az birine sahip planlanmış EVSE'leri sayar.
 
-`evse_status_available` · `integer`
+`evses_available` · `integer`
 : Müsait durumdaki EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türlerinden en az birine sahip müsait EVSE'leri sayar.
 
-`evse_status_charging` · `integer`
+`evses_charging` · `integer`
 : Şarj olma durumundaki EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türlerinden en az birine sahip şarj olan EVSE'leri sayar.
 
-`evse_status_unknown` · `integer`
+`evses_unknown` · `integer`
 : Bilinmeyen durumdaki EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türlerinden en az birine sahip durumu bilinmeyen EVSE'leri sayar.
 
-`evse_status_reserved` · `integer`
+`evses_reserved` · `integer`
 : Rezerve edilmiş durumdaki EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türlerinden en az birine sahip rezerve edilmiş EVSE'leri sayar.
 
-`evse_status_out_of_order` · `integer`
+`evses_out_of_order` · `integer`
 : out_of_order durumundaki EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türlerinden en az birine sahip arızalı EVSE'leri sayar.
 
-`evse_status_inoperative` · `integer`
+`evses_inoperative` · `integer`
 : inoperative durumundaki EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türlerinden en az birine sahip çalışmayan EVSE'leri sayar.
 
 ## Uygulama

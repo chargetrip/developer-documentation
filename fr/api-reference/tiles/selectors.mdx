@@ -25,6 +25,9 @@ Tout champ listé dans les propriétés de station des tuiles MVT et JSON peut �
 `lat` · `float`
 : La latitude de la station.
 
+`operator_id` · `string`
+: L'identifiant Chargetrip unique de l'opérateur de la station. Non renvoyé si l'opérateur est inconnu.
+
 `station_maximum_power` · `integer`
 : La puissance de charge maximale de la station (en kW) disponible à la station. Cette valeur est statique et reflète toujours la capacité maximale de la station, quels que soient les filtres de connecteurs.
 
@@ -35,45 +38,45 @@ Tout champ listé dans les propriétés de station des tuiles MVT et JSON peut �
 : Indique si l'opérateur d'une station est un opérateur préféré. Les opérateurs préférés peuvent être gérés au niveau du projet dans le Dashboard.
 
 `connector_minimum_energy_price` · `float` · [beta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
-: Le prix de l'énergie le plus bas parmi les connecteurs de la station. Non renvoyé s'il n'est pas disponible.
+: Le prix de l'énergie le plus bas parmi les connecteurs de la station. Non renvoyé s'il n'est pas disponible. Applicable uniquement si la base de données de stations Eco-Movement est utilisée ; sinon, il est ignoré.
 
 `connector_maximum_energy_price` · `float` · [beta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
-: Le prix de l'énergie le plus élevé parmi les connecteurs de la station. Non renvoyé s'il n'est pas disponible.
+: Le prix de l'énergie le plus élevé parmi les connecteurs de la station. Non renvoyé s'il n'est pas disponible. Applicable uniquement si la base de données de stations Eco-Movement est utilisée ; sinon, il est ignoré.
 
 `price_vat` · `float` · [beta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
-: La TVA appliquée au prix. Non renvoyé s'il n'est pas disponible.
+: La TVA appliquée au prix. Non renvoyé s'il n'est pas disponible. Applicable uniquement si la base de données de stations Eco-Movement est utilisée ; sinon, il est ignoré.
 
 `price_valid_until` · `string` · [beta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
-: La date et l'heure jusqu'auxquelles le prix est valable. Non renvoyé s'il n'est pas disponible.
+: La date et l'heure jusqu'auxquelles le prix est valable. Non renvoyé s'il n'est pas disponible. Applicable uniquement si la base de données de stations Eco-Movement est utilisée ; sinon, il est ignoré.
 
 `price_original_currency` · `string` · [beta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
-: La devise dans laquelle le prix était initialement défini, avant conversion en `currency`. Non renvoyé s'il n'est pas disponible.
+: La devise dans laquelle le prix était initialement défini, avant conversion en `currency`. Non renvoyé s'il n'est pas disponible. Applicable uniquement si la base de données de stations Eco-Movement est utilisée ; sinon, il est ignoré.
 
 `price_conversion_rate` · `float` · [beta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
-: Le taux utilisé pour convertir le prix de sa devise d'origine en `currency`. Non renvoyé s'il n'est pas disponible.
+: Le taux utilisé pour convertir le prix de sa devise d'origine en `currency`. Non renvoyé s'il n'est pas disponible. Applicable uniquement si la base de données de stations Eco-Movement est utilisée ; sinon, il est ignoré.
 
-`evse_status_blocked` · `integer`
+`evses_blocked` · `integer`
 : Le nombre d'EVSE au statut bloqué. Si un filtre `connectors[]` est fourni, seuls les EVSE bloqués correspondant aux types de connecteurs sélectionnés sont comptés.
 
-`evse_status_planned` · `integer`
+`evses_planned` · `integer`
 : Nombre d'EVSE au statut planifié. Si un filtre `connectors[]` est fourni, seuls les EVSE planifiés ayant au moins un des types de connecteurs sélectionnés sont comptés.
 
-`evse_status_available` · `integer`
+`evses_available` · `integer`
 : Nombre d'EVSE au statut disponible. Si un filtre `connectors[]` est fourni, seuls les EVSE disponibles ayant au moins un des types de connecteurs sélectionnés sont comptés.
 
-`evse_status_charging` · `integer`
+`evses_charging` · `integer`
 : Nombre d'EVSE au statut en charge. Si un filtre `connectors[]` est fourni, seuls les EVSE en charge ayant au moins un des types de connecteurs sélectionnés sont comptés.
 
-`evse_status_unknown` · `integer`
+`evses_unknown` · `integer`
 : Nombre d'EVSE au statut inconnu. Si un filtre `connectors[]` est fourni, seuls les EVSE inconnus ayant au moins un des types de connecteurs sélectionnés sont comptés.
 
-`evse_status_reserved` · `integer`
+`evses_reserved` · `integer`
 : Nombre d'EVSE au statut réservé. Si un filtre `connectors[]` est fourni, seuls les EVSE réservés ayant au moins un des types de connecteurs sélectionnés sont comptés.
 
-`evse_status_out_of_order` · `integer`
+`evses_out_of_order` · `integer`
 : Nombre d'EVSE au statut out_of_order. Si un filtre `connectors[]` est fourni, seuls les EVSE hors service ayant au moins un des types de connecteurs sélectionnés sont comptés.
 
-`evse_status_inoperative` · `integer`
+`evses_inoperative` · `integer`
 : Nombre d'EVSE au statut inoperative. Si un filtre `connectors[]` est fourni, seuls les EVSE inopérants ayant au moins un des types de connecteurs sélectionnés sont comptés.
 
 ## Implémentation

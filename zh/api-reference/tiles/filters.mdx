@@ -47,11 +47,11 @@ https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?{filter_1}&{filter_2}&{
 : 筛选，仅包含由特定运营商 ID 运营的充电站。接受运营商 ID 数组。
 
 `truck_dedicated` · `boolean` · [显示示例 URL](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?truck_dedicated=true)
-: 筛选，仅包含专用于或主要用于货车充电的充电站。**仅在使用 Eco-Movement 充电站数据库时适用；否则将被忽略。**
+: 筛选，仅包含专用于或主要用于货车充电的充电站。仅在使用 Eco-Movement 充电站数据库时适用；否则将被忽略。
 : `true`, `false`
 
 `vehicle_types` · `enum` · [显示示例 URL](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?vehicle_types[]=VAN&vehicle_types[]=RIGID)
-: 筛选，仅包含支持指定 OCPI 车辆类型的充电站。默认包含所有车辆类型。**仅在使用 Eco-Movement 充电站数据库时适用；否则将被忽略。**
+: 筛选，仅包含支持指定 OCPI 车辆类型的充电站。默认包含所有车辆类型。仅在使用 Eco-Movement 充电站数据库时适用；否则将被忽略。
 : `VAN`, `RIGID`, `TRUCK_WITH_TRAILER`
 
 ### EVSE 级别
@@ -65,10 +65,10 @@ https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?{filter_1}&{filter_2}&{
 : 筛选，仅包含所有充电接口的最大充电功率均不超过指定功率值（单位：kW）的充电站。接受大于 0 的整数。
 
 `minimum_energy_price` · `number` · [beta](tip:Beta;;此筛选条件处于 Beta 阶段，在稳定之前可能会发生变化。) · [显示示例 URL](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?minimum_energy_price=0.2&currency=EUR)
-: 筛选，仅包含其兼容充电接口中至少有一个有效价格大于或等于指定值的充电站，并以 `currency` 设置的货币进行评估。请参阅[充电站定价](/docs/getting-started/station-pricing)。
+: 筛选，仅包含其兼容充电接口中至少有一个有效价格大于或等于指定值的充电站，并以 `currency` 设置的货币进行评估。请参阅[充电站定价](/docs/getting-started/station-pricing)。仅在使用 Eco-Movement 充电站数据库时适用；否则将被忽略。
 
 `maximum_energy_price` · `number` · [beta](tip:Beta;;此筛选条件处于 Beta 阶段，在稳定之前可能会发生变化。) · [显示示例 URL](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?maximum_energy_price=0.5&currency=EUR)
-: 筛选，仅包含其兼容充电接口中至少有一个有效价格小于或等于指定值的充电站，并以 `currency` 设置的货币进行评估。请参阅[充电站定价](/docs/getting-started/station-pricing)。
+: 筛选，仅包含其兼容充电接口中至少有一个有效价格小于或等于指定值的充电站，并以 `currency` 设置的货币进行评估。请参阅[充电站定价](/docs/getting-started/station-pricing)。仅在使用 Eco-Movement 充电站数据库时适用；否则将被忽略。
 
 `connectors` · `enum` · [显示示例 URL](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=CHADEMO)
 : 筛选，仅包含具有指定连接器类型 EVSE 的充电站。接受包含任意 OCPI 2.2.1 连接器值的字符串数组。
@@ -137,7 +137,7 @@ https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?minimum_power=120&evse_
 ### 数据转换示例
 
 应用 EVSE 级别筛选时，某些输出会被重新计算。这些字段会被“转换”，以忽略与用户搜索条件不匹配的连接器。
-这些“动态”输出字段是 `connector_maximum_power`, `connector_minimum_energy_price`, `connector_maximum_energy_price` 和 `evse_status_*`。
+这些“动态”输出字段是 `connector_maximum_power`, `connector_minimum_energy_price`, `connector_maximum_energy_price` 和 `evses_*`。
 
 <details>
   <summary>相同的筛选类型，不同的值</summary>
@@ -155,9 +155,9 @@ https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=IEC_62196_
   // Dynamic: Adjusted to 100 kW (Max power of the CHADEMO connector)
   "connector_maximum_power": 100,
   // Dynamic: Counts the 1 CHADEMO chargers
-  "evse_status_out_of_order": 0,
+  "evses_out_of_order": 0,
   // Dynamic: 0, because the charging Type 1 plugs are filtered out
-  "evse_status_available": 1
+  "evses_available": 1
 }
 ```
 </details>
@@ -184,7 +184,7 @@ https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?maximum_energy_price=0.
 ```json Response
 {
   "connector_maximum_power": 50,
-  "evse_status_available": 2,
+  "evses_available": 2,
   // Dynamic: lowest price of the matching connectors, not of the entire station
   "connector_minimum_energy_price": 0.25,
   // Dynamic: highest price of the matching connectors, not of the entire station
@@ -203,7 +203,7 @@ https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=CCS
 ```json Response
 {
   "connector_maximum_power": 150,
-  "evse_status_available": 2,
+  "evses_available": 2,
   // Dynamic: lowest price of the CCS connectors
   "connector_minimum_energy_price": 0.35,
   // Dynamic: highest price of the CCS connectors

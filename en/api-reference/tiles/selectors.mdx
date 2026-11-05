@@ -34,6 +34,9 @@ Selectors only apply to **station features**, cluster features are unaffected an
 `lat` · `float`
 : The latitude of the station. Only applicable to [MVT Tiles](/api-reference/tiles/mvt).
 
+`operator_id` · `string`
+: The unique Chargetrip identifier of the operator of the station. Not returned if the operator is unknown.
+
 `station_maximum_power` · `integer`
 : The station’s maximum charging power (in kW) available at the station. This value is static and always reflects the station's highest capability, regardless of connector filters.
 
@@ -44,45 +47,45 @@ Selectors only apply to **station features**, cluster features are unaffected an
 : Indicates if the operator of a station is a preferred operator. Operator preferences can be managed in [Chargetrip's dashboard](https://account.chargetrip.io/projects).
 
 `connector_minimum_energy_price` · `float` · [beta](tip:Beta;;This field is in beta and may change before it becomes stable.)
-: The lowest energy price among the station's connectors. Not returned if unavailable.
+: The lowest energy price among the station's connectors. Not returned if unavailable. Only applicable if the Eco-Movement station database is used; otherwise, it is ignored.
 
 `connector_maximum_energy_price` · `float` · [beta](tip:Beta;;This field is in beta and may change before it becomes stable.)
-: The highest energy price among the station's connectors. Not returned if unavailable.
+: The highest energy price among the station's connectors. Not returned if unavailable. Only applicable if the Eco-Movement station database is used; otherwise, it is ignored.
 
 `price_vat` · `float` · [beta](tip:Beta;;This field is in beta and may change before it becomes stable.)
-: The VAT applied to the price. Not returned if unavailable.
+: The VAT applied to the price. Not returned if unavailable. Only applicable if the Eco-Movement station database is used; otherwise, it is ignored.
 
 `price_valid_until` · `string` · [beta](tip:Beta;;This field is in beta and may change before it becomes stable.)
-: The date and time until which the price is valid. Not returned if unavailable.
+: The date and time until which the price is valid. Not returned if unavailable. Only applicable if the Eco-Movement station database is used; otherwise, it is ignored.
 
 `price_original_currency` · `string` · [beta](tip:Beta;;This field is in beta and may change before it becomes stable.)
-: The currency the price was originally defined in, before conversion to `currency`. Not returned if unavailable.
+: The currency the price was originally defined in, before conversion to `currency`. Not returned if unavailable. Only applicable if the Eco-Movement station database is used; otherwise, it is ignored.
 
 `price_conversion_rate` · `float` · [beta](tip:Beta;;This field is in beta and may change before it becomes stable.)
-: The rate used to convert the price from its original currency to `currency`. Not returned if unavailable.
+: The rate used to convert the price from its original currency to `currency`. Not returned if unavailable. Only applicable if the Eco-Movement station database is used; otherwise, it is ignored.
 
-`evse_status_blocked` · `integer`
+`evses_blocked` · `integer`
 : Number of EVSEs physically or electronically blocked. If a `connectors[]` filter is provided, it only counts blocked EVSEs that have at least one of selected connector types.
 
-`evse_status_planned` · `integer`
+`evses_planned` · `integer`
 : Number of EVSEs in planned status. If a `connectors[]` filter is provided, it only counts planned EVSEs that have at least one of selected connector types.
 
-`evse_status_available` · `integer`
+`evses_available` · `integer`
 : Number of EVSEs in status available. If a `connectors[]` filter is provided, it only counts available EVSEs that have at least one of selected connector types.
 
-`evse_status_charging` · `integer`
+`evses_charging` · `integer`
 : Number of EVSEs currently occupied. If a `connectors[]` filter is provided, it only counts charging EVSEs that have at least one of selected connector types.
 
-`evse_status_unknown` · `integer`
+`evses_unknown` · `integer`
 : Number of EVSEs whose real-time status is currently unknown. If a `connectors[]` filter is provided, it only counts unknown EVSEs that have at least one of selected connector types.
 
-`evse_status_reserved` · `integer`
+`evses_reserved` · `integer`
 : Number of EVSEs reserved for a driver. If a `connectors[]` filter is provided, it only counts reserved EVSEs that have at least one of selected connector types.
 
-`evse_status_out_of_order` · `integer`
+`evses_out_of_order` · `integer`
 : Number of EVSEs marked as out of order. If a `connectors[]` filter is provided, it only counts out of order EVSEs that have at least one of selected connector types.
 
-`evse_status_inoperative` · `integer`
+`evses_inoperative` · `integer`
 : Number of EVSEs temporarily inoperative. If a `connectors[]` filter is provided, it only counts inoperative EVSEs that have at least one of selected connector types.
 
 ## Examples
@@ -165,13 +168,13 @@ https://api.chargetrip.io/v2/station/10/582/325/tile.mvt
 <details>
   <summary>Combine selectors with connector filters for real-time EVSE status</summary>
 
-  When filtering by a specific connector type (e.g., CCS / `IEC_62196_T2_COMBO`), the `connector_maximum_power` and `evse_status_available` counts reflect only EVSEs matching that connector filter.
+  When filtering by a specific connector type (e.g., CCS / `IEC_62196_T2_COMBO`), the `connector_maximum_power` and `evses_available` counts reflect only EVSEs matching that connector filter.
 
 ```bash Example request {{ mark: [2,3,4] }}
 https://api.chargetrip.io/v2/station/10/582/325/tile.json
   ?connectors[]=IEC_62196_T2_COMBO
   &station_properties[]=connector_maximum_power
-  &station_properties[]=evse_status_available
+  &station_properties[]=evses_available
 ```
 
 ```json Example response {{ mark: [12,13,14,15] }}
@@ -187,7 +190,7 @@ https://api.chargetrip.io/v2/station/10/582/325/tile.json
       },
       "properties": {
         "connector_maximum_power": 300,
-        "evse_status_available": 2
+        "evses_available": 2
       }
     }
   ]

@@ -47,11 +47,11 @@ Filtreler iki düzeyde bulunabilir: EVSE düzeyi veya istasyon düzeyi. Her biri
 : Yalnızca belirli operatör kimlikleri tarafından işletilen istasyonları dahil eden filtre. Operatör kimliklerinden oluşan bir dizi kabul eder.
 
 `truck_dedicated` · `boolean` · [Örnek URL'yi göster](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?truck_dedicated=true)
-: Yalnızca kamyon şarjına ayrılmış veya öncelikli olarak kamyon şarjı için tasarlanmış istasyonları dahil eden filtre. **Yalnızca Eco-Movement istasyon veritabanı kullanılıyorsa geçerlidir; aksi halde yok sayılır.**
+: Yalnızca kamyon şarjına ayrılmış veya öncelikli olarak kamyon şarjı için tasarlanmış istasyonları dahil eden filtre. Yalnızca Eco-Movement istasyon veritabanı kullanılıyorsa geçerlidir; aksi halde yok sayılır.
 : `true`, `false`
 
 `vehicle_types` · `enum` · [Örnek URL'yi göster](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?vehicle_types[]=VAN&vehicle_types[]=RIGID)
-: Yalnızca belirtilen OCPI araç tiplerini destekleyen istasyonları dahil eden filtre. Varsayılan olarak tüm araç tipleri dahildir. **Yalnızca Eco-Movement istasyon veritabanı kullanılıyorsa geçerlidir; aksi halde yok sayılır.**
+: Yalnızca belirtilen OCPI araç tiplerini destekleyen istasyonları dahil eden filtre. Varsayılan olarak tüm araç tipleri dahildir. Yalnızca Eco-Movement istasyon veritabanı kullanılıyorsa geçerlidir; aksi halde yok sayılır.
 : `VAN`, `RIGID`, `TRUCK_WITH_TRAILER`
 
 ### EVSE düzeyi
@@ -65,10 +65,10 @@ Filtreler iki düzeyde bulunabilir: EVSE düzeyi veya istasyon düzeyi. Her biri
 : Yalnızca hiçbir konektörünün maksimum şarj gücü belirtilen güç değerini (kW cinsinden) aşmayan istasyonları dahil eden filtre. 0'dan büyük bir tam sayı kabul eder.
 
 `minimum_energy_price` · `number` · [beta](tip:Beta;;Bu filtre beta aşamasındadır ve kararlı hale gelmeden önce değişebilir.) · [Örnek URL'yi göster](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?minimum_energy_price=0.2&currency=EUR)
-: Yalnızca uyumlu konektörlerinden en az birinin etkin fiyatı belirtilen değerden büyük veya ona eşit olan istasyonları dahil eden filtre; değerlendirme `currency` ile belirlenen para biriminde yapılır. Bkz. [istasyon fiyatlandırması](/docs/getting-started/station-pricing).
+: Yalnızca uyumlu konektörlerinden en az birinin etkin fiyatı belirtilen değerden büyük veya ona eşit olan istasyonları dahil eden filtre; değerlendirme `currency` ile belirlenen para biriminde yapılır. Bkz. [istasyon fiyatlandırması](/docs/getting-started/station-pricing). Yalnızca Eco-Movement istasyon veritabanı kullanılıyorsa geçerlidir; aksi halde yok sayılır.
 
 `maximum_energy_price` · `number` · [beta](tip:Beta;;Bu filtre beta aşamasındadır ve kararlı hale gelmeden önce değişebilir.) · [Örnek URL'yi göster](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?maximum_energy_price=0.5&currency=EUR)
-: Yalnızca uyumlu konektörlerinden en az birinin etkin fiyatı belirtilen değerden küçük veya ona eşit olan istasyonları dahil eden filtre; değerlendirme `currency` ile belirlenen para biriminde yapılır. Bkz. [istasyon fiyatlandırması](/docs/getting-started/station-pricing).
+: Yalnızca uyumlu konektörlerinden en az birinin etkin fiyatı belirtilen değerden küçük veya ona eşit olan istasyonları dahil eden filtre; değerlendirme `currency` ile belirlenen para biriminde yapılır. Bkz. [istasyon fiyatlandırması](/docs/getting-started/station-pricing). Yalnızca Eco-Movement istasyon veritabanı kullanılıyorsa geçerlidir; aksi halde yok sayılır.
 
 `connectors` · `enum` · [Örnek URL'yi göster](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=CHADEMO)
 : Yalnızca belirtilen konnektör türlerine sahip EVSE'leri bulunan istasyonları dahil eden filtre. Herhangi bir OCPI 2.2.1 konnektör değerini içeren bir dize dizisi kabul eder.
@@ -137,7 +137,7 @@ https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?minimum_power=120&evse_
 ### Veri dönüştürme örnekleri
 
 EVSE düzeyi filtreler uygulandığında bazı çıktılar yeniden hesaplanır. Bu alanlar, kullanıcının arama ölçütleriyle eşleşmeyen konnektörleri yok saymak üzere "dönüştürülür".
-Bu "dinamik" çıktı alanları `connector_maximum_power`, `connector_minimum_energy_price`, `connector_maximum_energy_price` ve `evse_status_*` alanlarıdır.
+Bu "dinamik" çıktı alanları `connector_maximum_power`, `connector_minimum_energy_price`, `connector_maximum_energy_price` ve `evses_*` alanlarıdır.
 
 <details>
   <summary>Aynı filtre türü, farklı değerler</summary>
@@ -155,9 +155,9 @@ https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=IEC_62196_
   // Dynamic: Adjusted to 100 kW (Max power of the CHADEMO connector)
   "connector_maximum_power": 100,
   // Dynamic: Counts the 1 CHADEMO chargers
-  "evse_status_out_of_order": 0,
+  "evses_out_of_order": 0,
   // Dynamic: 0, because the charging Type 1 plugs are filtered out
-  "evse_status_available": 1
+  "evses_available": 1
 }
 ```
 </details>
@@ -184,7 +184,7 @@ Eşleşme: EVSE 2 ve 3 uygundur. EVSE 1 hariç tutulur.
 ```json Response
 {
   "connector_maximum_power": 50,
-  "evse_status_available": 2,
+  "evses_available": 2,
   // Dynamic: lowest price of the matching connectors, not of the entire station
   "connector_minimum_energy_price": 0.25,
   // Dynamic: highest price of the matching connectors, not of the entire station
@@ -203,7 +203,7 @@ Eşleşme: EVSE 1 ve 2 uygundur.
 ```json Response
 {
   "connector_maximum_power": 150,
-  "evse_status_available": 2,
+  "evses_available": 2,
   // Dynamic: lowest price of the CCS connectors
   "connector_minimum_energy_price": 0.35,
   // Dynamic: highest price of the CCS connectors
