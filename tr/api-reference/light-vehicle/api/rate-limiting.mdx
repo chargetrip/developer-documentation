@@ -1,0 +1,64 @@
+---
+title: Hız sınırlaması
+description: "API'nin istekleri sınırlamak için sızdıran kova algoritmasını nasıl kullandığını ve GraphQL ile REST API'lerinde istek maliyetinin nasıl işlediğini öğrenin."
+---
+
+API, istekleri <a href="https://en.wikipedia.org/wiki/Leaky_bucket" target="_blank" rel="noopener noreferrer">sızdıran kova algoritması</a> ile hız sınırlamasına tabi tutar. Her istek belirli sayıda birim maliyetlidir ve bu birimler kovadan sabit bir hızda sızar. Bu sayede trafik düzenli bir hızda akarken kısa süreli yoğunluklara da izin verilir.
+
+## GraphQL API
+
+GraphQL API için hız sınırlaması, sabit bir istek sayısı yerine her isteğin maliyetine dayanır. Aşağıdaki bölümlerde bu maliyeti düşük tutmaya yönelik en iyi uygulamalar ve mevcut hız sınırı durumunuzu nasıl okuyacağınız anlatılmaktadır.
+
+### En iyi uygulamalar
+
+- Verinin ne zaman değiştiğini öğrenmek için sorgularla yoklama (polling) yapmak yerine abonelikleri kullanın.
+- Yalnızca ihtiyacınız olan alanları sorgulayın ve liste sorgularını daraltmak için `filter` kullanın.
+- Liste sorguları sayfa başına en fazla 100 kayıt döndürür, ancak daha büyük bir sayfa daha küçük bir sayfadan daha pahalıdır. Tek bir istekte 100 kayıt getirmek 10 kayıt getirmekten daha maliyetlidir; bu nedenle daha fazla değil, daha az kayıt isteyin. Ayrıntılar için [sayfalandırma](/api-reference/light-vehicle/api/pagination) bölümüne bakın.
+- Bir istek `429` hatasıyla reddedilirse kovanız doludur. İstek göndermeyi durdurun ve yalnızca `reset` ile belirtilen süre geçtikten sonra yeni istekler yapın.
+
+### Hız sınırı
+
+API'yi çok karmaşık veya kaynak yoğun sorgulardan korumak için her isteğe, istenen veri miktarına göre bir maliyet atanır. Geçerli bir isteğe verilen veya iş doğrulamasında başarısız olan bir isteğe verilen her yanıt, isteğin maliyetini ve hız sınırınızın durumunu içeren bir `extensions.cost` nesnesi içerir. Bir istek GraphQL şema doğrulamasında başarısız olursa bu nesne tamamen çıkarılır.
+
+`cost` · <span class="text-muted">Integer</span>
+: Geçerli isteğin birim cinsinden maliyeti.
+
+`limit` · <span class="text-muted">Integer</span>
+: Geçerli hız sınırı penceresinde izin verilen birim cinsinden maksimum maliyet.
+
+`used` · <span class="text-muted">Integer</span>
+: Bu pencerede şimdiye kadar kaç birim tüketildiği.
+
+`remaining` · <span class="text-muted">Integer</span>
+: Sınıra ulaşmadan önce kaç birim hakkınızın kaldığı.
+
+`reset` · <span class="text-muted">Integer</span>
+: Kotanın ne zaman yenileneceğini gösteren, saniye cinsinden bir UNIX zaman damgası.
+
+## REST API
+
+REST API için hız sınırlaması [tile servisine](/api-reference/light-vehicle/tiles/mvt) uygulanır. GraphQL API'nin aksine hız sınırı durumu HTTP yanıt başlıkları üzerinden döndürülür ve her isteğin maliyeti sabit olarak 1 birimdir. Bu başlıklar, başarısız olanlar dahil her istekte döndürülür.
+
+`x-ratelimit-cost` · <span class="text-muted">Integer</span>
+: Geçerli isteğin birim cinsinden maliyeti. REST istekleri için her zaman `1`.
+
+`x-ratelimit-limit` · <span class="text-muted">Integer</span>
+: Geçerli hız sınırı penceresinde izin verilen birim cinsinden maksimum maliyet.
+
+`x-ratelimit-used` · <span class="text-muted">Integer</span>
+: Bu pencerede şimdiye kadar kaç birim tüketildiği.
+
+`x-ratelimit-remaining` · <span class="text-muted">Integer</span>
+: Sınıra ulaşmadan önce kaç birim hakkınızın kaldığı.
+
+`x-ratelimit-reset` · <span class="text-muted">Integer</span>
+: Kotanın ne zaman yenileneceğini gösteren, saniye cinsinden bir UNIX zaman damgası.
+
+## Mevcut sınırlar
+
+Hız sınırları müşteri başına, bir dakikalık pencerede uygulanır. Henüz varsayılan bir sınır yoktur. Varsayılan sınırlar 2027'de getirilene kadar sınırlar müşteri bazında tek tek yapılandırılır.
+
+Bazı sorguların ve mutasyonların, genel sınırınızdan daha düşük olan kendi sınırları da vardır. Bunlar genel olarak değil, ürün bazında ve bazen istek bazında belirlenir.
+
+> [!WARNING] Sınır belirlenmemiş
+> Hesabınız için bir sınır belirlenmemişse `limit`, `remaining` ve `reset` `null` olarak döndürülür. `cost` ve `used` yine de izlenir ve döndürülür.

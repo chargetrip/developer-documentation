@@ -1,0 +1,13 @@
+---
+title: "Bewertungsliste Query"
+heading: "Bewertungsliste"
+description: "Rufen Sie mit der Query reviewList die Nutzerbewertungen einer Station ab, inklusive Bewertung, Nachricht und Details zum geladenen Fahrzeug."
+schemaName: reviewList
+schemaType: Query
+---
+
+Jede Station kann mit Nutzerbewertungen versehen sein. Fragen Sie Eigenschaften wie Bewertung und Nachricht ab oder erhalten Sie Daten zum EV, mit dem geladen wurde. Bewertungen sind auf eine einzelne Stationsdatenbank beschränkt und können nicht projektübergreifend verwendet werden.
+
+## Query
+
+Zum Abrufen der Bewertungen einer Station ist deren `id` erforderlich. Die `id` erhalten Sie entweder über eine [Route](/api-reference/light-vehicle/route/query-get-route), den [Kachel-Service](/api-reference/light-vehicle/tiles/mvt) oder die [Query stationAround](/api-reference/light-vehicle/station/query-station-around). Verwenden Sie die Argumente `size` und `page`, um die Ergebnisse zu [paginieren](/api-reference/light-vehicle/api/pagination).

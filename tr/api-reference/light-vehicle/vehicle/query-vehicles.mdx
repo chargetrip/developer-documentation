@@ -1,0 +1,13 @@
+---
+title: Araç listesi sorgusu
+heading: Araç listesi
+description: "vehicleList sorgusuyla tüm araç veritabanında arama yapın ve filtreleyin; adlar ve fiş tipleri bölgeye göre yerelleştirilir."
+schemaName: vehicleList
+schemaType: Query
+---
+
+`vehicleList` sorgusuyla tüm araç veritabanına erişin. Araç veritabanı varsayılan olarak araçlar ve konnektör tipleri için AB adlandırmasını kullanır.
+
+## Sorgu
+
+`vehicleList` sorgusunu çalıştırmak için herhangi bir girdi gerekmez. Sonuçları daraltmak ve özelleştirmek için `filter` ve `search` kullanın. Bölgenizde bulunan araçları, burada yerel olarak bilinen adları ve konnektör tipleriyle döndürmek için country parametresini region filtresiyle birlikte kullanın. Sonuçlar arasında [sayfalandırma](/api-reference/light-vehicle/api/pagination) yapmak için `size` ve `page` argümanlarını kullanın.

@@ -1,0 +1,16 @@
+---
+title: "Navigation starten Mutation"
+heading: "Navigation starten"
+description: "Starten Sie mit der Mutation startNavigation eine Navigationssitzung auf einer bestehenden Route, sobald ein Fahrer der berechneten Route folgt."
+schemaName: startNavigation
+schemaType: Mutation
+---
+
+Starten Sie mit der Mutation startNavigation eine neue Navigationssitzung auf Basis einer bestehenden Route. Dies ist nützlich, wenn ein Fahrer beginnt, einer berechneten Route zu folgen.
+
+> [!WARNING] Sitzungsdauer
+> Eine Navigationssitzung wird nach 48 Stunden Inaktivität automatisch beendet.
+
+## Mutation
+
+Zum Starten einer Navigationssitzung sind `route_id`, `route_details_id` und `current_location` erforderlich. Beide Routen-IDs erhalten Sie über die [Query getRoute](/api-reference/light-vehicle/route/query-get-route). Die Mutation gibt die `id` einer Navigationssitzung zurück, mit der Sie die Sitzung abrufen, aktualisieren oder beenden können.

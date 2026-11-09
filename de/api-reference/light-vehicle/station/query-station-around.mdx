@@ -1,0 +1,13 @@
+---
+title: "Stationen in der Nähe Query"
+heading: "Stationen in der Nähe"
+description: "Finden Sie mit der Query stationAround Stationen innerhalb eines Radius um einen GeoJSON-Punkt, um mehrere Lademöglichkeiten anzubieten."
+schemaName: stationAround
+schemaType: Query
+---
+
+Mit der Query stationAround können Sie die Stationen innerhalb eines bestimmten Radius um einen GeoJSON-Punkt abrufen. Das kann nützlich sein, wenn eine Station ausgelastet ist oder Sie mehrere Lademöglichkeiten anbieten möchten.
+
+## Query
+
+Zum Suchen von Stationen um einen Punkt sind eine `location` (GeoJSON-Punkt) und eine `distance` in Metern erforderlich. Verwenden Sie die Argumente `filter` und `search`, um die Ergebnisse einzugrenzen, sowie `size` und `page`, um die Ergebnisse zu [paginieren](/api-reference/light-vehicle/api/pagination).

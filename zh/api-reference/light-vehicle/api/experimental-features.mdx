@@ -1,0 +1,95 @@
+---
+title: 实验性功能
+description: "通过 alpha 和 beta 计划抢先体验 API 即将推出的功能，并了解实验性功能与稳定功能的区别。"
+---
+
+Chargetrip 通过结构化的实验计划推出重要的新功能。它让您能够提前使用并评估即将推出的功能，并在 schema 和契约成为永久版本之前影响其设计。
+
+> [!WARNING] 不受 12 个月弃用政策约束
+> 处于 alpha 和 beta 阶段的功能不受 [12 个月弃用政策](/api-reference/light-vehicle/api/lifecycle#弃用时间线)约束，可能会更早地发生变更或被下线。
+
+## 实验性功能的类型
+
+- 新操作：全新的查询、变更或订阅。
+- 对现有操作的扩展：在现有稳定操作中新增的可选参数或输出字段。
+
+## 实验性功能阶段
+
+| 维度 | Alpha | Beta |
+ | ----- | ----- | ----- |
+| **生产就绪度** | 严格不建议用于生产环境。 | 适用于受控的试点。不建议用于关键任务流程。 |
+| **启用方式** | 默认禁用。需要在 Dashboard 中明确选择启用。 | 对所有客户端默认启用。 |
+| **稳定性** | 稳定，但 schema 可能频繁变更。| 稳定。可能有小幅 schema 变更。 |
+| **Schema 标识** | 在 schema 字段描述中标记为 `[ALPHA]`。 | 在 schema 字段描述中标记为 `[BETA]`。 |
+| **停用通知** | 无。可能随时被修改或下线。 | 主动直接联系正在集成的客户。 |
+
+有关稳定功能所提供的保证，请参见 [API 生命周期](/api-reference/light-vehicle/api/lifecycle)。
+
+
+## 最佳实践
+
+ - 将 alpha 功能用于沙盒评估、概念验证和反馈。如果您仍然将其上线，那么在其发生变更时，您不会收到通知，也得不到兼容性保护。
+ - 如果您向最终用户开放 beta 功能，请显示“beta”徽标，让他们知道该功能仍在趋于稳定。
+
+
+## 升级生命周期
+
+1. **从 Alpha 到 Beta** 当功能和 schema 达到足够成熟度时，该功能将升级为 beta。描述标记从 `[ALPHA]` 更新为 `[BETA]`，所有客户默认启用访问，相关变更会在发布说明中公布。
+
+2. **从 Beta 到稳定版** 当可靠性和成熟度在多个客户端中得到验证后，将移除 `[BETA]` 描述标记和运行时警告，该功能升级到[稳定生命周期](/api-reference/light-vehicle/api/lifecycle)。
+
+
+## 定价
+- 对标记为实验性的操作发出的请求**免费**。
+- 对包含可选实验性输入参数或输出字段的稳定端点发出的请求，将根据您的订阅计划**收费**。
+
+## 程序化警告
+为了让您的开发团队了解当前流量中的实验性依赖，使用 alpha 或 beta 功能的 API 响应会在 GraphQL `extensions` 块中返回警告元数据：
+
+<details>
+  <summary>Alpha 功能的警告示例</summary>
+
+```json Example request and response
+{
+  "data": {
+    "getTruckRoute": {
+      "id": "dd07b4d0-6b79-11f0-bf8f-e6b813282ac3",
+      "status": "done"
+    }
+  },
+  "extensions": {
+    "warnings": [
+      {
+        "code": "ALPHA_FEATURE",
+        "path": ["getTruckRoute"],
+        "message": "This feature is currently in ALPHA. Visit https://developers.chargetrip.com/api-reference for more information."
+      }
+    ]
+  }
+}
+```
+</details>
+
+
+<details>
+  <summary>Beta 功能的警告示例</summary>
+
+```json Example request and response
+{
+  "data": {
+    "vehicleMakes": {
+      "name": "Opel"
+    }
+  },
+  "extensions": {
+    "warnings": [
+      {
+        "code": "BETA_FEATURE",
+        "path": ["vehicleMakes"],
+        "message": "This feature is currently in BETA. Visit https://developers.chargetrip.com/api-reference for more information."
+      }
+    ]
+  }
+}
+```
+</details>

@@ -10,7 +10,7 @@ Route API 会综合考虑所有这些变量，以找到最优的 EV 路线。它
 
 ## 工作原理
 
-为确保高性能，Route API 以异步方式运行，遵循整个 API 通用的[异步模式](/api-reference/api/async-operations)。创建路线和获取路线分为不同的步骤进行。
+为确保高性能，Route API 以异步方式运行，遵循整个 API 通用的[异步模式](/api-reference/light-vehicle/api/async-operations)。创建路线和获取路线分为不同的步骤进行。
 
 1. **创建路线**
    调用 `createRoute` 变更，至少提供 `vehicle`、`origin` 和 `destination`。该变更会立即返回路线 `id`，您将在下一步中使用它来跟踪和获取路线。还有更多自定义选项可用，请参阅下文的[自定义路线](#自定义路线)。
@@ -26,24 +26,24 @@ Route API 会综合考虑所有这些变量，以找到最优的 EV 路线。它
 
 ## 自定义路线
 
-`createRoute` 接受一系列可选输入，用于微调路线的计算方式。有关每个字段的更多详情，请参阅 [API 参考](/api-reference/route/mutation-create-route)。
+`createRoute` 接受一系列可选输入，用于微调路线的计算方式。有关每个字段的更多详情，请参阅 [API 参考](/api-reference/light-vehicle/route/mutation-create-route)。
 
 | 功能 | 描述 |
 | --- | --- |
-| [途经点](/api-reference/route/mutation-create-route#arg-input-via) | 添加中间停靠点。提供 `via.properties.station.station_id` 可强制在特定充电站充电停靠，仅提供 `via.geometry` 则表示不充电的普通途经点。 |
-| [停靠时长](/api-reference/route/mutation-create-route#arg-input-via-properties-station-stop_duration) | 使用 `properties.station.stop_duration` 或 `properties.location.stop_duration`，设置车辆在途经点或目的地停留的时长（以秒为单位）。 |
-| [高速公路充电](/api-reference/route/mutation-create-route#arg-input-station_preferences) | 使用 `station_preferences.prefer_highway_charging` 优先选择直接位于高速公路上的充电站，避免需要驶出高速公路的停靠。 |
-| [天气](/api-reference/route/mutation-create-route#arg-input-weather) | 将天气预设或自定义天气条件应用于能耗模型。默认使用实时天气数据。 |
-| [季节](/api-reference/route/mutation-create-route#arg-input-season) | 假定 `summer`、`winter` 或 `current` 天气条件，作为 `weather` 的更简单替代方案。 |
-| [需避开的路线特征](/api-reference/route/mutation-create-route#arg-input-avoid) | 尽力避开 `toll_road` 或 `ferry`。 |
-| [运营商排名](/api-reference/route/mutation-create-route#arg-input-operators-ranking) | 使用 `type: preferred` 优先选择特定充电网络，或使用 `type: required` 将路线规划限制为仅使用这些网络。将运营商排名为 `high`、`medium` 或 `low`，并可针对每个运营商将排名限定到特定国家/地区。 |
-| [运营商排除](/api-reference/route/mutation-create-route#arg-input-operators-exclude) | 使用 `operators.exclude` 将某个运营商完全排除在路线之外。如果未在请求级别设置，则回退到您项目的 Dashboard 配置。 |
-| [运营商规避](/api-reference/route/mutation-create-route#arg-input-operators-avoid) | 使用 `operators.avoid` 规避某个运营商，而不是直接将其排除。 |
-| [备选充电站](/api-reference/route/mutation-create-route#arg-input-alternative_station_radius) | 在沿途 500 至 5000 米的半径范围内搜索备选充电站。 |
-| [备选路线](/api-reference/route/mutation-create-route#arg-input-alternative_routes) | 尽力请求额外的路线选项。设置为 `0` 则仅计算推荐路线。 |
-| [驾驶偏好](/api-reference/route/mutation-create-route#arg-input-driving_preferences) | 使用 `speed_factor` 或 `maximum_speed` 调整驾驶风格，或选择 `eco` 或 `sport` 的 `style`。 |
-| [交通感知](/api-reference/route/mutation-create-route#arg-input-traffic_aware) | 考虑实时交通拥堵情况。请联系支持团队为您的项目启用此功能。 |
-| [出发时间](/api-reference/route/mutation-create-route#arg-input-departure_time) | 结合实时交通以及历史、当前或预测天气，计算预计到达时间。 |
-| [以充电站作为目的地](/api-reference/route/mutation-create-route#arg-input-destination-properties-station) | 将特定充电站设置为路线的目的地。该点按非充电停靠处理。 |
-| [每个途经点的车辆载重](/api-reference/route/mutation-create-route#arg-input-origin-properties-vehicle) | 在 `origin` 或 `via` 上设置 `occupants`、`total_occupant_weight` 和 `total_cargo_weight`。这些设置会延续到行程的其余部分，并可在之后的任何途经点被覆盖。 |
-| [最低充电功率](/api-reference/route/mutation-create-route#arg-input-vehicle-charging-minimum_power) | 默认情况下，路线规划会排除低于 43 kW 的连接器。可设置不同的最小值以匹配您车辆的充电速度。即使您的车辆充电速度低于其最大功率，仍会选择额定功率更高的充电桩。 |
+| [途经点](/api-reference/light-vehicle/route/mutation-create-route#arg-input-via) | 添加中间停靠点。提供 `via.properties.station.station_id` 可强制在特定充电站充电停靠，仅提供 `via.geometry` 则表示不充电的普通途经点。 |
+| [停靠时长](/api-reference/light-vehicle/route/mutation-create-route#arg-input-via-properties-station-stop_duration) | 使用 `properties.station.stop_duration` 或 `properties.location.stop_duration`，设置车辆在途经点或目的地停留的时长（以秒为单位）。 |
+| [高速公路充电](/api-reference/light-vehicle/route/mutation-create-route#arg-input-station_preferences) | 使用 `station_preferences.prefer_highway_charging` 优先选择直接位于高速公路上的充电站，避免需要驶出高速公路的停靠。 |
+| [天气](/api-reference/light-vehicle/route/mutation-create-route#arg-input-weather) | 将天气预设或自定义天气条件应用于能耗模型。默认使用实时天气数据。 |
+| [季节](/api-reference/light-vehicle/route/mutation-create-route#arg-input-season) | 假定 `summer`、`winter` 或 `current` 天气条件，作为 `weather` 的更简单替代方案。 |
+| [需避开的路线特征](/api-reference/light-vehicle/route/mutation-create-route#arg-input-avoid) | 尽力避开 `toll_road` 或 `ferry`。 |
+| [运营商排名](/api-reference/light-vehicle/route/mutation-create-route#arg-input-operators-ranking) | 使用 `type: preferred` 优先选择特定充电网络，或使用 `type: required` 将路线规划限制为仅使用这些网络。将运营商排名为 `high`、`medium` 或 `low`，并可针对每个运营商将排名限定到特定国家/地区。 |
+| [运营商排除](/api-reference/light-vehicle/route/mutation-create-route#arg-input-operators-exclude) | 使用 `operators.exclude` 将某个运营商完全排除在路线之外。如果未在请求级别设置，则回退到您项目的 Dashboard 配置。 |
+| [运营商规避](/api-reference/light-vehicle/route/mutation-create-route#arg-input-operators-avoid) | 使用 `operators.avoid` 规避某个运营商，而不是直接将其排除。 |
+| [备选充电站](/api-reference/light-vehicle/route/mutation-create-route#arg-input-alternative_station_radius) | 在沿途 500 至 5000 米的半径范围内搜索备选充电站。 |
+| [备选路线](/api-reference/light-vehicle/route/mutation-create-route#arg-input-alternative_routes) | 尽力请求额外的路线选项。设置为 `0` 则仅计算推荐路线。 |
+| [驾驶偏好](/api-reference/light-vehicle/route/mutation-create-route#arg-input-driving_preferences) | 使用 `speed_factor` 或 `maximum_speed` 调整驾驶风格，或选择 `eco` 或 `sport` 的 `style`。 |
+| [交通感知](/api-reference/light-vehicle/route/mutation-create-route#arg-input-traffic_aware) | 考虑实时交通拥堵情况。请联系支持团队为您的项目启用此功能。 |
+| [出发时间](/api-reference/light-vehicle/route/mutation-create-route#arg-input-departure_time) | 结合实时交通以及历史、当前或预测天气，计算预计到达时间。 |
+| [以充电站作为目的地](/api-reference/light-vehicle/route/mutation-create-route#arg-input-destination-properties-station) | 将特定充电站设置为路线的目的地。该点按非充电停靠处理。 |
+| [每个途经点的车辆载重](/api-reference/light-vehicle/route/mutation-create-route#arg-input-origin-properties-vehicle) | 在 `origin` 或 `via` 上设置 `occupants`、`total_occupant_weight` 和 `total_cargo_weight`。这些设置会延续到行程的其余部分，并可在之后的任何途经点被覆盖。 |
+| [最低充电功率](/api-reference/light-vehicle/route/mutation-create-route#arg-input-vehicle-charging-minimum_power) | 默认情况下，路线规划会排除低于 43 kW 的连接器。可设置不同的最小值以匹配您车辆的充电速度。即使您的车辆充电速度低于其最大功率，仍会选择额定功率更高的充电桩。 |

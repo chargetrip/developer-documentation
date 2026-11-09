@@ -1,0 +1,13 @@
+---
+title: Kamyon rotası sorgusu
+heading: Kamyon rotası
+description: "getTruckRoute sorgusuyla daha önce hesaplanmış kamyon rotasının şarj duraklarını, mesafesini ve süresini içeren ayrıntılarını alın."
+schemaName: getTruckRoute
+schemaType: Query
+---
+
+getTruckRoute sorgusunu kullanarak daha önce hesaplanmış bir kamyon rotasının ayrıntılarını alın. Bu, bir kamyon rotasının şarj duraklarını, mesafesini ve süresini göstermek istediğinizde kullanışlıdır.
+
+## Sorgu
+
+Rota ayrıntılarını almak için bir kamyon rotası `id` gereklidir. `id`, [createTruckRoute mutasyonu](/api-reference/light-vehicle/truck-route/mutation-create-truck-route) üzerinden alınabilir.

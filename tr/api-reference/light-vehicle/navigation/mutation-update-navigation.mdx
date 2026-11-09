@@ -1,0 +1,14 @@
+---
+title: Navigasyonu güncelle mutasyonu
+heading: Navigasyonu güncelle
+description: "Etkin navigasyon oturumunu güncel tutmak için updateNavigation mutasyonuyla sürücünün rota üzerindeki konumunu bildirin."
+schemaName: updateNavigation
+schemaType: Mutation
+---
+
+updateNavigation mutasyonunu kullanarak etkin bir navigasyon oturumunu güncelleyin. Bu, bir sürücü rota boyunca ilerlerken konumunu bildirmek istediğinizde kullanışlıdır.
+
+## Mutasyon
+
+Bir navigasyon oturumunu güncellemek için oturumun `id` ve `location_data` değerleri gereklidir. `id`, [startNavigation mutasyonu](/api-reference/light-vehicle/navigation/mutation-start-navigation) üzerinden alınabilir.
+

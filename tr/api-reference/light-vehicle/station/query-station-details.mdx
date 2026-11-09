@@ -1,0 +1,13 @@
+---
+title: İstasyon sorgusu
+heading: İstasyonu sorgula
+description: "station sorgusuyla bir istasyonun şarj cihazlarını, konumunu ve diğer mevcut bilgileri içeren ayrıntılarını alın."
+schemaName: station
+schemaType: Query
+---
+
+station sorgusunu kullanarak belirli bir istasyonun ayrıntılarını alın. Bu, şarj cihazlarının tipini ve sayısını, konumu veya bir istasyon için şu anda mevcut olan diğer ayrıntıları göstermek istediğinizde kullanışlıdır.
+
+## Sorgu
+
+İstasyon ayrıntılarını almak için bir istasyon `id` veya `evse_id` gereklidir. `id`, bir [rota](/api-reference/light-vehicle/route/query-get-route), [tile hizmeti](/api-reference/light-vehicle/tiles/mvt) veya [yakındaki istasyonlar sorgusu](/api-reference/light-vehicle/station/query-station-around) üzerinden alınabilir.

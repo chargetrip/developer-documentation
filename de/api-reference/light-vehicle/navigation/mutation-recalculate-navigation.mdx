@@ -1,0 +1,14 @@
+---
+title: "Navigation neu berechnen Mutation"
+heading: "Navigation neu berechnen"
+description: "Berechnen Sie die Route einer aktiven Navigationssitzung mit der Mutation recalculateNavigation neu, wenn ein Fahrer abweicht oder sich Bedingungen ändern."
+schemaName: recalculateNavigation
+schemaType: Mutation
+---
+
+Berechnen Sie die Route einer aktiven Navigationssitzung mit der Mutation recalculateNavigation neu. Dies ist nützlich, wenn ein Fahrer von der ursprünglichen Route abweicht oder sich die Bedingungen unterwegs ändern.
+
+## Mutation
+
+Zum Neuberechnen der Route einer Navigationssitzung sind deren `id` und `current_location` erforderlich. Optional können Sie `state_of_charge`, `via` oder `telemetry` angeben, um die neue Route zu verfeinern. Die `id` erhalten Sie über die [Mutation startNavigation](/api-reference/light-vehicle/navigation/mutation-start-navigation).
+

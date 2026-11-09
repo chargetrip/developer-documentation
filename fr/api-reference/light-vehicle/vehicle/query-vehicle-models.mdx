@@ -1,0 +1,12 @@
+---
+title: "Modèles de véhicules query"
+heading: Modèles de véhicules
+description: "Obtenez les modèles uniques d'une marque avec la query vehicleModels pour construire une sélection de véhicule séquentielle."
+schemaName: vehicleModels
+schemaType: Query
+---
+
+Obtenez une liste de modèles de véhicules uniques à l'aide de la requête vehicleModels. Cette requête est utile en combinaison avec la [requête](/api-reference/light-vehicle/vehicle/query-vehicle-makes) vehicleMakes pour construire une sélection de véhicule séquentielle.
+
+## Query
+Un `id` de marque de véhicule est requis pour obtenir ses modèles. L'id peut être obtenu via la [requête](/api-reference/light-vehicle/vehicle/query-vehicle-makes) vehicleMakes. Utilisez les arguments `first` et `after` pour les [paginer](/api-reference/light-vehicle/api/pagination), `filters` pour affiner les résultats de recherche, et l'argument `country` pour appliquer la localisation aux données.

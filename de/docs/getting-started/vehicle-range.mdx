@@ -12,7 +12,7 @@ Eine Isoline nimmt das reale Straßennetz als Referenz. Die Berechnung ermittelt
 
 ## So funktioniert es
 
-Wie Routen werden auch Isolinen asynchron berechnet, nach demselben [asynchronen Muster](/api-reference/api/async-operations), das in der gesamten API verwendet wird. Das Erstellen und das Abrufen einer Isoline erfolgen in getrennten Schritten.
+Wie Routen werden auch Isolinen asynchron berechnet, nach demselben [asynchronen Muster](/api-reference/light-vehicle/api/async-operations), das in der gesamten API verwendet wird. Das Erstellen und das Abrufen einer Isoline erfolgen in getrennten Schritten.
 
 1. **Isoline erstellen**
    Rufen Sie die Mutation `createIsoline` mindestens mit einer `vehicle_id` und einem `origin` auf. Die Mutation gibt sofort eine Isoline-`id` zurück, die Sie im nächsten Schritt verwenden. Optionale Eingaben wie Akkustand oder Wetter werden unter [Isoline anpassen](#isoline-anpassen) behandelt.
@@ -84,17 +84,17 @@ In dieser Anfrage:
 
 ## Isoline anpassen
 
-`createIsoline` akzeptiert eine Reihe optionaler Eingaben zur Feinabstimmung der Berechnung. Weitere Details zu jedem Feld finden Sie in der [API-Referenz](/api-reference/isoline/mutation-create-isoline).
+`createIsoline` akzeptiert eine Reihe optionaler Eingaben zur Feinabstimmung der Berechnung. Weitere Details zu jedem Feld finden Sie in der [API-Referenz](/api-reference/light-vehicle/isoline/mutation-create-isoline).
 
 | Funktion | Beschreibung |
 | --- | --- |
-| [Akkustand](/api-reference/isoline/mutation-create-isoline#arg-input-state_of_charge) | Legen Sie den Start-Akkustand mit `state_of_charge` fest, als Prozentwert, in Kilowattstunden, Kilometern oder Meilen. Standardmäßig die nutzbare Batteriekapazität des Fahrzeugs. |
-| [Minimaler Endladestand](/api-reference/isoline/mutation-create-isoline#arg-input-final_state_of_charge) | Halten Sie mit `final_state_of_charge` eine Reserve vor. Die Isoline enthält nur Punkte, die das Fahrzeug erreichen kann, ohne darunter zu fallen. Standardwert ist 0. |
-| [Polygonanzahl](/api-reference/isoline/mutation-create-isoline#arg-input-polygon_count) | Wählen Sie die Anzahl der Polygone, maximal 20. |
-| [Hin- und Rückfahrt](/api-reference/isoline/mutation-create-isoline#arg-input-round_trip) | Mit `round_trip` werden nur Punkte einbezogen, von denen das Fahrzeug auch zum Startpunkt zurückfahren kann. |
-| [Qualität](/api-reference/isoline/mutation-create-isoline#arg-input-quality) | Tauschen Sie Präzision gegen Geschwindigkeit mit `quality`, gesetzt auf `high` oder `low`. |
-| [Fährverbindungen](/api-reference/isoline/mutation-create-isoline#arg-input-ferry_connections) | Beziehen Sie Fähren mit `ferry_connections` ein, gesetzt auf `none` oder `single`. Fähren erhöhen die Berechnungszeit und die Anzahl der Polygone. |
-| [Wetter](/api-reference/isoline/mutation-create-isoline#arg-input-weather) | Wenden Sie eine Wettervoreinstellung `summer`, `winter` oder `actual` oder benutzerdefinierte Bedingungen an. Standardmäßig Echtzeit-Wetterdaten. |
-| [Jahreszeit](/api-reference/isoline/mutation-create-isoline#arg-input-season) | Nehmen Sie `summer`, `winter` oder `current` als Bedingungen an, als einfachere Alternative zu `weather`. |
-| [Fahrzeugbeladung](/api-reference/isoline/mutation-create-isoline#arg-input-occupants) | Legen Sie `occupants`, `total_occupant_weight` und `total_cargo_weight` fest, um das Gewicht der Fahrzeugladung zu berücksichtigen. |
-| [Klimatisierung](/api-reference/isoline/mutation-create-isoline#arg-input-climate_control) | Aktivieren Sie `climate_control` und beschreiben Sie die Konfiguration von `heat_pump` und `cabin`, um Heizen und Kühlen im Verbrauch zu berücksichtigen. |
+| [Akkustand](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-state_of_charge) | Legen Sie den Start-Akkustand mit `state_of_charge` fest, als Prozentwert, in Kilowattstunden, Kilometern oder Meilen. Standardmäßig die nutzbare Batteriekapazität des Fahrzeugs. |
+| [Minimaler Endladestand](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-final_state_of_charge) | Halten Sie mit `final_state_of_charge` eine Reserve vor. Die Isoline enthält nur Punkte, die das Fahrzeug erreichen kann, ohne darunter zu fallen. Standardwert ist 0. |
+| [Polygonanzahl](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-polygon_count) | Wählen Sie die Anzahl der Polygone, maximal 20. |
+| [Hin- und Rückfahrt](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-round_trip) | Mit `round_trip` werden nur Punkte einbezogen, von denen das Fahrzeug auch zum Startpunkt zurückfahren kann. |
+| [Qualität](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-quality) | Tauschen Sie Präzision gegen Geschwindigkeit mit `quality`, gesetzt auf `high` oder `low`. |
+| [Fährverbindungen](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-ferry_connections) | Beziehen Sie Fähren mit `ferry_connections` ein, gesetzt auf `none` oder `single`. Fähren erhöhen die Berechnungszeit und die Anzahl der Polygone. |
+| [Wetter](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-weather) | Wenden Sie eine Wettervoreinstellung `summer`, `winter` oder `actual` oder benutzerdefinierte Bedingungen an. Standardmäßig Echtzeit-Wetterdaten. |
+| [Jahreszeit](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-season) | Nehmen Sie `summer`, `winter` oder `current` als Bedingungen an, als einfachere Alternative zu `weather`. |
+| [Fahrzeugbeladung](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-occupants) | Legen Sie `occupants`, `total_occupant_weight` und `total_cargo_weight` fest, um das Gewicht der Fahrzeugladung zu berücksichtigen. |
+| [Klimatisierung](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-climate_control) | Aktivieren Sie `climate_control` und beschreiben Sie die Konfiguration von `heat_pump` und `cabin`, um Heizen und Kühlen im Verbrauch zu berücksichtigen. |

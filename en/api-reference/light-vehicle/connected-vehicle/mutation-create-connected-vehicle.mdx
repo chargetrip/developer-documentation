@@ -1,0 +1,13 @@
+---
+title: Create connected vehicle mutation
+heading: Create connected vehicle
+description: "Connect a vehicle to a connectivity provider with the createConnectedVehicle mutation to retrieve live vehicle data directly from the vehicle."
+schemaName: createConnectedVehicle
+schemaType: Mutation
+---
+
+Connect a vehicle to a connectivity provider by using the createConnectedVehicle mutation. This is useful when you want to retrieve live vehicle data directly from the vehicle instead of a route calculation.
+
+## Mutation
+
+A `vehicle_id` and `provider` are required to create a connected vehicle, along with provider-specific `options`. The mutation returns a connected vehicle `id` and an `authorization_url`, which can be used to complete authorization through the [authorizeConnectedVehicle mutation](/api-reference/light-vehicle/connected-vehicle/mutation-authorize-connected-vehicle).

@@ -12,7 +12,7 @@ Tipik kullanımlar; bir şehrin çevresindeki menzil haritası, "şarj etmeden o
 
 ## Nasıl çalışır
 
-Rotalar gibi izolineler de API genelinde kullanılan aynı [eşzamansız kalıbı](/api-reference/api/async-operations) izleyerek eşzamansız hesaplanır. Bir izoline oluşturma ve alma ayrı adımlarda gerçekleşir.
+Rotalar gibi izolineler de API genelinde kullanılan aynı [eşzamansız kalıbı](/api-reference/light-vehicle/api/async-operations) izleyerek eşzamansız hesaplanır. Bir izoline oluşturma ve alma ayrı adımlarda gerçekleşir.
 
 1. **Bir izoline oluşturun**
    En az bir `vehicle_id` ve bir `origin` ile `createIsoline` mutasyonunu çağırın. Mutasyon hemen bir izoline `id` değeri döndürür; bunu bir sonraki adımda kullanacaksınız. Batarya seviyesi veya hava durumu gibi isteğe bağlı girdiler [bir izolini özelleştirin](#bir-izolini-özelleştirin) bölümünde ele alınmıştır.
@@ -84,17 +84,17 @@ Bu istekte:
 
 ## Bir izolini özelleştirin
 
-`createIsoline`, hesaplamaya ince ayar yapmak için çeşitli isteğe bağlı girdileri kabul eder. Her alanla ilgili daha fazla ayrıntıyı [API referansında](/api-reference/isoline/mutation-create-isoline) bulabilirsiniz.
+`createIsoline`, hesaplamaya ince ayar yapmak için çeşitli isteğe bağlı girdileri kabul eder. Her alanla ilgili daha fazla ayrıntıyı [API referansında](/api-reference/light-vehicle/isoline/mutation-create-isoline) bulabilirsiniz.
 
 | Özellik | Açıklama |
 | --- | --- |
-| [Batarya seviyesi](/api-reference/isoline/mutation-create-isoline#arg-input-state_of_charge) | Başlangıç bataryasını `state_of_charge` ile yüzde, kilovatsaat, kilometre veya mil olarak ayarlayın. Varsayılan olarak aracın kullanılabilir batarya kapasitesidir. |
-| [Minimum son şarj](/api-reference/isoline/mutation-create-isoline#arg-input-final_state_of_charge) | `final_state_of_charge` ile bir rezerv bırakın. İzoline yalnızca aracın bunun üzerinde kalarak ulaşabileceği noktaları içerir. Varsayılan değer 0'dır. |
-| [Poligon sayısı](/api-reference/isoline/mutation-create-isoline#arg-input-polygon_count) | En fazla 20 olmak üzere poligon sayısını seçin. |
-| [Gidiş-dönüş](/api-reference/isoline/mutation-create-isoline#arg-input-round_trip) | `round_trip` kullanarak yalnızca aracın başlangıç noktasına geri de sürebileceği noktaları dahil edin. |
-| [Kalite](/api-reference/isoline/mutation-create-isoline#arg-input-quality) | `quality` ile hassasiyetten hız için ödün verin; `high` veya `low` olarak ayarlayın. |
-| [Feribot bağlantıları](/api-reference/isoline/mutation-create-isoline#arg-input-ferry_connections) | `ferry_connections` ile feribotları dahil edin; `none` veya `single` olarak ayarlayın. Feribotlar hesaplama süresini ve poligon sayısını artırır. |
-| [Hava durumu](/api-reference/isoline/mutation-create-isoline#arg-input-weather) | `summer`, `winter` veya `actual` hava durumu ön ayarını ya da özel koşulları uygulayın. Varsayılan olarak gerçek zamanlı hava durumu verilerini kullanır. |
-| [Mevsim](/api-reference/isoline/mutation-create-isoline#arg-input-season) | `weather` alanına daha basit bir alternatif olarak `summer`, `winter` veya `current` koşullarını varsayın. |
-| [Araç yükü](/api-reference/isoline/mutation-create-isoline#arg-input-occupants) | Aracın taşıdığı ağırlığı hesaba katmak için `occupants`, `total_occupant_weight` ve `total_cargo_weight` değerlerini ayarlayın. |
-| [İklim kontrolü](/api-reference/isoline/mutation-create-isoline#arg-input-climate_control) | Isıtma ve soğutmayı tüketime dahil etmek için `climate_control` seçeneğini açın ve `heat_pump` ile `cabin` kurulumunu tanımlayın. |
+| [Batarya seviyesi](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-state_of_charge) | Başlangıç bataryasını `state_of_charge` ile yüzde, kilovatsaat, kilometre veya mil olarak ayarlayın. Varsayılan olarak aracın kullanılabilir batarya kapasitesidir. |
+| [Minimum son şarj](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-final_state_of_charge) | `final_state_of_charge` ile bir rezerv bırakın. İzoline yalnızca aracın bunun üzerinde kalarak ulaşabileceği noktaları içerir. Varsayılan değer 0'dır. |
+| [Poligon sayısı](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-polygon_count) | En fazla 20 olmak üzere poligon sayısını seçin. |
+| [Gidiş-dönüş](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-round_trip) | `round_trip` kullanarak yalnızca aracın başlangıç noktasına geri de sürebileceği noktaları dahil edin. |
+| [Kalite](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-quality) | `quality` ile hassasiyetten hız için ödün verin; `high` veya `low` olarak ayarlayın. |
+| [Feribot bağlantıları](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-ferry_connections) | `ferry_connections` ile feribotları dahil edin; `none` veya `single` olarak ayarlayın. Feribotlar hesaplama süresini ve poligon sayısını artırır. |
+| [Hava durumu](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-weather) | `summer`, `winter` veya `actual` hava durumu ön ayarını ya da özel koşulları uygulayın. Varsayılan olarak gerçek zamanlı hava durumu verilerini kullanır. |
+| [Mevsim](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-season) | `weather` alanına daha basit bir alternatif olarak `summer`, `winter` veya `current` koşullarını varsayın. |
+| [Araç yükü](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-occupants) | Aracın taşıdığı ağırlığı hesaba katmak için `occupants`, `total_occupant_weight` ve `total_cargo_weight` değerlerini ayarlayın. |
+| [İklim kontrolü](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-climate_control) | Isıtma ve soğutmayı tüketime dahil etmek için `climate_control` seçeneğini açın ve `heat_pump` ile `cabin` kurulumunu tanımlayın. |

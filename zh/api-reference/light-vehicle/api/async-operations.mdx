@@ -1,0 +1,27 @@
+---
+title: 异步操作
+description: "了解 API 中异步操作的工作方式：先通过变更创建操作，再通过订阅或查询跟踪并获取结果。"
+---
+
+某些操作，例如创建路线或匹配路线，会以异步方式运行，以保持 API 的响应速度。您无需等待变更返回完整结果，而是会立即获得一个 `id`，然后通过后续操作来跟踪和获取结果。
+
+## 工作原理
+
+1. **创建**
+   调用变更。它会立即返回一个 `id`，您将在下一步使用它来跟踪和获取结果。
+2. **打开订阅**
+   使用上一步的 `id` 进行订阅。在结果计算期间，订阅会推送状态更新，您可以用它来驱动界面中的异步加载状态。
+3. **渲染结果**
+   一旦 `status` 变为最终值，就渲染与该结果对应的界面。
+4. **重新获取已完成的结果**
+   结果一旦达到最终状态，就已经预先计算完成。如果您之后需要再次获取它，例如在返回到该结果时，请使用对应的查询，而不是打开新的订阅。
+
+## 适用范围
+
+| 功能 | 变更 | 订阅 | 查询 |
+| --- | --- | --- | --- |
+| [路线](/docs/getting-started/route) | `createRoute` | `route` | `getRoute` |
+| [匹配路线](/api-reference/light-vehicle/matched-route/mutation-create-matched-route) | `createMatchedRoute` | `matchedRoute` | `getMatchedRoute` |
+| [等值线](/api-reference/light-vehicle/isoline/mutation-create-isoline) | `createIsoline` | `isoline` | `isoline` |
+| [货车路线](/api-reference/light-vehicle/truck-route/mutation-create-truck-route) | `createTruckRoute` | `truckRoute` | `getTruckRoute` |
+| [导航](/api-reference/light-vehicle/navigation/mutation-start-navigation) | `startNavigation` | `navigation` | `navigation` |

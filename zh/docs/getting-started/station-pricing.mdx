@@ -9,15 +9,15 @@ description: "通过瓦片服务在地图上显示充电价格，或通过连接
 
 Tile 服务同时支持将价格用作筛选条件和选择器。
 
-- 作为[筛选条件](/api-reference/tiles/filters)时，传入 `minimum_energy_price` 和 `maximum_energy_price`，并配合 `currency` 将价格范围转换为正确的货币，即可动态包含或排除价格落在该范围内的充电站。
-- 作为[选择器](/api-reference/tiles/selectors)时，请求 `connector_minimum_energy_price`、`connector_maximum_energy_price`、`price_vat`、`price_valid_until`、`price_original_currency` 和 `price_conversion_rate`，以显示价格详情。它们会在充电站 feature 属性中返回（`properties.count == 1`）。价格始终为充电站价格，您可以使用 `price_original_currency` 和 `price_conversion_rate` 按自己的换算方式进行调整。
+- 作为[筛选条件](/api-reference/light-vehicle/tiles/filters)时，传入 `minimum_energy_price` 和 `maximum_energy_price`，并配合 `currency` 将价格范围转换为正确的货币，即可动态包含或排除价格落在该范围内的充电站。
+- 作为[选择器](/api-reference/light-vehicle/tiles/selectors)时，请求 `connector_minimum_energy_price`、`connector_maximum_energy_price`、`price_vat`、`price_valid_until`、`price_original_currency` 和 `price_conversion_rate`，以显示价格详情。它们会在充电站 feature 属性中返回（`properties.count == 1`）。价格始终为充电站价格，您可以使用 `price_original_currency` 和 `price_conversion_rate` 按自己的换算方式进行调整。
 
 ## 充电站定价
 
 定价详情的来源取决于充电站背后所使用的充电站数据库。
 
 - 如果使用 Ecomovement，可在充电站连接器的定价对象中找到价格，路径为 `evses[].connectors[].prices`。
-- 对于任何其他充电站数据库，请改用专用的 [tariffList](/api-reference/tariff/query-tariff-list) 和 [tariff](/api-reference/tariff/query-tariff) 查询。
+- 对于任何其他充电站数据库，请改用专用的 [tariffList](/api-reference/light-vehicle/tariff/query-tariff-list) 和 [tariff](/api-reference/light-vehicle/tariff/query-tariff) 查询。
 
 一个连接器可以有多个在不同时间生效的价格元素。请按顺序逐个处理，以呈现正确的价格。
 

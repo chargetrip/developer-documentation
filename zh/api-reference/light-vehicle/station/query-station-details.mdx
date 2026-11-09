@@ -1,0 +1,13 @@
+---
+title: 充电站查询
+heading: 充电站
+description: "使用 station 查询获取充电站的详细信息，包括充电桩、位置以及其他可用信息。"
+schemaName: station
+schemaType: Query
+---
+
+使用 station 查询获取特定充电站的详细信息。当您想显示充电桩的类型和数量、位置，或当前可用的任何其他充电站详情时，此操作非常有用。
+
+## 查询
+
+获取充电站详情需要充电站的 `id` 或 `evse_id`。`id` 可通过[路线](/api-reference/light-vehicle/route/query-get-route)、[瓦片服务](/api-reference/light-vehicle/tiles/mvt)或[周边充电站查询](/api-reference/light-vehicle/station/query-station-around)获取。

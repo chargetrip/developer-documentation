@@ -12,7 +12,7 @@ An isoline uses the real road network as its reference. The calculation finds th
 
 ## How it works
 
-Like routes, isolines are calculated asynchronously, following the same [async pattern](/api-reference/api/async-operations) used across the API. Creating and retrieving an isoline happen in separate steps.
+Like routes, isolines are calculated asynchronously, following the same [async pattern](/api-reference/light-vehicle/api/async-operations) used across the API. Creating and retrieving an isoline happen in separate steps.
 
 1. **Create an isoline**
    Call the `createIsoline` mutation with at least a `vehicle_id` and an `origin`. The mutation returns an isoline `id` right away, which you'll use in the next step. Optional input such as battery level or weather is covered in [customize your isoline](#customize-your-isoline).
@@ -84,17 +84,17 @@ In this request:
 
 ## Customize your isoline
 
-`createIsoline` accepts a range of optional input to fine-tune the calculation. More details on each field can be found in the [API reference](/api-reference/isoline/mutation-create-isoline).
+`createIsoline` accepts a range of optional input to fine-tune the calculation. More details on each field can be found in the [API reference](/api-reference/light-vehicle/isoline/mutation-create-isoline).
 
 | Feature | Description |
 | --- | --- |
-| [Battery level](/api-reference/isoline/mutation-create-isoline#arg-input-state_of_charge) | Set the starting battery with `state_of_charge`, as a percentage, kilowatt hours, kilometers or miles. Defaults to the vehicle's usable battery capacity. |
-| [Minimum final charge](/api-reference/isoline/mutation-create-isoline#arg-input-final_state_of_charge) | Keep a reserve with `final_state_of_charge`. The isoline only includes points the vehicle can reach while staying above it. Defaults to 0. |
-| [Polygon count](/api-reference/isoline/mutation-create-isoline#arg-input-polygon_count) | Choose the number of polygons, up to 20. |
-| [Round trip](/api-reference/isoline/mutation-create-isoline#arg-input-round_trip) | Only include points the vehicle can also drive back to the origin from, using `round_trip`. |
-| [Quality](/api-reference/isoline/mutation-create-isoline#arg-input-quality) | Trade precision for speed with `quality`, set to `high` or `low`. |
-| [Ferry connections](/api-reference/isoline/mutation-create-isoline#arg-input-ferry_connections) | Include ferries with `ferry_connections`, set to `none` or `single`. Ferries increase the calculation time and the number of polygons. |
-| [Weather](/api-reference/isoline/mutation-create-isoline#arg-input-weather) | Apply a `summer`, `winter`, or `actual` weather preset, or custom conditions. Defaults to real-time weather data. |
-| [Season](/api-reference/isoline/mutation-create-isoline#arg-input-season) | Assume `summer`, `winter`, or `current` conditions, as a simpler alternative to `weather`. |
-| [Vehicle load](/api-reference/isoline/mutation-create-isoline#arg-input-occupants) | Set `occupants`, `total_occupant_weight`, and `total_cargo_weight` to account for the weight the vehicle carries. |
-| [Climate control](/api-reference/isoline/mutation-create-isoline#arg-input-climate_control) | Turn on `climate_control`, and describe the `heat_pump` and `cabin` setup, to include heating and cooling in the consumption. |
+| [Battery level](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-state_of_charge) | Set the starting battery with `state_of_charge`, as a percentage, kilowatt hours, kilometers or miles. Defaults to the vehicle's usable battery capacity. |
+| [Minimum final charge](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-final_state_of_charge) | Keep a reserve with `final_state_of_charge`. The isoline only includes points the vehicle can reach while staying above it. Defaults to 0. |
+| [Polygon count](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-polygon_count) | Choose the number of polygons, up to 20. |
+| [Round trip](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-round_trip) | Only include points the vehicle can also drive back to the origin from, using `round_trip`. |
+| [Quality](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-quality) | Trade precision for speed with `quality`, set to `high` or `low`. |
+| [Ferry connections](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-ferry_connections) | Include ferries with `ferry_connections`, set to `none` or `single`. Ferries increase the calculation time and the number of polygons. |
+| [Weather](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-weather) | Apply a `summer`, `winter`, or `actual` weather preset, or custom conditions. Defaults to real-time weather data. |
+| [Season](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-season) | Assume `summer`, `winter`, or `current` conditions, as a simpler alternative to `weather`. |
+| [Vehicle load](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-occupants) | Set `occupants`, `total_occupant_weight`, and `total_cargo_weight` to account for the weight the vehicle carries. |
+| [Climate control](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-climate_control) | Turn on `climate_control`, and describe the `heat_pump` and `cabin` setup, to include heating and cooling in the consumption. |

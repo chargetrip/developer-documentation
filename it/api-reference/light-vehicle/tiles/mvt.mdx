@@ -1,0 +1,32 @@
+---
+title: MVT
+description: "Accedi ai dati geografici relativi alle stazioni come Mapbox Vector Tiles (MVT) codificati in Protocol Buffers, per un rendering efficiente della mappa."
+tag: Rest
+---
+
+Il servizio MVT (Mapbox Vector Tile) fornisce accesso ai dati geografici relativi alle stazioni in un formato basato su tile. I vector tile sono codificati come Protocol Buffers (PBF), consentendo una serializzazione efficiente dei dati strutturati.
+
+## Configurazione
+
+Per accedere ai dati delle stazioni in formato MVT, invia una richiesta al seguente endpoint:
+
+```bash Tile / MVT / Base URL
+https://api.chargetrip.io/v2/station/{z}/{x}/{y}/tile.mvt
+```
+
+L'URL MVT utilizza i seguenti parametri di percorso:
+
+- `z`: Il livello di zoom del tile.
+- `x`: La coordinata x del tile.
+- `y`: La coordinata y del tile.
+
+La maggior parte dei provider di mappe dispone di metodi integrati per convertire latitudine e longitudine in coordinate in pixel. Per convertire manualmente le coordinate di latitudine e longitudine in x e y, usa la [proiezione Web Mercator](https://en.wikipedia.org/wiki/Web_Mercator_projection).
+
+### Filtri
+Usa il parametro di query `filter` per filtrare le stazioni restituite in base a criteri specifici. Consulta la [documentazione sui filtri](/api-reference/light-vehicle/tiles/filters) per maggiori informazioni.
+
+### Selettori
+Usa il parametro di query `station_properties[]` per specificare i campi restituiti per ogni feature di stazione. Consulta la [documentazione sui selettori](/api-reference/light-vehicle/tiles/selectors) per maggiori informazioni.
+
+### Valuta
+Usa il parametro di query `currency` per impostare la valuta dei prezzi dell'energia restituiti e usati per il filtraggio. Consulta la [documentazione sulla conversione di valuta](/api-reference/light-vehicle/tiles/filters) per maggiori informazioni.

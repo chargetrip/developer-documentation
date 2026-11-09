@@ -1,0 +1,14 @@
+---
+title: Amenity list query
+heading: Amenity list
+description: "List the amenities around a station with the amenityList query, such as restaurants and shops to visit while a vehicle charges."
+schemaName: amenityList
+schemaType: Query
+---
+
+Get a list of amenities available around a specific station by using the amenityList query. This is useful when you want to display nearby restaurants, shops, or other facilities while a vehicle is charging.
+
+## Query
+
+A station `id` is required to get its amenities. The `id` can be obtained through either a [route](/api-reference/light-vehicle/route/query-get-route), the [tile service](/api-reference/light-vehicle/tiles/mvt), or the [station around query](/api-reference/light-vehicle/station/query-station-around). Use the `filter` argument to narrow the results down based on specific criteria, and the `size` and `page` arguments to [paginate](/api-reference/light-vehicle/api/pagination) through them.
+

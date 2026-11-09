@@ -1,0 +1,13 @@
+---
+title: 移除联网车辆变更
+heading: 移除联网车辆
+description: "当最终用户断开其车辆连接时，使用 removeConnectedVehicle 变更移除联网车辆并撤销其访问权限。"
+schemaName: removeConnectedVehicle
+schemaType: Mutation
+---
+
+使用 removeConnectedVehicle 变更移除联网车辆并撤销其访问权限。当最终用户断开其车辆与连接服务提供商的连接时，此操作非常有用。
+
+## 变更
+
+移除联网车辆需要 `id`。`id` 可通过 [createConnectedVehicle 变更](/api-reference/light-vehicle/connected-vehicle/mutation-create-connected-vehicle)获取。

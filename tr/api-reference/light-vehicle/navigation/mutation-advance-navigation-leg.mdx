@@ -1,0 +1,13 @@
+---
+title: Navigasyon bölümünü ilerlet mutasyonu
+heading: Navigasyon bölümünü ilerlet
+description: "Örneğin bir şarj durağından sonra, advanceNavigationLeg mutasyonuyla etkin navigasyon oturumunu rotanın sonraki bölümüne taşıyın."
+schemaName: advanceNavigationLeg
+schemaType: Mutation
+---
+
+advanceNavigationLeg mutasyonunu kullanarak etkin bir navigasyon oturumunu bir sonraki rota bölümüne ilerletin. Bu, bir sürücü bir bölümü, örneğin bir şarj durağını tamamlayıp bir sonrakine devam ettiğinde kullanışlıdır.
+
+## Mutasyon
+
+Bir sonraki bölüme ilerlemek için bir navigasyon oturumu `id` ve `current_location` gereklidir. İsteğe bağlı olarak, aracın mevcut konumdaki şarj seviyesini belirtmek için `state_of_charge` ekleyin. `id`, [startNavigation mutasyonu](/api-reference/light-vehicle/navigation/mutation-start-navigation) üzerinden alınabilir.

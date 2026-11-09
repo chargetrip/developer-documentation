@@ -9,15 +9,15 @@ Ladepreise lassen sich auf zwei Ebenen anzeigen: direkt auf einer Karte über de
 
 Der Tile-Service unterstützt Preise sowohl als Filter als auch als Selektoren.
 
-- Als [Filter](/api-reference/tiles/filters) übergeben Sie `minimum_energy_price` und `maximum_energy_price` zusammen mit `currency`, um den Bereich in die richtige Währung umzurechnen, und schließen so Stationen, deren Preis in diesen Bereich fällt, dynamisch ein oder aus.
-- Als [Selektor](/api-reference/tiles/selectors) fordern Sie `connector_minimum_energy_price`, `connector_maximum_energy_price`, `price_vat`, `price_valid_until`, `price_original_currency` und `price_conversion_rate` an, um Preisdetails anzuzeigen. Sie werden in den Eigenschaften des Station-Features zurückgegeben (`properties.count == 1`). Der Preis ist immer der Stationspreis, und mit `price_original_currency` und `price_conversion_rate` können Sie ihn an Ihre eigene Umrechnung anpassen.
+- Als [Filter](/api-reference/light-vehicle/tiles/filters) übergeben Sie `minimum_energy_price` und `maximum_energy_price` zusammen mit `currency`, um den Bereich in die richtige Währung umzurechnen, und schließen so Stationen, deren Preis in diesen Bereich fällt, dynamisch ein oder aus.
+- Als [Selektor](/api-reference/light-vehicle/tiles/selectors) fordern Sie `connector_minimum_energy_price`, `connector_maximum_energy_price`, `price_vat`, `price_valid_until`, `price_original_currency` und `price_conversion_rate` an, um Preisdetails anzuzeigen. Sie werden in den Eigenschaften des Station-Features zurückgegeben (`properties.count == 1`). Der Preis ist immer der Stationspreis, und mit `price_original_currency` und `price_conversion_rate` können Sie ihn an Ihre eigene Umrechnung anpassen.
 
 ## Stationspreise
 
 Woher die Preisdetails stammen, hängt von der Stationsdatenbank hinter einer Station ab.
 
 - Wenn Ecomovement verwendet wird, finden sich die Preise im Preisobjekt der Stecker einer Station unter `evses[].connectors[].prices`.
-- Für jede andere Stationsdatenbank verwenden Sie stattdessen die dedizierten Queries [tariffList](/api-reference/tariff/query-tariff-list) und [tariff](/api-reference/tariff/query-tariff).
+- Für jede andere Stationsdatenbank verwenden Sie stattdessen die dedizierten Queries [tariffList](/api-reference/light-vehicle/tariff/query-tariff-list) und [tariff](/api-reference/light-vehicle/tariff/query-tariff).
 
 Ein Stecker kann mehrere Preiselemente haben, die zu unterschiedlichen Zeiten aktiv sind. Gehen Sie sie der Reihe nach durch, um den richtigen Preis darzustellen.
 

@@ -9,15 +9,15 @@ Charging prices can be shown at two levels: directly on a map through the tile s
 
 The tile service supports pricing both as filters and as selectors.
 
-- As a [filter](/api-reference/tiles/filters), pass `minimum_energy_price` and `maximum_energy_price`, along with `currency` to convert the range to the correct currency, to dynamically include or exclude stations whose price falls within that range.
-- As a [selector](/api-reference/tiles/selectors), request `connector_minimum_energy_price`, `connector_maximum_energy_price`, `price_vat`, `price_valid_until`, `price_original_currency` and `price_conversion_rate` to show price details. They are returned in the station feature properties (`properties.count == 1`). The price is always the station price, and you can use `price_original_currency` and `price_conversion_rate` to adjust for your own conversion.
+- As a [filter](/api-reference/light-vehicle/tiles/filters), pass `minimum_energy_price` and `maximum_energy_price`, along with `currency` to convert the range to the correct currency, to dynamically include or exclude stations whose price falls within that range.
+- As a [selector](/api-reference/light-vehicle/tiles/selectors), request `connector_minimum_energy_price`, `connector_maximum_energy_price`, `price_vat`, `price_valid_until`, `price_original_currency` and `price_conversion_rate` to show price details. They are returned in the station feature properties (`properties.count == 1`). The price is always the station price, and you can use `price_original_currency` and `price_conversion_rate` to adjust for your own conversion.
 
 ## Station pricing
 
 Where pricing details come from depends on the station database behind a station.
 
 - If Ecomovement is used, pricing can be found on the pricing object of a station's connectors, at `evses[].connectors[].prices`.
-- For any other station database, use the dedicated [tariffList](/api-reference/tariff/query-tariff-list) and [tariff](/api-reference/tariff/query-tariff) queries instead.
+- For any other station database, use the dedicated [tariffList](/api-reference/light-vehicle/tariff/query-tariff-list) and [tariff](/api-reference/light-vehicle/tariff/query-tariff) queries instead.
 
 A connector can have several price elements active at different times. Work through them in order to render the correct price.
 

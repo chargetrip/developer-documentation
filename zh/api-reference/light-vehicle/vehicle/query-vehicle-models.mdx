@@ -1,0 +1,12 @@
+---
+title: 车辆车型查询
+heading: 车辆车型
+description: "使用 vehicleModels 查询获取某个车辆品牌的唯一车型，以构建分步的车辆选择流程。"
+schemaName: vehicleModels
+schemaType: Query
+---
+
+使用 vehicleModels 查询获取唯一的车型列表。此查询与 vehicleMakes [查询](/api-reference/light-vehicle/vehicle/query-vehicle-makes)结合使用，可构建按顺序选择车辆的流程。
+
+## 查询
+获取车型需要车辆品牌的 `id`。该 id 可通过 vehicleMakes [查询](/api-reference/light-vehicle/vehicle/query-vehicle-makes)获取。使用 `first` 和 `after` 参数对结果进行[分页](/api-reference/light-vehicle/api/pagination)，使用 `filters` 缩小搜索结果范围，并使用 `country` 参数对数据进行本地化。

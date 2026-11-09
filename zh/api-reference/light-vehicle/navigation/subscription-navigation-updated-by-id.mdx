@@ -1,0 +1,16 @@
+---
+title: 按ID更新的导航订阅
+heading: 导航更新
+description: "订阅某个导航会话，以便在驾驶员沿路线行驶时实时接收状态和更新。"
+schemaName: navigation
+schemaType: Subscription
+---
+
+通过 [startNavigation 变更](/api-reference/light-vehicle/navigation/mutation-start-navigation)获得导航会话的 `id` 后，订阅该会话，即可在驾驶员沿路线行进时实时接收状态和更新详情。
+
+> [!TIP] 保持订阅
+> 请始终使用此订阅，以免错过导航会话的更新。
+
+## 订阅
+
+订阅导航会话的更新需要其 `id`。`id` 可通过 [startNavigation 变更](/api-reference/light-vehicle/navigation/mutation-start-navigation)获取。使用 `last_change.type` 可查看会话更新的原因，例如 `route_updated` 或 `next_station_availability_updated`。每当需要重新渲染路线时（例如调用 [recalculateNavigation 变更](/api-reference/light-vehicle/navigation/mutation-recalculate-navigation)之后），`meta.updated_at` 都会发生变化。

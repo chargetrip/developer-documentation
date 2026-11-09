@@ -1,0 +1,16 @@
+---
+title: Route amenity stop query
+heading: Route amenity stop
+description: "Find charging stations with amenities at a certain point along a route with the getRouteStationsWithAmenities query."
+schemaName: getRouteStationsWithAmenities
+schemaType: Query
+---
+
+Search for charging stations with amenities at a certain point along a route by using the getRouteStationsWithAmenities query. This is useful when you want to plan a charging stop near restaurants, shops, or other amenities.
+
+## Query
+
+A `route_id`, `route_details_id`, `time_window`, and `amenity_types` are required to search for stations along a route. Both ids can be obtained through the [getRoute query](/api-reference/light-vehicle/route/query-get-route). Use the `filter` argument to narrow the results down based on specific criteria, and the `first` and `after` arguments to [paginate](/api-reference/light-vehicle/api/pagination) through them.
+
+> [!WARNING] Limits
+> `first` cannot exceed 10 for this query.

@@ -1,0 +1,13 @@
+---
+title: "Verbundenes Fahrzeug autorisieren Mutation"
+heading: "Verbundenes Fahrzeug autorisieren"
+description: "Schließen Sie die Autorisierung eines verbundenen Fahrzeugs mit der Mutation authorizeConnectedVehicle ab, nachdem der Endnutzer den Zugriff beim Anbieter erteilt hat."
+schemaName: authorizeConnectedVehicle
+schemaType: Mutation
+---
+
+Schließen Sie die Autorisierung eines verbundenen Fahrzeugs mit der Mutation authorizeConnectedVehicle ab. Dies ist nützlich, nachdem der Endnutzer den Zugriff über den Konnektivitätsanbieter erteilt hat.
+
+## Mutation
+
+Zum Autorisieren eines verbundenen Fahrzeugs sind eine `id` und anbieterspezifische `options` erforderlich. Die `id` erhalten Sie über die [Mutation createConnectedVehicle](/api-reference/light-vehicle/connected-vehicle/mutation-create-connected-vehicle).

@@ -10,7 +10,7 @@ The Route API considers all these variables to find optimal EV routes. Using a w
 
 ## How it works
 
-To ensure high performance, the Route API operates asynchronously, following the same [async pattern](/api-reference/api/async-operations) used across the API. Creating and retrieving a route happen in separate steps.
+To ensure high performance, the Route API operates asynchronously, following the same [async pattern](/api-reference/light-vehicle/api/async-operations) used across the API. Creating and retrieving a route happen in separate steps.
 
 1. **Create a route**
    Call the `createRoute` mutation with at least a `vehicle`, `origin`, and `destination`. The mutation returns a route `id` right away, which you'll use in the next step to track and retrieve the route. Many more customization options are available; see [customize your route](#customize-your-route) below.
@@ -26,24 +26,24 @@ To ensure high performance, the Route API operates asynchronously, following the
 
 ## Customize your route
 
-`createRoute` accepts a range of optional input to fine-tune how a route is calculated. More details on each field can be found in the [API reference](/api-reference/route/mutation-create-route).
+`createRoute` accepts a range of optional input to fine-tune how a route is calculated. More details on each field can be found in the [API reference](/api-reference/light-vehicle/route/mutation-create-route).
 
 | Feature | Description |
 | --- | --- |
-| [Waypoints](/api-reference/route/mutation-create-route#arg-input-via) | Add intermediate stops. Provide `via.properties.station.station_id` to force a charging stop at a specific station, or only `via.geometry` for a plain transit point with no charging. |
-| [Stop duration](/api-reference/route/mutation-create-route#arg-input-via-properties-station-stop_duration) | Set how long, in seconds, the vehicle stays at a waypoint or the destination, using `properties.station.stop_duration` or `properties.location.stop_duration`. |
-| [Highway charging](/api-reference/route/mutation-create-route#arg-input-station_preferences) | Prioritize charging stations located directly on the highway with `station_preferences.prefer_highway_charging`, avoiding stops that require exiting the highway. |
-| [Weather](/api-reference/route/mutation-create-route#arg-input-weather) | Apply a weather preset or custom weather conditions to the consumption model. Defaults to real-time weather data. |
-| [Season](/api-reference/route/mutation-create-route#arg-input-season) | Assume `summer`, `winter`, or `current` weather conditions, as a simpler alternative to `weather`. |
-| [Route features to avoid](/api-reference/route/mutation-create-route#arg-input-avoid) | Avoid `toll_road` or `ferry` on a best effort basis. |
-| [Operator ranking](/api-reference/route/mutation-create-route#arg-input-operators-ranking) | Prefer specific charging networks with `type: preferred`, or restrict routing to only those networks with `type: required`. Rank operators as `high`, `medium`, or `low`, and scope a ranking to specific countries per operator. |
-| [Operator exclusions](/api-reference/route/mutation-create-route#arg-input-operators-exclude) | Exclude an operator entirely from the route with `operators.exclude`. Falls back to your project's dashboard configuration when not set at the request level. |
-| [Operator avoidance](/api-reference/route/mutation-create-route#arg-input-operators-avoid) | Avoid an operator without excluding it outright, using `operators.avoid`. |
-| [Alternative charging stations](/api-reference/route/mutation-create-route#arg-input-alternative_station_radius) | Search for alternative charging stations within a radius between 500 and 5000 meters along the route. |
-| [Alternative routes](/api-reference/route/mutation-create-route#arg-input-alternative_routes) | Request additional route options, on a best effort basis. Set to `0` to calculate only the recommended route. |
-| [Driving preferences](/api-reference/route/mutation-create-route#arg-input-driving_preferences) | Adjust the driving style with `speed_factor` or `maximum_speed`, or pick a `style` of `eco` or `sport`. |
-| [Traffic awareness](/api-reference/route/mutation-create-route#arg-input-traffic_aware) | Take real-time traffic congestion into account. Contact support to enable this for your project. |
-| [Departure time](/api-reference/route/mutation-create-route#arg-input-departure_time) | Calculate expected arrival times using real-time traffic and historical, current, or forecasted weather. |
-| [Destination as a station](/api-reference/route/mutation-create-route#arg-input-destination-properties-station) | Set a specific station as the route's destination. This is treated as a non-charging stop. |
-| [Vehicle load per waypoint](/api-reference/route/mutation-create-route#arg-input-origin-properties-vehicle) | Set `occupants`, `total_occupant_weight`, and `total_cargo_weight` on `origin` or `via`. These propagate through the rest of the journey, and can be overridden at any later via point. |
-| [Minimum charging power](/api-reference/route/mutation-create-route#arg-input-vehicle-charging-minimum_power) | By default, routing excludes connectors below 43 kW. Set a different minimum to match your vehicle's charging speed. Higher-rated chargers are still selected even if your vehicle charges slower than their maximum rate. |
+| [Waypoints](/api-reference/light-vehicle/route/mutation-create-route#arg-input-via) | Add intermediate stops. Provide `via.properties.station.station_id` to force a charging stop at a specific station, or only `via.geometry` for a plain transit point with no charging. |
+| [Stop duration](/api-reference/light-vehicle/route/mutation-create-route#arg-input-via-properties-station-stop_duration) | Set how long, in seconds, the vehicle stays at a waypoint or the destination, using `properties.station.stop_duration` or `properties.location.stop_duration`. |
+| [Highway charging](/api-reference/light-vehicle/route/mutation-create-route#arg-input-station_preferences) | Prioritize charging stations located directly on the highway with `station_preferences.prefer_highway_charging`, avoiding stops that require exiting the highway. |
+| [Weather](/api-reference/light-vehicle/route/mutation-create-route#arg-input-weather) | Apply a weather preset or custom weather conditions to the consumption model. Defaults to real-time weather data. |
+| [Season](/api-reference/light-vehicle/route/mutation-create-route#arg-input-season) | Assume `summer`, `winter`, or `current` weather conditions, as a simpler alternative to `weather`. |
+| [Route features to avoid](/api-reference/light-vehicle/route/mutation-create-route#arg-input-avoid) | Avoid `toll_road` or `ferry` on a best effort basis. |
+| [Operator ranking](/api-reference/light-vehicle/route/mutation-create-route#arg-input-operators-ranking) | Prefer specific charging networks with `type: preferred`, or restrict routing to only those networks with `type: required`. Rank operators as `high`, `medium`, or `low`, and scope a ranking to specific countries per operator. |
+| [Operator exclusions](/api-reference/light-vehicle/route/mutation-create-route#arg-input-operators-exclude) | Exclude an operator entirely from the route with `operators.exclude`. Falls back to your project's dashboard configuration when not set at the request level. |
+| [Operator avoidance](/api-reference/light-vehicle/route/mutation-create-route#arg-input-operators-avoid) | Avoid an operator without excluding it outright, using `operators.avoid`. |
+| [Alternative charging stations](/api-reference/light-vehicle/route/mutation-create-route#arg-input-alternative_station_radius) | Search for alternative charging stations within a radius between 500 and 5000 meters along the route. |
+| [Alternative routes](/api-reference/light-vehicle/route/mutation-create-route#arg-input-alternative_routes) | Request additional route options, on a best effort basis. Set to `0` to calculate only the recommended route. |
+| [Driving preferences](/api-reference/light-vehicle/route/mutation-create-route#arg-input-driving_preferences) | Adjust the driving style with `speed_factor` or `maximum_speed`, or pick a `style` of `eco` or `sport`. |
+| [Traffic awareness](/api-reference/light-vehicle/route/mutation-create-route#arg-input-traffic_aware) | Take real-time traffic congestion into account. Contact support to enable this for your project. |
+| [Departure time](/api-reference/light-vehicle/route/mutation-create-route#arg-input-departure_time) | Calculate expected arrival times using real-time traffic and historical, current, or forecasted weather. |
+| [Destination as a station](/api-reference/light-vehicle/route/mutation-create-route#arg-input-destination-properties-station) | Set a specific station as the route's destination. This is treated as a non-charging stop. |
+| [Vehicle load per waypoint](/api-reference/light-vehicle/route/mutation-create-route#arg-input-origin-properties-vehicle) | Set `occupants`, `total_occupant_weight`, and `total_cargo_weight` on `origin` or `via`. These propagate through the rest of the journey, and can be overridden at any later via point. |
+| [Minimum charging power](/api-reference/light-vehicle/route/mutation-create-route#arg-input-vehicle-charging-minimum_power) | By default, routing excludes connectors below 43 kW. Set a different minimum to match your vehicle's charging speed. Higher-rated chargers are still selected even if your vehicle charges slower than their maximum rate. |

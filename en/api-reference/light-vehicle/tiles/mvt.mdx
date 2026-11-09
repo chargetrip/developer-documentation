@@ -1,0 +1,64 @@
+---
+title: MVT
+description: "Access station-related geographic data as Mapbox Vector Tiles (MVT) encoded as Protocol Buffers, for efficient map rendering."
+tag: Rest
+---
+
+The MVT (Mapbox Vector Tile) service provides access to station-related geographic data in a tile-based format. Vector tiles are encoded as Protocol Buffers (PBF), allowing for efficient serialization of structured data.
+
+## Setup
+
+To access the station data in MVT format, send a request to the following endpoint:
+
+```bash Tile / MVT / Base URL
+https://api.chargetrip.io/v2/station/{z}/{x}/{y}/tile.mvt
+```
+
+The MVT URL uses the following path parameters:
+
+- `z`: The zoom level of the tile.
+- `x`: The x-coordinate of the tile.
+- `y`: The y-coordinate of the tile.
+
+Most map providers have built-in methods to convert latitude and longitude to pixel coordinates. To manually convert latitude and longitude coordinates to x and y, use the [Web Mercator Projection](https://en.wikipedia.org/wiki/Web_Mercator_projection).
+
+### Filtering
+Use the `filter` query parameter to filter the stations returned based on specific criteria. See the [filters documentation](/api-reference/light-vehicle/tiles/filters) for more information.
+
+### Selectors
+Use the `station_properties[]` query parameter to specify the fields returned for each station feature. See the [selectors documentation](/api-reference/light-vehicle/tiles/selectors) for more information.
+
+## Response
+
+MVT responses are binary Protocol Buffer payloads containing vector point features. Each feature represents either an individual station (`count: 1`) or a station cluster (`count > 1`).
+
+The properties encoded on each feature depend entirely on the feature type and the selectors provided:
+
+- Cluster features: always return `{ "count": N, "expansion_zoom": Z }`.
+
+- Station features: return `{ "count": 1, "id": ID}` if no selectors are provided, or only the requested fields if [selectors](/api-reference/light-vehicle/tiles/selectors) are provided.
+
+
+
+<details>
+  <summary>Default decoded MVT tile response</summary>
+
+
+```json Example response
+// Station feature
+{
+  "count": 1
+  "id": "64997cc0fbca5dbf88ef1fae"
+
+}
+
+// Cluster feature
+{
+  "count": 4,
+  "expansion_zoom": 14
+}
+```
+
+</details>
+### Currency
+Use the `currency` query parameter to set the currency of the energy prices returned and filtered on. See the [currency conversion documentation](/api-reference/light-vehicle/tiles/filters) for more information.

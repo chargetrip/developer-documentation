@@ -1,0 +1,13 @@
+---
+title: "Station abfragen Query"
+heading: "Station abfragen"
+description: "Rufen Sie mit der Query station die Details einer Station ab, inklusive Ladepunkten, Standort und weiteren verfügbaren Informationen."
+schemaName: station
+schemaType: Query
+---
+
+Rufen Sie bestimmte Stationsdetails mit der Query station ab. Dies ist nützlich, wenn Sie Typ und Anzahl der Ladepunkte, den Standort oder andere aktuell verfügbare Details einer Station anzeigen möchten.
+
+## Query
+
+Zum Abrufen der Stationsdetails ist die `id` oder `evse_id` einer Station erforderlich. Die `id` erhalten Sie entweder über eine [Route](/api-reference/light-vehicle/route/query-get-route), den [Kachel-Service](/api-reference/light-vehicle/tiles/mvt) oder die [Query stationAround](/api-reference/light-vehicle/station/query-station-around).
