@@ -1,0 +1,19 @@
+---
+title: Management API reference
+description: "Browse the queries and mutations of the Management API, which you use to manage resources such as boosting groups for your workspace."
+---
+
+The Management API is a separate GraphQL API with its own schema. Use it to manage the resources that shape how your project behaves, instead of requesting them from Chargetrip support. Today it covers boosting groups, which let you prioritize individual charging stations during routing.
+
+Requests go to a different endpoint than the rest of the API reference, and every resource you create or read belongs to the workspace that your `x-token` header identifies.
+
+> [!WARNING] Alpha
+> The Management API is in alpha and is not available on free plans. Contact support to get access, and expect the schema to change.
+
+## Resources
+
+| Resource | Operations |
+| --- | --- |
+| Boosting groups | [`boostingGroup`](/api-reference/management/boosting-group/query-boosting-group), [`boostingGroups`](/api-reference/management/boosting-group/query-boosting-groups), [`createBoostingGroup`](/api-reference/management/boosting-group/mutation-create-boosting-group), [`updateBoostingGroup`](/api-reference/management/boosting-group/mutation-update-boosting-group), [`deleteBoostingGroup`](/api-reference/management/boosting-group/mutation-delete-boosting-group) |
+
+To learn how boosting groups affect a route, see [prioritize individual charging stations](/docs/getting-started/route-boosting-groups).
