@@ -1,0 +1,37 @@
+---
+title: "Créer un groupe de mise en avant mutation"
+heading: "Créer un groupe de mise en avant"
+description: "Créez un groupe de stations à mettre en avant lors du calcul d'itinéraire avec la mutation createBoostingGroup."
+schemaName: createBoostingGroup
+schemaType: Mutation
+---
+
+Créez un groupe de mise en avant à l'aide de la mutation createBoostingGroup. Elle est utile lorsque vous voulez orienter les itinéraires vers des stations de recharge précises, par exemple grâce à un meilleur accord commercial. Les groupes actifs s'appliquent automatiquement à chaque itinéraire calculé avec [createRoute](/api-reference/light-vehicle/route/mutation-create-route). Pour en savoir plus, consultez le [guide des groupes de mise en avant](/docs/getting-started/route-boosting-groups).
+
+## Mutation
+
+Un `name`, un `client_id` et une liste de `stations` sont requis. Identifiez chaque station par son `id` ou par l'`external_id` utilisé par votre fournisseur de stations. Définissez `status` sur `inactive` pour créer le groupe sans encore l'utiliser pour le calcul d'itinéraire.
+
+> [!WARNING] Alpha
+> Cette opération est en alpha et n'est pas disponible sur les offres gratuites. Contactez le support pour y accéder.
+
+<details>
+  <summary>Créer un groupe de mise en avant inactif avec deux stations.</summary>
+  Une station est identifiée par son `id` interne, l'autre par l'`external_id` de votre fournisseur.
+
+```graphql Example request
+mutation CreateBoostingGroup {
+  createBoostingGroup(
+    input: {
+      name: "Preferred stations"
+      client_id: "60b8d5a2f1c8e9001b9e2831"
+      status: inactive
+      stations: [{ id: "5f6a1b2c3d4e5f6a7b8c9d0e" }, { external_id: "NL-AMS-0001" }]
+    }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>

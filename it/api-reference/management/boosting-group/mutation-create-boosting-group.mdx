@@ -1,0 +1,37 @@
+---
+title: "Crea Boosting Group mutation"
+heading: "Crea Boosting Group"
+description: "Crea un gruppo di stazioni da promuovere durante il calcolo del percorso con la mutation createBoostingGroup."
+schemaName: createBoostingGroup
+schemaType: Mutation
+---
+
+Crea un Boosting Group usando la mutation createBoostingGroup. È utile quando vuoi indirizzare i percorsi verso stazioni di ricarica specifiche, ad esempio grazie a un accordo commerciale più vantaggioso. I gruppi attivi vengono applicati automaticamente a ogni percorso calcolato con [createRoute](/api-reference/light-vehicle/route/mutation-create-route). Per saperne di più, consulta la [guida ai Boosting Groups](/docs/getting-started/route-boosting-groups).
+
+## Mutation
+
+Sono necessari un `name`, un `client_id` e un elenco di `stations`. Identifica ogni stazione tramite il suo `id` oppure tramite l'`external_id` usato dal tuo fornitore di stazioni. Imposta `status` su `inactive` per creare il gruppo senza ancora usarlo per il calcolo dei percorsi.
+
+> [!WARNING] Alpha
+> Questa operazione è in alpha e non è disponibile nei piani gratuiti. Contatta il supporto per l'accesso.
+
+<details>
+  <summary>Creare un Boosting Group inattivo con due stazioni.</summary>
+  Una stazione è identificata dal suo `id` interno, l'altra dall'`external_id` del tuo fornitore.
+
+```graphql Example request
+mutation CreateBoostingGroup {
+  createBoostingGroup(
+    input: {
+      name: "Preferred stations"
+      client_id: "60b8d5a2f1c8e9001b9e2831"
+      status: inactive
+      stations: [{ id: "5f6a1b2c3d4e5f6a7b8c9d0e" }, { external_id: "NL-AMS-0001" }]
+    }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>

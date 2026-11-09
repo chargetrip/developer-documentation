@@ -1,0 +1,16 @@
+---
+title: "Boosting Group löschen Mutation"
+heading: "Boosting Group löschen"
+description: "Entfernen Sie mit der Mutation deleteBoostingGroup eine Boosting Group, wenn Sie ihre Stationen nicht mehr priorisieren möchten."
+schemaName: deleteBoostingGroup
+schemaType: Mutation
+---
+
+Löschen Sie eine Boosting Group mit der Mutation deleteBoostingGroup. Das ist nützlich, wenn Sie die Stationen einer Gruppe nicht mehr priorisieren möchten. Um eine Gruppe nur vorübergehend nicht zu nutzen, [setzen Sie stattdessen ihren Status auf inactive](/api-reference/management/boosting-group/mutation-update-boosting-group).
+
+## Mutation
+
+Eine `id` der Boosting Group ist erforderlich. Die Mutation gibt einen Boolean zurück.
+
+> [!WARNING] Alpha
+> Diese Operation befindet sich in der Alpha-Phase und ist in kostenlosen Tarifen nicht verfügbar. Wenden Sie sich für den Zugang an den Support.

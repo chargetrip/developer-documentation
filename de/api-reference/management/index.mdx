@@ -1,0 +1,19 @@
+---
+title: "Management-API-Referenz"
+description: "Durchsuchen Sie die Queries und Mutations der Management-API, mit der Sie Ressourcen wie Boosting Groups für Ihren Workspace verwalten."
+---
+
+Die Management-API ist eine eigenständige GraphQL-API mit eigenem Schema. Mit ihr verwalten Sie die Ressourcen, die das Verhalten Ihres Projekts bestimmen, statt sie beim Chargetrip-Support anzufragen. Derzeit umfasst sie Boosting Groups, mit denen Sie einzelne Ladestationen bei der Routenplanung priorisieren.
+
+Anfragen gehen an einen anderen Endpunkt als beim Rest der API-Referenz, und jede Ressource, die Sie erstellen oder abrufen, gehört zu dem Workspace, den Ihr `x-token`-Header identifiziert.
+
+> [!WARNING] Alpha
+> Die Management-API befindet sich in der Alpha-Phase und ist in kostenlosen Tarifen nicht verfügbar. Wenden Sie sich an den Support, um Zugang zu erhalten, und rechnen Sie mit Änderungen am Schema.
+
+## Ressourcen
+
+| Ressource | Operationen |
+| --- | --- |
+| Boosting Groups | [`boostingGroup`](/api-reference/management/boosting-group/query-boosting-group), [`boostingGroups`](/api-reference/management/boosting-group/query-boosting-groups), [`createBoostingGroup`](/api-reference/management/boosting-group/mutation-create-boosting-group), [`updateBoostingGroup`](/api-reference/management/boosting-group/mutation-update-boosting-group), [`deleteBoostingGroup`](/api-reference/management/boosting-group/mutation-delete-boosting-group) |
+
+Wie sich Boosting Groups auf eine Route auswirken, erfahren Sie unter [Einzelne Ladestationen priorisieren](/docs/getting-started/route-boosting-groups).

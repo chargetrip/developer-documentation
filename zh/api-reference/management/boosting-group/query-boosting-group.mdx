@@ -1,0 +1,16 @@
+---
+title: "优先群组查询"
+heading: "优先群组"
+description: "使用 boostingGroup 查询获取单个优先群组，以检查其状态和包含的充电站。"
+schemaName: boostingGroup
+schemaType: Query
+---
+
+使用 boostingGroup 查询获取优先群组。当您想检查某个群组是否已启用，或它当前优先推荐哪些充电站时，此操作非常有用。要了解优先群组如何影响路线，请参阅[优先群组指南](/docs/getting-started/route-boosting-groups)。
+
+## 查询
+
+需要优先群组的 `id`。`id` 可通过 [createBoostingGroup 变更](/api-reference/management/boosting-group/mutation-create-boosting-group)或 [boostingGroups 查询](/api-reference/management/boosting-group/query-boosting-groups)获取。
+
+> [!WARNING] Alpha
+> 此操作处于 alpha 阶段，免费套餐不可用。请联系客户支持以获取访问权限。

@@ -1,0 +1,19 @@
+---
+title: "Management API 参考"
+description: "浏览 Management API 的查询和变更，您可以用它为您的工作区管理优先群组等资源。"
+---
+
+Management API 是一个独立的 GraphQL API，拥有自己的 schema。您可以用它管理决定项目行为的资源，而无需向 Chargetrip 客户支持申请。目前它涵盖优先群组，让您在路线规划时优先选择特定的充电站。
+
+请求会发送到与 API 参考其余部分不同的端点，您创建或读取的每个资源都属于由 `x-token` 请求头标识的工作区。
+
+> [!WARNING] Alpha
+> Management API 处于 alpha 阶段，免费套餐不可用。请联系客户支持以获取访问权限，并预期 schema 会发生变化。
+
+## 资源
+
+| 资源 | 操作 |
+| --- | --- |
+| 优先群组 | [`boostingGroup`](/api-reference/management/boosting-group/query-boosting-group), [`boostingGroups`](/api-reference/management/boosting-group/query-boosting-groups), [`createBoostingGroup`](/api-reference/management/boosting-group/mutation-create-boosting-group), [`updateBoostingGroup`](/api-reference/management/boosting-group/mutation-update-boosting-group), [`deleteBoostingGroup`](/api-reference/management/boosting-group/mutation-delete-boosting-group) |
+
+要了解优先群组如何影响路线，请参阅[优先选择特定的充电站](/docs/getting-started/route-boosting-groups)。

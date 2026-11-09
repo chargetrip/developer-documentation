@@ -1,0 +1,16 @@
+---
+title: "Öne çıkarma grubunu sil mutasyonu"
+heading: "Öne çıkarma grubunu sil"
+description: "Bir grubun istasyonlarını artık öne çıkarmak istemediğinizde deleteBoostingGroup mutasyonuyla öne çıkarma grubunu kaldırın."
+schemaName: deleteBoostingGroup
+schemaType: Mutation
+---
+
+deleteBoostingGroup mutasyonunu kullanarak bir öne çıkarma grubunu silin. Bu, bir gruptaki istasyonları artık öne çıkarmak istemediğinizde kullanışlıdır. Bir grubu geçici olarak kullanmayı bırakmak için bunun yerine [durumunu inactive olarak ayarlayın](/api-reference/management/boosting-group/mutation-update-boosting-group).
+
+## Mutasyon
+
+Bir öne çıkarma grubu `id` değeri gereklidir. Mutasyon bir boolean döndürür.
+
+> [!WARNING] Alpha
+> Bu işlem alpha aşamasındadır ve ücretsiz planlarda kullanılamaz. Erişim için destekle iletişime geçin.

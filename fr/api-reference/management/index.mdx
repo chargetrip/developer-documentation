@@ -1,0 +1,19 @@
+---
+title: "Référence de l'API Management"
+description: "Parcourez les queries et mutations de l'API Management, qui sert à gérer des ressources comme les groupes de mise en avant de votre workspace."
+---
+
+L'API Management est une API GraphQL distincte, dotée de son propre schéma. Utilisez-la pour gérer les ressources qui déterminent le comportement de votre projet, au lieu de les demander au support Chargetrip. Elle couvre aujourd'hui les groupes de mise en avant, qui vous permettent de prioriser des stations de recharge individuelles pendant le calcul d'itinéraire.
+
+Les requêtes sont envoyées à un autre point de terminaison que le reste de la référence de l'API, et chaque ressource que vous créez ou lisez appartient au workspace identifié par votre en-tête `x-token`.
+
+> [!WARNING] Alpha
+> L'API Management est en alpha et n'est pas disponible sur les offres gratuites. Contactez le support pour y accéder et attendez-vous à des changements du schéma.
+
+## Ressources
+
+| Ressource | Opérations |
+| --- | --- |
+| Groupes de mise en avant | [`boostingGroup`](/api-reference/management/boosting-group/query-boosting-group), [`boostingGroups`](/api-reference/management/boosting-group/query-boosting-groups), [`createBoostingGroup`](/api-reference/management/boosting-group/mutation-create-boosting-group), [`updateBoostingGroup`](/api-reference/management/boosting-group/mutation-update-boosting-group), [`deleteBoostingGroup`](/api-reference/management/boosting-group/mutation-delete-boosting-group) |
+
+Pour savoir comment les groupes de mise en avant influencent un itinéraire, consultez [prioriser des stations de recharge individuelles](/docs/getting-started/route-boosting-groups).

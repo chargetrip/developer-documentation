@@ -1,0 +1,37 @@
+---
+title: "创建优先群组变更"
+heading: "创建优先群组"
+description: "使用 createBoostingGroup 变更创建一组在路线规划时优先推荐的充电站。"
+schemaName: createBoostingGroup
+schemaType: Mutation
+---
+
+使用 createBoostingGroup 变更创建优先群组。当您想让路线引导至特定的充电站时（例如因为更优惠的商业合作协议），此操作非常有用。已启用的群组会自动应用于您使用 [createRoute](/api-reference/light-vehicle/route/mutation-create-route) 计算的每条路线。更多信息请参阅[优先群组指南](/docs/getting-started/route-boosting-groups)。
+
+## 变更
+
+需要提供 `name`、`client_id` 和 `stations` 列表。可以通过 `id` 或充电站提供商使用的 `external_id` 来标识每个充电站。将 `status` 设置为 `inactive`，即可创建群组但暂不用于路线计算。
+
+> [!WARNING] Alpha
+> 此操作处于 alpha 阶段，免费套餐不可用。请联系客户支持以获取访问权限。
+
+<details>
+  <summary>创建包含两个充电站的未启用优先群组。</summary>
+  一个充电站通过其内部 `id` 标识，另一个通过提供商的 `external_id` 标识。
+
+```graphql Example request
+mutation CreateBoostingGroup {
+  createBoostingGroup(
+    input: {
+      name: "Preferred stations"
+      client_id: "60b8d5a2f1c8e9001b9e2831"
+      status: inactive
+      stations: [{ id: "5f6a1b2c3d4e5f6a7b8c9d0e" }, { external_id: "NL-AMS-0001" }]
+    }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>
