@@ -1,0 +1,32 @@
+---
+title: "Öne çıkarma grubunu güncelle mutasyonu"
+heading: "Öne çıkarma grubunu güncelle"
+description: "updateBoostingGroup mutasyonuyla bir öne çıkarma grubunun adını, açıklamasını veya durumunu değiştirin."
+schemaName: updateBoostingGroup
+schemaType: Mutation
+---
+
+updateBoostingGroup mutasyonunu kullanarak bir öne çıkarma grubunu güncelleyin. Bu, bir grubu silmeden açıp kapatmak istediğinizde kullanışlıdır.
+
+## Mutasyon
+
+Bir öne çıkarma grubu `id` değeri gereklidir. `id`, [createBoostingGroup mutasyonu](/api-reference/admin/boosting-group/mutation-create-boosting-group) üzerinden alınabilir. Yalnızca değiştirmek istediğiniz alanları gönderin. Bu mutasyon bir grubun istasyonlarını değiştirmez.
+
+> [!WARNING] Alpha
+> Bu işlem alpha aşamasındadır ve ücretsiz planlarda kullanılamaz. Erişim için destekle iletişime geçin.
+
+<details>
+  <summary>Bir öne çıkarma grubunu devre dışı bırakın.</summary>
+  Etkin olmayan bir grup artık rota hesaplamalarında kullanılmaz.
+
+```graphql Example request
+mutation UpdateBoostingGroup {
+  updateBoostingGroup(
+    input: { id: "6527e1f1a8b4c2d3e4f5a6b7", status: inactive }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>

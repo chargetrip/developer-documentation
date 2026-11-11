@@ -1,0 +1,29 @@
+---
+title: Update boosting group mutation
+heading: Update boosting group
+description: "Change the name, description or status of a boosting group with the updateBoostingGroup mutation."
+schemaName: updateBoostingGroup
+schemaType: Mutation
+---
+
+Update a boosting group by using the updateBoostingGroup mutation. This is useful when you want to switch a group on or off without deleting it.
+
+## Mutation
+
+A boosting group `id` is required. The `id` can be obtained through the [createBoostingGroup mutation](/api-reference/admin/boosting-group/mutation-create-boosting-group). Send only the fields you want to change. This mutation does not change the stations of a group.
+
+<details>
+  <summary>Deactivate a boosting group.</summary>
+  An inactive group is no longer used in route calculations.
+
+```graphql Example request
+mutation UpdateBoostingGroup {
+  updateBoostingGroup(
+    input: { id: "6527e1f1a8b4c2d3e4f5a6b7", status: inactive }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>

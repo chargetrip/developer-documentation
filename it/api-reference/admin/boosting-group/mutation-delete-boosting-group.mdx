@@ -1,0 +1,16 @@
+---
+title: "Elimina Boosting Group mutation"
+heading: "Elimina Boosting Group"
+description: "Rimuovi un Boosting Group con la mutation deleteBoostingGroup quando non vuoi più promuovere le sue stazioni."
+schemaName: deleteBoostingGroup
+schemaType: Mutation
+---
+
+Elimina un Boosting Group usando la mutation deleteBoostingGroup. È utile quando non vuoi più promuovere le stazioni di un gruppo. Per smettere di usare un gruppo solo temporaneamente, [imposta invece il suo stato su inactive](/api-reference/admin/boosting-group/mutation-update-boosting-group).
+
+## Mutation
+
+È necessario l'`id` di un Boosting Group. La mutation restituisce un booleano.
+
+> [!WARNING] Alpha
+> Questa operazione è in alpha e non è disponibile nei piani gratuiti. Contatta il supporto per l'accesso.
