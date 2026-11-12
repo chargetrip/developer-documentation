@@ -9,15 +9,15 @@ Les prix de recharge peuvent être affichés à deux niveaux : directement sur u
 
 Le service de tuiles prend en charge les prix à la fois comme filtres et comme sélecteurs.
 
-- En tant que [filtre](/api-reference/light-vehicle/tiles/filters), transmettez `minimum_energy_price` et `maximum_energy_price`, ainsi que `currency` pour convertir la plage dans la bonne devise, afin d'inclure ou d'exclure dynamiquement les stations dont le prix se situe dans cette plage.
-- En tant que [sélecteur](/api-reference/light-vehicle/tiles/selectors), demandez `connector_minimum_energy_price`, `connector_maximum_energy_price`, `price_vat`, `price_valid_until`, `price_original_currency` et `price_conversion_rate` pour afficher les détails de prix. Ils sont renvoyés dans les propriétés de la feature de station (`properties.count == 1`). Le prix est toujours celui de la station, et vous pouvez utiliser `price_original_currency` et `price_conversion_rate` pour l'ajuster avec votre propre conversion.
+- En tant que [filtre](/api-reference/core/tiles/filters), transmettez `minimum_energy_price` et `maximum_energy_price`, ainsi que `currency` pour convertir la plage dans la bonne devise, afin d'inclure ou d'exclure dynamiquement les stations dont le prix se situe dans cette plage.
+- En tant que [sélecteur](/api-reference/core/tiles/selectors), demandez `connector_minimum_energy_price`, `connector_maximum_energy_price`, `price_vat`, `price_valid_until`, `price_original_currency` et `price_conversion_rate` pour afficher les détails de prix. Ils sont renvoyés dans les propriétés de la feature de station (`properties.count == 1`). Le prix est toujours celui de la station, et vous pouvez utiliser `price_original_currency` et `price_conversion_rate` pour l'ajuster avec votre propre conversion.
 
 ## Tarification des stations
 
 L'origine des détails de tarification dépend de la base de données de stations utilisée pour une station.
 
 - Si Ecomovement est utilisé, la tarification se trouve dans l'objet de prix des connecteurs d'une station, à `evses[].connectors[].prices`.
-- Pour toute autre base de données de stations, utilisez plutôt les requêtes dédiées [tariffList](/api-reference/light-vehicle/tariff/query-tariff-list) et [tariff](/api-reference/light-vehicle/tariff/query-tariff).
+- Pour toute autre base de données de stations, utilisez plutôt les requêtes dédiées [tariffList](/api-reference/core/tariff/query-tariff-list) et [tariff](/api-reference/core/tariff/query-tariff).
 
 Un connecteur peut avoir plusieurs éléments de prix actifs à différents moments. Parcourez-les dans l'ordre pour afficher le bon prix.
 

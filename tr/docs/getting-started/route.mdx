@@ -10,7 +10,7 @@ Route API, en uygun EV rotalarını bulmak için tüm bu değişkenleri dikkate 
 
 ## Nasıl çalışır
 
-Yüksek performans sağlamak için Route API, API genelinde kullanılan aynı [eşzamansız kalıbı](/api-reference/light-vehicle/api/async-operations) izleyerek eşzamansız çalışır. Bir rotayı oluşturma ve alma ayrı adımlarda gerçekleşir.
+Yüksek performans sağlamak için Route API, API genelinde kullanılan aynı [eşzamansız kalıbı](/api-reference/core/api/async-operations) izleyerek eşzamansız çalışır. Bir rotayı oluşturma ve alma ayrı adımlarda gerçekleşir.
 
 1. **Bir rota oluşturun**
    En az bir `vehicle`, `origin` ve `destination` ile `createRoute` mutasyonunu çağırın. Mutasyon hemen bir rota `id` değeri döndürür; bunu bir sonraki adımda rotayı izlemek ve almak için kullanacaksınız. Çok daha fazla özelleştirme seçeneği mevcuttur; aşağıdaki [rotanızı özelleştirin](#rotanızı-özelleştirin) bölümüne bakın.
@@ -26,24 +26,24 @@ Yüksek performans sağlamak için Route API, API genelinde kullanılan aynı [e
 
 ## Rotanızı özelleştirin
 
-`createRoute`, bir rotanın nasıl hesaplanacağına ince ayar yapmak için çeşitli isteğe bağlı girdileri kabul eder. Her alanla ilgili daha fazla ayrıntıyı [API referansında](/api-reference/light-vehicle/route/mutation-create-route) bulabilirsiniz.
+`createRoute`, bir rotanın nasıl hesaplanacağına ince ayar yapmak için çeşitli isteğe bağlı girdileri kabul eder. Her alanla ilgili daha fazla ayrıntıyı [API referansında](/api-reference/core/route/mutation-create-route) bulabilirsiniz.
 
 | Özellik | Açıklama |
 | --- | --- |
-| [Ara noktalar](/api-reference/light-vehicle/route/mutation-create-route#arg-input-via) | Ara duraklar ekleyin. Belirli bir istasyonda şarj durağı zorlamak için `via.properties.station.station_id` değerini veya şarj içermeyen düz bir geçiş noktası için yalnızca `via.geometry` değerini verin. |
-| [Durak süresi](/api-reference/light-vehicle/route/mutation-create-route#arg-input-via-properties-station-stop_duration) | `properties.station.stop_duration` veya `properties.location.stop_duration` kullanarak aracın bir ara noktada veya varış noktasında kaç saniye kalacağını belirleyin. |
-| [Otoyolda şarj](/api-reference/light-vehicle/route/mutation-create-route#arg-input-station_preferences) | `station_preferences.prefer_highway_charging` ile doğrudan otoyol üzerinde bulunan şarj istasyonlarına öncelik verin ve otoyoldan çıkmayı gerektiren duraklardan kaçının. |
-| [Hava durumu](/api-reference/light-vehicle/route/mutation-create-route#arg-input-weather) | Tüketim modeline bir hava durumu ön ayarı veya özel hava koşulları uygulayın. Varsayılan olarak gerçek zamanlı hava durumu verilerini kullanır. |
-| [Mevsim](/api-reference/light-vehicle/route/mutation-create-route#arg-input-season) | `weather` alanına daha basit bir alternatif olarak `summer`, `winter` veya `current` hava koşullarını varsayın. |
-| [Kaçınılacak rota özellikleri](/api-reference/light-vehicle/route/mutation-create-route#arg-input-avoid) | `toll_road` veya `ferry` unsurlarından elinden gelenin en iyisi esasına göre kaçının. |
-| [Operatör sıralaması](/api-reference/light-vehicle/route/mutation-create-route#arg-input-operators-ranking) | `type: preferred` ile belirli şarj ağlarını tercih edin veya `type: required` ile rotayı yalnızca bu ağlarla sınırlayın. Operatörleri `high`, `medium` veya `low` olarak sıralayın ve bir sıralamayı operatör başına belirli ülkelerle sınırlandırın. |
-| [Operatör hariç tutma](/api-reference/light-vehicle/route/mutation-create-route#arg-input-operators-exclude) | `operators.exclude` ile bir operatörü rotadan tamamen hariç tutun. İstek düzeyinde ayarlanmadığında projenizin pano yapılandırmasına döner. |
-| [Operatörden kaçınma](/api-reference/light-vehicle/route/mutation-create-route#arg-input-operators-avoid) | `operators.avoid` kullanarak bir operatörü tamamen hariç tutmadan ondan kaçının. |
-| [Alternatif şarj istasyonları](/api-reference/light-vehicle/route/mutation-create-route#arg-input-alternative_station_radius) | Rota boyunca 500 ile 5000 metre arasındaki bir yarıçap içinde alternatif şarj istasyonları arayın. |
-| [Alternatif rotalar](/api-reference/light-vehicle/route/mutation-create-route#arg-input-alternative_routes) | Elinden gelenin en iyisi esasına göre ek rota seçenekleri isteyin. Yalnızca önerilen rotayı hesaplamak için `0` olarak ayarlayın. |
-| [Sürüş tercihleri](/api-reference/light-vehicle/route/mutation-create-route#arg-input-driving_preferences) | `speed_factor` veya `maximum_speed` ile sürüş stilini ayarlayın ya da `eco` veya `sport` değerlerinden bir `style` seçin. |
-| [Trafik farkındalığı](/api-reference/light-vehicle/route/mutation-create-route#arg-input-traffic_aware) | Gerçek zamanlı trafik yoğunluğunu hesaba katın. Bunu projeniz için etkinleştirmek üzere destek ile iletişime geçin. |
-| [Kalkış zamanı](/api-reference/light-vehicle/route/mutation-create-route#arg-input-departure_time) | Gerçek zamanlı trafik ile geçmiş, güncel veya tahmin edilen hava durumunu kullanarak beklenen varış zamanlarını hesaplayın. |
-| [İstasyon olarak varış noktası](/api-reference/light-vehicle/route/mutation-create-route#arg-input-destination-properties-station) | Belirli bir istasyonu rotanın varış noktası olarak ayarlayın. Bu, şarj olmayan bir durak olarak değerlendirilir. |
-| [Ara nokta başına araç yükü](/api-reference/light-vehicle/route/mutation-create-route#arg-input-origin-properties-vehicle) | `origin` veya `via` üzerinde `occupants`, `total_occupant_weight` ve `total_cargo_weight` değerlerini ayarlayın. Bunlar yolculuğun geri kalanına yayılır ve sonraki herhangi bir via noktasında geçersiz kılınabilir. |
-| [Minimum şarj gücü](/api-reference/light-vehicle/route/mutation-create-route#arg-input-vehicle-charging-minimum_power) | Varsayılan olarak rota planlama 43 kW altındaki konnektörleri hariç tutar. Aracınızın şarj hızına uyması için farklı bir minimum ayarlayın. Aracınız maksimum hızlarından daha yavaş şarj olsa bile daha yüksek değerli şarj cihazları yine de seçilir. |
+| [Ara noktalar](/api-reference/core/route/mutation-create-route#arg-input-via) | Ara duraklar ekleyin. Belirli bir istasyonda şarj durağı zorlamak için `via.properties.station.station_id` değerini veya şarj içermeyen düz bir geçiş noktası için yalnızca `via.geometry` değerini verin. |
+| [Durak süresi](/api-reference/core/route/mutation-create-route#arg-input-via-properties-station-stop_duration) | `properties.station.stop_duration` veya `properties.location.stop_duration` kullanarak aracın bir ara noktada veya varış noktasında kaç saniye kalacağını belirleyin. |
+| [Otoyolda şarj](/api-reference/core/route/mutation-create-route#arg-input-station_preferences) | `station_preferences.prefer_highway_charging` ile doğrudan otoyol üzerinde bulunan şarj istasyonlarına öncelik verin ve otoyoldan çıkmayı gerektiren duraklardan kaçının. |
+| [Hava durumu](/api-reference/core/route/mutation-create-route#arg-input-weather) | Tüketim modeline bir hava durumu ön ayarı veya özel hava koşulları uygulayın. Varsayılan olarak gerçek zamanlı hava durumu verilerini kullanır. |
+| [Mevsim](/api-reference/core/route/mutation-create-route#arg-input-season) | `weather` alanına daha basit bir alternatif olarak `summer`, `winter` veya `current` hava koşullarını varsayın. |
+| [Kaçınılacak rota özellikleri](/api-reference/core/route/mutation-create-route#arg-input-avoid) | `toll_road` veya `ferry` unsurlarından elinden gelenin en iyisi esasına göre kaçının. |
+| [Operatör sıralaması](/api-reference/core/route/mutation-create-route#arg-input-operators-ranking) | `type: preferred` ile belirli şarj ağlarını tercih edin veya `type: required` ile rotayı yalnızca bu ağlarla sınırlayın. Operatörleri `high`, `medium` veya `low` olarak sıralayın ve bir sıralamayı operatör başına belirli ülkelerle sınırlandırın. |
+| [Operatör hariç tutma](/api-reference/core/route/mutation-create-route#arg-input-operators-exclude) | `operators.exclude` ile bir operatörü rotadan tamamen hariç tutun. İstek düzeyinde ayarlanmadığında projenizin pano yapılandırmasına döner. |
+| [Operatörden kaçınma](/api-reference/core/route/mutation-create-route#arg-input-operators-avoid) | `operators.avoid` kullanarak bir operatörü tamamen hariç tutmadan ondan kaçının. |
+| [Alternatif şarj istasyonları](/api-reference/core/route/mutation-create-route#arg-input-alternative_station_radius) | Rota boyunca 500 ile 5000 metre arasındaki bir yarıçap içinde alternatif şarj istasyonları arayın. |
+| [Alternatif rotalar](/api-reference/core/route/mutation-create-route#arg-input-alternative_routes) | Elinden gelenin en iyisi esasına göre ek rota seçenekleri isteyin. Yalnızca önerilen rotayı hesaplamak için `0` olarak ayarlayın. |
+| [Sürüş tercihleri](/api-reference/core/route/mutation-create-route#arg-input-driving_preferences) | `speed_factor` veya `maximum_speed` ile sürüş stilini ayarlayın ya da `eco` veya `sport` değerlerinden bir `style` seçin. |
+| [Trafik farkındalığı](/api-reference/core/route/mutation-create-route#arg-input-traffic_aware) | Gerçek zamanlı trafik yoğunluğunu hesaba katın. Bunu projeniz için etkinleştirmek üzere destek ile iletişime geçin. |
+| [Kalkış zamanı](/api-reference/core/route/mutation-create-route#arg-input-departure_time) | Gerçek zamanlı trafik ile geçmiş, güncel veya tahmin edilen hava durumunu kullanarak beklenen varış zamanlarını hesaplayın. |
+| [İstasyon olarak varış noktası](/api-reference/core/route/mutation-create-route#arg-input-destination-properties-station) | Belirli bir istasyonu rotanın varış noktası olarak ayarlayın. Bu, şarj olmayan bir durak olarak değerlendirilir. |
+| [Ara nokta başına araç yükü](/api-reference/core/route/mutation-create-route#arg-input-origin-properties-vehicle) | `origin` veya `via` üzerinde `occupants`, `total_occupant_weight` ve `total_cargo_weight` değerlerini ayarlayın. Bunlar yolculuğun geri kalanına yayılır ve sonraki herhangi bir via noktasında geçersiz kılınabilir. |
+| [Minimum şarj gücü](/api-reference/core/route/mutation-create-route#arg-input-vehicle-charging-minimum_power) | Varsayılan olarak rota planlama 43 kW altındaki konnektörleri hariç tutar. Aracınızın şarj hızına uyması için farklı bir minimum ayarlayın. Aracınız maksimum hızlarından daha yavaş şarj olsa bile daha yüksek değerli şarj cihazları yine de seçilir. |

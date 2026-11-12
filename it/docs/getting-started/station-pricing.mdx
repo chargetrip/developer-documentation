@@ -9,15 +9,15 @@ I prezzi di ricarica possono essere mostrati a due livelli: direttamente su una 
 
 Il servizio Tile supporta i prezzi sia come filtri sia come selettori.
 
-- Come [filtro](/api-reference/light-vehicle/tiles/filters), passa `minimum_energy_price` e `maximum_energy_price`, insieme a `currency` per convertire l'intervallo nella valuta corretta, per includere o escludere dinamicamente le stazioni il cui prezzo rientra in quell'intervallo.
-- Come [selettore](/api-reference/light-vehicle/tiles/selectors), richiedi `connector_minimum_energy_price`, `connector_maximum_energy_price`, `price_vat`, `price_valid_until`, `price_original_currency` e `price_conversion_rate` per mostrare i dettagli di prezzo. Vengono restituiti nelle proprietà della feature della stazione (`properties.count == 1`). Il prezzo è sempre quello della stazione e puoi usare `price_original_currency` e `price_conversion_rate` per adattarlo alla tua conversione.
+- Come [filtro](/api-reference/core/tiles/filters), passa `minimum_energy_price` e `maximum_energy_price`, insieme a `currency` per convertire l'intervallo nella valuta corretta, per includere o escludere dinamicamente le stazioni il cui prezzo rientra in quell'intervallo.
+- Come [selettore](/api-reference/core/tiles/selectors), richiedi `connector_minimum_energy_price`, `connector_maximum_energy_price`, `price_vat`, `price_valid_until`, `price_original_currency` e `price_conversion_rate` per mostrare i dettagli di prezzo. Vengono restituiti nelle proprietà della feature della stazione (`properties.count == 1`). Il prezzo è sempre quello della stazione e puoi usare `price_original_currency` e `price_conversion_rate` per adattarlo alla tua conversione.
 
 ## Tariffe delle stazioni
 
 L'origine dei dettagli sui prezzi dipende dal database di stazioni che sta dietro una stazione.
 
 - Se viene utilizzato Ecomovement, i prezzi si trovano nell'oggetto dei prezzi dei connettori di una stazione, in `evses[].connectors[].prices`.
-- Per qualsiasi altro database di stazioni, usa invece le query dedicate [tariffList](/api-reference/light-vehicle/tariff/query-tariff-list) e [tariff](/api-reference/light-vehicle/tariff/query-tariff).
+- Per qualsiasi altro database di stazioni, usa invece le query dedicate [tariffList](/api-reference/core/tariff/query-tariff-list) e [tariff](/api-reference/core/tariff/query-tariff).
 
 Un connettore può avere diversi elementi di prezzo attivi in momenti diversi. Esaminali in ordine per mostrare il prezzo corretto.
 

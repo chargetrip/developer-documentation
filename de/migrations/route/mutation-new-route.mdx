@@ -14,7 +14,7 @@ Migrieren Sie vom veralteten Route-Service auf die neueste Version. Der neue Ser
 
 | Alt               | Neu                                                             |
 | ----------------- | ----------------------------------------------------------------|
-| `newRoute`        | [`createRoute`](/api-reference/light-vehicle/route/mutation-create-route)     |
+| `newRoute`        | [`createRoute`](/api-reference/core/route/mutation-create-route)     |
 
 ## Allgemeine Schemaänderungen
 
@@ -28,7 +28,7 @@ Das Argument `input` von `createRoute` wurde neu organisiert und vereinfacht.
 
 ### routeRequest
 
-Auf Root-Ebene wurden die folgenden Felder entfernt. Betreiberbezogene Felder werden jetzt durch [Betreiberpräferenzen](#betreiberpräferenzen) abgedeckt, und ausstattungsbezogene Felder wurden in die eigene [Ausstattungsabfrage](/api-reference/light-vehicle/route/query-get-route-stations-with-amenities) verschoben.
+Auf Root-Ebene wurden die folgenden Felder entfernt. Betreiberbezogene Felder werden jetzt durch [Betreiberpräferenzen](#betreiberpräferenzen) abgedeckt, und ausstattungsbezogene Felder wurden in die eigene [Ausstattungsabfrage](/api-reference/core/route/query-get-route-stations-with-amenities) verschoben.
 
 | Feld                   | Verschoben nach                        |
 | ---------------------- | -------------------------------------- |

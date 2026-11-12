@@ -1,0 +1,48 @@
+---
+title: Araç girişi
+heading: Giriş
+description: "Araç veritabanının neler içerdiğini, elektrikli araç özelliklerinin rotalamayı ve şarjı nasıl etkilediğini ve bunlara erişmek için hangi sorguların kullanılacağını öğrenin."
+---
+
+Bir EV için rota planlamak, benzinli bir araç için rota planlamaktan farklıdır. Bir aracın ne kadar yol gidebileceği, hangi şarj cihazlarını kullanabileceği ve ne kadar hızlı şarj olduğu aracın kendisine bağlıdır. Araç veritabanı bu bilgileri size sunar, böylece bunları kendiniz toplamanız ve bakımını yapmanız gerekmez.
+
+Her rota ve isoline isteği bir araç `id` değeri gerektirir; aynı veriler araç seçiciler oluşturmanıza, teknik özellikleri göstermenize ve şarj istasyonlarını sürücünün kullanabileceği istasyonlara göre filtrelemenize de olanak tanır.
+
+## EV temelleri
+
+Elektrikli araçların birkaç özelliği, araç verilerinin neden önemli olduğunu açıklar.
+
+### Tahrik sistemleri
+
+Bir ICE (içten yanmalı motor) araç yakıt yakar. Bir EV ise bir şarj istasyonunda yeniden şarj edilen bataryadan gelen elektrikle çalışır. Veritabanı dört tahrik sistemi türünü kapsar:
+
+| Tahrik sistemi | Açıklama |
+|:---|:---|
+| BEV | Batarya elektrikli araç. Yalnızca bataryayla çalışır. |
+| PHEV | Şarj edilebilir hibrit elektrikli araç. Prize takılabilen bir bataryayı yanmalı motorla birleştirir. |
+| EREV | Menzil uzatıcılı elektrikli araç. Bataryayla sürülür, menzili uzatan bir yanmalı motora sahiptir. |
+| HEV | Hibrit elektrikli araç. Yanmalı motoru, prize takılamayan bir bataryayla birleştirir. |
+
+### Şarj
+
+EV'ler birkaç fiş türünden biriyle şarj olur, bu nedenle bir şarj cihazı yalnızca aracın konnektörünü destekliyorsa işe yarar. Şarj hızı üç seviyeye ayrılır. Seviye 1 ve 2 AC kullanır ve saatler sürer. Hızlı şarj olarak da adlandırılan Seviye 3 ise DC kullanır ve bir aracı bir saatten kısa sürede şarj edebilir. Bir aracın gerçekte ne kadar hızlı şarj olduğu, rotalama servisinin dikkate aldığı şarj eğrisine bağlıdır.
+
+### Menzili neyin etkilediği
+
+Batarya performansı, tıpkı bir telefon bataryasının soğukta daha hızlı bitmesi gibi, hava durumuna, klima kullanımına ve aracın teknik özelliklerine göre değişir. Bu nedenle bir yolculuğu planlamak için tek bir menzil değeri yeterli değildir. Menzil koşullara bağlıdır ve rotalama servisi, bir aracın iki nokta arasında ne kadar enerji kullanacağını tahmin etmek için bunları hesaba katar. Bu tahmin, bir uygulamanın yolculuk boyunca [şarj duraklarını önermesini](/docs/getting-started/route) ve bir aracın ulaşabileceği alanı bir [isoline](/api-reference/core/isoline/mutation-create-isoline) ile göstermesini sağlar. Böylece menzil kaygısına, yani bir varış noktasına veya şarj cihazına ulaşmadan şarjın bitmesi korkusuna çözüm getirir.
+
+## Araç veritabanı
+
+Veritabanı BEV, PHEV, HEV ve EREV modelleri içerir. Yeni modeller piyasaya çıktıkça eklenir. Tüm araçlara genel bakış:
+
+<VehicleList />
+
+Tüm BEV ve EREV modelleri doğrulanmış bir tüketim modeliyle gelir. Bu model; sürtünme katsayısı ve yuvarlanma direnci gibi özellikleri hız, yükseklik, şarj hızı, şarj sıcaklığı ve batarya sıcaklığı ile ilişkili olarak hesaba katar. Menzil ve rota tahminlerini kullanılan araca özgü kılan budur.
+
+### Premium veriler
+
+[Vehicle premium](/api-reference/core/vehicle/query-vehicle-premium), batarya, araç gövdesi, bulunabilirlik, fiyatlandırma, verimlilik, güvenlik ve daha fazlası hakkında genişletilmiş veriler sunan bir eklentidir. Premium araç verilerine yükseltmek için [satış ekibiyle iletişime geçin](https://www.chargetrip.com/contact/sales).
+
+### Görseller
+
+Telif hakkı temizlenmiş araç görselleri bir eklenti olarak sunulur. Varsayılan olarak dahil edilen görsellerden daha yüksek kalitededir. Projeniz için etkinleştirmek üzere [satış ekibiyle iletişime geçin](https://www.chargetrip.com/contact/sales).

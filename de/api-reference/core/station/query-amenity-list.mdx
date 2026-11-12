@@ -1,0 +1,14 @@
+---
+title: "Ausstattungsliste Query"
+heading: "Ausstattungsliste"
+description: "Listen Sie mit der Query amenityList die Ausstattung rund um eine Station auf, etwa Restaurants und Geschäfte für die Ladezeit."
+schemaName: amenityList
+schemaType: Query
+---
+
+Rufen Sie mit der Query amenityList eine Liste der Ausstattungen ab, die rund um eine bestimmte Station verfügbar sind. Dies ist nützlich, wenn Sie Restaurants, Geschäfte oder andere Einrichtungen in der Nähe anzeigen möchten, während ein Fahrzeug lädt.
+
+## Query
+
+Zum Abrufen der Ausstattungen einer Station ist deren `id` erforderlich. Die `id` erhalten Sie entweder über eine [Route](/api-reference/core/route/query-get-route), den [Kachel-Service](/api-reference/core/tiles/mvt) oder die [Query stationAround](/api-reference/core/station/query-station-around). Verwenden Sie das Argument `filter`, um die Ergebnisse anhand bestimmter Kriterien einzugrenzen, sowie die Argumente `size` und `page`, um die Ergebnisse zu [paginieren](/api-reference/core/api/pagination).
+

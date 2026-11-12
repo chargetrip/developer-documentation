@@ -1,0 +1,13 @@
+---
+title: "Itinéraire camion query"
+heading: Itinéraire camion
+description: "Obtenez les détails d'un itinéraire camion précédemment calculé avec la query getTruckRoute, y compris ses arrêts de recharge, sa distance et sa durée."
+schemaName: getTruckRoute
+schemaType: Query
+---
+
+Obtenez les détails d'un itinéraire camion précédemment calculé à l'aide de la requête getTruckRoute. Elle est utile lorsque vous souhaitez afficher les arrêts de recharge, la distance et la durée d'un itinéraire camion.
+
+## Query
+
+Un `id` d'itinéraire camion est requis pour obtenir les détails de l'itinéraire. L'`id` peut être obtenu via la [mutation createTruckRoute](/api-reference/core/truck-route/mutation-create-truck-route).

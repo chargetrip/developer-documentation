@@ -1,0 +1,14 @@
+---
+title: 重新计算导航变更
+heading: 重新计算导航
+description: "当驾驶员偏离路线或路况发生变化时，使用 recalculateNavigation 变更重新计算进行中导航会话的路线。"
+schemaName: recalculateNavigation
+schemaType: Mutation
+---
+
+使用 recalculateNavigation 变更重新计算进行中的导航会话的路线。当驾驶员偏离原路线或途中情况发生变化时，此操作非常有用。
+
+## 变更
+
+重新计算路线需要导航会话的 `id` 和 `current_location`。您还可以包含 `state_of_charge`、`via` 或 `telemetry` 来优化新路线。`id` 可通过 [startNavigation 变更](/api-reference/core/navigation/mutation-start-navigation)获取。
+

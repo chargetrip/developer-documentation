@@ -14,7 +14,7 @@ Esegui la migrazione dal servizio Route legacy all'ultima versione. Il nuovo ser
 
 | Precedente        | Nuovo                                                           |
 | ----------------- | ----------------------------------------------------------------|
-| `newRoute`        | [`createRoute`](/api-reference/light-vehicle/route/mutation-create-route)     |
+| `newRoute`        | [`createRoute`](/api-reference/core/route/mutation-create-route)     |
 
 ## Modifiche generali allo schema
 
@@ -28,7 +28,7 @@ L'argomento `input` di `createRoute` è stato riorganizzato e semplificato.
 
 ### routeRequest
 
-A livello radice, i seguenti campi sono stati rimossi. I campi relativi agli operatori sono ora coperti dalle [preferenze degli operatori](#preferenze-degli-operatori), mentre quelli relativi ai servizi sono stati spostati nella loro [query dedicata per i servizi](/api-reference/light-vehicle/route/query-get-route-stations-with-amenities).
+A livello radice, i seguenti campi sono stati rimossi. I campi relativi agli operatori sono ora coperti dalle [preferenze degli operatori](#preferenze-degli-operatori), mentre quelli relativi ai servizi sono stati spostati nella loro [query dedicata per i servizi](/api-reference/core/route/query-get-route-stations-with-amenities).
 
 | Campo                  | Spostato in                           |
 | ---------------------- | -------------------------------------- |

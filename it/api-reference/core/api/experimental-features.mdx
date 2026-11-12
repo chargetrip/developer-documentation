@@ -1,0 +1,95 @@
+---
+title: Funzionalità sperimentali
+description: "Ottieni accesso anticipato alle nuove funzionalità dell'API con il programma alpha e beta e scopri come differiscono da quelle stabili."
+---
+
+Chargetrip introduce nuove importanti funzionalità attraverso un programma sperimentale strutturato. Ti dà accesso anticipato per valutare le funzionalità in arrivo e influenzarne la progettazione prima che schemi e contratti diventino permanenti.
+
+> [!WARNING] Esenzione dalla politica di deprecazione di 12 mesi
+> Le funzionalità in alpha e beta sono escluse dalla [politica di deprecazione di 12 mesi](/api-reference/core/api/lifecycle#cronologia-della-deprecazione) e possono cambiare o essere ritirate prima.
+
+## Tipi di funzionalità sperimentali
+
+- Nuove operazioni: query, mutation o subscription completamente nuove.
+- Estensioni di operazioni esistenti: nuovi argomenti opzionali o campi di output aggiunti a operazioni stabili esistenti.
+
+## Fasi delle funzionalità sperimentali
+
+| Dimensione | Alpha | Beta |
+ | ----- | ----- | ----- |
+| **Prontezza per la produzione** | Assolutamente sconsigliata per gli ambienti di produzione. | Adatta a progetti pilota controllati. Non consigliata per flussi critici. |
+| **Attivazione** | Disabilitata per impostazione predefinita. Richiede un opt-in esplicito nel Dashboard. | Abilitata per impostazione predefinita per tutti i client. |
+| **Stabilità** | Stabile ma soggetta a frequenti modifiche dello schema.| Stabile. Può avere modifiche minori dello schema. |
+| **Indicatore nello schema** | Contrassegnata con `[ALPHA]` nelle descrizioni dei campi dello schema. | Contrassegnata con `[BETA]` nelle descrizioni dei campi dello schema. |
+| **Preavviso di dismissione** | Nessuno. Soggetta a modifica o ritiro immediato. | Contatto diretto proattivo con i clienti che stanno integrando attivamente. |
+
+Per scoprire cosa garantiscono le funzionalità stabili, consulta [Ciclo di vita dell'API](/api-reference/core/api/lifecycle).
+
+
+## Best practice
+
+ - Usa le funzionalità alpha per valutazioni in sandbox, proof of concept e feedback. Se ne rilasci una comunque, non riceverai alcun preavviso né protezione di compatibilità quando cambia.
+ - Se esponi funzionalità beta agli utenti finali, mostra un badge "beta" in modo che sappiano che la funzionalità si sta ancora stabilizzando.
+
+
+## Ciclo di graduazione
+
+1. **Da alpha a beta** Quando la funzionalità e lo schema raggiungono una maturità sufficiente, la funzionalità passa a beta. Il tag nella descrizione passa da `[ALPHA]` a `[BETA]`, l'accesso viene abilitato per impostazione predefinita per tutti i clienti e le modifiche vengono annunciate nelle Note di rilascio.
+
+2. **Da beta a stabile** Quando affidabilità e maturità sono validate su più client, il tag `[BETA]` nella descrizione e gli avvisi di runtime vengono rimossi e la funzionalità passa al [ciclo di vita stabile](/api-reference/core/api/lifecycle).
+
+
+## Prezzi
+- Le richieste alle operazioni contrassegnate come sperimentali sono **gratuite**.
+- Le richieste effettuate a endpoint stabili che includono argomenti di input o campi di output sperimentali opzionali sono **a pagamento** in base al tuo piano di abbonamento.
+
+## Avvisi programmatici
+Per mantenere il tuo team di sviluppo consapevole delle dipendenze sperimentali nel traffico attivo, le risposte dell'API che utilizzano funzionalità alpha o beta restituiscono metadati di avviso nel blocco `extensions` di GraphQL:
+
+<details>
+  <summary>Esempio di avviso per una funzionalità alpha</summary>
+
+```json Example request and response
+{
+  "data": {
+    "getTruckRoute": {
+      "id": "dd07b4d0-6b79-11f0-bf8f-e6b813282ac3",
+      "status": "done"
+    }
+  },
+  "extensions": {
+    "warnings": [
+      {
+        "code": "ALPHA_FEATURE",
+        "path": ["getTruckRoute"],
+        "message": "This feature is currently in ALPHA. Visit https://developers.chargetrip.com/api-reference for more information."
+      }
+    ]
+  }
+}
+```
+</details>
+
+
+<details>
+  <summary>Esempio di avviso per una funzionalità beta</summary>
+
+```json Example request and response
+{
+  "data": {
+    "vehicleMakes": {
+      "name": "Opel"
+    }
+  },
+  "extensions": {
+    "warnings": [
+      {
+        "code": "BETA_FEATURE",
+        "path": ["vehicleMakes"],
+        "message": "This feature is currently in BETA. Visit https://developers.chargetrip.com/api-reference for more information."
+      }
+    ]
+  }
+}
+```
+</details>

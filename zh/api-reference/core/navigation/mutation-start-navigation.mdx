@@ -1,0 +1,16 @@
+---
+title: 开始导航变更
+heading: 开始导航
+description: "当驾驶员开始沿已计算的路线行驶时，使用 startNavigation 变更在现有路线之上启动导航会话。"
+schemaName: startNavigation
+schemaType: Mutation
+---
+
+使用 startNavigation 变更在现有路线的基础上开始新的导航会话。当驾驶员开始沿已计算的路线行驶时，此操作非常有用。
+
+> [!WARNING] 会话时长
+> 导航会话在 48 小时无活动后会自动结束。
+
+## 变更
+
+开始导航会话需要 `route_id`、`route_details_id` 和 `current_location`。两个路线 ID 都可通过 [getRoute 查询](/api-reference/core/route/query-get-route)获取。该变更会返回导航会话的 `id`，可用于获取、更新或结束该会话。

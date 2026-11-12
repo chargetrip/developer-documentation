@@ -1,0 +1,13 @@
+---
+title: 路线排放量查询
+heading: 路线排放量
+description: "使用 getRouteEmissions 查询获取路线的排放概况，以展示一次出行对环境的影响。"
+schemaName: getRouteEmissions
+schemaType: Query
+---
+
+使用 getRouteEmissions 查询获取路线的排放概况。当您想展示行程对环境的影响时，此操作非常有用。
+
+## 查询
+
+获取路线的排放量需要 `route_id` 和 `route_details_id`。两者都可通过 [getRoute 查询](/api-reference/core/route/query-get-route)获取。

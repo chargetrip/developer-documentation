@@ -13,8 +13,8 @@ Le nuove integrazioni dovrebbero usare le operazioni sostitutive indicate di seg
 
 | Operazione legacy | Sostituzione |
 | --- | --- |
-| [mutation `newRoute`](/api-reference/legacy/route/mutation-new-route) | [mutation `createRoute`](/api-reference/light-vehicle/route/mutation-create-route) |
-| [query `route`](/api-reference/legacy/route/query-route) | [query `getRoute`](/api-reference/light-vehicle/route/query-get-route) |
+| [mutation `newRoute`](/api-reference/legacy/route/mutation-new-route) | [mutation `createRoute`](/api-reference/core/route/mutation-create-route) |
+| [query `route`](/api-reference/legacy/route/query-route) | [query `getRoute`](/api-reference/core/route/query-get-route) |
 | [query `routePath`](/api-reference/legacy/route/query-route-path) | campo `RouteDetails.path_plot` |
-| [query `routeEmissions`](/api-reference/legacy/route/query-route-emissions) | [query `getRouteEmissions`](/api-reference/light-vehicle/emissions/query-emissions) |
-| [subscription `routeUpdatedById`](/api-reference/legacy/route/subscription-route-updated-by-id) | [subscription `route`](/api-reference/light-vehicle/route/subscription-route) |
+| [query `routeEmissions`](/api-reference/legacy/route/query-route-emissions) | [query `getRouteEmissions`](/api-reference/core/emissions/query-emissions) |
+| [subscription `routeUpdatedById`](/api-reference/legacy/route/subscription-route-updated-by-id) | [subscription `route`](/api-reference/core/route/subscription-route) |

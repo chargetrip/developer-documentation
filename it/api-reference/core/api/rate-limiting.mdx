@@ -1,0 +1,64 @@
+---
+title: Limitazione della frequenza
+description: "Scopri come l'API usa un algoritmo leaky bucket per limitare le richieste e come funzionano costo e limiti per le API GraphQL e REST."
+---
+
+L'API limita la frequenza delle richieste utilizzando un <a href="https://en.wikipedia.org/wiki/Leaky_bucket" target="_blank" rel="noopener noreferrer">algoritmo leaky bucket</a>. Ogni richiesta costa un certo numero di unità, che fuoriescono dal bucket a una velocità costante. In questo modo il traffico scorre a un ritmo regolare, consentendo comunque brevi picchi.
+
+## API GraphQL
+
+La limitazione della frequenza per l'API GraphQL si basa sul costo di ogni richiesta, anziché su un numero fisso di richieste. Le sezioni seguenti descrivono le best practice per contenere tale costo e come leggere lo stato attuale del tuo limite.
+
+### Best practice
+
+- Usa le subscription invece del polling con le query per sapere quando i dati cambiano.
+- Richiedi solo i campi di cui hai bisogno e usa `filter` per restringere le query di elenco.
+- Le query di elenco restituiscono fino a 100 record per pagina, ma una pagina più grande costa di più di una più piccola. Recuperare 100 record in una richiesta costa più che recuperarne 10, quindi richiedi meno record anziché di più. Consulta [paginazione](/api-reference/core/api/pagination) per i dettagli.
+- Se una richiesta viene rifiutata con un errore `429`, il tuo bucket è pieno. Smetti di inviare richieste e invia nuove richieste solo dopo che è trascorso il tempo indicato da `reset`.
+
+### Limite di frequenza
+
+Per proteggere l'API da query troppo complesse o troppo onerose in termini di risorse, a ogni richiesta viene assegnato un costo in base alla quantità di dati richiesti. Ogni risposta a una richiesta valida, o a una richiesta che non supera la validazione di business, include un oggetto `extensions.cost` con il costo della richiesta e lo stato del tuo limite di frequenza. Viene omesso del tutto quando una richiesta non supera la validazione dello schema GraphQL.
+
+`cost` · <span class="text-muted">Integer</span>
+: Il costo, in unità, della richiesta corrente.
+
+`limit` · <span class="text-muted">Integer</span>
+: Il costo massimo, in unità, consentito nella finestra di limitazione corrente.
+
+`used` · <span class="text-muted">Integer</span>
+: Quante unità sono già state consumate in questa finestra.
+
+`remaining` · <span class="text-muted">Integer</span>
+: Quante unità hai ancora a disposizione prima di raggiungere il limite.
+
+`reset` · <span class="text-muted">Integer</span>
+: Un timestamp UNIX, in secondi, che indica quando la quota viene ripristinata.
+
+## API REST
+
+La limitazione della frequenza per l'API REST si applica al [servizio tile](/api-reference/core/tiles/mvt). A differenza dell'API GraphQL, lo stato del limite viene restituito tramite gli header di risposta HTTP e ogni richiesta ha un costo fisso di 1 unità. Questi header vengono restituiti a ogni richiesta, comprese quelle non riuscite.
+
+`x-ratelimit-cost` · <span class="text-muted">Integer</span>
+: Il costo, in unità, della richiesta corrente. Sempre `1` per le richieste REST.
+
+`x-ratelimit-limit` · <span class="text-muted">Integer</span>
+: Il costo massimo, in unità, consentito nella finestra di limitazione corrente.
+
+`x-ratelimit-used` · <span class="text-muted">Integer</span>
+: Quante unità sono già state consumate in questa finestra.
+
+`x-ratelimit-remaining` · <span class="text-muted">Integer</span>
+: Quante unità hai ancora a disposizione prima di raggiungere il limite.
+
+`x-ratelimit-reset` · <span class="text-muted">Integer</span>
+: Un timestamp UNIX, in secondi, che indica quando la quota viene ripristinata.
+
+## Limiti attuali
+
+I limiti di frequenza vengono applicati per cliente, su una finestra di un minuto. Al momento non è previsto alcun limite predefinito. I limiti vengono configurati singolarmente per ogni cliente fino all'introduzione dei limiti predefiniti nel 2027.
+
+Alcune query e mutation hanno anche limiti individuali più bassi del tuo limite complessivo. Questi vengono impostati per prodotto, e talvolta per richiesta, anziché a livello globale.
+
+> [!WARNING] Nessun limite impostato
+> Se per il tuo account non è impostato alcun limite, `limit`, `remaining` e `reset` vengono restituiti come `null`. `cost` e `used` continuano a essere tracciati e restituiti.

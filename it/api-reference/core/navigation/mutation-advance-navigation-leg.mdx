@@ -1,0 +1,13 @@
+---
+title: Avanza tappa di navigazione mutation
+heading: Avanza tappa di navigazione
+description: "Sposta una sessione di navigazione attiva alla tappa successiva del percorso con la mutation advanceNavigationLeg, ad esempio dopo una sosta di ricarica."
+schemaName: advanceNavigationLeg
+schemaType: Mutation
+---
+
+Fai avanzare una sessione di navigazione attiva alla tratta successiva del percorso usando la mutation advanceNavigationLeg. È utile quando un conducente completa una tratta, ad esempio terminando una tappa di ricarica, e prosegue verso la successiva.
+
+## Mutation
+
+Per passare alla tratta successiva sono necessari l'`id` della sessione di navigazione e `current_location`. Facoltativamente includi `state_of_charge` per indicare il livello di carica del veicolo nella posizione attuale. L'`id` si ottiene tramite la [mutation startNavigation](/api-reference/core/navigation/mutation-start-navigation).

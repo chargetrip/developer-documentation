@@ -1,0 +1,32 @@
+---
+title: JSON
+description: "İstek yolundaki yakınlaştırma düzeyi ve karo koordinatlarıyla, JSON karo servisi üzerinden istasyonla ilgili coğrafi verilere JSON biçiminde erişin."
+tag: Rest
+---
+
+JSON karo servisi, istasyonlarla ilgili coğrafi verilere JSON formatında erişim sağlar.
+
+## Kurulum
+
+İstasyon verilerine JSON formatında erişmek için aşağıdaki uç noktaya bir istek gönderin:
+
+```bash Tile / JSON / Base URL
+https://api.chargetrip.io/v2/station/{z}/{x}/{y}/tile.json
+```
+
+JSON URL'si aşağıdaki yol parametrelerini kullanır:
+
+- `z`: Karonun yakınlaştırma seviyesi.
+- `x`: Karonun x koordinatı.
+- `y`: Karonun y koordinatı.
+
+Çoğu harita sağlayıcısı, enlem ve boylamı piksel koordinatlarına dönüştürmek için yerleşik yöntemlere sahiptir. Enlem ve boylam koordinatlarını x ve y'ye elle dönüştürmek için [Web Mercator Projeksiyonu](https://en.wikipedia.org/wiki/Web_Mercator_projection) kullanın.
+
+### Filtreleme
+Döndürülen istasyonları belirli ölçütlere göre filtrelemek için `filter` sorgu parametresini kullanın. Daha fazla bilgi için [filtreler belgelerine](/api-reference/core/tiles/filters) bakın.
+
+### Seçiciler
+Her istasyon özelliği için döndürülecek alanları belirtmek üzere `station_properties[]` sorgu parametresini kullanın. Daha fazla bilgi için [seçiciler belgelerine](/api-reference/core/tiles/selectors) bakın.
+
+### Para birimi
+Döndürülen ve filtrelemede kullanılan enerji fiyatlarının para birimini belirlemek için `currency` sorgu parametresini kullanın. Daha fazla bilgi için [para birimi dönüşümü belgelerine](/api-reference/core/tiles/filters) bakın.

@@ -1,0 +1,112 @@
+---
+title: Ciclo di vita
+description: "Scopri i livelli di stabilità dell'API, la differenza tra modifiche incompatibili e compatibili e come vengono gestite le deprecazioni."
+---
+
+L'API è costruita attorno a un unico endpoint GraphQL in continua evoluzione. Questa architettura garantisce che nuove funzionalità e miglioramenti delle prestazioni vengano rilasciati in modo continuo, senza richiedere migrazioni tra versioni dell'API.
+
+Questa pagina descrive i diversi livelli di stabilità presenti nell'API, le garanzie di stabilità dell'API stabile, i tipi di modifiche (incompatibili e compatibili) e come vengono gestite le deprecazioni. Per le funzionalità attualmente in anteprima, consulta le [funzionalità sperimentali](/api-reference/core/api/experimental-features).
+
+## Ciclo di vita delle funzionalità
+
+Ogni funzionalità si trova a uno di tre livelli di stabilità: alpha, beta o stabile. La maggior parte delle funzionalità li attraversa in ordine, e le funzionalità stabili possono essere ritirate solo tramite un processo di deprecazione.
+
+```text Lifecycle
+[ ALPHA ] ──> [ BETA ] ──> [ STABLE ] ──> [ DEPRECATED ] ──> [ REMOVED ]
+ Opt-in        Enabled                      12+ month
+               by default                   notice window
+```
+
+
+## API stabile
+Le funzionalità stabili rappresentano il nucleo dell'API pronto per la produzione. Le modifiche sono classificate in due categorie: compatibili e incompatibili.
+
+### Modifiche compatibili
+Aggiunte retrocompatibili che non interrompono le integrazioni esistenti. Vengono rilasciate in modo continuo senza preavviso o deprecazione.
+
+Le modifiche compatibili includono:
+
+- Aggiungere una nuova query, mutation o subscription.
+- Aggiungere un nuovo argomento di input opzionale a un'operazione esistente.
+- Aggiungere un nuovo argomento con un valore predefinito che preserva il comportamento esistente.
+- Aggiungere un nuovo campo all'output di un'operazione esistente.
+- Rendere opzionale un argomento di input obbligatorio.
+- Aggiungere un nuovo valore a un tipo enum esistente.
+
+
+#### Sviluppare tenendo conto delle modifiche compatibili
+
+Anche le modifiche compatibili possono interessare i client che fanno ipotesi troppo rigide. Per mantenere le integrazioni resilienti:
+
+- Evita una deserializzazione rigida degli oggetti che fallisce quando compaiono proprietà aggiuntive nei payload.
+- I tipi `enum` di GraphQL non sono esaustivi e si espandono nel tempo. Implementa sempre un caso predefinito di fallback nella logica del client.
+- Ispeziona i valori di `extensions.exception.code` degli errori anziché confrontare le stringhe di errore leggibili.
+
+### Modifiche incompatibili e deprecazioni
+
+Una modifica incompatibile potrebbe interrompere le integrazioni esistenti attive. Di conseguenza, qualsiasi modifica incompatibile deve prima passare attraverso un processo di deprecazione di 12 mesi.
+
+Le modifiche incompatibili includono:
+
+- Rimuovere o rinominare una query, mutation, subscription, campo o argomento di input esistente.
+- Rimuovere o rinominare valori di enum.
+- Cambiare il tipo di dati di un campo o di un argomento di input esistente.
+- Aggiungere un nuovo argomento di input obbligatorio.
+- Rendere obbligatorio un argomento di input opzionale.
+- Alterare la logica di business o il comportamento di un campo esistente.
+- Cambiare un campo di output da non nullable (!) a nullable.
+- Cambiare il valore predefinito di un argomento di input o di un campo.
+- Cambiare i valori predefiniti della paginazione, le dimensioni massime delle pagine o l'ordinamento documentato.
+
+
+#### Cronologia della deprecazione
+
+Quando una modifica incompatibile richiede di rimuovere o sostituire una funzionalità stabile, segue una rigorosa cronologia in tre fasi:
+
+1. **Annuncio della deprecazione**
+    La funzionalità viene contrassegnata con la direttiva `@deprecated` nello schema GraphQL. Se applicabile, viene fornito un percorso di migrazione. La deprecazione e la rispettiva data di rimozione vengono annunciate contemporaneamente attraverso [tre canali di monitoraggio](#monitorare-le-deprecazioni).
+2. **Periodo di preavviso attivo (mesi 1–12)**
+    La funzionalità deprecata rimane pienamente operativa. Se viene fornito un percorso di migrazione, gli integratori dovrebbero aggiornare le proprie applicazioni e adottare i nuovi campi durante questa finestra di 12 mesi.
+3. **Rimozione definitiva**
+    Alla data di rimozione, la funzionalità viene rimossa in modo permanente. Qualsiasi richiesta successiva che utilizzi la funzionalità non supererà la validazione dello schema e restituirà un errore GraphQL.
+
+> [!TIP] Pianifica le migrazioni in anticipo
+> Per evitare errori e interruzioni del servizio, completa le migrazioni prima della data di rimozione prevista.
+
+#### Monitorare le deprecazioni
+
+Individua e monitora i prossimi ritiri attraverso tre canali:
+
+- Ispeziona le direttive `@deprecated(reason: "...")` nei tuoi strumenti per lo schema.
+- Consulta le date di dismissione e le guide alla migrazione nella sezione legacy dell'API o nel [portale delle deprecazioni](/deprecations).
+- Monitora gli avvisi `DEPRECATED_FEATURE` restituiti direttamente nelle risposte dell'API.
+
+
+<details>
+  <summary>Esempio di risposta</summary>
+
+```graphql Example request and response
+{
+  "data": {
+    "station": {
+      "id": "5e8c22366f9c5f23ab0eff39",
+      "amenityList": [
+        {
+          "name": "Coffee Shop",
+          "foursquareUrl": "https://foursquare.com/v/example"
+        }
+      ]
+    }
+  },
+  "extensions": {
+    "warnings": [
+      {
+        "code": "DEPRECATED_FEATURE",
+        "path": ["amenityList", "foursquareUrl"],
+        "message": "This feature is deprecated and will be removed. To prevent errors and service disruptions, migrate to the recommended alternative before the scheduled removal date. Visit https://developers.chargetrip.com/deprecations for more information."
+      }
+    ]
+  }
+}
+```
+</details>

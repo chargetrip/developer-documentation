@@ -43,7 +43,7 @@ Rules:
 ## Formatting
 
 - Identifiers, fields, enum values and inputs go in backticks: `via`, `station_id`, `OPTIMIZE_TRAVEL_TIME`.
-- Internal links are root-relative with no locale prefix: `/docs/getting-started/route-stop`, `/api-reference/light-vehicle/route/mutation-create-route`.
+- Internal links are root-relative with no locale prefix: `/docs/getting-started/route-stop`, `/api-reference/core/route/mutation-create-route`.
 - Any link that leaves the docs portal is an external link. It opens in a new tab and uses anchor markup, never the inline markdown form `[label](https://...)`. This includes other Chargetrip sites such as the marketing site and the dashboard.
   `<a href="https://example.com" target="_blank" rel="noopener noreferrer">label</a>`
 - Examples use fenced blocks with a title, for example ```` ```graphql Example request ````, and live inside a collapsible:

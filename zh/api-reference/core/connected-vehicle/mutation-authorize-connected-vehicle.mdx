@@ -1,0 +1,13 @@
+---
+title: 授权联网车辆变更
+heading: 授权联网车辆
+description: "在最终用户通过提供商授予访问权限后，使用 authorizeConnectedVehicle 变更完成联网车辆的授权。"
+schemaName: authorizeConnectedVehicle
+schemaType: Mutation
+---
+
+使用 authorizeConnectedVehicle 变更完成联网车辆的授权。当最终用户已通过连接服务提供商授予访问权限后，此操作非常有用。
+
+## 变更
+
+授权联网车辆需要 `id` 和特定于提供商的 `options`。`id` 可通过 [createConnectedVehicle 变更](/api-reference/core/connected-vehicle/mutation-create-connected-vehicle)获取。

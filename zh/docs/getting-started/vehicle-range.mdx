@@ -12,7 +12,7 @@ tag: 指南
 
 ## 工作原理
 
-与路线一样，等值线也以异步方式计算，遵循整个 API 通用的[异步模式](/api-reference/light-vehicle/api/async-operations)。创建等值线和获取等值线分为不同的步骤进行。
+与路线一样，等值线也以异步方式计算，遵循整个 API 通用的[异步模式](/api-reference/core/api/async-operations)。创建等值线和获取等值线分为不同的步骤进行。
 
 1. **创建等值线**
    调用 `createIsoline` 变更，至少提供 `vehicle_id` 和 `origin`。该变更会立即返回等值线 `id`，您将在下一步中使用它。电池电量或天气等可选输入请参阅[自定义等值线](#自定义等值线)。
@@ -84,17 +84,17 @@ subscription Isoline {
 
 ## 自定义等值线
 
-`createIsoline` 接受一系列可选输入，用于微调计算。有关每个字段的更多详情，请参阅 [API 参考](/api-reference/light-vehicle/isoline/mutation-create-isoline)。
+`createIsoline` 接受一系列可选输入，用于微调计算。有关每个字段的更多详情，请参阅 [API 参考](/api-reference/core/isoline/mutation-create-isoline)。
 
 | 功能 | 描述 |
 | --- | --- |
-| [电池电量](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-state_of_charge) | 使用 `state_of_charge` 设置起始电量，单位可以是百分比、千瓦时、公里或英里。默认为车辆的可用电池容量。 |
-| [最低剩余电量](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-final_state_of_charge) | 使用 `final_state_of_charge` 保留一部分电量。等值线仅包含车辆在保持高于该值的情况下可到达的点。默认为 0。 |
-| [多边形数量](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-polygon_count) | 选择多边形的数量，最多 20 个。 |
-| [往返](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-round_trip) | 使用 `round_trip`，仅包含车辆也能从该点驾驶返回起点的点。 |
-| [质量](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-quality) | 使用 `quality` 在精度与速度之间权衡，可设置为 `high` 或 `low`。 |
-| [渡轮连接](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-ferry_connections) | 使用 `ferry_connections` 包含渡轮，可设置为 `none` 或 `single`。渡轮会增加计算时间和多边形数量。 |
-| [天气](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-weather) | 应用 `summer`、`winter` 或 `actual` 天气预设，或自定义条件。默认使用实时天气数据。 |
-| [季节](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-season) | 假定 `summer`、`winter` 或 `current` 条件，作为 `weather` 的更简单替代方案。 |
-| [车辆载重](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-occupants) | 设置 `occupants`、`total_occupant_weight` 和 `total_cargo_weight`，以考虑车辆所承载的重量。 |
-| [空调控制](/api-reference/light-vehicle/isoline/mutation-create-isoline#arg-input-climate_control) | 开启 `climate_control`，并描述 `heat_pump` 和 `cabin` 配置，以便将制热和制冷计入能耗。 |
+| [电池电量](/api-reference/core/isoline/mutation-create-isoline#arg-input-state_of_charge) | 使用 `state_of_charge` 设置起始电量，单位可以是百分比、千瓦时、公里或英里。默认为车辆的可用电池容量。 |
+| [最低剩余电量](/api-reference/core/isoline/mutation-create-isoline#arg-input-final_state_of_charge) | 使用 `final_state_of_charge` 保留一部分电量。等值线仅包含车辆在保持高于该值的情况下可到达的点。默认为 0。 |
+| [多边形数量](/api-reference/core/isoline/mutation-create-isoline#arg-input-polygon_count) | 选择多边形的数量，最多 20 个。 |
+| [往返](/api-reference/core/isoline/mutation-create-isoline#arg-input-round_trip) | 使用 `round_trip`，仅包含车辆也能从该点驾驶返回起点的点。 |
+| [质量](/api-reference/core/isoline/mutation-create-isoline#arg-input-quality) | 使用 `quality` 在精度与速度之间权衡，可设置为 `high` 或 `low`。 |
+| [渡轮连接](/api-reference/core/isoline/mutation-create-isoline#arg-input-ferry_connections) | 使用 `ferry_connections` 包含渡轮，可设置为 `none` 或 `single`。渡轮会增加计算时间和多边形数量。 |
+| [天气](/api-reference/core/isoline/mutation-create-isoline#arg-input-weather) | 应用 `summer`、`winter` 或 `actual` 天气预设，或自定义条件。默认使用实时天气数据。 |
+| [季节](/api-reference/core/isoline/mutation-create-isoline#arg-input-season) | 假定 `summer`、`winter` 或 `current` 条件，作为 `weather` 的更简单替代方案。 |
+| [车辆载重](/api-reference/core/isoline/mutation-create-isoline#arg-input-occupants) | 设置 `occupants`、`total_occupant_weight` 和 `total_cargo_weight`，以考虑车辆所承载的重量。 |
+| [空调控制](/api-reference/core/isoline/mutation-create-isoline#arg-input-climate_control) | 开启 `climate_control`，并描述 `heat_pump` 和 `cabin` 配置，以便将制热和制冷计入能耗。 |

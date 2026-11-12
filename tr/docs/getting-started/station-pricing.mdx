@@ -9,15 +9,15 @@ description: "Şarj fiyatlarını Tile servisi üzerinden haritada veya bir kone
 
 Tile hizmeti, fiyatları hem filtre hem de seçici olarak destekler.
 
-- Bir [filtre](/api-reference/light-vehicle/tiles/filters) olarak, fiyatı bu aralığa düşen istasyonları dinamik olarak dahil etmek veya hariç tutmak için `minimum_energy_price` ve `maximum_energy_price` değerlerini, aralığı doğru para birimine dönüştürmek üzere `currency` ile birlikte gönderin.
-- Bir [seçici](/api-reference/light-vehicle/tiles/selectors) olarak `connector_minimum_energy_price`, `connector_maximum_energy_price`, `price_vat`, `price_valid_until`, `price_original_currency` ve `price_conversion_rate` değerlerini isteyin. Bunlar istasyon feature özelliklerinde (`properties.count == 1`) döndürülür. Fiyat her zaman istasyon fiyatıdır ve kendi dönüşümünüze göre ayarlamak için `price_original_currency` ve `price_conversion_rate` değerlerini kullanabilirsiniz.
+- Bir [filtre](/api-reference/core/tiles/filters) olarak, fiyatı bu aralığa düşen istasyonları dinamik olarak dahil etmek veya hariç tutmak için `minimum_energy_price` ve `maximum_energy_price` değerlerini, aralığı doğru para birimine dönüştürmek üzere `currency` ile birlikte gönderin.
+- Bir [seçici](/api-reference/core/tiles/selectors) olarak `connector_minimum_energy_price`, `connector_maximum_energy_price`, `price_vat`, `price_valid_until`, `price_original_currency` ve `price_conversion_rate` değerlerini isteyin. Bunlar istasyon feature özelliklerinde (`properties.count == 1`) döndürülür. Fiyat her zaman istasyon fiyatıdır ve kendi dönüşümünüze göre ayarlamak için `price_original_currency` ve `price_conversion_rate` değerlerini kullanabilirsiniz.
 
 ## İstasyon fiyatlandırması
 
 Fiyatlandırma ayrıntılarının nereden geldiği, bir istasyonun arkasındaki istasyon veritabanına bağlıdır.
 
 - Ecomovement kullanılıyorsa, fiyatlandırma bir istasyonun konnektörlerinin fiyatlandırma nesnesinde, `evses[].connectors[].prices` konumunda bulunabilir.
-- Diğer tüm istasyon veritabanları için bunun yerine özel [tariffList](/api-reference/light-vehicle/tariff/query-tariff-list) ve [tariff](/api-reference/light-vehicle/tariff/query-tariff) sorgularını kullanın.
+- Diğer tüm istasyon veritabanları için bunun yerine özel [tariffList](/api-reference/core/tariff/query-tariff-list) ve [tariff](/api-reference/core/tariff/query-tariff) sorgularını kullanın.
 
 Bir konnektörün farklı zamanlarda etkin olan birden fazla fiyat öğesi olabilir. Doğru fiyatı göstermek için bunları sırayla değerlendirin.
 

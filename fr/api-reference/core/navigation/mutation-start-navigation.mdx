@@ -1,0 +1,16 @@
+---
+title: "Démarrer la navigation mutation"
+heading: Démarrer la navigation
+description: "Démarrez une session de navigation sur un itinéraire existant avec la mutation startNavigation lorsqu'un conducteur commence à suivre un itinéraire calculé."
+schemaName: startNavigation
+schemaType: Mutation
+---
+
+Démarrez une nouvelle session de navigation sur la base d'un itinéraire existant à l'aide de la mutation startNavigation. Elle est utile lorsqu'un conducteur commence à suivre un itinéraire calculé.
+
+> [!WARNING] Durée de la session
+> Une session de navigation est automatiquement terminée après 48 heures d'inactivité.
+
+## Mutation
+
+Un `route_id`, un `route_details_id` et une `current_location` sont requis pour démarrer une session de navigation. Les deux identifiants d'itinéraire peuvent être obtenus via la [requête getRoute](/api-reference/core/route/query-get-route). La mutation renvoie un `id` de session de navigation, qui permet de récupérer, mettre à jour ou terminer la session.

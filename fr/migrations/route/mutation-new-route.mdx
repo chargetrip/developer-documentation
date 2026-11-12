@@ -14,7 +14,7 @@ Migrez de l'ancien service Route vers la dernière version. Le nouveau service o
 
 | Ancien            | Nouveau                                                         |
 | ----------------- | ----------------------------------------------------------------|
-| `newRoute`        | [`createRoute`](/api-reference/light-vehicle/route/mutation-create-route)     |
+| `newRoute`        | [`createRoute`](/api-reference/core/route/mutation-create-route)     |
 
 ## Changements généraux du schéma
 
@@ -28,7 +28,7 @@ L'argument `input` de `createRoute` a été réorganisé et simplifié.
 
 ### routeRequest
 
-Au niveau racine, les champs suivants ont été supprimés. Les champs liés aux opérateurs sont désormais couverts par les [préférences d'opérateur](#préférences-dopérateur), et les champs liés aux équipements ont été déplacés vers leur propre [requête d'équipements](/api-reference/light-vehicle/route/query-get-route-stations-with-amenities) dédiée.
+Au niveau racine, les champs suivants ont été supprimés. Les champs liés aux opérateurs sont désormais couverts par les [préférences d'opérateur](#préférences-dopérateur), et les champs liés aux équipements ont été déplacés vers leur propre [requête d'équipements](/api-reference/core/route/query-get-route-stations-with-amenities) dédiée.
 
 | Champ                  | Déplacé vers                          |
 | ---------------------- | -------------------------------------- |

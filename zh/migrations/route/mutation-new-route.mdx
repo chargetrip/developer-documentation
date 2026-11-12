@@ -14,7 +14,7 @@ migrateBefore: 01-01-2027
 
 | 旧版              | 新版                                                            |
 | ----------------- | ----------------------------------------------------------------|
-| `newRoute`        | [`createRoute`](/api-reference/light-vehicle/route/mutation-create-route)     |
+| `newRoute`        | [`createRoute`](/api-reference/core/route/mutation-create-route)     |
 
 ## 通用 schema 变更
 
@@ -28,7 +28,7 @@ migrateBefore: 01-01-2027
 
 ### routeRequest
 
-在根层级，以下字段已被移除。与运营商相关的字段现在由[运营商偏好](#运营商偏好)涵盖，与设施相关的字段已移至其专用的[设施查询](/api-reference/light-vehicle/route/query-get-route-stations-with-amenities)。
+在根层级，以下字段已被移除。与运营商相关的字段现在由[运营商偏好](#运营商偏好)涵盖，与设施相关的字段已移至其专用的[设施查询](/api-reference/core/route/query-get-route-stations-with-amenities)。
 
 | 字段                   | 移至                                   |
 | ---------------------- | -------------------------------------- |

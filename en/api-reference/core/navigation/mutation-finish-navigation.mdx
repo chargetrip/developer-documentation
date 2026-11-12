@@ -1,0 +1,14 @@
+---
+title: Finish navigation mutation
+heading: Finish navigation
+description: "End an active navigation session with the finishNavigation mutation when a driver reaches their destination or cancels the trip."
+schemaName: finishNavigation
+schemaType: Mutation
+---
+
+End an active navigation session by using the finishNavigation mutation. This is useful when a driver reaches their destination or the trip is canceled.
+
+## Mutation
+
+A navigation session `id` and `current_location` are required to finish it. The `id` can be obtained through the [startNavigation mutation](/api-reference/core/navigation/mutation-start-navigation).
+

@@ -1,0 +1,64 @@
+---
+title: Limitation de débit
+description: "Découvrez comment l'API utilise un algorithme leaky bucket pour limiter les requêtes, et comment fonctionnent le coût et les limites pour les API GraphQL et REST."
+---
+
+L'API limite le débit des requêtes à l'aide d'un <a href="https://en.wikipedia.org/wiki/Leaky_bucket" target="_blank" rel="noopener noreferrer">algorithme du seau percé</a>. Chaque requête coûte un certain nombre d'unités, et ces unités s'écoulent du seau à un rythme constant. Cela maintient un trafic régulier tout en autorisant de brefs pics.
+
+## API GraphQL
+
+La limitation de débit de l'API GraphQL repose sur le coût de chaque requête, plutôt que sur un nombre fixe de requêtes. Les sections ci-dessous présentent les bonnes pratiques pour réduire ce coût et expliquent comment lire l'état actuel de votre limite de débit.
+
+### Bonnes pratiques
+
+- Utilisez des subscriptions plutôt que d'interroger régulièrement avec des queries pour savoir quand les données changent.
+- Interrogez uniquement les champs dont vous avez besoin, et utilisez `filter` pour affiner les queries de liste.
+- Les queries de liste renvoient jusqu'à 100 enregistrements par page, mais une page plus grande coûte plus cher qu'une plus petite. Récupérer 100 enregistrements en une requête coûte plus que d'en récupérer 10, alors demandez moins d'enregistrements plutôt que plus. Consultez [pagination](/api-reference/core/api/pagination) pour plus de détails.
+- Si une requête est rejetée avec une erreur `429`, votre seau est plein. Arrêtez d'envoyer des requêtes et n'en effectuez de nouvelles qu'une fois le délai indiqué par `reset` écoulé.
+
+### Limite de débit
+
+Pour protéger l'API contre les queries trop complexes ou gourmandes en ressources, chaque requête se voit attribuer un coût en fonction de la quantité de données demandées. Chaque réponse à une requête valide, ou à une requête qui échoue à la validation métier, inclut un objet `extensions.cost` contenant le coût de la requête et l'état de votre limite de débit. Il est entièrement omis lorsqu'une requête échoue à la validation du schéma GraphQL.
+
+`cost` · <span class="text-muted">Integer</span>
+: Le coût, en unités, de la requête en cours.
+
+`limit` · <span class="text-muted">Integer</span>
+: Le coût maximal, en unités, autorisé dans la fenêtre de limite de débit actuelle.
+
+`used` · <span class="text-muted">Integer</span>
+: Le nombre d'unités déjà consommées dans cette fenêtre.
+
+`remaining` · <span class="text-muted">Integer</span>
+: Le nombre d'unités dont vous disposez encore avant d'atteindre la limite.
+
+`reset` · <span class="text-muted">Integer</span>
+: Un timestamp UNIX, en secondes, indiquant quand le quota est réinitialisé.
+
+## API REST
+
+La limitation de débit de l'API REST s'applique au [service de tuiles](/api-reference/core/tiles/mvt). Contrairement à l'API GraphQL, l'état de la limite de débit est renvoyé via les en-têtes de réponse HTTP, et chaque requête a un coût fixe de 1 unité. Ces en-têtes sont renvoyés pour chaque requête, y compris celles qui échouent.
+
+`x-ratelimit-cost` · <span class="text-muted">Integer</span>
+: Le coût, en unités, de la requête en cours. Toujours `1` pour les requêtes REST.
+
+`x-ratelimit-limit` · <span class="text-muted">Integer</span>
+: Le coût maximal, en unités, autorisé dans la fenêtre de limite de débit actuelle.
+
+`x-ratelimit-used` · <span class="text-muted">Integer</span>
+: Le nombre d'unités déjà consommées dans cette fenêtre.
+
+`x-ratelimit-remaining` · <span class="text-muted">Integer</span>
+: Le nombre d'unités dont vous disposez encore avant d'atteindre la limite.
+
+`x-ratelimit-reset` · <span class="text-muted">Integer</span>
+: Un timestamp UNIX, en secondes, indiquant quand le quota est réinitialisé.
+
+## Limites actuelles
+
+Les limites de débit sont appliquées par client, sur une fenêtre d'une minute. Aucune limite par défaut n'est encore en place. Les limites sont configurées individuellement pour chaque client jusqu'à l'introduction de limites par défaut en 2027.
+
+Certaines queries et mutations ont également des limites individuelles inférieures à votre limite globale. Elles sont définies par produit, et parfois par requête, plutôt que globalement.
+
+> [!WARNING] Aucune limite définie
+> Si aucune limite n'est définie pour votre compte, `limit`, `remaining` et `reset` sont renvoyés à `null`. `cost` et `used` restent suivis et renvoyés.

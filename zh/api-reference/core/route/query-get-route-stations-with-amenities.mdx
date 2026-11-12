@@ -1,0 +1,16 @@
+---
+title: 路线便利设施停靠点查询
+heading: 路线便利设施停靠点
+description: "使用 getRouteStationsWithAmenities 查询，查找路线上某一点附近带有便利设施的充电站。"
+schemaName: getRouteStationsWithAmenities
+schemaType: Query
+---
+
+使用 getRouteStationsWithAmenities 查询在路线上的某一点搜索带有便利设施的充电站。当您想在餐厅、商店或其他便利设施附近规划充电停靠点时，此操作非常有用。
+
+## 查询
+
+沿路线搜索充电站需要 `route_id`、`route_details_id`、`time_window` 和 `amenity_types`。两个 ID 都可通过 [getRoute 查询](/api-reference/core/route/query-get-route)获取。使用 `filter` 参数根据特定条件缩小结果范围，并使用 `first` 和 `after` 参数对结果进行[分页](/api-reference/core/api/pagination)。
+
+> [!WARNING] 限制
+> 此查询的 `first` 不能超过 10。
