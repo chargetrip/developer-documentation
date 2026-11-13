@@ -4,42 +4,42 @@ description: "Temel URL'leri, abonelikler için WebSocket uç noktasını ve ger
 tag: Kurulum
 ---
 
-Kimlik bilgileriniz Chargetrip panosunda oluşturulduktan sonra, temel URL'lerimizi ve gerekli kimlik doğrulama başlıklarını kullanarak yetkili istekler göndermeye başlayabilirsiniz.
+Kimlik bilgileriniz Chargetrip panelinde oluşturulduktan sonra, temel URL'lerimizi ve gerekli kimlik doğrulama başlıklarını kullanarak yetkili istekler yapmaya başlayabilirsiniz.
 
 ## Kurulum
 
 
-Chargetrip API, işlem türüne bağlı olarak iki farklı uç nokta kullanır: sorgular ve mutasyonlar için bir HTTPS URL'si, abonelikler için bir WebSocket (WSS) URL'si. API hakkında daha fazla bilgiyi [GraphQL API referansında](/api-reference) bulabilirsiniz.
+Chargetrip API'si, işlem türüne bağlı olarak iki ayrı uç nokta kullanır: sorgular ve mutasyonlar için bir HTTPS URL'si, abonelikler için bir WebSocket (WSS) URL'si. API hakkında daha fazla bilgiyi [GraphQL API referansında](/api-reference/core) bulabilirsiniz.
 
 ### Sorgular ve mutasyonlar
-Sorgular ve mutasyonlar, ana GraphQL uç noktasına HTTP POST istekleriyle yürütülür.
+Sorgular ve mutasyonlar, ana GraphQL uç noktasına HTTP POST istekleri aracılığıyla yürütülür.
 
 
-```bash GraphQL sorguları ve mutasyonları uç nokta URL'si
+```bash GraphQL queries and mutations endpoint URL
 https://api.chargetrip.io/graphql
 ```
 
 ### Abonelikler
-Abonelikler WebSocket üzerinden kalıcı bir bağlantı gerektirir ve `graphql-transport-ws` protokolü kullanılarak uygulanabilir. WebSocket'lerin nasıl kullanılacağını ayrıntılı olarak [burada](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications) öğrenebilirsiniz.
+Abonelikler WebSocket üzerinden kalıcı bir bağlantı gerektirir ve `graphql-transport-ws` protokolü kullanılarak uygulanabilir. WebSocket'lerin ayrıntılı kullanımını [burada](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications) öğrenebilirsiniz.
 
 
-```bash GraphQL Abonelik URL'si
+```bash GraphQL Subscription URL
 wss://api.chargetrip.io/subscription
 ```
 
-> [!WARNING] graphql-ws protokolü kullanım dışıdır
+> [!WARNING] graphql-ws protokolü kullanım dışı
 > Eski graphql-ws abonelik protokolü kullanım dışıdır ve yakında kaldırılacaktır. Abonelik hatalarını ve hizmet kesintilerini önlemek için lütfen graphql-transport-ws protokolüne geçin.
 
 
 ## Yetkilendirme başlıkları
 
-Temel URL'yi aldıktan sonra her isteğe aşağıdaki başlıkları ekleyin. Zorunlu olarak işaretlenen başlıklar her zaman gönderilmelidir.
+Temel URL'yi edindikten sonra her isteğe aşağıdaki başlıkları ekleyin. Zorunlu olarak işaretlenen başlıklar her zaman gönderilmelidir.
 
-`x-client-id` · <span class="text-accent">zorunlu</span>
+`x-client-id` · <span class="text-accent">required</span>
 : Proje yapılandırmasını içeren bir proje kimliği.
 
-`x-app-id` · <span class="text-accent">zorunlu</span>
-: Güvenlik ve analizleri ayırmak için bir uygulama kimliği.
+`x-app-id` · <span class="text-accent">required</span>
+: Güvenlik ve analitiği ayırmak için bir uygulama kimliği.
 
 `x-app-identifier`
 : Bir iOS veya Android paket tanımlayıcısı.
@@ -48,13 +48,13 @@ Temel URL'yi aldıktan sonra her isteğe aşağıdaki başlıkları ekleyin. Zor
 : Bir Android SHA parmak izi.
 
 > [!TIP] Anahtarlarınızı koruyun
-> Maksimum güvenlik için uygulamanızı makineden makineye (M2M) erişimle sınırlayın ve kimlik bilgilerini bir tarayıcıya veya cihaza açmak yerine kendi kimlik doğrulamanızın arkasında kendi sunucunuzda tutun. Mevcut tüm kısıtlama türleri için [Güvenlik](/api-reference/core/api/security) bölümüne bakın.
+> Azami güvenlik için uygulamanızı makineden makineye (M2M) erişimle sınırlandırın ve kimlik bilgilerini bir tarayıcıya veya cihaza açmak yerine kendi kimlik doğrulamanızın arkasında kendi sunucunuzda tutun. Mevcut tüm kısıtlama türleri için [Güvenlik](/api-reference/core/api/security) bölümüne bakın.
 
-## Yetkili bir istek gönderme
+## Yetkili istek gönderme
 
 API ile iletişim kurmak için her isteğin kimliğini `x-client-id` ve `x-app-id` başlıklarıyla doğrulamanız gerekir. Varsayılan olarak her proje için benzersiz bir `x-app-id` oluşturulur.
 
-```bash Örnek istek
+```bash Example request
 curl -X POST \
   -H "Content-Type: application/json" \
   -H "x-client-id: YOUR_KEY_HERE" \

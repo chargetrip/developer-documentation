@@ -1,16 +1,16 @@
 ---
 title: "Navigation starten Mutation"
 heading: "Navigation starten"
-description: "Starten Sie mit der Mutation startNavigation eine Navigationssitzung auf einer bestehenden Route, sobald ein Fahrer der berechneten Route folgt."
+description: "Starten Sie mit der Mutation startNavigation eine Navigationssitzung auf einer bestehenden Route, wenn ein Fahrer beginnt, einer berechneten Route zu folgen."
 schemaName: startNavigation
 schemaType: Mutation
 ---
 
-Starten Sie mit der Mutation startNavigation eine neue Navigationssitzung auf Basis einer bestehenden Route. Dies ist nützlich, wenn ein Fahrer beginnt, einer berechneten Route zu folgen.
+Starten Sie mit der Mutation startNavigation eine neue Navigationssitzung auf einer bestehenden Route. Das ist nützlich, wenn ein Fahrer beginnt, einer berechneten Route zu folgen.
 
 > [!WARNING] Sitzungsdauer
 > Eine Navigationssitzung wird nach 48 Stunden Inaktivität automatisch beendet.
 
 ## Mutation
 
-Zum Starten einer Navigationssitzung sind `route_id`, `route_details_id` und `current_location` erforderlich. Beide Routen-IDs erhalten Sie über die [Query getRoute](/api-reference/core/route/query-get-route). Die Mutation gibt die `id` einer Navigationssitzung zurück, mit der Sie die Sitzung abrufen, aktualisieren oder beenden können.
+Zum Starten einer Navigationssitzung sind eine `route_id`, eine `route_details_id` und `current_location` erforderlich. Beide Routen-IDs erhalten Sie über die [Query getRoute](/api-reference/core/route/query-get-route). Die Mutation gibt die `id` einer Navigationssitzung zurück, mit der Sie die Sitzung abrufen, aktualisieren oder beenden können.

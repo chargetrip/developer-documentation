@@ -1,13 +1,13 @@
 ---
-title: "Autoriser le véhicule connecté mutation"
-heading: Autoriser le véhicule connecté
-description: "Finalisez l'autorisation d'un véhicule connecté avec la mutation authorizeConnectedVehicle, une fois que l'utilisateur final a accordé l'accès via le fournisseur."
+title: "Mutation d'autorisation de véhicule connecté"
+heading: "Autoriser le véhicule connecté"
+description: "Terminez l'autorisation d'un véhicule connecté avec la mutation authorizeConnectedVehicle, une fois que l'utilisateur final a accordé l'accès via le fournisseur."
 schemaName: authorizeConnectedVehicle
 schemaType: Mutation
 ---
 
-Finalisez l'autorisation d'un véhicule connecté à l'aide de la mutation authorizeConnectedVehicle. Elle est utile une fois que l'utilisateur final a accordé l'accès via le fournisseur de connectivité.
+Terminez l'autorisation d'un véhicule connecté en utilisant la mutation authorizeConnectedVehicle. Elle est utile une fois que l'utilisateur final a accordé l'accès via le fournisseur de connectivité.
 
 ## Mutation
 
-Un `id` et des `options` propres au fournisseur sont requis pour autoriser un véhicule connecté. L'`id` peut être obtenu via la [mutation createConnectedVehicle](/api-reference/core/connected-vehicle/mutation-create-connected-vehicle).
+Un `id` et des `options` propres au fournisseur sont obligatoires pour autoriser un véhicule connecté. L'`id` peut être obtenu via la [mutation createConnectedVehicle](/api-reference/core/connected-vehicle/mutation-create-connected-vehicle).

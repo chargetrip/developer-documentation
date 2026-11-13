@@ -1,23 +1,20 @@
 ---
-title: "Öne çıkarma grubu oluştur mutasyonu"
-heading: "Öne çıkarma grubu oluştur"
-description: "createBoostingGroup mutasyonuyla yönlendirme sırasında öne çıkarılacak bir istasyon grubu oluşturun."
+title: Güçlendirme grubu oluşturma mutation'ı
+heading: Güçlendirme grubu oluştur
+description: "createBoostingGroup mutation'ı ile rotalama sırasında öne çıkarılacak bir istasyon grubu oluşturun."
 schemaName: createBoostingGroup
 schemaType: Mutation
 ---
 
-createBoostingGroup mutasyonunu kullanarak bir öne çıkarma grubu oluşturun. Bu, rotaları, örneğin daha avantajlı bir ticari anlaşma nedeniyle, belirli şarj istasyonlarına yönlendirmek istediğinizde kullanışlıdır. Etkin gruplar, [createRoute](/api-reference/core/route/mutation-create-route) ile hesapladığınız her rotaya otomatik olarak uygulanır. Ayrıntılar için [öne çıkarma grupları kılavuzuna](/docs/getting-started/route-boosting-groups) bakın.
+createBoostingGroup mutation'ını kullanarak bir güçlendirme grubu oluşturun. Rotaları, örneğin daha iyi bir ticari anlaşma nedeniyle belirli şarj istasyonlarına yönlendirmek istediğinizde kullanışlıdır. Etkin gruplar, [createRoute](/api-reference/core/route/mutation-create-route) ile hesapladığınız her rotaya otomatik olarak uygulanır. Nasıl çalıştığını öğrenmek için [güçlendirme grupları kılavuzuna](/docs/getting-started/route-boosting-groups) bakın.
 
-## Mutasyon
+## Mutation
 
-Bir `name`, bir `client_id` ve bir `stations` listesi gereklidir. Her istasyonu `id` değeriyle veya istasyon sağlayıcınızın kullandığı `external_id` değeriyle tanımlayın. Grubu henüz rota hesaplamada kullanmadan oluşturmak için `status` değerini `inactive` yapın.
-
-> [!WARNING] Alpha
-> Bu işlem alpha aşamasındadır ve ücretsiz planlarda kullanılamaz. Erişim için destekle iletişime geçin.
+Bir `name`, bir `client_id` ve bir `stations` listesi zorunludur. Her istasyonu ya `id` ile ya da istasyon sağlayıcınızın kullandığı `external_id` ile tanımlayın. Grubu henüz rotalamada kullanmadan oluşturmak için `status` değerini `inactive` olarak ayarlayın.
 
 <details>
-  <summary>İki istasyonlu etkin olmayan bir öne çıkarma grubu oluşturun.</summary>
-  Bir istasyon dahili `id` değeriyle, diğeri sağlayıcınızın `external_id` değeriyle tanımlanır.
+  <summary>İki istasyonlu etkin olmayan bir güçlendirme grubu oluşturun.</summary>
+  Bir istasyon dahili `id` ile, diğeri sağlayıcınızın `external_id` değeriyle tanımlanır.
 
 ```graphql Example request
 mutation CreateBoostingGroup {

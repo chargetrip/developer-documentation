@@ -1,14 +1,13 @@
 ---
-title: 充电站设施列表查询
-heading: 充电站设施
-description: "使用 amenityList 查询列出充电站周边的设施，例如车辆充电期间可前往的餐厅和商店。"
+title: 设施列表查询
+heading: 设施列表
+description: "使用 amenityList 查询列出充电站周边的设施，例如车辆充电期间可以前往的餐厅和商店。"
 schemaName: amenityList
 schemaType: Query
 ---
 
-使用 amenityList 查询获取特定充电站周边的可用设施列表。当您想在车辆充电期间显示附近的餐厅、商店或其他设施时，此操作非常有用。
+使用 amenityList 查询获取特定充电站周边的可用设施列表。当您希望在车辆充电期间展示附近的餐厅、商店或其他设施时，此查询非常有用。
 
 ## 查询
 
-获取充电站的设施需要充电站的 `id`。`id` 可通过[路线](/api-reference/core/route/query-get-route)、[瓦片服务](/api-reference/core/tiles/mvt)或[周边充电站查询](/api-reference/core/station/query-station-around)获取。使用 `filter` 参数根据特定条件缩小结果范围，并使用 `size` 和 `page` 参数对结果进行[分页](/api-reference/core/api/pagination)。
-
+获取设施需要提供充电站 `id`。该 `id` 可以通过[路线](/api-reference/core/route/query-get-route)、[瓦片服务](/api-reference/core/tiles/mvt)或[周边充电站查询](/api-reference/core/station/query-station-around)获得。使用 `filter` 参数按特定条件缩小结果范围，并使用 `size` 和 `page` 参数对结果进行[分页](/api-reference/core/api/pagination)。

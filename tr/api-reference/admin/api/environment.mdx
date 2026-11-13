@@ -1,0 +1,45 @@
+---
+title: Ortam
+description: "Admin API'nin temel URL'sini alın, panoda bir yönetici anahtarı oluşturun ve x-token başlığıyla ilk yetkili isteğinizi gönderin."
+---
+
+Admin API, kendine ait özel bir ortamı olan bir GraphQL API'sidir. Ayrı bir uç noktaya sahiptir ve yetkilendirme için kendi yönetici anahtarlarını kullanır; bu nedenle API'nin geri kalanından bağımsız olarak kurarsınız.
+
+## Uç nokta
+
+İstekler, Admin API GraphQL uç noktasına HTTP POST istekleri olarak gönderilir.
+
+```bash Admin API endpoint URL
+https://admin.chargetrip.io/graphql
+```
+
+## Yetkilendirme başlıkları
+
+Her isteğe aşağıdaki başlığı ekleyin.
+
+`x-token` · <span class="text-accent">zorunlu</span>
+: Çalışma alanınızı tanımlayan bir yönetici anahtarı. Oluşturduğunuz veya okuduğunuz her kaynak bu çalışma alanına aittir.
+
+### Yönetici anahtarı alma
+
+Yönetici anahtarları yalnızca premium müşterilere sunulur. Anahtar oluşturmak için şu adımları izleyin.
+
+1. **Çalışma alanınızı açın**
+   Chargetrip panosunda oturum açın ve yönetmek istediğiniz çalışma alanını seçin.
+2. **Yönetici anahtarlarına gidin**
+   Çalışma alanınızdan **Yönetici anahtarları** bölümünü açın.
+3. **Anahtar oluşturun**
+   Yeni bir anahtar oluşturun ve kopyalayın. Her istekte `x-token` başlığı olarak gönderin.
+
+> [!TIP] Anahtarlarınızı güvende tutun
+> Azami güvenlik için uygulamanızın erişimini makineden makineye (M2M) ile sınırlayın ve kimlik bilgilerini bir tarayıcıya veya cihaza açmak yerine kendi kimlik doğrulamanızın arkasında, kendi sunucunuzda tutun.
+
+## Yetkili istek gönderme
+
+```bash Example request
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "x-token: YOUR_KEY_HERE" \
+  -d '{ "query": "{ boostingGroups { nodes { id } } }" }' \
+  https://admin.chargetrip.io/graphql
+```

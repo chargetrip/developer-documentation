@@ -28,5 +28,37 @@ Döndürülen istasyonları belirli ölçütlere göre filtrelemek için `filter
 ### Seçiciler
 Her istasyon özelliği için döndürülecek alanları belirtmek üzere `station_properties[]` sorgu parametresini kullanın. Daha fazla bilgi için [seçiciler belgelerine](/api-reference/core/tiles/selectors) bakın.
 
+## Yanıt
+
+MVT yanıtları, vektör nokta özellikleri içeren ikili Protocol Buffer verileridir. Her özellik ya tek bir istasyonu (`count: 1`) ya da bir istasyon kümesini (`count > 1`) temsil eder.
+
+Her özellikte kodlanan nitelikler tamamen özellik türüne ve sağlanan seçicilere bağlıdır:
+
+- Küme özellikleri: her zaman `{ "count": N, "expansion_zoom": Z }` döndürür.
+
+- İstasyon özellikleri: seçici sağlanmadıysa `{ "count": 1, "id": ID}`, [seçiciler](/api-reference/core/tiles/selectors) sağlandıysa yalnızca istenen alanları döndürür.
+
+
+
+<details>
+  <summary>Varsayılan çözümlenmiş MVT karo yanıtı</summary>
+
+
+```json Example response
+// Station feature
+{
+  "count": 1
+  "id": "64997cc0fbca5dbf88ef1fae"
+
+}
+
+// Cluster feature
+{
+  "count": 4,
+  "expansion_zoom": 14
+}
+```
+
+</details>
 ### Para birimi
 Döndürülen ve filtrelemede kullanılan enerji fiyatlarının para birimini belirlemek için `currency` sorgu parametresini kullanın. Daha fazla bilgi için [para birimi dönüşümü belgelerine](/api-reference/core/tiles/filters) bakın.

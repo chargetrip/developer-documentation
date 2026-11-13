@@ -1,14 +1,13 @@
 ---
-title: Servizi stazione query
-heading: Servizi stazione
-description: "Elenca i servizi intorno a una stazione con la query amenityList, come ristoranti e negozi da visitare mentre un veicolo si ricarica."
+title: Query elenco servizi
+heading: Elenco servizi
+description: "Elenca i servizi nelle vicinanze di una stazione con la query amenityList, come ristoranti e negozi da visitare mentre un veicolo si ricarica."
 schemaName: amenityList
 schemaType: Query
 ---
 
-Ottieni un elenco dei servizi disponibili intorno a una stazione specifica usando la query amenityList. È utile quando vuoi mostrare ristoranti, negozi o altre strutture nelle vicinanze mentre un veicolo è in carica.
+Ottieni un elenco dei servizi disponibili nelle vicinanze di una stazione specifica utilizzando la query amenityList. È utile quando vuoi mostrare ristoranti, negozi o altre strutture vicine mentre un veicolo è in ricarica.
 
 ## Query
 
-Per ottenere i servizi di una stazione è necessario il suo `id`. L'`id` si ottiene tramite un [percorso](/api-reference/core/route/query-get-route), il [servizio di tile](/api-reference/core/tiles/mvt) o la [query station around](/api-reference/core/station/query-station-around). Usa l'argomento `filter` per restringere i risultati in base a criteri specifici e gli argomenti `size` e `page` per [paginarli](/api-reference/core/api/pagination).
-
+Per ottenere i servizi di una stazione è necessario un `id` della stazione. L'`id` può essere ottenuto tramite un [percorso](/api-reference/core/route/query-get-route), il [servizio di tile](/api-reference/core/tiles/mvt) oppure la [query stazioni nelle vicinanze](/api-reference/core/station/query-station-around). Usa l'argomento `filter` per restringere i risultati in base a criteri specifici e gli argomenti `size` e `page` per [paginare](/api-reference/core/api/pagination) i risultati.

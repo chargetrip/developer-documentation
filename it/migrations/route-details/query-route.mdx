@@ -6,9 +6,9 @@ migrateBefore: 01-01-2027
 
 # Dettagli del percorso
 
-Migra entro: Q1 2027
+Esegui la migrazione entro: Q1 2027
 
-Esegui la migrazione dal servizio Route legacy all'ultima versione. Il nuovo servizio offre uno schema riorganizzato, preferenze degli operatori per paese, un calcolo del percorso più veloce e una maggiore manutenibilità.
+Passa dal servizio Route legacy alla versione più recente. Il nuovo servizio offre uno schema riorganizzato, preferenze degli operatori per paese, un calcolo del percorso più rapido e maggiore manutenibilità.
 
 ## Operazioni
 
@@ -19,17 +19,17 @@ Esegui la migrazione dal servizio Route legacy all'ultima versione. Il nuovo ser
 
 ## Modifiche generali allo schema
 
-- **Tipizzazione esplicita**: i campi JSON in precedenza flessibili ora sono tipizzati esplicitamente nello schema per migliorare struttura e validazione.
+- **Tipizzazione esplicita**: i campi JSON in precedenza flessibili sono ora tipizzati esplicitamente nello schema per migliorare struttura e validazione.
 - **Convenzioni di denominazione**: i campi ora usano `snake_case` invece di `camelCase`.
-- **Supporto delle unità**: gli input numerici ora supportano diversi tipi di unità, espressi come oggetto con `value`, `type` e un `source` facoltativo (`manual`, `telemetry` o `default`).
+- **Supporto delle unità**: gli input numerici ora supportano diversi tipi di unità, espressi come oggetto con `value`, `type` e un `source` opzionale (`manual`, `telemetry` o `default`).
 
 ## Modifiche a query e subscription
 
 La denominazione e il raggruppamento dei campi sono stati rivisti e i campi ridondanti sono stati rimossi. La risposta ora include l'input originale arricchito con i valori predefiniti, così può essere riutilizzato per futuri ricalcoli del percorso.
 
-### Primo livello
+### Livello superiore
 
-Al primo livello, la maggior parte dei campi si sposta sotto `recommended`, e gli input `ev`, `telemetry` e `routeRequest` vengono riuniti in un unico oggetto `request_input`.
+Al livello superiore, la maggior parte dei campi si sposta sotto `recommended`, mentre gli input `ev`, `telemetry` e `routeRequest` vengono riuniti in un unico oggetto `request_input`.
 
 | Campo          | Spostato in            |
 | -------------- | ---------------------- |
@@ -43,7 +43,7 @@ Al primo livello, la maggior parte dei campi si sposta sotto `recommended`, e gl
 
 ### Percorso
 
-A livello di percorso, la maggior parte dei campi si sposta sotto `recommended`, mantenendo i propri nomi, insieme ad alcune ridenominazioni esplicite.
+A livello di percorso, la maggior parte dei campi si sposta sotto `recommended`, mantenendo i propri nomi, insieme ad alcune rinomine esplicite.
 
 | Campo                 | Spostato in                          |
 | --------------------- | ------------------------------------ |
@@ -63,9 +63,9 @@ A livello di percorso, la maggior parte dei campi si sposta sotto `recommended`,
 
 ### Tratte
 
-A livello di tratta, le autonomie seguono le stesse ridenominazioni del percorso, e i dettagli su occupanti e carico si spostano sulle proprietà di posizione `origin` e `via` di ciascuna tratta.
+A livello di tratta, le autonomie seguono le stesse rinomine del percorso, mentre i dettagli su occupanti e carico si spostano nelle proprietà di posizione `origin` e `via` di ciascuna tratta.
 
-| Campo         | Spostato in                            |
+| Campo         | Spostato in                             |
 | ------------- | --------------------------------------- |
 | `rangeStart*` | `range_at_origin`                       |
 | `rangeEnd*`   | `range_at_destination`                  |
@@ -80,9 +80,9 @@ La risposta introduce anche una nuova struttura, più organizzata, per le sezion
 
 ### Sezioni
 
-Gli step sono stati sostituiti dalle sezioni, che forniscono informazioni più granulari, inclusi i dettagli di origine e destinazione per ciascuna sezione.
+I passaggi (steps) sono stati sostituiti dalle sezioni, che forniscono informazioni più granulari, inclusi i dettagli di origine e destinazione di ciascuna sezione.
 
-```graphql Sezioni {{ mark: [1,13,14,26,27] }}
+```graphql Sections {{ mark: [1,13,14,26,27] }}
 sections {
   type
   tags

@@ -1,15 +1,15 @@
 ---
 title: Yaşam döngüsü
-description: "API'nin kararlılık düzeylerini, uyumluluğu bozan ve bozmayan değişiklikler arasındaki farkı ve kullanımdan kaldırmaların nasıl yönetildiğini öğrenin."
+description: "API'nin kararlılık düzeylerini, geriye dönük uyumsuz ve uyumlu değişiklikler arasındaki farkı ve kullanımdan kaldırmaların nasıl yönetildiğini öğrenin."
 ---
 
-API, tek ve sürekli gelişen bir GraphQL uç noktası etrafında inşa edilmiştir. Bu mimari, yeni yeteneklerin ve performans iyileştirmelerinin API sürümleri arasında geçiş yapmaya gerek kalmadan sürekli olarak sunulmasını sağlar.
+API, tek ve gelişen bir GraphQL uç noktası etrafında inşa edilmiştir. Bu mimari, yeni yeteneklerin ve performans iyileştirmelerinin API sürümleri arasında geçiş gerektirmeden sürekli olarak sunulmasını sağlar.
 
-Bu sayfa, API genelindeki farklı kararlılık düzeylerini, kararlı API'nin kararlılık garantilerini, değişiklik türlerini (bozucu ve bozucu olmayan) ve kullanımdan kaldırmaların nasıl yönetildiğini özetler. Şu anda önizlemede olan özellikler için [deneysel özelliklere](/api-reference/core/api/experimental-features) bakın.
+Bu sayfa, API genelindeki farklı kararlılık düzeylerini, kararlı API'nin kararlılık garantilerini, değişiklik türlerini (geriye dönük uyumsuz ve uyumlu) ve kullanımdan kaldırmaların nasıl yönetildiğini özetler. Şu anda önizlemede olan özellikler için [deneysel özellikler](/api-reference/core/api/experimental-features) sayfasına bakın.
 
 ## Özellik yaşam döngüsü
 
-Her özellik üç kararlılık düzeyinden birindedir: alpha, beta veya kararlı. Çoğu özellik bu düzeylerden sırayla geçer ve kararlı özellikler yalnızca bir kullanımdan kaldırma süreciyle sonlandırılabilir.
+Her özellik üç kararlılık düzeyinden birinde yer alır: alpha, beta veya kararlı. Çoğu özellik bu düzeylerden sırayla geçer ve kararlı özellikler yalnızca bir kullanımdan kaldırma süreciyle sonlandırılabilir.
 
 ```text Lifecycle
 [ ALPHA ] ──> [ BETA ] ──> [ STABLE ] ──> [ DEPRECATED ] ──> [ REMOVED ]
@@ -19,14 +19,14 @@ Her özellik üç kararlılık düzeyinden birindedir: alpha, beta veya kararlı
 
 
 ## Kararlı API
-Kararlı işlevler, API'nin üretime hazır çekirdeğini oluşturur. Değişiklikler iki kategoriye ayrılır: bozucu olmayan ve bozucu.
+Kararlı işlevler, API'nin üretime hazır çekirdeğini oluşturur. Değişiklikler, geriye dönük uyumlu ve uyumsuz olmak üzere iki kategoriye ayrılır.
 
-### Bozucu olmayan değişiklikler
-Mevcut entegrasyonları aksatmayan, geriye dönük uyumlu eklemelerdir. Bunlar önceden bildirim veya kullanımdan kaldırma olmaksızın sürekli olarak yayınlanır.
+### Geriye dönük uyumlu değişiklikler
+Mevcut entegrasyonları aksatmayan, geriye dönük uyumlu eklemelerdir. Bunlar önceden bildirim veya kullanımdan kaldırma olmadan sürekli olarak yayımlanır.
 
-Bozucu olmayan değişiklikler şunları içerir:
+Geriye dönük uyumlu değişiklikler şunlardır:
 
-- Yeni bir sorgu, mutasyon veya abonelik eklemek.
+- Yeni bir sorgu, mutation veya subscription eklemek.
 - Mevcut bir işleme yeni bir isteğe bağlı girdi argümanı eklemek.
 - Mevcut davranışı koruyan bir varsayılan değere sahip yeni bir argüman eklemek.
 - Mevcut bir işlemin çıktısına yeni bir alan eklemek.
@@ -34,58 +34,58 @@ Bozucu olmayan değişiklikler şunları içerir:
 - Mevcut bir enum türüne yeni bir değer eklemek.
 
 
-#### Bozucu olmayan değişiklikler için geliştirme
+#### Geriye dönük uyumlu değişiklikler için geliştirme
 
-Bozucu olmayan değişiklikler de katı varsayımlarda bulunan istemcileri etkileyebilir. Entegrasyonları dayanıklı tutmak için:
+Geriye dönük uyumlu değişiklikler de katı varsayımlarda bulunan istemcileri etkileyebilir. Entegrasyonları dayanıklı tutmak için:
 
-- Yanıt gövdelerinde ek özellikler göründüğünde başarısız olan katı nesne seri durumdan çıkarmadan (deserialization) kaçının.
-- GraphQL `enum` türleri kapsamlı değildir ve zamanla genişler. İstemci mantığında her zaman bir yedek varsayılan durum uygulayın.
-- İnsan tarafından okunabilir hata metinleriyle eşleştirme yapmak yerine hataların `extensions.exception.code` değerlerini inceleyin.
+- Yüklerde fazladan özellikler göründüğünde başarısız olan katı nesne seri durumdan çıkarmadan kaçının.
+- GraphQL `enum` türleri kapsayıcı değildir ve zamanla genişler. İstemci mantığında her zaman bir yedek varsayılan durum uygulayın.
+- Hata `extensions.exception.code` değerlerini inceleyin; insanlar tarafından okunabilir hata dizeleriyle eşleştirme yapmayın.
 
-### Bozucu değişiklikler ve kullanımdan kaldırmalar
+### Geriye dönük uyumsuz değişiklikler ve kullanımdan kaldırmalar
 
-Bozucu bir değişiklik, çalışan mevcut entegrasyonları bozabilir. Bu nedenle her bozucu değişiklik önce 12 aylık bir kullanımdan kaldırma sürecinden geçmelidir.
+Geriye dönük uyumsuz bir değişiklik, mevcut etkin entegrasyonları bozabilir. Bu nedenle her geriye dönük uyumsuz değişiklik önce 12 aylık bir kullanımdan kaldırma sürecinden geçmelidir.
 
-Bozucu değişiklikler şunları içerir:
+Geriye dönük uyumsuz değişiklikler şunlardır:
 
-- Mevcut bir sorguyu, mutasyonu, aboneliği, alanı veya girdi argümanını kaldırmak ya da yeniden adlandırmak.
-- Enum değerlerini kaldırmak ya da yeniden adlandırmak.
+- Mevcut bir sorguyu, mutation'ı, subscription'ı, alanı veya girdi argümanını kaldırmak ya da yeniden adlandırmak.
+- Enum değerlerini kaldırmak veya yeniden adlandırmak.
 - Mevcut bir alanın veya girdi argümanının veri türünü değiştirmek.
 - Yeni bir zorunlu girdi argümanı eklemek.
 - İsteğe bağlı bir girdi argümanını zorunlu hale getirmek.
 - Mevcut bir alanın iş mantığını veya davranışını değiştirmek.
-- Bir çıktı alanını null olamaz (!) durumundan null olabilir duruma değiştirmek.
+- Bir çıktı alanını null olamaz (!) durumundan null olabilir durumuna getirmek.
 - Bir girdi argümanının veya alanın varsayılan değerini değiştirmek.
-- Sayfalandırma varsayılanlarını, maksimum sayfa boyutlarını veya belgelenmiş sıralama düzenini değiştirmek.
+- Sayfalandırma varsayılanlarını, en büyük sayfa boyutlarını veya belgelenmiş sıralama düzenini değiştirmek.
 
 
 #### Kullanımdan kaldırma zaman çizelgesi
 
-Bozucu bir değişiklik kararlı bir yeteneğin kaldırılmasını veya değiştirilmesini gerektirdiğinde, katı bir üç aşamalı zaman çizelgesi izlenir:
+Geriye dönük uyumsuz bir değişiklik, kararlı bir yeteneğin kaldırılmasını veya değiştirilmesini gerektirdiğinde, katı üç aşamalı bir zaman çizelgesini izler:
 
 1. **Kullanımdan kaldırma duyurusu**
-    İşlev, GraphQL şemasında `@deprecated` yönergesiyle etiketlenir. Uygunsa bir geçiş yolu sağlanır. Kullanımdan kaldırma ve ilgili kaldırma tarihi, [üç izleme kanalında](#kullanımdan-kaldırmaları-takip-etme) eşzamanlı olarak duyurulur.
-2. **Aktif bildirim süresi (1–12. aylar)**
-    Kullanımdan kaldırılan işlev tam olarak çalışmaya devam eder. Bir geçiş yolu sağlanmışsa, entegratörler bu 12 aylık süre içinde uygulamalarını güncellemeli ve yeni alanları benimsemelidir.
+    İşlev, GraphQL şemasında `@deprecated` yönergesiyle etiketlenir. Uygunsa bir geçiş yolu sağlanır. Kullanımdan kaldırma ve ilgili kaldırma tarihi, [üç izleme kanalında](#kullanımdan-kaldırmaları-izleme) aynı anda duyurulur.
+2. **Etkin bildirim süresi (1–12. aylar)**
+    Kullanımdan kaldırılan işlev tamamen çalışır durumda kalır. Bir geçiş yolu sağlanmışsa, entegratörler uygulamalarını güncellemeli ve yeni alanları bu 12 aylık süre içinde benimsemelidir.
 3. **Kalıcı kaldırma**
-    Kaldırma tarihinde işlev kalıcı olarak kaldırılır. İşlevi kullanan sonraki tüm istekler, bir GraphQL hatasıyla şema doğrulamasında başarısız olur.
+    Kaldırma tarihinde işlev kalıcı olarak kaldırılır. İşlevi kullanan sonraki istekler, bir GraphQL hatasıyla şema doğrulamasında başarısız olur.
 
 > [!TIP] Geçişleri erken planlayın
-> Hataları ve hizmet kesintisini önlemek için geçişlerinizi planlanan kaldırma tarihinden önce tamamlayın.
+> Hataları ve hizmet kesintilerini önlemek için geçişlerinizi planlanan kaldırma tarihinden önce tamamlayın.
 
-#### Kullanımdan kaldırmaları takip etme
+#### Kullanımdan kaldırmaları izleme
 
-Yaklaşan kaldırmaları üç kanaldan belirleyin ve takip edin:
+Planlanan kullanımdan kaldırmaları üç kanal üzerinden belirleyin ve takip edin:
 
-- Şema araçlarınızdaki `@deprecated(reason: "...")` yönergelerini inceleyin.
-- Kaldırma tarihlerini ve geçiş rehberlerini API'nin eski bölümünde veya [kullanımdan kaldırmalar portalında](/deprecations) inceleyin.
+- Şema araçlarınızda `@deprecated(reason: "...")` yönergelerini inceleyin.
+- API'nin eski bölümünde veya [kullanımdan kaldırma portalında](/deprecations) sonlandırma tarihlerini ve geçiş kılavuzlarını gözden geçirin.
 - API yanıtlarında doğrudan döndürülen `DEPRECATED_FEATURE` uyarılarını izleyin.
 
 
 <details>
   <summary>Yanıt örneği</summary>
 
-```graphql Örnek istek ve yanıt
+```graphql Example request and response
 {
   "data": {
     "station": {

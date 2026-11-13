@@ -1,53 +1,53 @@
 ---
 title: "Experimentelle Funktionen"
-description: "Erhalten Sie über das Alpha- und Beta-Programm frühen Zugriff auf kommende Funktionen der API und erfahren Sie, wie sich experimentelle von stabilen Funktionen unterscheiden."
+description: "Erhalten Sie über das Alpha- und Beta-Programm frühzeitig Zugang zu kommenden API-Funktionen und erfahren Sie, wie sich experimentelle von stabilen Funktionen unterscheiden."
 ---
 
-Chargetrip führt bedeutende neue Funktionen über ein strukturiertes Experimentalprogramm ein. Es gibt Ihnen frühen Zugriff, um kommende Funktionen zu evaluieren und deren Design zu beeinflussen, bevor Schemas und Verträge dauerhaft werden.
+Chargetrip führt wesentliche neue Funktionen über ein strukturiertes Experimentalprogramm ein. Es gibt Ihnen frühzeitig Zugang, um kommende Funktionen zu bewerten und ihr Design mitzugestalten, bevor Schemas und Verträge endgültig werden.
 
 > [!WARNING] Ausnahme von der 12-monatigen Verwerfungsrichtlinie
 > Funktionen in Alpha und Beta sind von der [12-monatigen Verwerfungsrichtlinie](/api-reference/core/api/lifecycle#verwerfungszeitplan) ausgenommen und können sich ändern oder früher eingestellt werden.
 
 ## Arten experimenteller Funktionen
 
-- Neue Operationen: Völlig neue Queries, Mutationen oder Subscriptions.
+- Neue Operationen: Vollständig neue Queries, Mutations oder Subscriptions.
 - Erweiterungen bestehender Operationen: Neue optionale Argumente oder Ausgabefelder, die zu bestehenden stabilen Operationen hinzugefügt werden.
 
 ## Phasen experimenteller Funktionen
 
 | Dimension | Alpha | Beta |
  | ----- | ----- | ----- |
-| **Produktionsreife** | Für Produktionsumgebungen ausdrücklich nicht empfohlen. | Geeignet für kontrollierte Pilotprojekte. Nicht empfohlen für geschäftskritische Abläufe. |
-| **Aktivierung** | Standardmäßig deaktiviert. Erfordert ein explizites Opt-in im Dashboard. | Standardmäßig für alle Clients aktiviert. |
+| **Produktionsreife** | Ausdrücklich nicht für Produktionsumgebungen empfohlen. | Geeignet für kontrollierte Pilotprojekte. Nicht für geschäftskritische Abläufe empfohlen. |
+| **Aktivierung** | Standardmäßig deaktiviert. Erfordert eine ausdrückliche Aktivierung im Dashboard. | Standardmäßig für alle Clients aktiviert. |
 | **Stabilität** | Stabil, aber häufigen Schemaänderungen unterworfen.| Stabil. Kann kleinere Schemaänderungen enthalten. |
-| **Schema-Kennzeichnung** | In den Schema-Feldbeschreibungen mit `[ALPHA]` gekennzeichnet. | In den Schema-Feldbeschreibungen mit `[BETA]` gekennzeichnet. |
-| **Einstellungsmitteilung** | Keine. Kann jederzeit sofort geändert oder eingestellt werden. | Proaktive, direkte Kontaktaufnahme mit Kunden, die aktiv integrieren. |
+| **Schema-Kennzeichnung** | In den Feldbeschreibungen des Schemas mit `[ALPHA]` gekennzeichnet. | In den Feldbeschreibungen des Schemas mit `[BETA]` gekennzeichnet. |
+| **Ankündigung der Einstellung** | Keine. Kann jederzeit geändert oder eingestellt werden. | Proaktive direkte Information an Kunden, die aktiv integrieren. |
 
-Informationen darüber, was stabile Funktionen garantieren, finden Sie unter [API-Lebenszyklus](/api-reference/core/api/lifecycle).
+Was stabile Funktionen garantieren, erfahren Sie unter [API-Lebenszyklus](/api-reference/core/api/lifecycle).
 
 
 ## Bewährte Vorgehensweisen
 
- - Verwenden Sie Alpha-Funktionen für Sandbox-Evaluierungen, Proofs of Concept und Feedback. Wenn Sie eine trotzdem produktiv einsetzen, erhalten Sie bei Änderungen weder eine Benachrichtigung noch Kompatibilitätsschutz.
+ - Verwenden Sie Alpha-Funktionen für Tests in der Sandbox, Proofs of Concept und Feedback. Wenn Sie dennoch eine einsetzen, erhalten Sie bei Änderungen weder eine Benachrichtigung noch Kompatibilitätsschutz.
  - Wenn Sie Beta-Funktionen für Endnutzer bereitstellen, zeigen Sie ein „Beta“-Badge an, damit diese wissen, dass sich die Funktion noch stabilisiert.
 
 
 ## Graduierungs-Lebenszyklus
 
-1. **Alpha zu Beta** Wenn Funktionalität und Schema eine ausreichende Reife erreichen, wird die Funktion zu Beta graduiert. Das Beschreibungs-Tag wechselt von `[ALPHA]` zu `[BETA]`, der Zugriff wird für alle Kunden standardmäßig aktiviert, und die Änderungen werden in den Release Notes angekündigt.
+1. **Alpha zu Beta** Wenn Funktionsumfang und Schema ausreichend ausgereift sind, wird die Funktion zu Beta überführt. Die Beschreibungskennzeichnung wechselt von `[ALPHA]` zu `[BETA]`, der Zugang wird standardmäßig für alle Kunden aktiviert, und die Änderungen werden in den Release Notes angekündigt.
 
-2. **Beta zu Stabil** Wenn Zuverlässigkeit und Reife bei mehreren Clients bestätigt wurden, werden das Beschreibungs-Tag `[BETA]` und die Laufzeitwarnungen entfernt, und die Funktion wechselt in den [stabilen Lebenszyklus](/api-reference/core/api/lifecycle).
+2. **Beta zu Stabil** Wenn Zuverlässigkeit und Reife bei mehreren Clients bestätigt sind, werden die Beschreibungskennzeichnung `[BETA]` und die Laufzeitwarnungen entfernt, und die Funktion wechselt in den [stabilen Lebenszyklus](/api-reference/core/api/lifecycle).
 
 
 ## Preise
-- Anfragen an Operationen, die als experimentell gekennzeichnet sind, sind **kostenlos**.
-- Anfragen an stabile Endpoints, die optionale experimentelle Eingabeargumente oder Ausgabefelder enthalten, werden gemäß Ihrem Abonnementplan **berechnet**.
+- Anfragen an als experimentell gekennzeichnete Operationen sind **kostenlos**.
+- Anfragen an stabile Endpunkte, die optionale experimentelle Eingabeargumente oder Ausgabefelder enthalten, werden gemäß Ihrem Abonnement **berechnet**.
 
 ## Programmatische Warnungen
-Damit Ihr Entwicklungsteam experimentelle Abhängigkeiten im laufenden Datenverkehr im Blick behält, geben API-Antworten, die Alpha- oder Beta-Funktionen nutzen, Warnungsmetadaten im GraphQL-`extensions`-Block zurück:
+Damit Ihr Entwicklungsteam experimentelle Abhängigkeiten im laufenden Datenverkehr im Blick behält, geben API-Antworten, die Alpha- oder Beta-Funktionen nutzen, Warnmetadaten im GraphQL-Block `extensions` zurück:
 
 <details>
-  <summary>Beispielwarnung einer Alpha-Funktion</summary>
+  <summary>Beispielwarnung für eine Alpha-Funktion</summary>
 
 ```json Example request and response
 {
@@ -72,7 +72,7 @@ Damit Ihr Entwicklungsteam experimentelle Abhängigkeiten im laufenden Datenverk
 
 
 <details>
-  <summary>Beispielwarnung einer Beta-Funktion</summary>
+  <summary>Beispielwarnung für eine Beta-Funktion</summary>
 
 ```json Example request and response
 {

@@ -1,20 +1,16 @@
 ---
 title: Sélecteurs
-description: "Ajoutez des données supplémentaires aux réponses de tuiles MVT et JSON avec des sélecteurs, tout en gardant des tuiles légères et rapides."
+description: "Incluez des données supplémentaires dans les réponses de tuiles MVT et JSON avec les sélecteurs, tout en gardant des charges utiles de tuiles légères et rapides."
 tag: Rest
 ---
 
-Pour optimiser le temps de réponse et la taille, l'API MVT et l'API JSON renvoient par défaut une réponse minimisée. Cette approche garantit des performances optimales et réduit la taille des tuiles, ce qui est essentiel pour des interactions fluides avec la carte. Grâce aux sélecteurs, vous pouvez inclure les données supplémentaires dont votre application a spécifiquement besoin.
+Pour optimiser la latence réseau et les performances de rendu, les services de tuiles MVT et JSON de Chargetrip renvoient par défaut une charge utile minimale. Cette charge utile par défaut fournit les données essentielles de géométrie et de regroupement nécessaires pour afficher rapidement les tuiles de carte.
 
-## Sélecteurs disponibles
+Grâce aux sélecteurs, vous pouvez demander les attributs de données de station dont votre application cliente a besoin, sans alourdir inutilement la charge utile.
 
-Tout champ listé dans les propriétés de station des tuiles MVT et JSON peut être utilisé comme sélecteur dans son service respectif, à l'exception des champs GeoJSON obligatoires renvoyés par l'endpoint JSON.
 
-`count` · `integer` · <span class="text-accent">default</span>
-: Le nombre de stations dans un cluster. Un nombre de 1 signifie une feature Station, tandis qu'un nombre supérieur à 1 signifie une feature Cluster.
 
-`expansion_zoom` · `integer` · <span class="text-accent">default</span>
-: Le niveau de zoom auquel un cluster se divise en plusieurs clusters ou stations plus petits.
+## Mise en œuvre
 
 `id` · `string`
 : L'identifiant de la station.
@@ -84,69 +80,182 @@ Tout champ listé dans les propriétés de station des tuiles MVT et JSON peut �
 Pour demander des propriétés spécifiques, ajoutez le paramètre de requête `station_properties[]` à l'URL de la requête de tuile.
 
 ```bash Tile / Selectors / Example
-https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
+https://api.chargetrip.io/v2/station/...?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
 ```
 
-## Exemples de comportement
+## Sélecteurs disponibles
+Les sélecteurs s'appliquent uniquement aux **entités de station** ; les entités de regroupement ne sont pas affectées et renvoient toujours `count` et `expansion_zoom`.
 
-Lorsque des sélecteurs sont fournis, la requête ne renvoie que les champs spécifiés.
 
-### GeoJSON
+`count` · `integer` · <span class="text-accent">par défaut</span>
+: Le nombre de stations dans un regroupement. Un nombre de 1 indique une entité de station, tandis qu'un nombre supérieur à 1 indique une entité de regroupement.
 
-Dans l'endpoint GeoJSON, les champs GeoJSON obligatoires (`type`, `geometry` et `id`) sont toujours renvoyés, quels que soient les sélecteurs choisis.
+`id` · `string` · <span class="text-accent">par défaut</span>
+: L'identifiant Chargetrip unique de la station. S'applique uniquement aux [tuiles MVT](/api-reference/core/tiles/mvt).
 
-```json JSON Selectors example
+`lng` · `float`
+: La longitude de la station. S'applique uniquement aux [tuiles MVT](/api-reference/core/tiles/mvt).
+
+`lat` · `float`
+: La latitude de la station. S'applique uniquement aux [tuiles MVT](/api-reference/core/tiles/mvt).
+
+`station_maximum_power` · `integer`
+: La puissance de recharge maximale de la station (en kW) disponible à la station. Cette valeur est statique et reflète toujours la capacité maximale de la station, quels que soient les filtres de connecteurs.
+
+`connector_maximum_power` · `integer`
+: La puissance de recharge maximale (en kW) disponible sur les connecteurs correspondant au filtre `connectors[]`. Si aucun filtre n'est fourni, tous les connecteurs sont pris en compte et la valeur correspond à `station_maximum_power`.
+
+`preferred_operator` · `boolean`
+: Indique si l'opérateur d'une station est un opérateur préféré. Les préférences d'opérateurs peuvent être gérées dans le [tableau de bord de Chargetrip](https://account.chargetrip.io/projects).
+
+`connector_minimum_energy_price` · `float` · [bêta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
+: Le prix de l'énergie le plus bas parmi les connecteurs de la station. Non renvoyé s'il n'est pas disponible.
+
+`connector_maximum_energy_price` · `float` · [bêta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
+: Le prix de l'énergie le plus élevé parmi les connecteurs de la station. Non renvoyé s'il n'est pas disponible.
+
+`price_vat` · `float` · [bêta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
+: La TVA appliquée au prix. Non renvoyée si elle n'est pas disponible.
+
+`price_valid_until` · `string` · [bêta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
+: La date et l'heure jusqu'auxquelles le prix est valide. Non renvoyées si elles ne sont pas disponibles.
+
+`price_original_currency` · `string` · [bêta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
+: La devise dans laquelle le prix était initialement défini, avant conversion vers `currency`. Non renvoyée si elle n'est pas disponible.
+
+`price_conversion_rate` · `float` · [bêta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
+: Le taux utilisé pour convertir le prix de sa devise d'origine vers `currency`. Non renvoyé s'il n'est pas disponible.
+
+`evse_status_blocked` · `integer`
+: Nombre d'EVSE bloqués physiquement ou électroniquement. Si un filtre `connectors[]` est fourni, seuls sont comptés les EVSE bloqués qui possèdent au moins l'un des types de connecteurs sélectionnés.
+
+`evse_status_planned` · `integer`
+: Nombre d'EVSE au statut planifié. Si un filtre `connectors[]` est fourni, seuls sont comptés les EVSE planifiés qui possèdent au moins l'un des types de connecteurs sélectionnés.
+
+`evse_status_available` · `integer`
+: Nombre d'EVSE au statut disponible. Si un filtre `connectors[]` est fourni, seuls sont comptés les EVSE disponibles qui possèdent au moins l'un des types de connecteurs sélectionnés.
+
+`evse_status_charging` · `integer`
+: Nombre d'EVSE actuellement occupés. Si un filtre `connectors[]` est fourni, seuls sont comptés les EVSE en cours de recharge qui possèdent au moins l'un des types de connecteurs sélectionnés.
+
+`evse_status_unknown` · `integer`
+: Nombre d'EVSE dont le statut en temps réel est actuellement inconnu. Si un filtre `connectors[]` est fourni, seuls sont comptés les EVSE au statut inconnu qui possèdent au moins l'un des types de connecteurs sélectionnés.
+
+`evse_status_reserved` · `integer`
+: Nombre d'EVSE réservés pour un conducteur. Si un filtre `connectors[]` est fourni, seuls sont comptés les EVSE réservés qui possèdent au moins l'un des types de connecteurs sélectionnés.
+
+`evse_status_out_of_order` · `integer`
+: Nombre d'EVSE marqués comme hors service. Si un filtre `connectors[]` est fourni, seuls sont comptés les EVSE hors service qui possèdent au moins l'un des types de connecteurs sélectionnés.
+
+`evse_status_inoperative` · `integer`
+: Nombre d'EVSE temporairement inopérants. Si un filtre `connectors[]` est fourni, seuls sont comptés les EVSE inopérants qui possèdent au moins l'un des types de connecteurs sélectionnés.
+
+## Exemples
+
+<details>
+  <summary>Demander la puissance de la station et la préférence d'opérateur dans les tuiles JSON</summary>
+
+Dans les tuiles JSON, la structure d'entité obligatoire (`type`, `geometry`, `id`) est toujours conservée sur les entités de station, tandis que `properties` contient uniquement les sélecteurs demandés (la propriété `count` par défaut est omise car elle n'a pas été demandée). Les entités de regroupement ne sont pas affectées par les sélecteurs et renvoient toujours `count` et `expansion_zoom`.
+
+```bash Example request {{ mark: [2,3] }}
+https://api.chargetrip.io/v2/station/10/582/325/tile.json
+  ?station_properties[]=station_maximum_power
+  &station_properties[]=preferred_operator
+```
+
+```json Example response {{ mark: [13,14,15,16] }}
 {
   "type": "FeatureCollection",
   "features": [
-    // Station feature
+    // Station feature (count = 1)
     {
-      "id": "132313",
+      "id": "5e5f3e8f8e0c1a0012345678",
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [6.789, 52.234]
+        "coordinates": [4.895168, 52.370216]
       },
-      // 'count' is missing because it wasn't provided as selector
       "properties": {
         "station_maximum_power": 350,
         "preferred_operator": true
       }
     },
-    // Cluster feature
-    // Cluster feature is not modified, as it's not affected by the selectors.
+   // Cluster feature (unaffected by selectors)
     {
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [6.723, 50.0]
+        "coordinates": [5.1214, 52.0907]
       },
       "properties": {
-        "count": 3,
-        "expansion_zoom": 18
+        "count": 4,
+        "expansion_zoom": 14
       }
     }
   ]
 }
 ```
 
-### MVT
+</details>
 
-Dans l'endpoint MVT, seuls les paramètres explicitement sélectionnés sont renvoyés, car il n'y a aucun champ obligatoire.
+<details>
+  <summary>Demander l'ID de la station, la puissance et la préférence d'opérateur dans les tuiles vectorielles MVT</summary>
 
-```json MVT Selectors example
-// Station feature
-// 'count' is missing because it wasn't provided as a selector.
+ Dans les tuiles MVT, seuls les sélecteurs explicitement demandés sont encodés dans l'entité de station (la propriété `count` par défaut est omise), tandis que les entités de regroupement ne sont pas affectées par les sélecteurs et conservent toujours `count` et `expansion_zoom`.
+
+```bash Example request {{ mark: [2,3,4] }}
+https://api.chargetrip.io/v2/station/10/582/325/tile.mvt
+  ?station_properties[]=id
+  &station_properties[]=station_maximum_power
+  &station_properties[]=preferred_operator
+```
+
+```json Example response {{ mark: [2,3,4,5,6] }}
+// Station feature ('count' is omitted because it wasn't requested as a selector)
 {
-  "id": "132313",
-  "preferred_operator": false,
+  "id": "5e5f3e8f8e0c1a0012345678",
+  "preferred_operator": true,
   "station_maximum_power": 350
 }
 
-// Cluster feature
-// Cluster feature is not modified, as it's not affected by the selectors.
+// Cluster feature (unaffected by selectors)
 {
-  "count": 3,
-  "expansion_zoom": 32
+  "count": 4,
+  "expansion_zoom": 14
 }
 ```
+
+</details>
+
+<details>
+  <summary>Combiner les sélecteurs avec les filtres de connecteurs pour obtenir le statut des EVSE en temps réel</summary>
+
+  Lors d'un filtrage par type de connecteur spécifique (par exemple CCS / `IEC_62196_T2_COMBO`), les valeurs `connector_maximum_power` et `evse_status_available` ne reflètent que les EVSE correspondant à ce filtre de connecteur.
+
+```bash Example request {{ mark: [2,3,4] }}
+https://api.chargetrip.io/v2/station/10/582/325/tile.json
+  ?connectors[]=IEC_62196_T2_COMBO
+  &station_properties[]=connector_maximum_power
+  &station_properties[]=evse_status_available
+```
+
+```json Example response {{ mark: [12,13,14,15] }}
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "id": "5e5f3e8f8e0c1a0012345678",
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [4.895168, 52.370216]
+      },
+      "properties": {
+        "connector_maximum_power": 300,
+        "evse_status_available": 2
+      }
+    }
+  ]
+}
+```
+</details>

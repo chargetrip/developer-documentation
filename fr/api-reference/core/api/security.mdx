@@ -1,16 +1,16 @@
 ---
-title: Sécurité
-description: "Empêchez l'utilisation non autorisée de vos applications en limitant la plateforme ou l'origine pouvant envoyer des requêtes avec votre app ID."
+title: "Sécurité"
+description: "Empêchez l'utilisation non autorisée de vos applications en restreignant la plateforme ou l'origine pouvant envoyer des requêtes avec votre identifiant d'application."
 ---
 
-Les en-têtes envoyés avec une requête, y compris `x-app-id`, sont visibles par quiconque inspecte le trafic réseau. Pour empêcher toute utilisation non autorisée de vos applications, appliquez une restriction qui limite la plateforme ou l'origine pouvant l'utiliser.
+Les en-têtes envoyés avec une requête, dont `x-app-id`, sont visibles par quiconque inspecte le trafic réseau. Pour empêcher l'utilisation non autorisée de vos applications, appliquez une restriction qui limite la plateforme ou l'origine pouvant l'utiliser.
 
-> [!WARNING] Une restriction par application
+> [!WARNING] Une seule restriction par application
 > Une seule restriction peut être appliquée par application. Pour combiner des restrictions, par exemple un client web et un client mobile, créez une application distincte pour chacun.
 
-## Types de restrictions
+## Types de restriction
 
-Quatre types de restrictions sont disponibles, chacun adapté à une plateforme ou à un mode de communication différent.
+Quatre types de restriction sont disponibles, chacun adapté à une plateforme ou à un mode de communication différent.
 
 ### Web
 
@@ -18,7 +18,7 @@ Restreignez une application web via le référent HTTP, appliqué à l'en-tête 
 
 ### Machine à machine (M2M)
 
-Restreignez la communication de serveur à serveur via l'adresse IP (IPv4 et IPv6 sont pris en charge), configurée dans le tableau de bord de l'application. C'est l'option la plus sûre, car les identifiants n'atteignent jamais un navigateur ou un appareil.
+Restreignez la communication de serveur à serveur via l'adresse IP (IPv4 et IPv6 sont pris en charge), configurée dans le tableau de bord de l'application. C'est l'option la plus sûre, car les identifiants n'atteignent jamais un navigateur ni un appareil.
 
 ### Android
 

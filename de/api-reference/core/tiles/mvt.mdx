@@ -1,6 +1,6 @@
 ---
-title: "MVT"
-description: "Greifen Sie auf geografische Stationsdaten als Mapbox Vector Tiles (MVT) zu, kodiert als Protocol Buffers, für effizientes Rendern von Karten."
+title: MVT
+description: "Rufen Sie stationsbezogene Geodaten als Mapbox Vector Tiles (MVT) ab, kodiert als Protocol Buffers, für ein effizientes Rendering von Karten."
 tag: Rest
 ---
 
@@ -8,7 +8,7 @@ Der MVT-Service (Mapbox Vector Tile) bietet Zugriff auf stationsbezogene Geodate
 
 ## Einrichtung
 
-Um auf die Stationsdaten im MVT-Format zuzugreifen, senden Sie eine Anfrage an den folgenden Endpoint:
+Um die Stationsdaten im MVT-Format abzurufen, senden Sie eine Anfrage an den folgenden Endpunkt:
 
 ```bash Tile / MVT / Base URL
 https://api.chargetrip.io/v2/station/{z}/{x}/{y}/tile.mvt
@@ -20,13 +20,45 @@ Die MVT-URL verwendet die folgenden Pfadparameter:
 - `x`: Die x-Koordinate der Kachel.
 - `y`: Die y-Koordinate der Kachel.
 
-Die meisten Kartenanbieter bieten integrierte Methoden, um Breiten- und Längengrad in Pixelkoordinaten umzurechnen. Um Breiten- und Längengrad manuell in x und y umzurechnen, verwenden Sie die [Web-Mercator-Projektion](https://en.wikipedia.org/wiki/Web_Mercator_projection).
+Die meisten Kartenanbieter verfügen über integrierte Methoden, um Breiten- und Längengrad in Pixelkoordinaten umzurechnen. Um Breiten- und Längengrad manuell in x und y umzurechnen, verwenden Sie die [Web-Mercator-Projektion](https://en.wikipedia.org/wiki/Web_Mercator_projection).
 
-### Filtern
-Verwenden Sie den Query-Parameter `filter`, um die zurückgegebenen Stationen anhand bestimmter Kriterien zu filtern. Weitere Informationen finden Sie in der [Dokumentation zu Filtern](/api-reference/core/tiles/filters).
+### Filterung
+Mit dem Query-Parameter `filter` filtern Sie die zurückgegebenen Stationen anhand bestimmter Kriterien. Weitere Informationen finden Sie in der [Filter-Dokumentation](/api-reference/core/tiles/filters).
 
 ### Selektoren
-Verwenden Sie den Query-Parameter `station_properties[]`, um die Felder festzulegen, die für jedes Stations-Feature zurückgegeben werden. Weitere Informationen finden Sie in der [Dokumentation zu Selektoren](/api-reference/core/tiles/selectors).
+Mit dem Query-Parameter `station_properties[]` legen Sie fest, welche Felder für jedes Stations-Feature zurückgegeben werden. Weitere Informationen finden Sie in der [Selektoren-Dokumentation](/api-reference/core/tiles/selectors).
 
+## Antwort
+
+MVT-Antworten sind binäre Protocol-Buffer-Nutzdaten mit Vektor-Punkt-Features. Jedes Feature steht entweder für eine einzelne Station (`count: 1`) oder für einen Stationscluster (`count > 1`).
+
+Die in jedem Feature kodierten Eigenschaften hängen vollständig vom Feature-Typ und den angegebenen Selektoren ab:
+
+- Cluster-Features: geben immer `{ "count": N, "expansion_zoom": Z }` zurück.
+
+- Stations-Features: geben `{ "count": 1, "id": ID}` zurück, wenn keine Selektoren angegeben sind, oder nur die angeforderten Felder, wenn [Selektoren](/api-reference/core/tiles/selectors) angegeben sind.
+
+
+
+<details>
+  <summary>Standardmäßig dekodierte Antwort der MVT-Kachel</summary>
+
+
+```json Example response
+// Station feature
+{
+  "count": 1
+  "id": "64997cc0fbca5dbf88ef1fae"
+
+}
+
+// Cluster feature
+{
+  "count": 4,
+  "expansion_zoom": 14
+}
+```
+
+</details>
 ### Währung
-Verwenden Sie den Query-Parameter `currency`, um die Währung der Energiepreise festzulegen, die zurückgegeben und nach denen gefiltert wird. Weitere Informationen finden Sie in der [Dokumentation zur Währungsumrechnung](/api-reference/core/tiles/filters).
+Mit dem Query-Parameter `currency` legen Sie die Währung der zurückgegebenen und gefilterten Energiepreise fest. Weitere Informationen finden Sie in der [Dokumentation zur Währungsumrechnung](/api-reference/core/tiles/filters).

@@ -1,14 +1,13 @@
 ---
 title: 选择器
-description: "通过选择器在 MVT 和 JSON 瓦片响应中包含额外的数据点，同时保持瓦片负载小巧而快速。"
+description: "使用选择器在 MVT 和 JSON 瓦片响应中包含额外的数据点，同时保持瓦片载荷小巧且快速。"
 tag: Rest
 ---
 
-为了优化响应时间和大小，默认情况下，MVT 和 JSON API 会返回精简的响应。这种方式可确保最佳性能并减小瓦片负载大小，这对于流畅的地图交互至关重要。通过使用选择器，您可以包含应用特别需要的额外数据点。
+为了优化网络延迟和渲染性能，Chargetrip 的 MVT 和 JSON 瓦片服务默认返回最小化的载荷。该默认载荷提供快速渲染地图瓦片所需的基本几何和聚合数据。
 
-## 可用的选择器
+通过使用选择器，您可以只请求客户端应用所需的特定充电站数据属性，而不会产生不必要的载荷开销。
 
-MVT 和 JSON 瓦片的充电站属性中列出的任何字段，都可以在其对应的服务中用作选择器，但 JSON 端点中返回的必需 GeoJSON 字段除外。
 
 `count` · `integer` · <span class="text-accent">default</span>
 : 聚合点内的充电站数量。数量为 1 表示 Station 要素，数量大于 1 表示 Cluster 要素。
@@ -81,72 +80,185 @@ MVT 和 JSON 瓦片的充电站属性中列出的任何字段，都可以在其�
 
 ## 实现
 
-要请求特定属性，请在瓦片请求 URL 后附加 `station_properties[]` 查询参数。
+要请求特定的充电站属性，请在瓦片请求 URL 中附加 `station_properties[]` 查询参数。对每个要包含的选择器重复该参数：
 
 ```bash Tile / Selectors / Example
-https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
+https://api.chargetrip.io/v2/station/...?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
 ```
 
-## 行为示例
+## 可用的选择器
+选择器仅适用于**充电站要素**，聚合要素不受影响，并且始终返回 `count` 和 `expansion_zoom`。
 
-提供选择器后，请求只返回指定的字段。
 
-### GeoJSON
+`count` · `integer` · <span class="text-accent">default</span>
+: 聚合点内的充电站数量。数量为 1 表示充电站要素，数量大于 1 则表示聚合要素。
 
-在 GeoJSON 端点中，无论选择了哪些选择器，必需的 GeoJSON 字段（`type`、`geometry` 和 `id`）始终会返回。
+`id` · `string` · <span class="text-accent">default</span>
+: 充电站的 Chargetrip 唯一标识符。仅适用于 [MVT 瓦片](/api-reference/core/tiles/mvt)。
 
-```json JSON Selectors example
+`lng` · `float`
+: 充电站的经度。仅适用于 [MVT 瓦片](/api-reference/core/tiles/mvt)。
+
+`lat` · `float`
+: 充电站的纬度。仅适用于 [MVT 瓦片](/api-reference/core/tiles/mvt)。
+
+`station_maximum_power` · `integer`
+: 充电站可提供的最大充电功率（单位 kW）。此值是静态的，始终反映充电站的最高能力，不受连接器筛选影响。
+
+`connector_maximum_power` · `integer`
+: 与 `connectors[]` 筛选匹配的连接器可提供的最大充电功率（单位 kW）。如果未提供筛选，则考虑所有连接器，此时该值与 `station_maximum_power` 一致。
+
+`preferred_operator` · `boolean`
+: 表示充电站的运营商是否为首选运营商。可以在 [Chargetrip 的 Dashboard](https://account.chargetrip.io/projects) 中管理运营商偏好。
+
+`connector_minimum_energy_price` · `float` · [beta](tip:Beta;;此字段处于 Beta 阶段，在稳定之前可能会发生变化。)
+: 充电站连接器中最低的能源价格。如果不可用则不返回。
+
+`connector_maximum_energy_price` · `float` · [beta](tip:Beta;;此字段处于 Beta 阶段，在稳定之前可能会发生变化。)
+: 充电站连接器中最高的能源价格。如果不可用则不返回。
+
+`price_vat` · `float` · [beta](tip:Beta;;此字段处于 Beta 阶段，在稳定之前可能会发生变化。)
+: 价格所适用的增值税。如果不可用则不返回。
+
+`price_valid_until` · `string` · [beta](tip:Beta;;此字段处于 Beta 阶段，在稳定之前可能会发生变化。)
+: 价格的有效截止日期和时间。如果不可用则不返回。
+
+`price_original_currency` · `string` · [beta](tip:Beta;;此字段处于 Beta 阶段，在稳定之前可能会发生变化。)
+: 价格最初定义时使用的货币，即转换为 `currency` 之前的货币。如果不可用则不返回。
+
+`price_conversion_rate` · `float` · [beta](tip:Beta;;此字段处于 Beta 阶段，在稳定之前可能会发生变化。)
+: 将价格从其原始货币转换为 `currency` 所使用的汇率。如果不可用则不返回。
+
+`evse_status_blocked` · `integer`
+: 被物理或电子方式阻塞的 EVSE 数量。如果提供了 `connectors[]` 筛选，则仅统计至少拥有一种所选连接器类型的已阻塞 EVSE。
+
+`evse_status_planned` · `integer`
+: 处于计划中状态的 EVSE 数量。如果提供了 `connectors[]` 筛选，则仅统计至少拥有一种所选连接器类型的计划中 EVSE。
+
+`evse_status_available` · `integer`
+: 处于可用状态的 EVSE 数量。如果提供了 `connectors[]` 筛选，则仅统计至少拥有一种所选连接器类型的可用 EVSE。
+
+`evse_status_charging` · `integer`
+: 当前被占用的 EVSE 数量。如果提供了 `connectors[]` 筛选，则仅统计至少拥有一种所选连接器类型的充电中 EVSE。
+
+`evse_status_unknown` · `integer`
+: 当前实时状态未知的 EVSE 数量。如果提供了 `connectors[]` 筛选，则仅统计至少拥有一种所选连接器类型的未知状态 EVSE。
+
+`evse_status_reserved` · `integer`
+: 已为驾驶员预留的 EVSE 数量。如果提供了 `connectors[]` 筛选，则仅统计至少拥有一种所选连接器类型的已预留 EVSE。
+
+`evse_status_out_of_order` · `integer`
+: 被标记为故障的 EVSE 数量。如果提供了 `connectors[]` 筛选，则仅统计至少拥有一种所选连接器类型的故障 EVSE。
+
+`evse_status_inoperative` · `integer`
+: 暂时无法运行的 EVSE 数量。如果提供了 `connectors[]` 筛选，则仅统计至少拥有一种所选连接器类型的无法运行的 EVSE。
+
+## 示例
+
+<details>
+  <summary>在 JSON 瓦片中请求充电站功率和运营商偏好</summary>
+
+在 JSON 瓦片中，充电站要素始终保留必需的要素结构（`type`、`geometry`、`id`），而 `properties` 仅包含请求的选择器（默认的 `count` 属性因未被请求而被省略）。聚合要素不受选择器影响，仍会返回 `count` 和 `expansion_zoom`。
+
+```bash Example request {{ mark: [2,3] }}
+https://api.chargetrip.io/v2/station/10/582/325/tile.json
+  ?station_properties[]=station_maximum_power
+  &station_properties[]=preferred_operator
+```
+
+```json Example response {{ mark: [13,14,15,16] }}
 {
   "type": "FeatureCollection",
   "features": [
-    // Station feature
+    // Station feature (count = 1)
     {
-      "id": "132313",
+      "id": "5e5f3e8f8e0c1a0012345678",
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [6.789, 52.234]
+        "coordinates": [4.895168, 52.370216]
       },
-      // 'count' is missing because it wasn't provided as selector
       "properties": {
         "station_maximum_power": 350,
         "preferred_operator": true
       }
     },
-    // Cluster feature
-    // Cluster feature is not modified, as it's not affected by the selectors.
+   // Cluster feature (unaffected by selectors)
     {
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [6.723, 50.0]
+        "coordinates": [5.1214, 52.0907]
       },
       "properties": {
-        "count": 3,
-        "expansion_zoom": 18
+        "count": 4,
+        "expansion_zoom": 14
       }
     }
   ]
 }
 ```
 
-### MVT
+</details>
 
-在 MVT 端点中，由于没有必需字段，只会返回明确选择的参数。
+<details>
+  <summary>在 MVT 矢量瓦片中请求充电站 ID、功率和运营商偏好</summary>
 
-```json MVT Selectors example
-// Station feature
-// 'count' is missing because it wasn't provided as a selector.
+ 在 MVT 瓦片中，只有明确请求的选择器才会被编码到充电站要素中（省略默认的 `count` 属性），而聚合要素不受选择器影响，始终保留 `count` 和 `expansion_zoom`。
+
+```bash Example request {{ mark: [2,3,4] }}
+https://api.chargetrip.io/v2/station/10/582/325/tile.mvt
+  ?station_properties[]=id
+  &station_properties[]=station_maximum_power
+  &station_properties[]=preferred_operator
+```
+
+```json Example response {{ mark: [2,3,4,5,6] }}
+// Station feature ('count' is omitted because it wasn't requested as a selector)
 {
-  "id": "132313",
-  "preferred_operator": false,
+  "id": "5e5f3e8f8e0c1a0012345678",
+  "preferred_operator": true,
   "station_maximum_power": 350
 }
 
-// Cluster feature
-// Cluster feature is not modified, as it's not affected by the selectors.
+// Cluster feature (unaffected by selectors)
 {
-  "count": 3,
-  "expansion_zoom": 32
+  "count": 4,
+  "expansion_zoom": 14
 }
 ```
+
+</details>
+
+<details>
+  <summary>将选择器与连接器筛选结合，获取实时 EVSE 状态</summary>
+
+  按特定连接器类型（例如 CCS / `IEC_62196_T2_COMBO`）筛选时，`connector_maximum_power` 和 `evse_status_available` 的数量仅反映与该连接器筛选匹配的 EVSE。
+
+```bash Example request {{ mark: [2,3,4] }}
+https://api.chargetrip.io/v2/station/10/582/325/tile.json
+  ?connectors[]=IEC_62196_T2_COMBO
+  &station_properties[]=connector_maximum_power
+  &station_properties[]=evse_status_available
+```
+
+```json Example response {{ mark: [12,13,14,15] }}
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "id": "5e5f3e8f8e0c1a0012345678",
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [4.895168, 52.370216]
+      },
+      "properties": {
+        "connector_maximum_power": 300,
+        "evse_status_available": 2
+      }
+    }
+  ]
+}
+```
+</details>

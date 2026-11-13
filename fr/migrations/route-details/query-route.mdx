@@ -8,7 +8,7 @@ migrateBefore: 01-01-2027
 
 Migrer avant : T1 2027
 
-Migrez de l'ancien service Route vers la dernière version. Le nouveau service offre un schéma réorganisé, des préférences d'opérateur par pays, un calcul d'itinéraire plus rapide et une meilleure maintenabilité.
+Migrez de l'ancien service Route vers la dernière version. Le nouveau service apporte un schéma réorganisé, des préférences d'opérateurs par pays, un calcul d'itinéraire plus rapide et une meilleure maintenabilité.
 
 ## Opérations
 
@@ -17,15 +17,15 @@ Migrez de l'ancien service Route vers la dernière version. Le nouveau service o
 | `route`            | [`getRoute`](/api-reference/core/route/query-get-route)     |
 | `routeUpdatedById`  | [`route`](/api-reference/core/route/subscription-route)     |
 
-## Changements généraux du schéma
+## Modifications générales du schéma
 
 - **Typage explicite** : les champs JSON auparavant flexibles sont désormais explicitement typés dans le schéma pour améliorer la structure et la validation.
 - **Conventions de nommage** : les champs utilisent désormais `snake_case` au lieu de `camelCase`.
-- **Prise en charge des unités** : les entrées numériques prennent désormais en charge différents types d'unités, exprimées sous la forme d'un objet avec `value`, `type` et une `source` facultative (`manual`, `telemetry` ou `default`).
+- **Prise en charge des unités** : les entrées numériques prennent désormais en charge différents types d'unités, exprimées sous la forme d'un objet avec `value`, `type` et un `source` facultatif (`manual`, `telemetry` ou `default`).
 
-## Changements de requête et de souscription
+## Modifications des requêtes et des souscriptions
 
-Le nommage et le regroupement des champs ont été revus, et les champs redondants ont été supprimés. La réponse inclut désormais l'entrée d'origine enrichie des valeurs par défaut, afin de pouvoir la réutiliser pour de futurs recalculs d'itinéraire.
+Le nommage et le regroupement des champs ont été revus, et les champs redondants ont été supprimés. La réponse inclut désormais l'entrée d'origine enrichie des valeurs par défaut, afin qu'elle puisse être réutilisée pour de futurs recalculs d'itinéraire.
 
 ### Niveau supérieur
 
@@ -63,7 +63,7 @@ Au niveau de l'itinéraire, la plupart des champs passent sous `recommended` en 
 
 ### Tronçons
 
-Au niveau du tronçon, les autonomies suivent le même renommage que pour l'itinéraire, et les détails sur les occupants et la cargaison passent aux propriétés de localisation `origin` et `via` de chaque tronçon.
+Au niveau des tronçons, les autonomies suivent les mêmes renommages que l'itinéraire, et les détails sur les occupants et la cargaison passent dans les propriétés de lieu `origin` et `via` de chaque tronçon.
 
 | Champ         | Déplacé vers                           |
 | ------------- | --------------------------------------- |
@@ -74,13 +74,13 @@ Au niveau du tronçon, les autonomies suivent le même renommage que pour l'itin
 
 Les tronçons gagnent également un nouveau champ `range_after_charge`.
 
-## Changements mis en avant
+## Changements marquants
 
-La réponse introduit aussi une nouvelle forme, plus structurée, pour les sections d'itinéraire. Elle est détaillée ci-dessous.
+La réponse introduit également une nouvelle structure plus détaillée pour les sections d'itinéraire. Elle est décrite plus en détail ci-dessous.
 
 ### Sections
 
-Les étapes (steps) ont été remplacées par des sections, qui fournissent des informations plus fines, notamment les détails d'origine et de destination de chaque section.
+Les étapes ont été remplacées par des sections, qui fournissent des informations plus granulaires, notamment les détails d'origine et de destination de chaque section.
 
 ```graphql Sections {{ mark: [1,13,14,26,27] }}
 sections {

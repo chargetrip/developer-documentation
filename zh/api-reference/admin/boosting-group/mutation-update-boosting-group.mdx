@@ -1,23 +1,20 @@
 ---
-title: "更新优先群组变更"
-heading: "更新优先群组"
-description: "使用 updateBoostingGroup 变更修改优先群组的名称、描述或状态。"
+title: 更新增强组 mutation
+heading: 更新增强组
+description: "使用 updateBoostingGroup mutation 更改增强组的名称、描述或状态。"
 schemaName: updateBoostingGroup
 schemaType: Mutation
 ---
 
-使用 updateBoostingGroup 变更更新优先群组。当您想在不删除群组的情况下启用或停用它时，此操作非常有用。
+使用 updateBoostingGroup mutation 更新增强组。当您想在不删除某个组的情况下将其开启或关闭时，这会很有用。
 
-## 变更
+## Mutation
 
-需要优先群组的 `id`。`id` 可通过 [createBoostingGroup 变更](/api-reference/admin/boosting-group/mutation-create-boosting-group)获取。只发送您想修改的字段。此变更不会修改群组中的充电站。
-
-> [!WARNING] Alpha
-> 此操作处于 alpha 阶段，免费套餐不可用。请联系客户支持以获取访问权限。
+必须提供增强组的 `id`。`id` 可以通过 [createBoostingGroup mutation](/api-reference/admin/boosting-group/mutation-create-boosting-group) 获取。仅发送您想要更改的字段。此 mutation 不会更改组中的充电站。
 
 <details>
-  <summary>停用优先群组。</summary>
-  未启用的群组不再用于路线计算。
+  <summary>停用增强组。</summary>
+  未激活的组不再用于路线计算。
 
 ```graphql Example request
 mutation UpdateBoostingGroup {

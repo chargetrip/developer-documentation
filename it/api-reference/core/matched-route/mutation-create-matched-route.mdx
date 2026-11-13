@@ -1,13 +1,13 @@
 ---
-title: Crea percorso associato mutation
-heading: Crea percorso associato
-description: "Crea un percorso da una sequenza di punti GPS con la mutation createMatchedRoute, poi aggiungi soste di ricarica e consumo energetico."
+title: Mutation Crea rotta abbinata
+heading: Crea rotta abbinata
+description: "Crea una rotta da una sequenza di punti GPS con la mutation createMatchedRoute, poi aggiungi soste di ricarica e consumo energetico."
 schemaName: createMatchedRoute
 schemaType: Mutation
 ---
 
-Crea un percorso a partire da una sequenza di punti GPS usando la mutation createMatchedRoute. È particolarmente utile quando hai già un percorso basato sulle tue regole di business e vuoi aggiungere tappe di ricarica e calcolare il consumo energetico su di esso.
+Crea una rotta da una sequenza di punti GPS utilizzando la mutation createMatchedRoute. È particolarmente utile quando hai già una rotta basata sulle tue regole di business e vuoi aggiungere soste di ricarica e calcolare il consumo energetico su di essa.
 
 ## Mutation
 
-Per creare un percorso associato sono necessari un `vehicle` e almeno due `points` in ordine cronologico. Facoltativamente aggiungi punti `via`, `departure_time`, `weather`, `driving_preferences`, `operators` o `alternative_station_radius` per affinare il calcolo. Imposta `plan_charging_stops` per trovare e pianificare le tappe di ricarica se lo stato di carica del veicolo raggiunge la soglia in un qualsiasi punto del percorso. La mutation restituisce un `id` del percorso associato, che può essere usato per recuperare i dettagli del percorso o per iscriversi agli aggiornamenti.
+Per creare una rotta abbinata sono obbligatori un `vehicle` e almeno due `points` in ordine cronologico. Facoltativamente aggiungi punti `via`, `departure_time`, `weather`, `driving_preferences`, `operators` o `alternative_station_radius` per affinare il calcolo. Imposta `plan_charging_stops` per trovare e pianificare soste di ricarica se lo stato di carica del veicolo raggiunge la soglia in un qualsiasi punto della rotta. La mutation restituisce l'`id` di una rotta abbinata, che può essere usato per recuperare i dettagli della rotta o sottoscriversi agli aggiornamenti.

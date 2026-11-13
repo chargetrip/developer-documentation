@@ -5,7 +5,7 @@ date: 01-04-2026
 
 ## Percorsi alternativi
 
-![Percorsi alternativi](../../../assets/changelog/2026/april.jpg)
+![Alternative di percorso](../../../assets/changelog/2026/april.jpg)
 
 Ora puoi richiedere percorsi alternativi geograficamente diversi insieme al percorso consigliato durante il calcolo del percorso. In questo modo conducenti e dispatcher possono valutare percorsi alternativi in base alle proprie preferenze, mantenendo gli stessi vincoli del viaggio. Puoi specificare fino a 2 percorsi alternativi.
 
@@ -14,6 +14,6 @@ Ora puoi richiedere percorsi alternativi geograficamente diversi insieme al perc
 <details>
   <summary>Correzioni</summary>
 
-    - Risolto un problema per cui, in `createRoute`, fornire waypoint `via` vuoti senza geometria, posizione o ID stazione falliva silenziosamente con uno stato `not_found` invece di restituire un errore di validazione `ROUTE_VIA_LOCATION_MISSING`.
-    - Risolto un problema in `operatorList` per cui le query che usavano filtri di classifica restituivano risultati vuoti se il progetto non aveva paesi esclusi configurati, garantendo che vengano restituiti correttamente gli operatori che corrispondono alle preferenze di classifica.
+    - Risolto un problema per cui fornire in `createRoute` waypoint `via` vuoti, senza geometria, posizione o ID di stazione, falliva silenziosamente con uno stato `not_found` invece di restituire un errore di validazione `ROUTE_VIA_LOCATION_MISSING`.
+    - Risolto un problema in `operatorList` per cui le query che utilizzavano filtri di classifica restituivano risultati vuoti se il progetto non aveva paesi esclusi configurati, garantendo che i gestori corrispondenti alle preferenze di classifica vengano restituiti correttamente.
 </details>

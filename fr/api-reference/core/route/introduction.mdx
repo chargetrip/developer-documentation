@@ -1,28 +1,28 @@
 ---
-title: Introduction aux itinéraires
-heading: Introduction
-description: Comment les itinéraires EV sont calculés, et comment les ajuster pour une arrivée au plus tôt, votre propre réseau de recharge, des arrêts à proximité de commodités ou votre propre trajet.
+title: "Introduction à l'itinéraire"
+heading: "Introduction"
+description: "Comment les itinéraires de VE sont calculés, et comment les ajuster pour une arrivée la plus rapide, votre propre réseau de recharge, des arrêts avec services ou votre propre parcours."
 ---
 
-La planification d'itinéraires pour les EV s'accompagne de défis uniques. La capacité de la batterie, la consommation d'énergie réelle, la topographie, la météo et la disponibilité du réseau de recharge déterminent tous si un véhicule atteindra sa destination.
+La planification d'itinéraires pour les VE comporte des défis uniques. Des facteurs tels que la capacité de la batterie, la consommation d'énergie en conditions réelles, la topographie, la météo et la disponibilité du réseau de recharge déterminent si un véhicule atteindra sa destination.
 
-Le service de routage prend en compte toutes ces variables pour trouver des itinéraires EV optimaux. Grâce à un modèle de consommation d'énergie de classe mondiale, il place automatiquement les arrêts de recharge exactement quand et où ils sont nécessaires. Les itinéraires sont aussi entièrement personnalisables, ce qui vous permet de les adapter aux règles métier, aux réseaux et aux préférences des conducteurs qui comptent pour vous.
+Le service de calcul d'itinéraire prend en compte toutes ces variables pour trouver des itinéraires de VE optimaux. Grâce à un modèle de consommation d'énergie de classe mondiale, il place automatiquement les arrêts de recharge exactement quand et où ils sont nécessaires. Les itinéraires sont également entièrement personnalisables, ce qui vous permet de les adapter aux règles métier, aux réseaux et aux préférences des conducteurs qui comptent pour vous.
 
 > [!WARNING] Véhicules hybrides
-> Les véhicules hybrides et hybrides rechargeables ne dépendent pas uniquement de leur batterie, leurs itinéraires n'incluent donc pas d'arrêts de recharge.
+> Les véhicules hybrides et hybrides rechargeables ne dépendent pas uniquement de leur batterie ; leurs itinéraires ne comprennent donc pas d'arrêts de recharge.
 
 ## Optimiser un itinéraire selon votre objectif
 
 La même requête peut produire des itinéraires différents selon ce que vous optimisez. Voici les objectifs les plus courants, et les guides qui couvrent chacun en détail.
 
-Arrivée au plus tôt
-: Ajustez le style de conduite avec `speed_factor`, `maximum_speed` ou un `style` de `eco` ou `sport`. Ajoutez le trafic en temps réel et une heure de départ pour obtenir des heures d'arrivée précises, et privilégiez les stations situées directement sur l'autoroute pour éviter les détours. Consultez [créer un itinéraire](/docs/getting-started/route).
+Arrivée la plus rapide
+: Ajustez le style de conduite avec `speed_factor`, `maximum_speed` ou un `style` valant `eco` ou `sport`. Ajoutez le trafic en temps réel et une heure de départ pour obtenir des heures d'arrivée précises, et privilégiez les stations situées directement sur l'autoroute pour éviter les détours. Consultez [créer un itinéraire](/docs/getting-started/route).
 
 Votre propre réseau ou la carte de recharge d'un conducteur
-: Orientez les conducteurs vers les réseaux que vous souhaitez leur faire utiliser. Privilégiez ou exigez des opérateurs précis, classez-les en `high`, `medium` ou `low`, définissez les classements par pays, ou excluez et évitez complètement des opérateurs. Définissez des valeurs par défaut pour votre projet dans le dashboard, et remplacez-les à chaque requête. Consultez [itinéraire privilégiant des opérateurs](/docs/getting-started/route-operators).
+: Orientez les conducteurs vers les réseaux que vous souhaitez leur voir utiliser. Privilégiez ou exigez des opérateurs spécifiques, classez-les en `high`, `medium` ou `low`, définissez des classements par pays, ou excluez et évitez totalement certains opérateurs. Définissez des valeurs par défaut pour votre projet dans le tableau de bord, et remplacez-les pour chaque requête. Consultez [itinéraire privilégiant des opérateurs](/docs/getting-started/route-operators).
 
-Recharge à proximité de commodités
-: Trouvez les stations le long d'un itinéraire situées à distance de marche de restaurants, de cafés ou de commerces, afin que les conducteurs puissent organiser un arrêt de recharge autour de ce qu'ils souhaitent faire. Consultez [arrêts à proximité de commodités le long de l'itinéraire](/docs/getting-started/route-amenity-stops).
+Recharge à proximité de services
+: Trouvez les stations situées le long d'un itinéraire, à distance de marche de restaurants, de cafés ou de commerces, afin que les conducteurs puissent planifier un arrêt de recharge autour de ce qu'ils souhaitent faire. Consultez [arrêts avec services le long de l'itinéraire](/docs/getting-started/route-amenity-stops).
 
-Votre propre trajet
-: Ajoutez des étapes, soit de simples arrêts à un lieu, comme une livraison ou un enlèvement, soit des arrêts de recharge à une station précise. Définissez la durée d'arrêt du véhicule à chaque étape, et la charge qu'il transporte ensuite. Consultez [itinéraire avec arrêts](/docs/getting-started/route-stop).
+Votre propre parcours
+: Ajoutez des points de passage, soit de simples arrêts de localisation comme une livraison ou un enlèvement, soit des arrêts de recharge à une station précise. Définissez la durée pendant laquelle le véhicule reste à chaque arrêt, ainsi que la charge qu'il transporte à partir de là. Consultez [itinéraire avec arrêts](/docs/getting-started/route-stop).

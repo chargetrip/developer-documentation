@@ -1,17 +1,17 @@
 ---
-title: Cycle de vie
-description: "Découvrez les niveaux de stabilité de l'API, la différence entre changements majeurs et non majeurs, et la façon dont les dépréciations sont gérées."
+title: "Cycle de vie"
+description: "Découvrez les niveaux de stabilité de l'API, la différence entre changements majeurs et non majeurs, et la manière dont les dépréciations sont gérées."
 ---
 
-L'API est construite autour d'un unique endpoint GraphQL évolutif. Cette architecture garantit que les nouvelles capacités et les améliorations de performance sont livrées en continu, sans nécessiter de migration entre des versions d'API.
+L'API repose sur un point de terminaison GraphQL unique et évolutif. Cette architecture garantit que les nouvelles capacités et les améliorations de performance sont livrées en continu, sans nécessiter de migration entre des versions de l'API.
 
-Cette page décrit les différents niveaux de stabilité de l'API, les garanties de stabilité de l'API stable, les types de changements (incompatibles ou compatibles) et la gestion des obsolescences. Pour les fonctionnalités actuellement en préversion, consultez les [fonctionnalités expérimentales](/api-reference/core/api/experimental-features).
+Cette page présente les différents niveaux de stabilité de l'API, les garanties de stabilité de l'API stable, les types de changements (majeurs ou non) et la manière dont les dépréciations sont gérées. Pour les fonctionnalités actuellement en préversion, consultez les [fonctionnalités expérimentales](/api-reference/core/api/experimental-features).
 
 ## Cycle de vie des fonctionnalités
 
-Chaque fonctionnalité se situe à l'un des trois niveaux de stabilité : alpha, bêta ou stable. La plupart des fonctionnalités les parcourent dans l'ordre, et les fonctionnalités stables ne peuvent être retirées que via un processus d'obsolescence.
+Chaque fonctionnalité se situe à l'un de ces trois niveaux de stabilité : alpha, bêta ou stable. La plupart des fonctionnalités les parcourent dans l'ordre, et les fonctionnalités stables ne peuvent être retirées que via un processus de dépréciation.
 
-```text Cycle de vie
+```text Lifecycle
 [ ALPHA ] ──> [ BETA ] ──> [ STABLE ] ──> [ DEPRECATED ] ──> [ REMOVED ]
  Opt-in        Enabled                      12+ month
                by default                   notice window
@@ -19,73 +19,73 @@ Chaque fonctionnalité se situe à l'un des trois niveaux de stabilité : alpha,
 
 
 ## API stable
-Les fonctionnalités stables constituent le cœur de l'API, prêt pour la production. Les changements sont classés en deux catégories : compatibles et incompatibles.
+Les fonctionnalités stables constituent le noyau de l'API prêt pour la production. Les changements sont classés en deux catégories : non majeurs et majeurs.
 
-### Changements compatibles
-Ajouts rétrocompatibles qui ne perturbent pas les intégrations existantes. Ils sont publiés en continu, sans préavis ni obsolescence.
+### Changements non majeurs
+Ajouts rétrocompatibles qui ne perturbent pas les intégrations existantes. Ils sont publiés en continu, sans préavis ni dépréciation.
 
-Les changements compatibles incluent :
+Les changements non majeurs comprennent :
 
-- L'ajout d'une nouvelle query, mutation ou subscription.
-- L'ajout d'un nouvel argument d'entrée optionnel à une opération existante.
+- L'ajout d'une nouvelle requête, mutation ou souscription.
+- L'ajout d'un nouvel argument d'entrée facultatif à une opération existante.
 - L'ajout d'un nouvel argument avec une valeur par défaut qui préserve le comportement existant.
 - L'ajout d'un nouveau champ à la sortie d'une opération existante.
-- Le passage d'un argument d'entrée obligatoire à optionnel.
+- Le passage d'un argument d'entrée obligatoire à facultatif.
 - L'ajout d'une nouvelle valeur à un type enum existant.
 
 
-#### Concevoir pour les changements compatibles
+#### Concevoir en tenant compte des changements non majeurs
 
-Les changements compatibles peuvent tout de même affecter les clients qui font des hypothèses rigides. Pour garder des intégrations résilientes :
+Les changements non majeurs peuvent tout de même affecter les clients qui font des hypothèses rigides. Pour garder des intégrations résilientes :
 
 - Évitez la désérialisation stricte des objets, qui échoue lorsque des propriétés supplémentaires apparaissent dans les charges utiles.
-- Les types `enum` GraphQL ne sont pas exhaustifs et s'étendent au fil du temps. Implémentez toujours un cas par défaut de repli dans la logique du client.
-- Inspectez les valeurs `extensions.exception.code` des erreurs plutôt que de comparer des chaînes d'erreur lisibles par un humain.
+- Les types GraphQL `enum` ne sont pas exhaustifs et s'étendent avec le temps. Implémentez toujours un cas par défaut de repli dans la logique du client.
+- Inspectez les valeurs `extensions.exception.code` des erreurs plutôt que de comparer des chaînes d'erreur lisibles.
 
-### Changements incompatibles et obsolescences
+### Changements majeurs et dépréciations
 
-Un changement incompatible pourrait casser des intégrations actives existantes. Par conséquent, tout changement incompatible doit d'abord passer par un processus d'obsolescence de 12 mois.
+Un changement majeur peut casser des intégrations actives existantes. Par conséquent, tout changement majeur doit d'abord passer par un processus de dépréciation de 12 mois.
 
-Les changements incompatibles incluent :
+Les changements majeurs comprennent :
 
-- La suppression ou le renommage d'une query, mutation, subscription, d'un champ ou d'un argument d'entrée existant.
+- La suppression ou le renommage d'une requête, mutation, souscription, d'un champ ou d'un argument d'entrée existant.
 - La suppression ou le renommage de valeurs d'enum.
-- La modification du type de données d'un champ ou d'un argument d'entrée existant.
+- Le changement du type de données d'un champ ou d'un argument d'entrée existant.
 - L'ajout d'un nouvel argument d'entrée obligatoire.
-- Le passage d'un argument d'entrée optionnel à obligatoire.
+- Le passage d'un argument d'entrée facultatif à obligatoire.
 - La modification de la logique métier ou du comportement d'un champ existant.
 - Le passage d'un champ de sortie de non nullable (!) à nullable.
 - La modification de la valeur par défaut d'un argument d'entrée ou d'un champ.
 - La modification des valeurs par défaut de pagination, des tailles de page maximales ou de l'ordre de tri documenté.
 
 
-#### Calendrier d'obsolescence
+#### Calendrier de dépréciation
 
-Lorsqu'un changement incompatible nécessite de supprimer ou de remplacer une capacité stable, il suit un calendrier strict en trois phases :
+Lorsqu'un changement majeur nécessite de retirer ou de remplacer une capacité stable, il suit un calendrier strict en trois phases :
 
-1. **Annonce de l'obsolescence**
-    La fonctionnalité est marquée avec la directive `@deprecated` dans le schéma GraphQL. Le cas échéant, un chemin de migration est fourni. L'obsolescence et la date de suppression correspondante sont annoncées simultanément sur [trois canaux de suivi](#suivi-des-obsolescences).
+1. **Annonce de la dépréciation**
+    La fonctionnalité est marquée avec la directive `@deprecated` dans le schéma GraphQL. Le cas échéant, un chemin de migration est fourni. La dépréciation et la date de suppression correspondante sont annoncées simultanément via [trois canaux de suivi](#suivi-des-dépréciations).
 2. **Période de préavis active (mois 1 à 12)**
-    La fonctionnalité obsolète reste pleinement opérationnelle. Si un chemin de migration est fourni, les intégrateurs doivent mettre à jour leurs applications et adopter les nouveaux champs pendant cette période de 12 mois.
+    La fonctionnalité dépréciée reste pleinement opérationnelle. Si un chemin de migration est fourni, les intégrateurs doivent mettre à jour leurs applications et adopter les nouveaux champs pendant cette période de 12 mois.
 3. **Suppression définitive**
-    À la date de suppression, la fonctionnalité est définitivement supprimée. Toute requête ultérieure utilisant la fonctionnalité échouera à la validation du schéma avec une erreur GraphQL.
+    À la date de suppression, la fonctionnalité est définitivement retirée. Toute requête ultérieure utilisant cette fonctionnalité échouera à la validation du schéma avec une erreur GraphQL.
 
 > [!TIP] Planifiez vos migrations tôt
 > Pour éviter les erreurs et les interruptions de service, terminez vos migrations avant la date de suppression prévue.
 
-#### Suivi des obsolescences
+#### Suivi des dépréciations
 
 Identifiez et suivez les retraits à venir via trois canaux :
 
 - Inspectez les directives `@deprecated(reason: "...")` dans vos outils de schéma.
-- Consultez les dates de fin et les guides de migration dans la section héritée de l'API ou sur le [portail des obsolescences](/deprecations).
+- Consultez les dates de fin de support et les guides de migration dans la section héritée de l'API ou sur le [portail des dépréciations](/deprecations).
 - Surveillez les avertissements `DEPRECATED_FEATURE` renvoyés directement dans les réponses de l'API.
 
 
 <details>
   <summary>Exemple de réponse</summary>
 
-```graphql Exemple de requête et de réponse
+```graphql Example request and response
 {
   "data": {
     "station": {

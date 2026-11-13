@@ -1,14 +1,13 @@
 ---
 title: "Nutzerbewertung löschen Mutation"
 heading: "Nutzerbewertung löschen"
-description: "Entfernen Sie mit der Mutation deleteUserReview eine Bewertung des authentifizierten Nutzers. Dies ist eine Premium-Funktion."
+description: "Entfernen Sie mit der Mutation deleteUserReview eine Bewertung, die der authentifizierte Nutzer hinzugefügt hat. Dies ist eine Premium-Funktion."
 schemaName: deleteUserReview
 schemaType: Mutation
 ---
 
-Entfernen Sie eine vom authentifizierten Nutzer hinzugefügte Bewertung mit der Mutation deleteUserReview. Dies ist eine Premium-Funktion. Kontaktieren Sie uns für weitere Informationen.
+Entfernen Sie mit der Mutation deleteUserReview eine Bewertung, die der authentifizierte Nutzer hinzugefügt hat. Dies ist eine Premium-Funktion. Kontaktieren Sie uns für weitere Informationen.
 
 ## Mutation
 
-Zum Entfernen einer Bewertung ist deren `id` erforderlich. Ein `x-token`-Header ist zur Autorisierung des Nutzers zwingend erforderlich. Die Bewertung muss ihm gehören, andernfalls tritt ein Fehler auf.
-
+Zum Entfernen einer Bewertung ist deren `id` erforderlich. Zur Autorisierung des Nutzers ist ein `x-token`-Header zwingend. Die Bewertung muss ihm gehören, andernfalls tritt ein Fehler auf.

@@ -4,23 +4,23 @@ title: Rota geçiş rehberi
 migrateBefore: 01-01-2027
 ---
 
-# Rota oluşturma
+# Rota oluştur
 
-Şu tarihten önce geçiş yapın: 2027 Q1
+Şu tarihten önce geçiş yapın: 2027 1. Çeyrek
 
-Eski Rota hizmetinden en son sürüme geçin. Yeni hizmet; yeniden düzenlenmiş bir şema, ülke bazlı operatör tercihleri, daha hızlı rota hesaplama ve daha kolay sürdürülebilirlik sunar.
+Eski Rota hizmetinden en son sürüme geçin. Yeni hizmet yeniden düzenlenmiş bir şema, ülke bazında operatör tercihleri, daha hızlı rota hesaplama ve daha iyi sürdürülebilirlik sunar.
 
 ## İşlemler
 
-| Eski              | Yeni                                                            |
+| Eski               | Yeni                                                             |
 | ----------------- | ----------------------------------------------------------------|
 | `newRoute`        | [`createRoute`](/api-reference/core/route/mutation-create-route)     |
 
 ## Genel şema değişiklikleri
 
-- **Açık tür tanımlama**: daha önce esnek olan JSON alanları, yapıyı ve doğrulamayı iyileştirmek için artık şemada açıkça türlendirilmiştir.
+- **Açık tür tanımları**: daha önce esnek olan JSON alanları, yapıyı ve doğrulamayı iyileştirmek için artık şemada açıkça türlendirilmiştir.
 - **Adlandırma kuralları**: alanlar artık `camelCase` yerine `snake_case` kullanır.
-- **Birim desteği**: sayısal girdiler artık farklı birim türlerini destekler; bunlar `value`, `type` ve isteğe bağlı bir `source` (`manual`, `telemetry` veya `default`) içeren bir nesne olarak ifade edilir.
+- **Birim desteği**: sayısal girdiler artık farklı birim türlerini destekler ve `value`, `type` ile isteğe bağlı bir `source` (`manual`, `telemetry` veya `default`) içeren bir nesne olarak ifade edilir.
 
 ## Mutasyon değişiklikleri
 
@@ -28,21 +28,21 @@ Eski Rota hizmetinden en son sürüme geçin. Yeni hizmet; yeniden düzenlenmiş
 
 ### routeRequest
 
-Kök düzeyinde aşağıdaki alanlar kaldırılmıştır. Operatörle ilgili alanlar artık [operatör tercihleri](#operatör-tercihleri) kapsamındadır, olanakla ilgili alanlar ise kendi özel [olanak sorgusuna](/api-reference/core/route/query-get-route-stations-with-amenities) taşınmıştır.
+Kök düzeyde aşağıdaki alanlar kaldırılmıştır. Operatörle ilgili alanlar artık [operatör tercihleri](#operatör-tercihleri) kapsamındadır ve olanakla ilgili alanlar kendi özel [olanak sorgusuna](/api-reference/core/route/query-get-route-stations-with-amenities) taşınmıştır.
 
-| Alan                   | Taşındığı yer                          |
+| Alan                  | Taşındığı yer                              |
 | ---------------------- | -------------------------------------- |
-| `operatorIds`          | Kaldırıldı                             |
-| `amenities`            | Kaldırıldı                             |
-| `amenity_preferences`  | Kaldırıldı                             |
-| `operatorRequired`     | Kaldırıldı                             |
-| `operatorPrefer`       | Kaldırıldı                             |
+| `operatorIds`          | Kaldırıldı                                |
+| `amenities`            | Kaldırıldı                                |
+| `amenity_preferences`  | Kaldırıldı                                |
+| `operatorRequired`     | Kaldırıldı                                |
+| `operatorPrefer`       | Kaldırıldı                                |
 
 ### EV
 
-EV düzeyinde, üst düzey alanların çoğu özel bir `vehicle` nesnesine taşınmıştır.
+EV düzeyinde üst düzey alanların çoğu özel bir `vehicle` nesnesine taşınmıştır.
 
-| Alan              | Taşındığı yer                          |
+| Alan             | Taşındığı yer                              |
 | ----------------- | -------------------------------------- |
 | `ev.id`           | `vehicle.id`                     |
 | `battery`         | `vehicle`                        |
@@ -51,22 +51,22 @@ EV düzeyinde, üst düzey alanların çoğu özel bir `vehicle` nesnesine taş�
 | `plugs`           | `vehicle.charging.connectors`    |
 | `safeRiskMargin`       | `vehicle.charging.risk_margin`   |
 | `chargeMode`           | `vehicle.charging.mode`          |
-| `bmsConsumption`  | Kaldırıldı                             |
+| `bmsConsumption`  | Kaldırıldı                                |
 
 ### Araç yükü
 
-Araç yükü özellikleri artık tek bir yerde ayarlanmaz. Bunlar artık her `origin` ve `via` noktası için ayrı ayrı belirtilir ve bölüm başına yolcu ve kargo ağırlığı üzerinde daha ayrıntılı kontrol sağlar. Her konumda `properties.vehicle` altında yer alırlar ve alan adları şu şekilde değişir:
+Araç yükü özellikleri artık tek bir yerde ayarlanmaz. Artık her `origin` ve `via` noktası için ayrı ayrı belirtilir ve bölüm başına yolcu ve yük ağırlığı üzerinde daha ayrıntılı kontrol sağlar. Her konumda `properties.vehicle` altında bulunurlar ve alan adları şu şekilde değişir:
 
-| Alan        | Taşındığı yer         |
+| Alan       | Taşındığı yer             |
 | ----------- | --------------------- |
 | `occupants` | Değişmedi              |
 | `cargo`     | `total_cargo_weight`  |
 
 ### Telemetri
 
-Aşağıdaki telemetri verileri kök düzeyinden `vehicle` nesnesine taşınmıştır.
+Aşağıdaki telemetri verileri kök düzeyden `vehicle` nesnesine taşınmıştır.
 
-| Alan                  | Taşındığı yer    |
+| Alan                 | Taşındığı yer        |
 | --------------------- | ---------------- |
 | `heading`             | `vehicle`  |
 | `motor_rpm`           | `vehicle`  |
@@ -77,13 +77,13 @@ Aşağıdaki telemetri verileri kök düzeyinden `vehicle` nesnesine taşınmı�
 
 ## Öne çıkan değişiklikler
 
-`input` argümanındaki birkaç alan artık yeni ve daha yapılandırılmış şekillere sahiptir. Bunlar aşağıda daha ayrıntılı olarak ele alınmıştır.
+`input` argümanındaki birkaç alan artık yeni, daha yapılandırılmış biçimlere sahiptir. Bunlar aşağıda daha ayrıntılı olarak ele alınmıştır.
 
 ### Operatör tercihleri
 
-Operatör tercihleri üç seviyeye indirilmiştir: `high`, `medium` ve `low`. Her giriş; sıralanmış, hariç tutulmuş veya kaçınılmış olsun, `countries` alanı aracılığıyla belirli ülkelere göre kapsamlandırılabilir. Belirtilmezse tüm ülkeler dikkate alınır.
+Operatör tercihleri üç düzeye indirgenmiştir: `high`, `medium` ve `low`. Sıralanmış, hariç tutulmuş veya kaçınılmış her giriş, `countries` alanı aracılığıyla belirli ülkelerle sınırlandırılabilir. Belirtilmezse tüm ülkeler dikkate alınır.
 
-```graphql Operatör tercihleri {{ mark: [6,9,12] }}
+```graphql Operator preferences {{ mark: [6,9,12] }}
 input: {
   operators: {
     ranking: {
@@ -108,9 +108,9 @@ input: {
 
 ### Toplam yolcu ağırlığı
 
-Yeni bir `total_occupant_weight` alanı, varsayılan yolcu ağırlığını yeni birim nesnesiyle ifade ederek geçersiz kılmanıza olanak tanır.
+Yeni bir `total_occupant_weight` alanı, yeni birim nesnesiyle ifade edilen varsayılan yolcu ağırlığını geçersiz kılmanıza olanak tanır.
 
-```graphql Toplam yolcu ağırlığı {{ mark: [6,7,8,9,10] }}
+```graphql Total occupant weight {{ mark: [6,7,8,9,10] }}
 input: {
   origin: {
     properties: {

@@ -1,12 +1,12 @@
 ---
-title: "运营商偏好路线规划"
-description: "通过在控制台中或针对每个请求设置运营商偏好，控制路线规划服务优先选择哪些充电网络。"
+title: "运营商优先路线规划"
+description: "通过在控制台中或按请求设置运营商偏好，控制路线规划服务优先选择哪些充电网络。"
 ---
-运营商偏好让您可以控制路线规划服务在计算 EV 路线时优先选择哪些充电网络。
+运营商偏好让您可以控制路线规划服务在计算电动汽车路线时优先选择哪些充电网络。
 
 您可以在两个位置配置偏好：
-- [Chargetrip Dashboard](https://account.chargetrip.io/projects)：在项目 / 高级 / 充电站运营商偏好下，为您的项目设置全局运营商偏好配置。
-- [创建路线请求](/api-reference/core/route/mutation-create-route#arg-input-operators)：在 `createRoute` 变更中使用 `input.operators` 字段，动态定义偏好，或针对每个请求覆盖 Dashboard 的运营商偏好配置。
+- [Chargetrip 控制台](https://account.chargetrip.io/projects)：在 project / advanced / station operator preferences 下，为您的项目设置全局运营商偏好配置。
+- [创建路线请求](/api-reference/core/route/mutation-create-route#arg-input-operators)：在 `createRoute` mutation 中使用 `input.operators` 字段，动态定义偏好，或按请求覆盖控制台的运营商偏好配置。
 
 ---
 
@@ -15,34 +15,34 @@ description: "通过在控制台中或针对每个请求设置运营商偏好，
 
 运营商偏好分为四种类型，每种都可以限定到特定国家/地区：
 
-| 偏好 | 路线规划行为 |
+| 偏好 | 路线行为 |
 |:---|:---|
-| 排除 | 在任何情况下都严格排除这些运营商的充电站。 |
-| 规避  |  除非没有更好的替代方案，否则会避开这些运营商的充电站。 |
-| 优先 | 这些运营商的充电站按其排名（高、中、低）获得优先选择。层级越高，该充电站被选中的可能性越大。如果没有更好的替代方案，路线仍会使用未排名或被规避的充电站。|
-| 必选  | 仅使用这些运营商的充电站。在此允许的范围内，排名层级仍然适用，即高排名运营商优先于中、低排名运营商。如果车辆仅使用已排名的充电站无法到达目的地，则路线计算失败。|
+| 排除 | 在任何情况下，都会严格排除这些运营商的充电站。 |
+| 避开  |  除非没有更好的替代方案，否则会避开这些运营商的充电站。 |
+| 优先 | 这些运营商的充电站会根据其排名（高、中、低）获得优先选择。层级越高，充电站被选中的可能性越大。如果没有更好的替代方案，路线仍会使用未排名或被避开的充电站。|
+| 必需  | 仅使用这些运营商的充电站。在这个允许的范围内，排名层级仍然适用，即高排名运营商优先于中、低排名运营商。如果车辆仅使用已排名的充电站无法到达目的地，则路线计算失败。|
 
 
 ---
 
-### 2. Dashboard 级别偏好的应用方式
+### 2. 控制台级别偏好的应用方式
 
-了解请求级别的输入如何与 Dashboard 设置相互作用，可确保路线规划行为可预测：
+了解请求级别的输入如何与控制台设置相互作用，可确保可预测的路线行为：
 
-- **Dashboard 中的排除和规避运营商会自动生效**：
-在 Dashboard 中配置为排除或规避的运营商会应用于每次路线计算，无需在您的 `createRoute` 请求中提供任何参数。
-- **未设置排名类型时，Dashboard 的排名层级保持未激活状态**：
-在排名层级中配置的运营商必须通过在 `createRoute` 请求中设置 `input.operators.ranking.type` 来激活，否则不会影响充电站选择。
-- **请求级别的运营商会替换对应的 Dashboard 偏好**：
-在 `createRoute` 请求中指定运营商 ID 只会替换 Dashboard 中相应的配置。例如，提供 `input.operators.exclude[]` 会替换 Dashboard 中整个排除运营商配置，而 Dashboard 级别的规避运营商仍然生效。
+- **控制台中的排除和避开运营商会自动生效**：
+在控制台中配置为排除或避开的运营商会应用于每次路线计算，无需在您的 `createRoute` 请求中提供任何参数。
+- **未指定排名类型时，控制台的排名层级保持未激活状态**：
+在排名层级中配置的运营商必须通过在 `createRoute` 请求中设置 `input.operators.ranking.type` 来激活，否则它们不会影响充电站的选择。
+- **请求级别的运营商会替换对应的控制台偏好**：
+在 `createRoute` 请求中指定运营商 ID 只会替换控制台中的相应配置。例如，提供 `input.operators.exclude[]` 会替换控制台中整个排除运营商配置，而控制台级别的避开运营商仍然生效。
 ---
 ### 3. 实现示例
 
 <details>
-  <summary>仅使用 Dashboard 的排除和规避设置</summary>
-  应用 Dashboard 中设置的排除和规避运营商配置。由于未指定 `input.operators.ranking.type`，Dashboard 的排名设置处于未激活状态。
+  <summary>仅使用控制台的排除和避开设置</summary>
+  应用在控制台中设置的排除和避开运营商配置。由于未指定 `input.operators.ranking.type`，控制台的排名设置处于未激活状态。
 
-```graphql 示例请求
+```graphql Example request
 createRoute(
   input: {
     vehicle: { id: "607823b2c246f9001b97b1a2" }
@@ -60,10 +60,10 @@ createRoute(
 </details>
 
 <details>
-  <summary>将 Dashboard 排名的运营商用作“优先”</summary>
-  应用 Dashboard 的排除和规避运营商配置，并优先选择属于 Dashboard 排名层级的充电站。
+  <summary>将控制台的排名运营商用作“优先”</summary>
+  应用控制台的排除和避开运营商配置，并优先选择属于控制台排名层级的充电站。
 
-```graphql 示例请求 {{ mark: [14] }}
+```graphql Example request {{ mark: [14] }}
 createRoute(
   input: {
     vehicle: { id: "607823b2c246f9001b97b1a2" }
@@ -86,10 +86,10 @@ createRoute(
 </details>
 
 <details>
-  <summary>将 Dashboard 排名的运营商用作“必选”</summary>
-  将路线限制为仅在属于 Dashboard 排名层级中所配置运营商的充电站充电。
+  <summary>将控制台的排名运营商用作“必需”</summary>
+  限制路线只在属于控制台排名层级中所配置运营商的充电站充电。
 
-```graphql 示例请求 {{ mark: [14] }}
+```graphql Example request {{ mark: [14] }}
 createRoute(
   input: {
     vehicle: { id: "607823b2c246f9001b97b1a2" }
@@ -112,10 +112,10 @@ createRoute(
 </details>
 
 <details>
-  <summary>定义自定义偏好并覆盖 Dashboard 设置</summary>
-  直接在 API 调用中提供完整的运营商配置。任何指定的字段（ranking、avoid 或 exclude）都会覆盖该请求对应的 Dashboard 配置。
+  <summary>定义自定义偏好并覆盖控制台设置</summary>
+  直接在 API 调用中提供完整的运营商配置。任何指定的字段（ranking、avoid 或 exclude）都会覆盖该请求对应的控制台配置。
 
-```graphql 示例请求  {{ mark: [13,14,15,16,17,18,19,20,21] }}
+```graphql Example request  {{ mark: [13,14,15,16,17,18,19,20,21] }}
 createRoute(
   input: {
     vehicle: { id: "607823b2c246f9001b97b1a2" }
@@ -145,9 +145,9 @@ createRoute(
 
 <details>
   <summary>为特定国家/地区定义自定义偏好</summary>
-  直接在 API 调用中提供完整的运营商配置。任何指定的字段（ranking、avoid 或 exclude）都会覆盖该请求对应的 Dashboard 配置。
+  直接在 API 调用中提供完整的运营商配置。任何指定的字段（ranking、avoid 或 exclude）都会覆盖该请求对应的控制台配置。
 
-```graphql 示例请求  {{ mark: [13,14,15,16,17,18,19,20,21] }}
+```graphql Example request  {{ mark: [13,14,15,16,17,18,19,20,21] }}
 createRoute(
   input: {
     vehicle: { id: "607823b2c246f9001b97b1a2" }

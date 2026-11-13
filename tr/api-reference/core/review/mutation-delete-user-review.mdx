@@ -1,14 +1,13 @@
 ---
-title: Kullanıcı incelemesini sil mutasyonu
+title: Kullanıcı incelemesini silme mutation'ı
 heading: Kullanıcı incelemesini sil
-description: "deleteUserReview mutasyonuyla kimliği doğrulanmış kullanıcının eklediği bir incelemeyi kaldırın. Bu bir premium özelliktir."
+description: "deleteUserReview mutation'ı ile kimliği doğrulanmış kullanıcının eklediği bir incelemeyi kaldırın. Bu bir premium özelliktir."
 schemaName: deleteUserReview
 schemaType: Mutation
 ---
 
-deleteUserReview mutasyonunu kullanarak kimliği doğrulanmış kullanıcının eklediği bir incelemeyi kaldırın. Bu bir premium özelliktir. Daha fazla bilgi için bizimle iletişime geçin.
+deleteUserReview mutation'ını kullanarak kimliği doğrulanmış kullanıcının eklediği bir incelemeyi kaldırın. Bu bir premium özelliktir. Daha fazla bilgi için bizimle iletişime geçin.
 
-## Mutasyon
+## Mutation
 
-Bir incelemeyi kaldırmak için inceleme `id` değeri gereklidir. Kullanıcıyı yetkilendirmek için `x-token` başlığı zorunludur. İnceleme bu kullanıcıya ait olmalıdır, aksi takdirde hata oluşur.
-
+Bir incelemeyi kaldırmak için inceleme `id` değeri gerekir. Kullanıcıyı yetkilendirmek için `x-token` başlığı zorunludur. İnceleme bu kullanıcıya ait olmalıdır, aksi halde hata oluşur.

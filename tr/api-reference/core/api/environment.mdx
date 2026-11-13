@@ -1,0 +1,67 @@
+---
+title: Ortam
+description: "Temel URL'leri, subscription'lar için WebSocket uç noktasını ve API'ye istek göndermeye başlamak için gereken kimlik doğrulama başlıklarını alın."
+---
+
+API, işlem türüne bağlı olarak iki ayrı uç nokta kullanır: sorgular ve mutation'lar için bir HTTPS URL'si, subscription'lar için bir WebSocket (WSS) URL'si.
+
+## Uç noktalar
+
+### Sorgular ve mutation'lar
+
+Sorgular ve mutation'lar, ana GraphQL uç noktasına HTTP POST istekleriyle çalıştırılır.
+
+```bash GraphQL queries and mutations endpoint URL
+https://api.chargetrip.io/graphql
+```
+
+### Subscription'lar
+
+Subscription'lar WebSocket üzerinden kalıcı bir bağlantı gerektirir ve `graphql-transport-ws` protokolü kullanılarak uygulanabilir.
+
+```bash GraphQL subscription URL
+wss://api.chargetrip.io/subscription
+```
+
+> [!WARNING] graphql-ws protokolü kullanım dışı
+> Eski graphql-ws subscription protokolü kullanım dışıdır ve yakında kaldırılacaktır. Subscription hatalarını ve hizmet kesintilerini önlemek için lütfen graphql-transport-ws protokolüne geçin.
+
+### Server-Sent Events
+
+Server-Sent Events (SSE), gerçek zamanlı güncellemeleri almak için WebSocket'lere bir alternatiftir. Bir subscription türü değil, farklı bir mesaj taşıma yöntemidir: subscription sonuçlarını kalıcı bir WebSocket yerine normal bir HTTP bağlantısı üzerinden akıtır.
+
+```bash Server-Sent Events URL
+https://subscription.chargetrip.io/sse
+```
+
+## Yetkilendirme başlıkları
+
+Her isteğe aşağıdaki başlıkları ekleyin. Zorunlu olarak işaretlenen başlıklar her zaman gönderilmelidir.
+
+`x-client-id` · <span class="text-accent">zorunlu</span>
+: Proje yapılandırmasını içeren bir proje kimliği.
+
+`x-app-id` · <span class="text-accent">zorunlu</span>
+: Güvenlik ve analizleri ayırmak için bir uygulama kimliği.
+
+`x-app-identifier`
+: Bir iOS veya Android paket tanımlayıcısı.
+
+`x-app-fingerprint`
+: Bir Android SHA parmak izi.
+
+> [!TIP] Anahtarlarınızı güvende tutun
+> Azami güvenlik için uygulamanızın erişimini makineden makineye (M2M) ile sınırlayın ve kimlik bilgilerini bir tarayıcıya veya cihaza açmak yerine kendi kimlik doğrulamanızın arkasında, kendi sunucunuzda tutun. Kullanılabilir tüm kısıtlama türleri için [Güvenlik](/api-reference/core/api/security) sayfasına bakın.
+
+## Yetkili istek gönderme
+
+Varsayılan olarak her proje için benzersiz bir `x-app-id` oluşturulur.
+
+```bash Example request
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "x-client-id: YOUR_KEY_HERE" \
+  -H "x-app-id: YOUR_KEY_HERE" \
+  -d '{ "query": "{ } " }' \
+  https://api.chargetrip.io/graphql
+```

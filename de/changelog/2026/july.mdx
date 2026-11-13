@@ -7,34 +7,34 @@ date: 01-07-2026
 
 ![Station Boosting](../../../assets/changelog/2026/july.jpg)
 
-Für Unternehmen, die die Netzauslastung maximieren, Partnervereinbarungen einhalten oder Fahrer zu bestimmten margenstarken Ladestationen lenken möchten, bietet Station Boosting eine unkomplizierte Möglichkeit, Routing-Entscheidungen zu beeinflussen. Diese Funktion ist in Alpha verfügbar und gibt Ihnen direkte Kontrolle darüber, wie bestimmte Ladestandorte priorisiert werden, ohne unnötigen betrieblichen Mehraufwand.
+Für Unternehmen, die die Netzauslastung maximieren, Partnervereinbarungen einhalten oder Fahrer zu bestimmten margenstarken Ladestationen lenken möchten, bietet Station Boosting eine unkomplizierte Möglichkeit, Routing-Entscheidungen zu beeinflussen. Diese Funktion ist in Alpha verfügbar und gibt Ihnen direkte Kontrolle darüber, wie bestimmte Ladestandorte priorisiert werden, ohne unnötigen betrieblichen Aufwand zu verursachen.
 
-- Gezielte Kundengruppen: Erstellen Sie pro Umgebung bis zu 5 eigene Gruppen (mit bis zu 50 bestimmten Stationen pro Gruppe), um gezielte regionale oder zeitbasierte Kampagnen durchzuführen.
+- Gezielte Kundengruppen: Erstellen Sie bis zu 5 getrennte Gruppen pro Umgebung (mit bis zu 50 bestimmten Stationen pro Gruppe), um gezielte regionale oder zeitbasierte Kampagnen durchzuführen.
 
-Wenn Sie diese Funktion testen und Volumen zu Hardware mit hoher Priorität lenken möchten, wenden Sie sich bitte an Ihren Customer Success Manager, um Ihre Konfiguration zu verwalten.
+Wenn Sie diese Funktion testen und Ladevolumen zu hoch priorisierter Hardware lenken möchten, wenden Sie sich an Ihren Customer Success Manager, der Ihre Konfiguration verwaltet.
 
-### Konfigurierbarer maximaler Lade-SoC und erweiterte Akkugrenzen
-Fahrer können jetzt den maximalen Ladezustand (State of Charge, SoC) für Ladestopps zwischen 80 % und 100 % konfigurieren und Fahrten planen, die bei der Ankunft einen höheren Restladezustand erfordern.
+### Konfigurierbarer maximaler Ladezustand beim Laden und erweiterte Batteriegrenzen
+Fahrer können jetzt den maximalen Ladezustand (State of Charge, SoC) für Ladestopps zwischen 80 % und 100 % konfigurieren und Fahrten planen, die bei der Ankunft einen höheren Restladezustand der Batterie erfordern.
 
-- Übergeben Sie `maximum_state_of_charge` (80–100 %) in `createRoute` (`RouteVehicleChargingInput`). Wenn der Wert gesetzt ist, können Fahrzeuge bei geplanten oder ungeplanten Stopps über die standardmäßige Obergrenze von 80 % hinaus laden, sowohl im Modus `ALWAYS_TO_MAX_CHARGE` als auch im Modus `OPTIMIZE_TRAVEL_TIME`;
-- Konfigurieren Sie `final_state_of_charge` bis zu 80 % der Akkukapazität des Fahrzeugs (zuvor 60 %);
-- Zwei neue SoC-Etappenwarnungen wurden hinzugefügt: `risk_margin_soc_not_possible`, wenn der erwartete Ankunfts-SoC unter die Sicherheits-Risikomarge fällt, und `final_soc_below_risk_margin`, wenn der angeforderte End-SoC unter die sichere Risikomarge fällt.
+- Übergeben Sie `maximum_state_of_charge` (80–100 %) in `createRoute` (`RouteVehicleChargingInput`). Ist der Wert gesetzt, können Fahrzeuge bei geplanten oder ungeplanten Stopps über die Standardgrenze von 80 % hinaus laden, und zwar in den Modi `ALWAYS_TO_MAX_CHARGE` und `OPTIMIZE_TRAVEL_TIME`;
+- Konfigurieren Sie `final_state_of_charge` bis zu 80 % der Batteriekapazität des Fahrzeugs (zuvor 60 %);
+- Zwei neue SoC-Warnungen für Etappen wurden hinzugefügt: `risk_margin_soc_not_possible`, wenn der erwartete Ladezustand bei Ankunft unter die Sicherheits-Risikomarge fällt, und `final_soc_below_risk_margin`, wenn der angeforderte Ladezustand am Ziel unter die sichere Risikomarge fällt.
 
 
 
 <details>
   <summary>Verbesserungen</summary>
 
-  - `type`- und `region`-Array-Filter wurden zu `vehicleMakes` (`VehicleMakesFilter`) hinzugefügt, sodass Clients Marken filtern können, die bestimmte Fahrzeugtypen anbieten oder in bestimmten geografischen Regionen tätig sind.
-  - `model_count` wurde zu `VehicleMake` und `vehicle_count` zu `VehicleModel` hinzugefügt, um aktuelle Zahlen der verfügbaren Modelle pro Hersteller und der Fahrzeuge pro Modell bereitzustellen.
-  - Cursor-basierte Pagination-Argumente (`first` und `after`) sowie `total_count` und `page_info` wurden in der Abfrage `vehicleMakes` implementiert.
-  - `vehicleMakes` und Fahrzeugabfragen geben nun länderspezifische Markenlogos zurück, wenn ein Länderfilter angegeben wird, und greifen auf globale Bilder zurück, wenn keine lokalisierten Assets konfiguriert sind.
+  - Die Array-Filter `type` und `region` wurden zu `vehicleMakes` (`VehicleMakesFilter`) hinzugefügt. Damit können Clients Marken filtern, die bestimmte Fahrzeugtypen anbieten oder in festgelegten geografischen Regionen tätig sind.
+  - `model_count` wurde zu `VehicleMake` und `vehicle_count` zu `VehicleModel` hinzugefügt, um die Echtzeit-Anzahl zugänglicher Modelle je Hersteller und Fahrzeuge je Modell bereitzustellen.
+  - Cursor-basierte Pagination-Argumente (`first` und `after`) wurden zusammen mit `total_count` und `page_info` in der Query `vehicleMakes` umgesetzt.
+  - `vehicleMakes` und Fahrzeug-Queries geben nun länderspezifische Markenlogos zurück, wenn ein Länderfilter angegeben ist, und greifen auf globale Bilder zurück, wenn keine lokalisierten Assets konfiguriert sind.
 </details>
 
 <details>
   <summary>Fehlerbehebungen</summary>
 
   - Es wurde ein Problem in `vehicleList` behoben, bei dem das Filtern nach Herstellername nach der Einführung von Hersteller-IDs fehlschlug. Die Abwärtskompatibilität wurde wiederhergestellt, sodass `filter.make` sowohl Hersteller-IDs als auch Herstellernamen akzeptiert.
-  - Es wurde ein Problem behoben, bei dem Routen, die mit einem anfänglichen Ladezustand unter der Sicherheits-Risikomarge (`initialSOC < safeRiskMargin`) starteten, bis zu einem Akkustand von 0 % fuhren, anstatt zur nächsten verfügbaren Ladestation zu routen.
-  - Es wurde ein Problem behoben, bei dem die Summe der Fahrtdauern der einzelnen Etappenabschnitte nicht mit den gesamten Fahrtdauern (`durations.driving`) in den Routendetails übereinstimmte.
+  - Es wurde ein Problem behoben, bei dem Routen, die mit einem Anfangsladezustand unterhalb der Sicherheits-Risikomarge (`initialSOC < safeRiskMargin`) begannen, bis zu einem Batteriestand von 0 % fuhren, anstatt zur nächsten verfügbaren Ladestation zu routen.
+  - Es wurde ein Problem behoben, bei dem die Summe der Dauern der einzelnen Etappenabschnitte nicht mit den gesamten Fahrdauern (`durations.driving`) in den Routendetails übereinstimmte.
 </details>

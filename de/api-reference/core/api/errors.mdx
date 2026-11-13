@@ -1,16 +1,16 @@
 ---
 title: "Fehlerbehandlung"
-description: "Verstehen Sie, wie die API Fehler zusammen mit Teildaten zurückgibt und warum Sie den Response Body prüfen sollten, statt sich auf den HTTP-Status zu verlassen."
+description: "Erfahren Sie, wie die API Fehler zusammen mit Teildaten zurückgibt und warum Sie den Antwort-Body prüfen sollten, statt sich auf den HTTP-Statuscode zu verlassen."
 ---
 
-Die API gibt Fehler als Teil einer normalen Antwort zurück, zusammen mit allen Daten, die dennoch aufgelöst werden konnten. Eine Anfrage kann teilweise erfolgreich sein, daher reicht es nicht aus, allein den HTTP-Statuscode zu prüfen, um einen Fehler zu erkennen.
+Die API gibt Fehler als Teil einer normalen Antwort zurück, zusammen mit allen Daten, die dennoch aufgelöst werden konnten. Eine Anfrage kann teilweise erfolgreich sein, daher genügt es nicht, nur den HTTP-Statuscode zu prüfen, um einen Fehler zu erkennen.
 
 > [!WARNING] Teilantworten
-> Die API gibt für die meisten Anfragen HTTP 200 zurück, selbst wenn diese Fehler enthalten. Prüfen Sie den Antwort-Body immer auf ein `errors`-Array und verlassen Sie sich nicht auf den HTTP-Statuscode, da `data` und `errors` gemeinsam zurückgegeben werden können.
+> Die API gibt für die meisten Anfragen HTTP 200 zurück, auch wenn sie Fehler enthalten. Prüfen Sie den Antwort-Body immer auf ein `errors`-Array, statt sich auf den HTTP-Statuscode zu verlassen, da `data` und `errors` gemeinsam zurückgegeben werden können.
 
 ## Fehler
 
-Jeder Fehler wird im `errors`-Array der obersten Ebene zurückgegeben, neben `data`.
+Jeder Fehler wird im obersten `errors`-Array zurückgegeben, zusammen mit `data`.
 
 `message` · <span class="text-muted">String</span>
 : Eine für Menschen lesbare Beschreibung des Fehlers.
@@ -19,20 +19,20 @@ Jeder Fehler wird im `errors`-Array der obersten Ebene zurückgegeben, neben `da
 : Die Zeile und Spalte in der Anfrage, in der der Fehler aufgetreten ist.
 
 `path` · <span class="text-muted">Array</span>
-: Der Pfad zu dem Feld, das den Fehler verursacht hat, zum Beispiel `["vehicleList"]`.
+: Der Pfad zum Feld, das den Fehler verursacht hat, zum Beispiel `["vehicleList"]`.
 
 `extensions.exception.code` · <span class="text-muted">String</span>
-: Ein maschinenlesbarer Fehlercode. Verwenden Sie dieses Feld, um Fehler programmatisch zu behandeln, anstatt `message` abzugleichen.
+: Ein maschinenlesbarer Fehlercode. Verwenden Sie dieses Feld, um Fehler programmatisch zu behandeln, statt auf `message` zu prüfen.
 
 `extensions.exception.status` · <span class="text-muted">Integer</span>
 : Der HTTP-Statuscode, der dem Fehler entspricht, zum Beispiel `403`.
 
 `extensions.exception.message` · <span class="text-muted">String</span>
-: Eine für Menschen lesbare Beschreibung des Fehlers, die dem `message`-Feld der obersten Ebene entspricht.
+: Eine für Menschen lesbare Beschreibung des Fehlers, die dem Feld `message` auf oberster Ebene entspricht.
 
 `extensions.exception.response` · <span class="text-muted">String</span>
 : Der Antwort-Body der zugrunde liegenden Exception, oft identisch mit `message`.
 
 ### Lokalisierung
 
-Um Fehlermeldungen korrekt zu behandeln und zu lokalisieren, verwenden Sie `extensions.exception.code` anstelle von `message`. Was die einzelnen Codes bedeuten, erfahren Sie auf der Seite der jeweiligen Operation in der API Reference. `message` sollte nur als Kontext für Entwickler dienen und nicht Endnutzern angezeigt werden.
+Um Fehlermeldungen korrekt zu behandeln und zu lokalisieren, verwenden Sie `extensions.exception.code` statt `message`. Was die einzelnen Codes bedeuten, finden Sie auf der Seite der jeweiligen Operation in der API-Referenz. `message` sollte nur als Kontext für Entwickler dienen und nicht Endnutzern angezeigt werden.

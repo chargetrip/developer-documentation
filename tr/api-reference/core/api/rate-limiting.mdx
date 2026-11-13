@@ -1,64 +1,64 @@
 ---
 title: Hız sınırlaması
-description: "API'nin istekleri sınırlamak için sızdıran kova algoritmasını nasıl kullandığını ve GraphQL ile REST API'lerinde istek maliyetinin nasıl işlediğini öğrenin."
+description: "API'nin istekleri sınırlamak için sızdıran kova algoritmasını nasıl kullandığını ve GraphQL ile REST API'leri için istek maliyeti ile sınırların nasıl çalıştığını öğrenin."
 ---
 
-API, istekleri <a href="https://en.wikipedia.org/wiki/Leaky_bucket" target="_blank" rel="noopener noreferrer">sızdıran kova algoritması</a> ile hız sınırlamasına tabi tutar. Her istek belirli sayıda birim maliyetlidir ve bu birimler kovadan sabit bir hızda sızar. Bu sayede trafik düzenli bir hızda akarken kısa süreli yoğunluklara da izin verilir.
+API, istekleri <a href="https://en.wikipedia.org/wiki/Leaky_bucket" target="_blank" rel="noopener noreferrer">sızdıran kova algoritması</a> ile sınırlar. Her istek belirli sayıda birime mal olur ve bu birimler kovadan sabit bir hızla sızar. Bu, kısa süreli ani artışlara izin verirken trafiğin sabit bir hızda akmasını sağlar.
 
 ## GraphQL API
 
-GraphQL API için hız sınırlaması, sabit bir istek sayısı yerine her isteğin maliyetine dayanır. Aşağıdaki bölümlerde bu maliyeti düşük tutmaya yönelik en iyi uygulamalar ve mevcut hız sınırı durumunuzu nasıl okuyacağınız anlatılmaktadır.
+GraphQL API için hız sınırlaması, sabit bir istek sayısına değil, her isteğin maliyetine dayanır. Aşağıdaki bölümler bu maliyeti düşük tutmaya yönelik en iyi uygulamaları ve mevcut hız sınırı durumunuzun nasıl okunacağını kapsar.
 
 ### En iyi uygulamalar
 
-- Verinin ne zaman değiştiğini öğrenmek için sorgularla yoklama (polling) yapmak yerine abonelikleri kullanın.
+- Verilerin ne zaman değiştiğini öğrenmek için sorgularla yoklama yapmak yerine subscription'ları kullanın.
 - Yalnızca ihtiyacınız olan alanları sorgulayın ve liste sorgularını daraltmak için `filter` kullanın.
-- Liste sorguları sayfa başına en fazla 100 kayıt döndürür, ancak daha büyük bir sayfa daha küçük bir sayfadan daha pahalıdır. Tek bir istekte 100 kayıt getirmek 10 kayıt getirmekten daha maliyetlidir; bu nedenle daha fazla değil, daha az kayıt isteyin. Ayrıntılar için [sayfalandırma](/api-reference/core/api/pagination) bölümüne bakın.
-- Bir istek `429` hatasıyla reddedilirse kovanız doludur. İstek göndermeyi durdurun ve yalnızca `reset` ile belirtilen süre geçtikten sonra yeni istekler yapın.
+- Liste sorguları sayfa başına en fazla 100 kayıt döndürür, ancak daha büyük bir sayfa daha küçük bir sayfadan daha pahalıdır. Tek bir istekte 100 kayıt almak 10 kayıt almaktan daha pahalıdır; bu nedenle daha fazla değil, daha az kayıt isteyin. Ayrıntılar için [sayfalandırma](/api-reference/core/api/pagination) sayfasına bakın.
+- Bir istek `429` hatasıyla reddedilirse kovanız doludur. İstek göndermeyi bırakın ve yalnızca `reset` ile verilen süre geçtikten sonra yeni istekler yapın.
 
 ### Hız sınırı
 
-API'yi çok karmaşık veya kaynak yoğun sorgulardan korumak için her isteğe, istenen veri miktarına göre bir maliyet atanır. Geçerli bir isteğe verilen veya iş doğrulamasında başarısız olan bir isteğe verilen her yanıt, isteğin maliyetini ve hız sınırınızın durumunu içeren bir `extensions.cost` nesnesi içerir. Bir istek GraphQL şema doğrulamasında başarısız olursa bu nesne tamamen çıkarılır.
+API'yi çok karmaşık veya kaynak yoğun sorgulardan korumak için her isteğe, istenen veri miktarına göre bir maliyet atanır. Geçerli bir isteğe veya iş doğrulamasında başarısız olan bir isteğe verilen her yanıt, isteğin maliyetini ve hız sınırınızın durumunu içeren bir `extensions.cost` nesnesi barındırır. Bir istek GraphQL şema doğrulamasında başarısız olduğunda bu nesne tamamen çıkarılır.
 
 `cost` · <span class="text-muted">Integer</span>
 : Geçerli isteğin birim cinsinden maliyeti.
 
 `limit` · <span class="text-muted">Integer</span>
-: Geçerli hız sınırı penceresinde izin verilen birim cinsinden maksimum maliyet.
+: Geçerli hız sınırı penceresinde izin verilen birim cinsinden en yüksek maliyet.
 
 `used` · <span class="text-muted">Integer</span>
-: Bu pencerede şimdiye kadar kaç birim tüketildiği.
+: Bu pencerede şimdiye kadar tüketilen birim sayısı.
 
 `remaining` · <span class="text-muted">Integer</span>
-: Sınıra ulaşmadan önce kaç birim hakkınızın kaldığı.
+: Sınıra ulaşmadan önce hâlâ kullanabileceğiniz birim sayısı.
 
 `reset` · <span class="text-muted">Integer</span>
 : Kotanın ne zaman yenileneceğini gösteren, saniye cinsinden bir UNIX zaman damgası.
 
 ## REST API
 
-REST API için hız sınırlaması [tile servisine](/api-reference/core/tiles/mvt) uygulanır. GraphQL API'nin aksine hız sınırı durumu HTTP yanıt başlıkları üzerinden döndürülür ve her isteğin maliyeti sabit olarak 1 birimdir. Bu başlıklar, başarısız olanlar dahil her istekte döndürülür.
+REST API için hız sınırlaması [tile hizmetine](/api-reference/core/tiles/mvt) uygulanır. GraphQL API'den farklı olarak hız sınırı durumu HTTP yanıt başlıkları aracılığıyla döndürülür ve her isteğin maliyeti sabit olarak 1 birimdir. Bu başlıklar, başarısız olanlar dahil her istekte döndürülür.
 
 `x-ratelimit-cost` · <span class="text-muted">Integer</span>
 : Geçerli isteğin birim cinsinden maliyeti. REST istekleri için her zaman `1`.
 
 `x-ratelimit-limit` · <span class="text-muted">Integer</span>
-: Geçerli hız sınırı penceresinde izin verilen birim cinsinden maksimum maliyet.
+: Geçerli hız sınırı penceresinde izin verilen birim cinsinden en yüksek maliyet.
 
 `x-ratelimit-used` · <span class="text-muted">Integer</span>
-: Bu pencerede şimdiye kadar kaç birim tüketildiği.
+: Bu pencerede şimdiye kadar tüketilen birim sayısı.
 
 `x-ratelimit-remaining` · <span class="text-muted">Integer</span>
-: Sınıra ulaşmadan önce kaç birim hakkınızın kaldığı.
+: Sınıra ulaşmadan önce hâlâ kullanabileceğiniz birim sayısı.
 
 `x-ratelimit-reset` · <span class="text-muted">Integer</span>
 : Kotanın ne zaman yenileneceğini gösteren, saniye cinsinden bir UNIX zaman damgası.
 
-## Mevcut sınırlar
+## Geçerli sınırlar
 
-Hız sınırları müşteri başına, bir dakikalık pencerede uygulanır. Henüz varsayılan bir sınır yoktur. Varsayılan sınırlar 2027'de getirilene kadar sınırlar müşteri bazında tek tek yapılandırılır.
+Hız sınırları müşteri başına, bir dakikalık pencerede uygulanır. Henüz varsayılan bir sınır yoktur. Varsayılan sınırlar 2027'de devreye alınana kadar sınırlar her müşteri için ayrı ayrı yapılandırılır.
 
-Bazı sorguların ve mutasyonların, genel sınırınızdan daha düşük olan kendi sınırları da vardır. Bunlar genel olarak değil, ürün bazında ve bazen istek bazında belirlenir.
+Bazı sorgu ve mutation'ların, genel sınırınızdan daha düşük kendi bireysel sınırları da vardır. Bunlar genel olarak değil, ürün bazında ve bazen istek bazında belirlenir.
 
 > [!WARNING] Sınır belirlenmemiş
-> Hesabınız için bir sınır belirlenmemişse `limit`, `remaining` ve `reset` `null` olarak döndürülür. `cost` ve `used` yine de izlenir ve döndürülür.
+> Hesabınız için bir sınır belirlenmemişse `limit`, `remaining` ve `reset` değerleri `null` olarak döndürülür. `cost` ve `used` yine de izlenir ve döndürülür.

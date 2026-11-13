@@ -6,46 +6,46 @@ migrateBefore: 01-01-2027
 
 # 路线详情
 
-迁移截止时间：2027 年第一季度
+迁移截止期：2027 年第一季度
 
-从旧版路线服务迁移到最新版本。新服务提供了重新组织的 schema、按国家设置的运营商偏好、更快的路线计算以及更好的可维护性。
+从旧版 Route 服务迁移到最新版本。新服务提供重新组织的 schema、按国家/地区设置的运营商偏好、更快的路线计算以及更好的可维护性。
 
 ## 操作
 
-| 旧版               | 新版                                                  |
+| 旧                | 新                                                   |
 | ------------------ | ------------------------------------------------------|
 | `route`            | [`getRoute`](/api-reference/core/route/query-get-route)     |
 | `routeUpdatedById`  | [`route`](/api-reference/core/route/subscription-route)     |
 
 ## 通用 schema 变更
 
-- **显式类型**：以前灵活的 JSON 字段现在在 schema 中有了明确的类型，以改进结构和验证。
-- **命名约定**：字段现在使用 `snake_case`，而不是 `camelCase`。
+- **显式类型**：之前灵活的 JSON 字段现在已在 schema 中显式定义类型，以改进结构和验证。
+- **命名约定**：字段现在使用 `snake_case` 而不是 `camelCase`。
 - **单位支持**：数值输入现在支持不同的单位类型，以包含 `value`、`type` 和可选 `source`（`manual`、`telemetry` 或 `default`）的对象表示。
 
-## 查询和订阅变更
+## 查询和 subscription 变更
 
-字段的命名和分组已被修订，冗余字段已被移除。响应现在包含补充了默认值的原始输入，因此可以在以后重新计算路线时复用。
+字段命名和分组已修订，冗余字段已被移除。响应现在包含补全了默认值的原始输入，因此可以在以后重新计算路线时复用。
 
 ### 顶层
 
-在顶层，大多数字段移至 `recommended` 下，`ev`、`telemetry` 和 `routeRequest` 输入被合并为单个 `request_input` 对象。
+在顶层，大多数字段移至 `recommended` 下，`ev`、`telemetry` 和 `routeRequest` 输入合并为单个 `request_input` 对象。
 
-| 字段           | 移至                   |
+| 字段          | 移至               |
 | -------------- | ---------------------- |
 | `route`        | `recommended`          |
-| `alternatives` | 已移除                 |
+| `alternatives` | 已移除                |
 | `ev`           | `request_input`        |
 | `telemetry`    | `request_input`        |
 | `routeRequest` | `request_input`        |
 | `app`          | `meta.app_id`          |
-| `status`       | 不变                   |
+| `status`       | 不变              |
 
 ### 路线
 
-在路线层级，大多数字段移至 `recommended` 下并保留各自的名称，同时有少数明确的重命名。
+在路线层级，大多数字段移至 `recommended` 下并保持各自的名称，另有一些显式重命名。
 
-| 字段                  | 移至                                 |
+| 字段                 | 移至                             |
 | --------------------- | ------------------------------------ |
 | `rangeStart*`         | `range_at_origin`                    |
 | `rangeEnd*`           | `range_at_destination`               |
@@ -57,15 +57,15 @@ migrateBefore: 01-01-2027
 | `pathPlot`            | `recommended.path_plot`              |
 | `legs`                | `recommended.legs`                   |
 | `tags`                | `recommended.tags`                   |
-| `instructions`        | 已移除                               |
-| `amenityRanking`      | 已移除                               |
+| `instructions`        | 已移除                              |
+| `amenityRanking`      | 已移除                              |
 | `stationsAlongRoute`  | `recommended.alternative_stations`   |
 
 ### 路段
 
-在路段层级，续航里程遵循与路线相同的重命名，乘员和载货详情则移至每个路段 `origin` 和 `via` 位置的属性中。
+在路段层级，续航范围遵循与路线相同的重命名，乘员和货物详情则移至每个路段的 `origin` 和 `via` 位置属性上。
 
-| 字段          | 移至                                    |
+| 字段         | 移至                               |
 | ------------- | --------------------------------------- |
 | `rangeStart*` | `range_at_origin`                       |
 | `rangeEnd*`   | `range_at_destination`                  |
@@ -76,13 +76,13 @@ migrateBefore: 01-01-2027
 
 ## 重点变更
 
-响应还为路线分段引入了新的、结构更清晰的形态。下文将更详细地介绍。
+响应还为路线分段引入了一种新的、结构更清晰的形式。下面将更详细地介绍。
 
 ### 分段
 
-步骤（steps）已被分段（sections）取代，后者提供更细粒度的信息，包括每个分段的起点和终点详情。
+Steps 已被 sections 取代，后者提供更细粒度的信息，包括每个分段的起点和终点详情。
 
-```graphql 分段 {{ mark: [1,13,14,26,27] }}
+```graphql Sections {{ mark: [1,13,14,26,27] }}
 sections {
   type
   tags

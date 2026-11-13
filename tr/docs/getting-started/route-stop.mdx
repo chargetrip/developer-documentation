@@ -1,11 +1,11 @@
 ---
-title: Duraklarla rota
-description: "Gerçek seyahat senaryoları için konum duraklarını veya şarj duraklarını kullanarak via ile başlangıç ve varış arasına ara duraklar ekleyin."
+title: "Duraklarla rota"
+description: "Gerçek dünya seyahat senaryoları için konum durakları veya şarj durakları kullanarak başlangıç ile varış noktası arasına via ile ara duraklar ekleyin."
 ---
 
-Chargetrip Route API ile bir EV rotası hesaplarken, `via` kullanarak başlangıç ile varış noktası arasına ara duraklar ekleyebilirsiniz.
+Chargetrip Route API ile bir elektrikli araç rotası hesaplarken, `via` kullanarak başlangıç ve varış noktası arasına ara duraklar ekleyebilirsiniz.
 
-Duraklar, tercih edilen bir şarj istasyonunda şarj etmek, yolcu almak veya bir restoranda mola vermek gibi gerçek dünya seyahat senaryoları için rotayı özelleştirmenizi sağlar.
+Duraklar, tercih edilen bir şarj istasyonunda şarj etmek, yolcu almak veya bir restoranda durmak gibi gerçek dünya seyahat senaryoları için rota planlamayı özelleştirmenize olanak tanır.
 
 
 ## Durak türleri
@@ -14,57 +14,57 @@ Chargetrip iki tür ara durağı destekler:
 
 | Durak | Şarj |  Girdi alanı | Amaç |
 | :--- | :--- | :--- | :--- |
-| **Konum** | Hayır |  `via.geometry`| Coğrafi durak (yolcu alma, teslimat, manzaralı güzergah sapması, kahve molası).
+| **Konum** | Hayır |  `via.geometry`| Coğrafi durak (yolcu alma, teslimat, manzaralı güzergâh değişikliği, kahve molası).
 | **İstasyon** | Evet | `via.properties.station.station_id`| Açıkça seçilmiş şarj istasyonu.
 
 
 ## Durak süresi
 
-Her durağın süresini yapılandırabilirsiniz. Durağın türüne (şarj olan veya şarj olmayan) bağlı olarak `stop_duration` farklı konumlarda yapılandırılır ve farklı davranışlara sahiptir:
+Her durağın süresini yapılandırabilirsiniz. Durağın türüne (şarj veya şarj dışı) bağlı olarak `stop_duration` farklı yerlerde yapılandırılır ve farklı davranışlara sahiptir:
 
-### 1. Şarj olmayan duraklarda
+### 1. Şarj dışı duraklarda
 
-Durak süresi `input.via.properties.location.stop_duration` konumunda yapılandırılır. Bu süre **tam durak süresini** temsil eder ve aracın şarj veya sürüş süresini etkilemeden doğrudan toplam yolculuk süresine eklenir.
+Durak süresi `input.via.properties.location.stop_duration` altında yapılandırılır. Bu süre **kesin durak süresini** temsil eder ve aracın şarj veya sürüş süresini etkilemeden doğrudan toplam seyahat süresine eklenir.
 
-### 2. Şarj olan duraklarda
+### 2. Şarj duraklarında
 
-Durak süresi `input.via.properties.station.stop_duration` konumunda yapılandırılır. Bu değer **minimum durak süresini** temsil eder. Araç istasyonda en az bu süre boyunca kalır, ancak rota planlayıcı yapılandırılmış `charge_mode` değerine bağlı olarak durağı uzatabilir:
+Durak süresi `input.via.properties.station.stop_duration` altında yapılandırılır. Bu değer **asgari durak süresini** temsil eder. Araç istasyonda en az bu süre kadar kalır, ancak rota planlayıcı yapılandırılan `charge_mode` değerine bağlı olarak durağı uzatabilir:
 
-  * `ALWAYS_TO_MAX_CHARGE`: Gerekirse yapılandırılmış maksimum SoC değerine ulaşmak için şarj süresini uzatır. İstenen `stop_duration` değeri maksimum SoC değerine ulaşmak için gereken süreyi aşarsa, kalan süre boşta bekleme olarak kaydedilir.
+  * `ALWAYS_TO_MAX_CHARGE`: Gerekirse, yapılandırılan azami SoC değerine ulaşmak için şarj süresini uzatır. İstenen `stop_duration` değeri azami SoC değerine ulaşmak için gereken süreyi aşarsa, kalan süre boşta bekleme olarak kaydedilir.
 
-  * `OPTIMIZE_TRAVEL_TIME`: Yalnızca toplam yolculuk süresini kısaltıyorsa (örneğin sonraki bir şarj durağını ortadan kaldırarak) kalış süresini `stop_duration` değerinin ötesine uzatır. Aksi halde tam olarak istenen süre kadar şarj eder. İstenen `stop_duration` değeri maksimum SoC değerine ulaşmak için gereken süreyi aşarsa, kalan süre boşta bekleme olarak kaydedilir.
+  * `OPTIMIZE_TRAVEL_TIME`: Konaklamayı `stop_duration` değerinin ötesine yalnızca bunu yapmak toplam seyahat süresini azaltıyorsa (örneğin sonraki bir şarj durağını ortadan kaldırarak) uzatır. Aksi takdirde tam olarak istenen süre kadar şarj eder. İstenen `stop_duration` değeri en uygun SoC değerine ulaşmak için gereken süreyi aşarsa, kalan süre boşta bekleme olarak kaydedilir.
 
-Herhangi bir değer verilmezse, planlayıcı şarj süresini yalnızca rotanın `charge_mode` değerine göre optimize eder.
+Herhangi bir değer sağlanmazsa, planlayıcı şarj süresini yalnızca rotanın `charge_mode` değerine göre optimize eder.
 
 
 ## Mevcut bir rotaya istasyon ekleme
 
-Yaygın bir senaryo, kullanıcının zaten duraklara sahip bir rota için şarj istasyonu seçmesidir, örneğin arayüzünüzde gösterilen alternatif bir istasyon. Kodsuz çözüm, bir istasyonu yeniden sıralama mantığı olmadan otomatik olarak `via` durağı olarak eklemek için bu yaklaşımı kullanır, böylece rota sorunsuz biçimde güncellenir.
+Yaygın bir senaryo, kullanıcının zaten duraklar içeren bir rota için bir şarj istasyonu seçmesidir; örneğin arayüzünüzde gösterilen alternatif bir istasyon. Kodsuz çözüm, rota sorunsuz güncellensin diye herhangi bir yeniden sıralama mantığı olmadan bir istasyonu otomatik olarak `via` durağı olarak eklemek için bu yaklaşımı kullanır.
 
-`via` dizisinin sırası, durakların ziyaret edildiği sıradır. Sona eklenen bir istasyon, rotanın başına yakın olsa bile en son ziyaret edilir. İstasyonu doğru konuma eklemek için, istasyonun konumunu rotada zaten bulunan yol noktalarıyla karşılaştırın:
+`via` dizisinin sırası, durakların ziyaret edildiği sıradır. Sona eklenen bir istasyon, rotanın başlangıcına yakın olsa bile en son ziyaret edilir. İstasyonu doğru konuma eklemek için, istasyonun konumunu rotada zaten bulunan ara noktalarla karşılaştırın:
 
-1. **Yol noktalarını sırayla toplayın.** Değiştirmek istediğiniz rotanın `request_input` alanından `origin`, mevcut her `via` durağını ve `destination` değerini alın. `request_input` içindeki her yol noktasının `geometry` değeri mevcuttur, yalnızca `station_id` ile oluşturulan duraklar da dahil.
+1. **Ara noktaları sırayla toplayın.** Değiştirmek istediğiniz rotanın `request_input` alanından `origin`, mevcut her `via` durağını ve `destination` noktasını alın. `request_input` üzerindeki her ara noktanın `geometry` bilgisi mevcuttur; buna yalnızca `station_id` ile oluşturulan duraklar da dahildir.
 
-2. **Yol noktalarından geçen bir çizgi çizin.** Yol noktalarını sırayla birleştirerek bir çizgi oluşturun. Bu çizginin iki yol noktası arasındaki her parçası bir segmenttir.
+2. **Ara noktalardan bir çizgi çekin.** Ara noktaları sırayla birleştirerek bir çizgi oluşturun. Bu çizginin iki ara nokta arasındaki her parçası bir segmenttir.
 
-3. **İstasyona en yakın segmenti bulun.** Çizgi üzerinde istasyonun koordinatlarına en yakın noktayı bulmak için bir coğrafi konum kütüphanesi kullanın. Örneğin <a href="https://turfjs.org" target="_blank" rel="noopener noreferrer">turf.js</a>, bu noktayı içeren segmentin indeksini de döndüren `nearestPointOnLine` işlevini sunar. Bu indeks, segmentin başladığı yol noktasının indeksidir.
+3. **İstasyona en yakın segmenti bulun.** Çizgi üzerinde istasyonun koordinatlarına en yakın noktayı bulmak için bir coğrafi uzamsal kütüphane kullanın. Örneğin <a href="https://turfjs.org" target="_blank" rel="noopener noreferrer">turf.js</a>, bu noktayı içeren segmentin dizinini de döndüren `nearestPointOnLine` işlevini sunar. Bu dizin, segmentin başladığı ara noktanın dizinidir.
 
-4. **İstasyonu bu yol noktasından sonra ekleyin.** Yol noktası listesi `origin` ile başlar, bu nedenle bu listedeki bir yol noktasının indeksi, `via` içine eklenecek yeni öğenin hemen ardından yer alması için gereken konuma karşılık gelir. `0` indeksi, istasyonun ilk durak olarak eklendiği anlamına gelir.
+4. **İstasyonu o ara noktadan sonra ekleyin.** Ara nokta listesi `origin` ile başladığından, bu listedeki bir ara noktanın dizini, `via` içine yeni bir öğenin tam o ara noktanın ardından gelecek şekilde ekleneceği konumla eşleşir. `0` dizini, istasyonun ilk durak olarak ekleneceği anlamına gelir.
 
-5. **Varıştan sonra asla eklemeyin.** En yakın nokta son segmentteyse indeks `destination` değerini gösterebilir. Buraya eklemek istasyonu rotanın sonundan sonraya yerleştirir. Bunun yerine önceki yol noktasını kullanın, böylece istasyon `destination` öncesindeki son durak olarak eklenir.
+5. **Hiçbir zaman varış noktasından sonra eklemeyin.** En yakın nokta son segmentteyse dizin `destination` noktasını gösterebilir. Orada eklemek istasyonu rotanın bitişinden sonraya yerleştirir; bu nedenle bunun yerine önceki ara noktayı kullanın. Böylece istasyon, `destination` noktasından önceki son durak olarak eklenir.
 
-### Dikkat edilmesi gerekenler
+### Akılda tutulması gerekenler
 
-* Çizgi, yol noktalarını düz segmentlerle birleştirir ve rotanın yollarını takip etmez. Alternatif istasyonlar her zaman rotanın çevresindeki 5 ila 10 km'lik bir koridorda yer alır, bu nedenle rotadan fazla sapmazlar ve en yakın segment çoğunlukla doğrudur. Bu koridorun dışındaki istasyonlar için başka çözümler daha uygun olabilir.
-* Rotanın `request_input` alanı esas kaynaktır. Yeni isteği bu alandan oluşturun ve `vehicle` ile `charging` ayarları gibi diğer tüm alanları değiştirmeden bırakın.
+* Çizgi, ara noktaları düz segmentlerle birleştirir ve rotanın yollarını izlemez. Alternatif istasyonlar her zaman rota çevresindeki 5 ila 10 km'lik bir koridor içindedir; bu nedenle rotadan çok sapmazlar ve en yakın segment çoğunlukla doğrudur. Bu koridorun dışındaki istasyonlar için başka çözümler daha uygun olabilir.
+* Rotanın `request_input` alanı doğruluk kaynağıdır. Yeni isteği bundan oluşturun ve `vehicle` ve `charging` ayarları gibi diğer tüm alanları değiştirmeden bırakın.
 
 ## Örnekler
 
 <details>
-  <summary>30 dakikalık, şarj olmayan bir durakla rota hesaplayın.</summary>
-  Bu durağa 1800 saniyelik (30 dakika) bir `stop_duration` eklenmiştir. Ek bir fayda sağlanamayacağı için durak süresi bu olacaktır.
+  <summary>30 dakikalık şarj dışı bir durak içeren rota hesaplayın.</summary>
+  Bu durakta 1800 saniyelik (30 dakika) bir `stop_duration` eklenmiştir. Bu, kesin durak süresi olacaktır.
 
-```graphql Örnek istek
+```graphql Example request
 mutation CreateRouteWithWaypoint {
   createRoute(
     input: {
@@ -105,10 +105,10 @@ mutation CreateRouteWithWaypoint {
 
 
 <details>
-  <summary>En az 30 dakikalık bir şarj durağıyla rota hesaplayın.</summary>
-  Bu durağa 1800 saniyelik (30 dakika) bir `stop_duration` eklenmiştir. Bu, **minimum** durak süresi olacaktır. Daha uzun şarj etmek güzergaha fayda sağlıyorsa süre artacaktır.
+  <summary>En az 30 dakikalık bir şarj durağı içeren rota hesaplayın.</summary>
+  Bu durakta 1800 saniyelik (30 dakika) bir `stop_duration` eklenmiştir. Bu, **asgari** durak süresi olacaktır. `vehicle.charging.mode:OPTIMIZE_TRAVEL_TIME` olduğundan, daha uzun şarj etmek seyahat süresine fayda sağlıyorsa süre otomatik olarak artırılır.
   
-```graphql Örnek istek
+```graphql Example request
 mutation CreateRouteWithChargingVia {
   createRoute(
     input: {
@@ -145,10 +145,10 @@ mutation CreateRouteWithChargingVia {
 
 
 <details>
-  <summary>Minimum durak süresi olmayan bir şarj durağıyla rota hesaplayın.</summary>
-  Bu durakta `stop_duration` belirtilmemiştir: planlayıcı en uygun şarj süresini şarj moduna göre hesaplar.
+  <summary>Asgari durak süresi olmayan bir şarj durağı içeren rota hesaplayın.</summary>
+  Bu durakta `stop_duration` belirtilmemiştir. Planlayıcı en uygun şarj süresini yalnızca seçilen şarj moduna (`OPTIMIZE_TRAVEL_TIME`) göre hesaplar.
 
-```graphql Örnek istek
+```graphql Example request
 mutation CreateRouteWithChargingVia {
   createRoute(
     input: {

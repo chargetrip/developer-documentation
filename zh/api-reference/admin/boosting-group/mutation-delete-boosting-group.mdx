@@ -1,16 +1,13 @@
 ---
-title: "删除优先群组变更"
-heading: "删除优先群组"
-description: "当您不再想优先推荐某个群组的充电站时，使用 deleteBoostingGroup 变更删除优先群组。"
+title: 删除增强组 mutation
+heading: 删除增强组
+description: "当您不再希望增强某个组中的充电站时，使用 deleteBoostingGroup mutation 删除该增强组。"
 schemaName: deleteBoostingGroup
 schemaType: Mutation
 ---
 
-使用 deleteBoostingGroup 变更删除优先群组。当您不再想优先推荐群组中的充电站时，此操作非常有用。如果只是暂时不使用某个群组，请[将其状态设置为 inactive](/api-reference/admin/boosting-group/mutation-update-boosting-group)。
+使用 deleteBoostingGroup mutation 删除增强组。当您不再希望增强某个组中的充电站时，这会很有用。如果只是想暂时停止使用某个组，请改为[将其状态设置为 inactive](/api-reference/admin/boosting-group/mutation-update-boosting-group)。
 
-## 变更
+## Mutation
 
-需要优先群组的 `id`。该变更返回一个布尔值。
-
-> [!WARNING] Alpha
-> 此操作处于 alpha 阶段，免费套餐不可用。请联系客户支持以获取访问权限。
+必须提供增强组的 `id`。该 mutation 返回一个布尔值。

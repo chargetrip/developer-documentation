@@ -1,40 +1,40 @@
 ---
 title: Deneysel özellikler
-description: "Alfa ve beta programıyla API'nin yakında gelecek yeteneklerine erken erişin ve deneysel özelliklerin kararlı olanlardan farkını öğrenin."
+description: "Alpha ve beta programı aracılığıyla yaklaşan API yeteneklerine erken erişim sağlayın ve deneysel özelliklerin kararlı olanlardan nasıl farklılaştığını öğrenin."
 ---
 
-Chargetrip, önemli yeni yetenekleri yapılandırılmış bir deneysel program aracılığıyla sunar. Bu program, şemalar ve sözleşmeler kalıcı hale gelmeden önce yaklaşan özellikleri değerlendirmeniz ve tasarımlarını etkilemeniz için size erken erişim sağlar.
+Chargetrip, önemli yeni yetenekleri yapılandırılmış bir deneysel program aracılığıyla sunar. Şemalar ve sözleşmeler kalıcı hale gelmeden önce yaklaşan özellikleri değerlendirmeniz ve tasarımlarını etkilemeniz için size erken erişim sağlar.
 
 > [!WARNING] 12 aylık kullanımdan kaldırma politikasından muafiyet
-> Alpha ve beta aşamasındaki özellikler [12 aylık kullanımdan kaldırma politikasından](/api-reference/core/api/lifecycle#kullanımdan-kaldırma-zaman-çizelgesi) muaftır ve daha erken değişebilir veya kaldırılabilir.
+> Alpha ve beta aşamasındaki özellikler [12 aylık kullanımdan kaldırma politikasından](/api-reference/core/api/lifecycle#kullanımdan-kaldırma-zaman-çizelgesi) muaftır ve daha erken değiştirilebilir veya kullanımdan kaldırılabilir.
 
 ## Deneysel özellik türleri
 
-- Yeni işlemler: Tamamen yeni sorgular, mutasyonlar veya abonelikler.
+- Yeni işlemler: Tamamen yeni sorgular, mutation'lar veya subscription'lar.
 - Mevcut işlemlerin uzantıları: Mevcut kararlı işlemlere eklenen yeni isteğe bağlı argümanlar veya çıktı alanları.
 
 ## Deneysel özellik aşamaları
 
 | Boyut | Alpha | Beta |
  | ----- | ----- | ----- |
-| **Üretime uygunluk** | Üretim ortamları için kesinlikle önerilmez. | Kontrollü pilot uygulamalar için uygundur. Kritik öneme sahip akışlar için önerilmez. |
-| **Etkinleştirme** | Varsayılan olarak devre dışıdır. Dashboard'da açıkça kabul edilmesi (opt-in) gerekir. | Tüm istemciler için varsayılan olarak etkindir. |
+| **Üretime hazır olma** | Üretim ortamları için kesinlikle önerilmez. | Kontrollü pilot uygulamalar için uygundur. Kritik öneme sahip akışlar için önerilmez. |
+| **Etkinleştirme** | Varsayılan olarak devre dışıdır. Dashboard'da açıkça katılım gerektirir. | Tüm istemciler için varsayılan olarak etkindir. |
 | **Kararlılık** | Kararlıdır ancak sık şema değişikliklerine tabidir.| Kararlıdır. Küçük şema değişiklikleri olabilir. |
 | **Şema göstergesi** | Şema alanı açıklamalarında `[ALPHA]` ile etiketlenir. | Şema alanı açıklamalarında `[BETA]` ile etiketlenir. |
-| **Sonlandırma bildirimi** | Yok. Anında değiştirilebilir veya kaldırılabilir. | Entegrasyon yapan müşterilerle proaktif doğrudan iletişim. |
+| **Sonlandırma bildirimi** | Yoktur. Anında değiştirilebilir veya kullanımdan kaldırılabilir. | Etkin olarak entegrasyon yapan müşterilerle proaktif doğrudan iletişim kurulur. |
 
-Kararlı özelliklerin neleri garanti ettiğini öğrenmek için [API yaşam döngüsü](/api-reference/core/api/lifecycle) bölümüne bakın.
+Kararlı özelliklerin neleri garanti ettiğini öğrenmek için [API yaşam döngüsü](/api-reference/core/api/lifecycle) sayfasına bakın.
 
 
 ## En iyi uygulamalar
 
- - Alpha özelliklerini sandbox değerlendirmesi, kavram kanıtları ve geri bildirim için kullanın. Yine de birini canlıya alırsanız, değiştiğinde bildirim veya uyumluluk koruması almazsınız.
- - Beta yeteneklerini son kullanıcılara sunuyorsanız, yeteneğin hâlâ kararlı hale geldiğini bilmeleri için bir "beta" rozeti gösterin.
+ - Alpha özelliklerini sandbox değerlendirmesi, kavram kanıtları ve geri bildirim için kullanın. Yine de birini canlıya alırsanız, değiştiğinde bildirim almazsınız ve uyumluluk koruması sağlanmaz.
+ - Beta yeteneklerini son kullanıcılara sunarsanız, yeteneğin hâlâ kararlı hale geldiğini bilmeleri için bir "beta" rozeti gösterin.
 
 
-## Kararlı sürüme geçiş yaşam döngüsü
+## Kararlı hale geçiş yaşam döngüsü
 
-1. **Alpha'dan Beta'ya** İşlevsellik ve şema yeterli olgunluğa ulaştığında özellik beta aşamasına geçer. Açıklama etiketi `[ALPHA]` yerine `[BETA]` olarak güncellenir, erişim tüm müşteriler için varsayılan olarak etkinleştirilir ve değişiklikler Sürüm Notları'nda duyurulur.
+1. **Alpha'dan Beta'ya** İşlevsellik ve şema yeterli olgunluğa ulaştığında özellik beta aşamasına geçer. Açıklama etiketi `[ALPHA]` yerine `[BETA]` olur, erişim tüm müşteriler için varsayılan olarak etkinleştirilir ve değişiklikler Sürüm Notları'nda duyurulur.
 
 2. **Beta'dan Kararlı'ya** Güvenilirlik ve olgunluk birden fazla istemcide doğrulandığında `[BETA]` açıklama etiketi ve çalışma zamanı uyarıları kaldırılır ve özellik [kararlı yaşam döngüsüne](/api-reference/core/api/lifecycle) geçer.
 
@@ -44,12 +44,12 @@ Kararlı özelliklerin neleri garanti ettiğini öğrenmek için [API yaşam dö
 - İsteğe bağlı deneysel girdi argümanları veya çıktı alanları içeren kararlı uç noktalara yapılan istekler, abonelik planınıza göre **ücretlendirilir**.
 
 ## Programatik uyarılar
-Geliştirme ekibinizin aktif trafikteki deneysel bağımlılıklardan haberdar olması için, alpha veya beta yeteneklerini kullanan API yanıtları, GraphQL `extensions` bloğunda uyarı meta verileri döndürür:
+Geliştirme ekibinizi etkin trafikteki deneysel bağımlılıklardan haberdar etmek için, alpha veya beta yetenekleri kullanan API yanıtları GraphQL `extensions` bloğunda uyarı meta verileri döndürür:
 
 <details>
   <summary>Bir alpha özelliği için örnek uyarı</summary>
 
-```json Örnek istek ve yanıt
+```json Example request and response
 {
   "data": {
     "getTruckRoute": {
@@ -74,7 +74,7 @@ Geliştirme ekibinizin aktif trafikteki deneysel bağımlılıklardan haberdar o
 <details>
   <summary>Bir beta özelliği için örnek uyarı</summary>
 
-```json Örnek istek ve yanıt
+```json Example request and response
 {
   "data": {
     "vehicleMakes": {

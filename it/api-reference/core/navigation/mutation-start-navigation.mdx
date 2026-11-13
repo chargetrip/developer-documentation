@@ -1,16 +1,16 @@
 ---
-title: Avvia navigazione mutation
+title: Mutation Avvia navigazione
 heading: Avvia navigazione
-description: "Avvia una sessione di navigazione su un percorso esistente con la mutation startNavigation quando un conducente inizia a seguire un percorso calcolato."
+description: "Avvia una sessione di navigazione su una rotta esistente con la mutation startNavigation quando un conducente inizia a seguire una rotta calcolata."
 schemaName: startNavigation
 schemaType: Mutation
 ---
 
-Avvia una nuova sessione di navigazione su un percorso esistente usando la mutation startNavigation. È utile quando un conducente inizia a seguire un percorso calcolato.
+Avvia una nuova sessione di navigazione su una rotta esistente utilizzando la mutation startNavigation. È utile quando un conducente inizia a seguire una rotta calcolata.
 
 > [!WARNING] Durata della sessione
 > Una sessione di navigazione viene terminata automaticamente dopo 48 ore di inattività.
 
 ## Mutation
 
-Per avviare una sessione di navigazione sono necessari `route_id`, `route_details_id` e `current_location`. Entrambi gli id del percorso si ottengono tramite la [query getRoute](/api-reference/core/route/query-get-route). La mutation restituisce un `id` della sessione di navigazione, che può essere usato per recuperare, aggiornare o terminare la sessione.
+Per avviare una sessione di navigazione sono obbligatori `route_id`, `route_details_id` e `current_location`. Entrambi gli ID della rotta possono essere ottenuti tramite la [query getRoute](/api-reference/core/route/query-get-route). La mutation restituisce l'`id` di una sessione di navigazione, che può essere usato per recuperare, aggiornare o terminare la sessione.

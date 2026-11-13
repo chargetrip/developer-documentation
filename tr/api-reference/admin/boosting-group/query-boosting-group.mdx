@@ -1,16 +1,13 @@
 ---
-title: "Öne çıkarma grubu sorgusu"
-heading: "Öne çıkarma grubu"
-description: "Durumunu ve içerdiği istasyonları kontrol etmek için boostingGroup sorgusuyla tek bir öne çıkarma grubunu alın."
+title: Güçlendirme grubu sorgusu
+heading: Güçlendirme grubu
+description: "Durumunu ve içerdiği istasyonları kontrol etmek için boostingGroup sorgusuyla tek bir güçlendirme grubu alın."
 schemaName: boostingGroup
 schemaType: Query
 ---
 
-boostingGroup sorgusunu kullanarak bir öne çıkarma grubunu alın. Bu, bir grubun etkin olup olmadığını veya şu anda hangi istasyonları öne çıkardığını kontrol etmek istediğinizde kullanışlıdır. Öne çıkarma gruplarının bir rotayı nasıl etkilediğini öğrenmek için [öne çıkarma grupları kılavuzuna](/docs/getting-started/route-boosting-groups) bakın.
+boostingGroup sorgusunu kullanarak bir güçlendirme grubunu alın. Bir grubun etkin olup olmadığını veya şu anda hangi istasyonları öne çıkardığını kontrol etmek istediğinizde kullanışlıdır. Güçlendirme gruplarının bir rotayı nasıl etkilediğini öğrenmek için [güçlendirme grupları kılavuzuna](/docs/getting-started/route-boosting-groups) bakın.
 
 ## Sorgu
 
-Bir öne çıkarma grubu `id` değeri gereklidir. `id`, [createBoostingGroup mutasyonu](/api-reference/admin/boosting-group/mutation-create-boosting-group) veya [boostingGroups sorgusu](/api-reference/admin/boosting-group/query-boosting-groups) üzerinden alınabilir.
-
-> [!WARNING] Alpha
-> Bu işlem alpha aşamasındadır ve ücretsiz planlarda kullanılamaz. Erişim için destekle iletişime geçin.
+Bir güçlendirme grubu `id` değeri zorunludur. `id` değerini [createBoostingGroup mutation'ı](/api-reference/admin/boosting-group/mutation-create-boosting-group) veya [boostingGroups sorgusu](/api-reference/admin/boosting-group/query-boosting-groups) ile alabilirsiniz.

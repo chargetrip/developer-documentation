@@ -1,0 +1,67 @@
+---
+title: 环境
+description: "获取基础 URL、用于 subscription 的 WebSocket 端点，以及开始向 API 发送请求所需的身份验证请求头。"
+---
+
+API 根据操作类型使用两个不同的端点：用于查询和 mutation 的 HTTPS URL，以及用于 subscription 的 WebSocket (WSS) URL。
+
+## 端点
+
+### 查询和 mutation
+
+查询和 mutation 通过 HTTP POST 请求发送到主 GraphQL 端点。
+
+```bash GraphQL queries and mutations endpoint URL
+https://api.chargetrip.io/graphql
+```
+
+### Subscription
+
+Subscription 需要通过 WebSocket 建立持久连接，可以使用 `graphql-transport-ws` 协议来实现。
+
+```bash GraphQL subscription URL
+wss://api.chargetrip.io/subscription
+```
+
+> [!WARNING] graphql-ws 协议已弃用
+> 旧版 graphql-ws subscription 协议已弃用，即将被移除。请迁移到 graphql-transport-ws 协议，以防止 subscription 错误和服务中断。
+
+### Server-Sent Events
+
+Server-Sent Events (SSE) 是 WebSocket 之外接收实时更新的另一种方式。它不是一种 subscription 类型，而是一种不同的消息传输方式：它通过常规 HTTP 连接而不是持久的 WebSocket 来流式传输 subscription 结果。
+
+```bash Server-Sent Events URL
+https://subscription.chargetrip.io/sse
+```
+
+## 授权请求头
+
+在每个请求中添加以下请求头。标记为必填的请求头必须始终发送。
+
+`x-client-id` · <span class="text-accent">必填</span>
+: 包含项目配置的项目 ID。
+
+`x-app-id` · <span class="text-accent">必填</span>
+: 用于安全和拆分分析的应用 ID。
+
+`x-app-identifier`
+: iOS 或 Android 的包标识符。
+
+`x-app-fingerprint`
+: Android SHA 指纹。
+
+> [!TIP] 保护您的密钥
+> 为获得最高安全性，请将您的应用限制为机器对机器 (M2M) 访问，并将凭据保存在您自己的服务器上、置于您自己的身份验证之后，而不是将其暴露给浏览器或设备。有关所有可用的限制类型，请参阅[安全](/api-reference/core/api/security)。
+
+## 发送已授权的请求
+
+默认情况下，每个项目都会生成一个唯一的 `x-app-id`。
+
+```bash Example request
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "x-client-id: YOUR_KEY_HERE" \
+  -H "x-app-id: YOUR_KEY_HERE" \
+  -d '{ "query": "{ } " }' \
+  https://api.chargetrip.io/graphql
+```

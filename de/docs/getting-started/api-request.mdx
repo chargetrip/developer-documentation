@@ -1,5 +1,5 @@
 ---
-title: "Erste Anfrage senden"
+title: Ihre erste Anfrage senden
 description: "Senden Sie Ihre erste Anfrage an die API mit den Basis-URLs, dem WebSocket-Endpunkt für Subscriptions und den erforderlichen Authentifizierungs-Headern."
 tag: Einrichtung
 ---
@@ -9,52 +9,52 @@ Sobald Ihre Zugangsdaten im Chargetrip-Dashboard erstellt sind, können Sie mit 
 ## Die Einrichtung
 
 
-Die Chargetrip-API verwendet je nach Operationstyp zwei verschiedene Endpunkte: eine HTTPS-URL für Queries und Mutations sowie eine WebSocket-URL (WSS) für Subscriptions. Weitere Informationen zur API finden Sie in der [GraphQL-API-Referenz](/api-reference).
+Die Chargetrip API verwendet je nach Operationstyp zwei verschiedene Endpunkte: eine HTTPS-URL für Queries und Mutations sowie eine WebSocket-URL (WSS) für Subscriptions. Weitere Informationen zur API finden Sie in der [GraphQL-API-Referenz](/api-reference/core).
 
 ### Queries und Mutations
-Queries und Mutations werden über HTTP-POST-Anfragen an den zentralen GraphQL-Endpunkt ausgeführt.
+Queries und Mutations werden per HTTP-POST-Anfrage an den zentralen GraphQL-Endpunkt ausgeführt.
 
 
-```bash Endpunkt-URL für GraphQL-Queries und -Mutations
+```bash GraphQL queries and mutations endpoint URL
 https://api.chargetrip.io/graphql
 ```
 
 ### Subscriptions
-Subscriptions erfordern eine dauerhafte Verbindung über WebSockets und können mit dem Protokoll `graphql-transport-ws` umgesetzt werden. Wie Sie WebSockets im Detail verwenden, erfahren Sie [hier](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications).
+Subscriptions erfordern eine dauerhafte Verbindung über WebSockets und lassen sich mit dem Protokoll `graphql-transport-ws` umsetzen. Wie Sie WebSockets im Detail verwenden, erfahren Sie [hier](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications).
 
 
-```bash URL für GraphQL-Subscriptions
+```bash GraphQL Subscription URL
 wss://api.chargetrip.io/subscription
 ```
 
 > [!WARNING] Das Protokoll graphql-ws ist veraltet
-> Das ältere Subscription-Protokoll graphql-ws ist veraltet und wird in Kürze entfernt. Bitte migrieren Sie zum Protokoll graphql-transport-ws, um Subscription-Fehler und Dienstunterbrechungen zu vermeiden.
+> Das ältere Subscription-Protokoll graphql-ws ist veraltet und wird in Kürze entfernt. Bitte migrieren Sie auf das Protokoll graphql-transport-ws, um Subscription-Fehler und Dienstunterbrechungen zu vermeiden.
 
 
 ## Autorisierungs-Header
 
-Fügen Sie nach dem Abrufen der Basis-URL jeder Anfrage die folgenden Header hinzu. Als erforderlich markierte Header müssen immer gesendet werden.
+Fügen Sie nach Erhalt der Basis-URL jeder Anfrage die folgenden Header hinzu. Als erforderlich gekennzeichnete Header müssen immer gesendet werden.
 
 `x-client-id` · <span class="text-accent">erforderlich</span>
 : Eine Projekt-ID, die die Projektkonfiguration enthält.
 
 `x-app-id` · <span class="text-accent">erforderlich</span>
-: Eine App-ID für die Sicherheit und die Aufteilung der Analysen.
+: Eine App-ID für Sicherheit und die Aufteilung von Analysen.
 
 `x-app-identifier`
-: Eine iOS- oder Android-Bundle-Kennung.
+: Ein iOS- oder Android-Bundle-Identifier.
 
 `x-app-fingerprint`
 : Ein Android-SHA-Fingerprint.
 
-> [!TIP] Schlüssel schützen
-> Für maximale Sicherheit beschränken Sie Ihre Anwendung auf den Machine-to-Machine-Zugriff (M2M) und halten Sie Zugangsdaten auf Ihrem eigenen Server hinter Ihrer eigenen Authentifizierung, anstatt sie einem Browser oder Gerät preiszugeben. Alle verfügbaren Einschränkungstypen finden Sie unter [Sicherheit](/api-reference/core/api/security).
+> [!TIP] Schützen Sie Ihre Schlüssel
+> Für maximale Sicherheit beschränken Sie Ihre Anwendung auf Machine-to-Machine-Zugriff (M2M) und halten Sie Zugangsdaten auf Ihrem eigenen Server hinter Ihrer eigenen Authentifizierung, statt sie einem Browser oder Gerät preiszugeben. Alle verfügbaren Einschränkungstypen finden Sie unter [Sicherheit](/api-reference/core/api/security).
 
 ## Autorisierte Anfrage senden
 
 Um mit der API zu kommunizieren, müssen Sie jede Anfrage mit den Headern `x-client-id` und `x-app-id` authentifizieren. Standardmäßig wird für jedes Projekt eine eindeutige `x-app-id` generiert.
 
-```bash Beispielanfrage
+```bash Example request
 curl -X POST \
   -H "Content-Type: application/json" \
   -H "x-client-id: YOUR_KEY_HERE" \

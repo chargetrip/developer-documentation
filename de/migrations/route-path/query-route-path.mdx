@@ -6,9 +6,9 @@ migrateBefore: 01-01-2027
 
 # routePath
 
-Migrieren vor: Q1 2027
+Migrieren bis: Q1 2027
 
-Migrieren Sie vom veralteten Route-Service auf die neueste Version. Der neue Service bietet ein neu organisiertes Schema, länderspezifische Betreiberpräferenzen, eine schnellere Routenberechnung und bessere Wartbarkeit.
+Migrieren Sie vom veralteten Route-Dienst auf die neueste Version. Der neue Dienst bietet ein neu organisiertes Schema, Betreiberpräferenzen pro Land, eine schnellere Routenberechnung und bessere Wartbarkeit.
 
 ## Operationen
 
@@ -22,6 +22,6 @@ Migrieren Sie vom veralteten Route-Service auf die neueste Version. Der neue Ser
 - **Namenskonventionen**: Felder verwenden jetzt `snake_case` statt `camelCase`.
 - **Einheitenunterstützung**: Numerische Eingaben unterstützen jetzt verschiedene Einheitentypen, ausgedrückt als Objekt mit `value`, `type` und einer optionalen `source` (`manual`, `telemetry` oder `default`).
 
-## Änderungen an der Abfrage
+## Änderungen an der Query
 
-Der Pfad der Route ist jetzt bereits in der Antwort von `getRoute` als `recommended.path_plot` enthalten, sodass keine separate Abfrage mehr nötig ist, um ihn abzurufen.
+Der Pfad der Route ist jetzt bereits in der Antwort von `getRoute` als `recommended.path_plot` enthalten, sodass keine separate Query zum Abrufen mehr nötig ist.

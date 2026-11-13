@@ -1,16 +1,16 @@
 ---
-title: "Servicestopp auf der Route Query"
-heading: "Servicestopp auf der Route"
-description: "Finden Sie mit der Query getRouteStationsWithAmenities Ladestationen mit Ausstattung an einem bestimmten Punkt entlang einer Route."
+title: "Servicestation auf Route Query"
+heading: "Servicestation auf Route"
+description: "Finden Sie mit der Query getRouteStationsWithAmenities Ladestationen mit Ausstattungen an einem bestimmten Punkt entlang einer Route."
 schemaName: getRouteStationsWithAmenities
 schemaType: Query
 ---
 
-Suchen Sie mit der Query getRouteStationsWithAmenities nach Ladestationen mit Ausstattungen an einem bestimmten Punkt entlang einer Route. Dies ist nützlich, wenn Sie einen Ladestopp in der Nähe von Restaurants, Geschäften oder anderen Ausstattungen planen möchten.
+Suchen Sie mit der Query getRouteStationsWithAmenities nach Ladestationen mit Ausstattungen an einem bestimmten Punkt entlang einer Route. Das ist nützlich, wenn Sie einen Ladestopp in der Nähe von Restaurants, Geschäften oder anderen Ausstattungen planen möchten.
 
 ## Query
 
-Zum Suchen von Stationen entlang einer Route sind `route_id`, `route_details_id`, `time_window` und `amenity_types` erforderlich. Beide IDs erhalten Sie über die [Query getRoute](/api-reference/core/route/query-get-route). Verwenden Sie das Argument `filter`, um die Ergebnisse anhand bestimmter Kriterien einzugrenzen, sowie die Argumente `first` und `after`, um die Ergebnisse zu [paginieren](/api-reference/core/api/pagination).
+Für die Suche nach Stationen entlang einer Route sind `route_id`, `route_details_id`, `time_window` und `amenity_types` erforderlich. Beide IDs erhalten Sie über die [Query getRoute](/api-reference/core/route/query-get-route). Mit dem Argument `filter` grenzen Sie die Ergebnisse anhand bestimmter Kriterien ein, und mit den Argumenten `first` und `after` [paginieren](/api-reference/core/api/pagination) Sie sie.
 
 > [!WARNING] Limits
-> `first` darf bei dieser Query nicht größer als 10 sein.
+> `first` darf für diese Query nicht größer als 10 sein.

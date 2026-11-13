@@ -8,7 +8,7 @@ migrateBefore: 01-01-2027
 
 Migrer avant : T1 2027
 
-Migrez de l'ancien service Route vers la dernière version. Le nouveau service offre un schéma réorganisé, des préférences d'opérateur par pays, un calcul d'itinéraire plus rapide et une meilleure maintenabilité.
+Migrez de l'ancien service Route vers la dernière version. Le nouveau service apporte un schéma réorganisé, des préférences d'opérateurs par pays, un calcul d'itinéraire plus rapide et une meilleure maintenabilité.
 
 ## Opérations
 
@@ -16,21 +16,21 @@ Migrez de l'ancien service Route vers la dernière version. Le nouveau service o
 | ----------------- | ----------------------------------------------------------------|
 | `newRoute`        | [`createRoute`](/api-reference/core/route/mutation-create-route)     |
 
-## Changements généraux du schéma
+## Modifications générales du schéma
 
 - **Typage explicite** : les champs JSON auparavant flexibles sont désormais explicitement typés dans le schéma pour améliorer la structure et la validation.
 - **Conventions de nommage** : les champs utilisent désormais `snake_case` au lieu de `camelCase`.
-- **Prise en charge des unités** : les entrées numériques prennent désormais en charge différents types d'unités, exprimées sous la forme d'un objet avec `value`, `type` et une `source` facultative (`manual`, `telemetry` ou `default`).
+- **Prise en charge des unités** : les entrées numériques prennent désormais en charge différents types d'unités, exprimées sous la forme d'un objet avec `value`, `type` et un `source` facultatif (`manual`, `telemetry` ou `default`).
 
-## Changements de mutation
+## Modifications de la mutation
 
 L'argument `input` de `createRoute` a été réorganisé et simplifié.
 
 ### routeRequest
 
-Au niveau racine, les champs suivants ont été supprimés. Les champs liés aux opérateurs sont désormais couverts par les [préférences d'opérateur](#préférences-dopérateur), et les champs liés aux équipements ont été déplacés vers leur propre [requête d'équipements](/api-reference/core/route/query-get-route-stations-with-amenities) dédiée.
+Au niveau racine, les champs suivants ont été supprimés. Les champs liés aux opérateurs sont désormais couverts par les [préférences d'opérateurs](#préférences-dopérateurs), et les champs liés aux commodités ont été déplacés vers leur propre [requête de commodités](/api-reference/core/route/query-get-route-stations-with-amenities) dédiée.
 
-| Champ                  | Déplacé vers                          |
+| Champ                  | Déplacé vers                           |
 | ---------------------- | -------------------------------------- |
 | `operatorIds`          | Supprimé                               |
 | `amenities`            | Supprimé                               |
@@ -38,9 +38,9 @@ Au niveau racine, les champs suivants ont été supprimés. Les champs liés aux
 | `operatorRequired`     | Supprimé                               |
 | `operatorPrefer`       | Supprimé                               |
 
-### EV
+### VE
 
-Au niveau EV, la plupart des champs de premier niveau ont été déplacés dans un objet `vehicle` dédié.
+Au niveau du VE, la plupart des champs de premier niveau ont été déplacés dans un objet `vehicle` dédié.
 
 | Champ             | Déplacé vers                          |
 | ----------------- | -------------------------------------- |
@@ -55,7 +55,7 @@ Au niveau EV, la plupart des champs de premier niveau ont été déplacés dans 
 
 ### Charge du véhicule
 
-Les propriétés de charge du véhicule ne sont plus définies à un seul endroit. Elles sont désormais spécifiées par point `origin` et `via`, ce qui offre un contrôle plus fin du poids des occupants et de la cargaison par tronçon. Elles se trouvent sous `properties.vehicle` de chaque localisation, et leurs noms de champs changent comme suit :
+Les propriétés de charge du véhicule ne sont plus définies à un seul endroit. Elles sont désormais spécifiées pour chaque point `origin` et `via`, ce qui offre un contrôle plus granulaire du poids des occupants et de la cargaison pour chaque tronçon. Elles se trouvent sous `properties.vehicle` pour chaque lieu, et leurs noms de champs changent comme suit :
 
 | Champ       | Déplacé vers          |
 | ----------- | --------------------- |
@@ -66,7 +66,7 @@ Les propriétés de charge du véhicule ne sont plus définies à un seul endroi
 
 Les données de télémétrie suivantes ont été déplacées du niveau racine vers l'objet `vehicle`.
 
-| Champ                 | Déplacé vers    |
+| Champ                 | Déplacé vers     |
 | --------------------- | ---------------- |
 | `heading`             | `vehicle`  |
 | `motor_rpm`           | `vehicle`  |
@@ -75,15 +75,15 @@ Les données de télémétrie suivantes ont été déplacées du niveau racine v
 | `tire_pressure`       | `vehicle`  |
 | `vehicle_speed`       | `vehicle`  |
 
-## Changements mis en avant
+## Changements marquants
 
-Quelques champs de l'argument `input` ont désormais de nouvelles formes plus structurées. Elles sont détaillées ci-dessous.
+Quelques champs de l'argument `input` ont désormais de nouvelles structures plus détaillées. Elles sont décrites plus en détail ci-dessous.
 
-### Préférences d'opérateur
+### Préférences d'opérateurs
 
-Les préférences d'opérateur sont simplifiées en trois niveaux : `high`, `medium` et `low`. Chaque entrée, qu'elle soit classée, exclue ou évitée, peut être limitée à des pays spécifiques via le champ `countries`. Si celui-ci est omis, tous les pays sont pris en compte.
+Les préférences d'opérateurs sont simplifiées en trois niveaux : `high`, `medium` et `low`. Chaque entrée, qu'elle soit classée, exclue ou évitée, peut être limitée à des pays spécifiques via le champ `countries`. Si ce champ est omis, tous les pays sont pris en compte.
 
-```graphql Préférences d'opérateur {{ mark: [6,9,12] }}
+```graphql Operator preferences {{ mark: [6,9,12] }}
 input: {
   operators: {
     ranking: {
@@ -110,7 +110,7 @@ input: {
 
 Un nouveau champ `total_occupant_weight` vous permet de remplacer le poids par défaut des occupants, exprimé avec le nouvel objet d'unité.
 
-```graphql Poids total des occupants {{ mark: [6,7,8,9,10] }}
+```graphql Total occupant weight {{ mark: [6,7,8,9,10] }}
 input: {
   origin: {
     properties: {

@@ -1,29 +1,38 @@
 ---
-title: "Selektoren"
-description: "Nehmen Sie mit Selektoren zusätzliche Datenpunkte in die MVT- und JSON-Tile-Antworten auf und halten Sie die Tile-Payloads klein und schnell."
+title: Selektoren
+description: "Nehmen Sie mit Selektoren zusätzliche Datenpunkte in die MVT- und JSON-Kachelantworten auf und halten Sie die Kachel-Nutzdaten dabei klein und schnell."
 tag: Rest
 ---
 
-Um Antwortzeit und -größe zu optimieren, geben die MVT- und die JSON-API standardmäßig eine minimierte Antwort zurück. Dieser Ansatz sorgt für maximale Performance und reduziert die Größe der Kachel-Payloads, was für flüssige Karteninteraktionen entscheidend ist. Mit Selektoren können Sie die zusätzlichen Datenpunkte einbeziehen, die Ihre Anwendung konkret benötigt.
+Um Netzwerklatenz und Rendering-Leistung zu optimieren, geben die MVT- und JSON-Tile-Services von Chargetrip standardmäßig nur minimale Nutzdaten zurück. Diese Standard-Nutzdaten enthalten die wesentlichen Geometrie- und Clusterdaten, die für das schnelle Rendern von Kartenkacheln benötigt werden.
+
+Mit Selektoren fordern Sie gezielt die Stationsdatenattribute an, die Ihre Client-Anwendung benötigt, ohne unnötigen Overhead bei den Nutzdaten zu verursachen.
+
+
+
+## Implementierung
+
+Um bestimmte Stationsattribute anzufordern, hängen Sie den Query-Parameter `station_properties[]` an die URL Ihrer Kachelanfrage an. Wiederholen Sie den Parameter für jeden Selektor, den Sie aufnehmen möchten:
+
+```bash Tile / Selectors / Example
+https://api.chargetrip.io/v2/station/...?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
+```
 
 ## Verfügbare Selektoren
+Selektoren gelten nur für **Stations-Features**. Cluster-Features bleiben unberührt und geben immer `count` und `expansion_zoom` zurück.
 
-Jedes Feld, das in den Stationseigenschaften für MVT- und JSON-Kacheln aufgeführt ist, kann im jeweiligen Service als Selektor verwendet werden, mit Ausnahme der obligatorischen GeoJSON-Felder, die der JSON-Endpoint zurückgibt.
 
 `count` · `integer` · <span class="text-accent">default</span>
-: Die Anzahl der Stationen innerhalb eines Clusters. Eine Anzahl von 1 bedeutet ein Stations-Feature, eine Anzahl größer als 1 ein Cluster-Feature.
+: Die Anzahl der Stationen innerhalb eines Clusters. Ein Wert von 1 kennzeichnet ein Stations-Feature, ein Wert größer als 1 ein Cluster-Feature.
 
-`expansion_zoom` · `integer` · <span class="text-accent">default</span>
-: Die Zoomstufe, bei der sich ein Cluster in mehrere kleinere Cluster oder Stationen aufteilt.
-
-`id` · `string`
-: Die Kennung der Station.
+`id` · `string` · <span class="text-accent">default</span>
+: Die eindeutige Chargetrip-Kennung der Station. Gilt nur für [MVT-Kacheln](/api-reference/core/tiles/mvt).
 
 `lng` · `float`
-: Der Längengrad der Station.
+: Der Längengrad der Station. Gilt nur für [MVT-Kacheln](/api-reference/core/tiles/mvt).
 
 `lat` · `float`
-: Der Breitengrad der Station.
+: Der Breitengrad der Station. Gilt nur für [MVT-Kacheln](/api-reference/core/tiles/mvt).
 
 `operator_id` · `string`
 : Die eindeutige Chargetrip-Kennung des Betreibers der Station. Wird nicht zurückgegeben, wenn der Betreiber unbekannt ist.
@@ -32,10 +41,10 @@ Jedes Feld, das in den Stationseigenschaften für MVT- und JSON-Kacheln aufgefü
 : Die maximale Ladeleistung (in kW), die an der Station verfügbar ist. Dieser Wert ist statisch und spiegelt unabhängig von Anschlussfiltern immer die höchste Leistungsfähigkeit der Station wider.
 
 `connector_maximum_power` · `integer`
-: Die maximale Ladeleistung (in kW), die von den Anschlüssen verfügbar ist, die dem Filter `connectors[]` entsprechen. Wenn kein Filter angegeben ist, werden alle Anschlüsse berücksichtigt, und der Wert entspricht `station_maximum_power`.
+: Die maximale Ladeleistung (in kW), die von den Anschlüssen bereitgestellt wird, die dem Filter `connectors[]` entsprechen. Ist kein Filter angegeben, werden alle Anschlüsse berücksichtigt und der Wert entspricht `station_maximum_power`.
 
 `preferred_operator` · `boolean`
-: Gibt an, ob der Betreiber einer Station ein bevorzugter Betreiber ist. Bevorzugte Betreiber können auf Projektebene im Dashboard verwaltet werden.
+: Gibt an, ob der Betreiber einer Station ein bevorzugter Betreiber ist. Die Betreiberpräferenzen können im [Dashboard von Chargetrip](https://account.chargetrip.io/projects) verwaltet werden.
 
 `connector_minimum_energy_price` · `float` · [beta](tip:Beta;;Dieses Feld befindet sich in der Beta-Phase und kann sich ändern, bevor es stabil wird.)
 : Der niedrigste Energiepreis unter den Anschlüssen der Station. Wird nicht zurückgegeben, wenn nicht verfügbar. Nur anwendbar, wenn die Eco-Movement-Stationsdatenbank verwendet wird, andernfalls wird er ignoriert.
@@ -79,74 +88,112 @@ Jedes Feld, das in den Stationseigenschaften für MVT- und JSON-Kacheln aufgefü
 `evses_inoperative` · `integer`
 : Anzahl der EVSEs im Status „inoperative“. Wenn ein Filter `connectors[]` angegeben ist, werden nur nicht betriebsbereite EVSEs gezählt, die mindestens einen der ausgewählten Anschlusstypen haben.
 
-## Implementierung
+## Beispiele
 
-Um bestimmte Eigenschaften anzufordern, hängen Sie den Query-Parameter `station_properties[]` an die URL der Kachelanfrage an.
+<details>
+  <summary>Stationsleistung und Betreiberpräferenz in JSON-Kacheln anfordern</summary>
 
-```bash Tile / Selectors / Example
-https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
+In JSON-Kacheln bleibt die obligatorische Feature-Struktur (`type`, `geometry`, `id`) bei Stations-Features immer erhalten, während `properties` nur die angeforderten Selektoren enthält (die Standardeigenschaft `count` entfällt, da sie nicht angefordert wurde). Cluster-Features bleiben von Selektoren unberührt und geben weiterhin `count` und `expansion_zoom` zurück.
+
+```bash Example request {{ mark: [2,3] }}
+https://api.chargetrip.io/v2/station/10/582/325/tile.json
+  ?station_properties[]=station_maximum_power
+  &station_properties[]=preferred_operator
 ```
 
-## Verhaltensbeispiele
-
-Wenn Selektoren angegeben werden, gibt die Anfrage nur die angegebenen Felder zurück.
-
-### GeoJSON
-
-Im GeoJSON-Endpoint werden die obligatorischen GeoJSON-Felder (`type`, `geometry` und `id`) unabhängig von den gewählten Selektoren immer zurückgegeben.
-
-```json JSON Selectors example
+```json Example response {{ mark: [13,14,15,16] }}
 {
   "type": "FeatureCollection",
   "features": [
-    // Station feature
+    // Station feature (count = 1)
     {
-      "id": "132313",
+      "id": "5e5f3e8f8e0c1a0012345678",
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [6.789, 52.234]
+        "coordinates": [4.895168, 52.370216]
       },
-      // 'count' is missing because it wasn't provided as selector
       "properties": {
         "station_maximum_power": 350,
         "preferred_operator": true
       }
     },
-    // Cluster feature
-    // Cluster feature is not modified, as it's not affected by the selectors.
+   // Cluster feature (unaffected by selectors)
     {
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [6.723, 50.0]
+        "coordinates": [5.1214, 52.0907]
       },
       "properties": {
-        "count": 3,
-        "expansion_zoom": 18
+        "count": 4,
+        "expansion_zoom": 14
       }
     }
   ]
 }
 ```
 
-### MVT
+</details>
 
-Im MVT-Endpoint werden nur die ausdrücklich ausgewählten Parameter zurückgegeben, da es keine obligatorischen Felder gibt.
+<details>
+  <summary>Stations-ID, Leistung und Betreiberpräferenz in MVT-Vektorkacheln anfordern</summary>
 
-```json MVT Selectors example
-// Station feature
-// 'count' is missing because it wasn't provided as a selector.
+ In MVT-Kacheln werden nur explizit angeforderte Selektoren in das Stations-Feature kodiert (die Standardeigenschaft `count` entfällt), während Cluster-Features von Selektoren unberührt bleiben und immer `count` und `expansion_zoom` behalten.
+
+```bash Example request {{ mark: [2,3,4] }}
+https://api.chargetrip.io/v2/station/10/582/325/tile.mvt
+  ?station_properties[]=id
+  &station_properties[]=station_maximum_power
+  &station_properties[]=preferred_operator
+```
+
+```json Example response {{ mark: [2,3,4,5,6] }}
+// Station feature ('count' is omitted because it wasn't requested as a selector)
 {
-  "id": "132313",
-  "preferred_operator": false,
+  "id": "5e5f3e8f8e0c1a0012345678",
+  "preferred_operator": true,
   "station_maximum_power": 350
 }
 
-// Cluster feature
-// Cluster feature is not modified, as it's not affected by the selectors.
+// Cluster feature (unaffected by selectors)
 {
-  "count": 3,
-  "expansion_zoom": 32
+  "count": 4,
+  "expansion_zoom": 14
 }
 ```
+
+</details>
+
+<details>
+  <summary>Selektoren mit Anschlussfiltern für den Echtzeit-EVSE-Status kombinieren</summary>
+
+  Beim Filtern nach einem bestimmten Anschlusstyp (z. B. CCS / `IEC_62196_T2_COMBO`) berücksichtigen `connector_maximum_power` und die Anzahl `evse_status_available` nur EVSEs, die diesem Anschlussfilter entsprechen.
+
+```bash Example request {{ mark: [2,3,4] }}
+https://api.chargetrip.io/v2/station/10/582/325/tile.json
+  ?connectors[]=IEC_62196_T2_COMBO
+  &station_properties[]=connector_maximum_power
+  &station_properties[]=evse_status_available
+```
+
+```json Example response {{ mark: [12,13,14,15] }}
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "id": "5e5f3e8f8e0c1a0012345678",
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [4.895168, 52.370216]
+      },
+      "properties": {
+        "connector_maximum_power": 300,
+        "evse_status_available": 2
+      }
+    }
+  ]
+}
+```
+</details>

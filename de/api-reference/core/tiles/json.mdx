@@ -1,14 +1,14 @@
 ---
-title: "JSON"
-description: "Greifen Sie mit dem JSON Tile Service im JSON-Format auf geografische Stationsdaten zu, mit Zoomstufe und Tile-Koordinaten im Anfragepfad."
+title: JSON
+description: "Rufen Sie stationsbezogene Geodaten im JSON-Format über den JSON-Tile-Service ab, mit Zoomstufe und Kachelkoordinaten im Anfragepfad."
 tag: Rest
 ---
 
-Der JSON-Kachel-Service bietet Zugriff auf stationsbezogene Geodaten im JSON-Format.
+Der JSON-Tile-Service bietet Zugriff auf stationsbezogene Geodaten im JSON-Format.
 
 ## Einrichtung
 
-Um auf die Stationsdaten im JSON-Format zuzugreifen, senden Sie eine Anfrage an den folgenden Endpoint:
+Um die Stationsdaten im JSON-Format abzurufen, senden Sie eine Anfrage an den folgenden Endpunkt:
 
 ```bash Tile / JSON / Base URL
 https://api.chargetrip.io/v2/station/{z}/{x}/{y}/tile.json
@@ -20,13 +20,75 @@ Die JSON-URL verwendet die folgenden Pfadparameter:
 - `x`: Die x-Koordinate der Kachel.
 - `y`: Die y-Koordinate der Kachel.
 
-Die meisten Kartenanbieter bieten integrierte Methoden, um Breiten- und Längengrad in Pixelkoordinaten umzurechnen. Um Breiten- und Längengrad manuell in x und y umzurechnen, verwenden Sie die [Web-Mercator-Projektion](https://en.wikipedia.org/wiki/Web_Mercator_projection).
+Die meisten Kartenanbieter verfügen über integrierte Methoden, um Breiten- und Längengrad in Pixelkoordinaten umzurechnen. Um Breiten- und Längengrad manuell in x und y umzurechnen, verwenden Sie die [Web-Mercator-Projektion](https://en.wikipedia.org/wiki/Web_Mercator_projection).
 
-### Filtern
-Verwenden Sie den Query-Parameter `filter`, um die zurückgegebenen Stationen anhand bestimmter Kriterien zu filtern. Weitere Informationen finden Sie in der [Dokumentation zu Filtern](/api-reference/core/tiles/filters).
+### Filterung
+Mit dem Query-Parameter `filter` filtern Sie die zurückgegebenen Stationen anhand bestimmter Kriterien. Weitere Informationen finden Sie in der [Filter-Dokumentation](/api-reference/core/tiles/filters).
 
 ### Selektoren
-Verwenden Sie den Query-Parameter `station_properties[]`, um die Felder festzulegen, die für jedes Stations-Feature zurückgegeben werden. Weitere Informationen finden Sie in der [Dokumentation zu Selektoren](/api-reference/core/tiles/selectors).
+Mit dem Query-Parameter `station_properties[]` legen Sie fest, welche Felder für jedes Stations-Feature zurückgegeben werden. Weitere Informationen finden Sie in der [Selektoren-Dokumentation](/api-reference/core/tiles/selectors).
 
+## Antwort
+Die API gibt eine GeoJSON-`FeatureCollection` mit den obligatorischen GeoJSON-Feldern (id, type, geometry und properties) zurück. Jedes Element in `features` steht entweder für eine einzelne Station (`count: 1`) oder für einen Stationscluster (`count > 1`).
+
+
+
+`id` · `string` · <span class="text-accent">mandatory</span>
+: Die eindeutige Kennung der Station. Wird nur bei einzelnen Stations-Features zurückgegeben.
+
+`type` · `string` · <span class="text-accent">mandatory</span>
+: Immer auf `"Feature"` gesetzt.
+
+`geometry` · `object` · <span class="text-accent">mandatory</span>
+: Standardmäßige GeoJSON-`Point`-Geometrie mit den Koordinaten `[longitude, latitude]`.
+
+`properties` · `object` · <span class="text-accent">mandatory</span>
+: Attribute des Features. Standardmäßig geben Stations-Features `{ "count": 1 }` und Cluster-Features `{ "count": N, "expansion_zoom": Z }` zurück. Zusätzliche Stationsfelder können über [Selektoren](/api-reference/core/tiles/selectors) angefordert werden.
+
+Die in `properties` zurückgegebenen Felder hängen vom Feature-Typ und den angegebenen Selektoren ab:
+
+- Cluster-Features: geben immer `{ "count": N, "expansion_zoom": Z }` zurück.
+
+- Stations-Features: geben `{ "count": 1 }` zurück, wenn keine Selektoren angegeben sind, oder nur die angeforderten Felder, wenn [Selektoren](/api-reference/core/tiles/selectors) angegeben sind.
+
+
+<details>
+  <summary>Standardantwort der JSON-Kachel</summary>
+
+
+
+```json Example response
+{
+  "type": "FeatureCollection",
+  "features": [
+    // Station feature
+    {
+      "id": "5e5f3e8f8e0c1a0012345678",
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [4.895168, 52.370216]
+      },
+      "properties": {
+        "count": 1
+      }
+    },
+    // Cluster feature
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [5.1214, 52.0907]
+      },
+      "properties": {
+        "count": 4,
+        "expansion_zoom": 14
+      }
+    }
+  ]
+}
+```
+
+</details>
 ### Währung
-Verwenden Sie den Query-Parameter `currency`, um die Währung der Energiepreise festzulegen, die zurückgegeben und nach denen gefiltert wird. Weitere Informationen finden Sie in der [Dokumentation zur Währungsumrechnung](/api-reference/core/tiles/filters).
+Mit dem Query-Parameter `currency` legen Sie die Währung der zurückgegebenen und gefilterten Energiepreise fest. Weitere Informationen finden Sie in der [Dokumentation zur Währungsumrechnung](/api-reference/core/tiles/filters).

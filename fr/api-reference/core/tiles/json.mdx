@@ -1,6 +1,6 @@
 ---
 title: JSON
-description: "Accédez aux données géographiques des stations au format JSON avec le service de tuiles JSON, via le niveau de zoom et les coordonnées de tuile dans le chemin."
+description: "Accédez aux données géographiques des stations au format JSON avec le service de tuiles JSON, à l'aide du niveau de zoom et des coordonnées de la tuile dans le chemin de la requête."
 tag: Rest
 ---
 
@@ -8,7 +8,7 @@ Le service de tuiles JSON donne accès aux données géographiques liées aux st
 
 ## Configuration
 
-Pour accéder aux données des stations au format JSON, envoyez une requête à l'endpoint suivant :
+Pour accéder aux données des stations au format JSON, envoyez une requête au endpoint suivant :
 
 ```bash Tile / JSON / Base URL
 https://api.chargetrip.io/v2/station/{z}/{x}/{y}/tile.json
@@ -20,13 +20,75 @@ L'URL JSON utilise les paramètres de chemin suivants :
 - `x` : la coordonnée x de la tuile.
 - `y` : la coordonnée y de la tuile.
 
-La plupart des fournisseurs de cartes disposent de méthodes intégrées pour convertir la latitude et la longitude en coordonnées de pixels. Pour convertir manuellement des coordonnées de latitude et de longitude en x et y, utilisez la [projection Web Mercator](https://en.wikipedia.org/wiki/Web_Mercator_projection).
+La plupart des fournisseurs de cartes disposent de méthodes intégrées pour convertir la latitude et la longitude en coordonnées en pixels. Pour convertir manuellement les coordonnées de latitude et de longitude en x et y, utilisez la [projection Web Mercator](https://en.wikipedia.org/wiki/Web_Mercator_projection).
 
 ### Filtrage
-Utilisez le paramètre de requête `filter` pour filtrer les stations renvoyées selon des critères spécifiques. Consultez la [documentation des filtres](/api-reference/core/tiles/filters) pour plus d'informations.
+Utilisez le paramètre de requête `filter` pour filtrer les stations renvoyées selon des critères précis. Consultez la [documentation des filtres](/api-reference/core/tiles/filters) pour plus d'informations.
 
 ### Sélecteurs
-Utilisez le paramètre de requête `station_properties[]` pour spécifier les champs renvoyés pour chaque feature de station. Consultez la [documentation des sélecteurs](/api-reference/core/tiles/selectors) pour plus d'informations.
+Utilisez le paramètre de requête `station_properties[]` pour indiquer les champs renvoyés pour chaque entité station. Consultez la [documentation des sélecteurs](/api-reference/core/tiles/selectors) pour plus d'informations.
 
+## Réponse
+L'API renvoie une `FeatureCollection` GeoJSON contenant les champs GeoJSON obligatoires (id, type, geometry et properties). Chaque élément de `features` représente soit une station individuelle (`count: 1`), soit un regroupement de stations (`count > 1`).
+
+
+
+`id` · `string` · <span class="text-accent">obligatoire</span>
+: L'identifiant unique de la station. Renvoyé uniquement pour les entités de station individuelles.
+
+`type` · `string` · <span class="text-accent">obligatoire</span>
+: Toujours défini sur `"Feature"`.
+
+`geometry` · `object` · <span class="text-accent">obligatoire</span>
+: Géométrie GeoJSON standard `Point` contenant les coordonnées `[longitude, latitude]`.
+
+`properties` · `object` · <span class="text-accent">obligatoire</span>
+: Attributs de l'entité. Par défaut, les entités de station renvoient `{ "count": 1 }` et les entités de regroupement renvoient `{ "count": N, "expansion_zoom": Z }`. Des champs de station supplémentaires peuvent être demandés à l'aide des [sélecteurs](/api-reference/core/tiles/selectors).
+
+Les champs renvoyés dans `properties` dépendent du type d'entité et des sélecteurs fournis :
+
+- Entités de regroupement : renvoient toujours `{ "count": N, "expansion_zoom": Z }`.
+
+- Entités de station : renvoient `{ "count": 1 }` si aucun sélecteur n'est fourni, ou uniquement les champs demandés si des [sélecteurs](/api-reference/core/tiles/selectors) sont fournis.
+
+
+<details>
+  <summary>Réponse par défaut de la tuile JSON</summary>
+
+
+
+```json Example response
+{
+  "type": "FeatureCollection",
+  "features": [
+    // Station feature
+    {
+      "id": "5e5f3e8f8e0c1a0012345678",
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [4.895168, 52.370216]
+      },
+      "properties": {
+        "count": 1
+      }
+    },
+    // Cluster feature
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [5.1214, 52.0907]
+      },
+      "properties": {
+        "count": 4,
+        "expansion_zoom": 14
+      }
+    }
+  ]
+}
+```
+
+</details>
 ### Devise
-Utilisez le paramètre de requête `currency` pour définir la devise des prix de l'énergie renvoyés et utilisés pour le filtrage. Consultez la [documentation sur la conversion de devise](/api-reference/core/tiles/filters) pour plus d'informations.
+Utilisez le paramètre de requête `currency` pour définir la devise des prix de l'énergie renvoyés et filtrés. Consultez la [documentation sur la conversion de devise](/api-reference/core/tiles/filters) pour plus d'informations.

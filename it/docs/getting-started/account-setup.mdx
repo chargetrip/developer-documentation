@@ -1,6 +1,6 @@
 ---
 title: Configura il tuo account
-description: "Crea un account e configura workspace, progetto e app, poi custodisci al sicuro le tue credenziali API."
+description: "Crea un account e configura workspace, progetto e app, poi proteggi le tue credenziali API."
 tag: Configurazione
 ---
 
@@ -8,20 +8,20 @@ Per iniziare a usare l'API, crea un account. Una volta configurato l'account, pu
 
 ## Configura il tuo ambiente
 
-La dashboard è organizzata in tre livelli, dal più ampio al più specifico.
+La dashboard è organizzata su tre livelli, dal più generale al più specifico.
 
 1. **Workspace**
-   Un workspace permette ai membri del tuo team di lavorare insieme sugli stessi progetti, ad esempio quando un country manager deve gestire le preferenze sugli operatori e uno sviluppatore ha bisogno di accedere alle chiavi API. Un workspace è anche il rapporto commerciale fatturabile con noi, quindi più workspace significano più contratti.
+   Un workspace permette ai membri del tuo team di lavorare insieme sugli stessi progetti, ad esempio quando un country manager deve gestire le preferenze degli operatori e uno sviluppatore ha bisogno di accedere alle chiavi API. Un workspace è anche il rapporto di fatturazione con noi, quindi più workspace significano più contratti.
 2. **Progetto**
-   All'interno di un workspace, configura un progetto. I progetti vengono creati in base alle preferenze sugli operatori, al database delle stazioni e alla selezione dei veicoli. Se hai casi d'uso che richiedono una configurazione diversa, crea un progetto separato per ciascuno.
+   All'interno di un workspace, configura un progetto. I progetti vengono creati in base alle preferenze degli operatori, al database delle stazioni e alla selezione dei veicoli. Se hai casi d'uso che richiedono una configurazione diversa, crea un progetto separato per ciascuno.
 3. **App**
    Se condividi queste impostazioni ma vuoi comunque analisi o misure di sicurezza separate, ad esempio quando sviluppi un'app iOS e una Android, crea app diverse all'interno di un progetto.
 
-Consulta [invia richieste](/docs/getting-started/api-request) per scoprire come usare gli id del tuo progetto e della tua app per autenticare le richieste.
+Consulta [invia richieste](/docs/getting-started/api-request) per scoprire come usare gli ID del progetto e dell'app per autenticare le richieste.
 
 ## Proteggi il tuo account
 
-Dopo aver configurato l'account, è importante proteggerlo. Ecco i nostri consigli:
+Dopo aver configurato il tuo account, ti conviene proteggerlo. Ecco i nostri consigli:
 
-- **Proteggi le tue credenziali**: Non committare mai una chiave API nel controllo di versione, conservala invece in un secrets vault e limitala solo all'accesso di cui ha bisogno, poiché le nostre chiavi possono essere ristrette.
-- **Concedi l'accesso tramite i membri del team invece di condividere le credenziali di accesso**: Invita i colleghi nel tuo workspace con solo l'accesso di cui hanno bisogno, anziché distribuire le tue credenziali.
+- **Proteggi le tue credenziali**: non inserire mai una chiave API nel controllo del codice sorgente, conservala invece in un vault dei segreti e limitala solo all'accesso di cui ha bisogno, dato che le nostre chiavi possono essere ristrette.
+- **Concedi l'accesso tramite i membri del team invece di condividere gli accessi**: invita i colleghi nel tuo workspace con solo l'accesso di cui hanno bisogno, invece di consegnare le tue credenziali.

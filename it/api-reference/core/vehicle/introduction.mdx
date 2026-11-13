@@ -4,36 +4,36 @@ heading: Introduzione
 description: "Cosa contiene il database dei veicoli, come le proprietà dei veicoli elettrici influenzano il routing e la ricarica e quali query usare per accedervi."
 ---
 
-Calcolare un percorso per un EV è diverso dal farlo per un'auto a benzina. La distanza che un veicolo può percorrere, i caricatori che può usare e la velocità con cui si ricarica dipendono tutti dal veicolo stesso. Il database dei veicoli ti fornisce queste informazioni, così non devi raccoglierle e mantenerle da solo.
+Calcolare un percorso per un veicolo elettrico è diverso dal farlo per un'auto a benzina. La distanza che un veicolo può percorrere, i caricatori che può usare e la velocità con cui si ricarica dipendono tutti dal veicolo stesso. Il database dei veicoli ti fornisce queste informazioni, così non devi raccoglierle e mantenerle tu stesso.
 
-Ogni richiesta di percorso e di isolina richiede l'`id` di un veicolo, e gli stessi dati ti permettono di creare selettori di veicoli, mostrare le specifiche e filtrare le stazioni di ricarica in base a quelle che il conducente può usare.
+Ogni richiesta di percorso e di isodistanza richiede un `id` del veicolo, e gli stessi dati ti permettono di creare selettori di veicoli, mostrare le specifiche e filtrare le stazioni di ricarica in base a quelle utilizzabili dal conducente.
 
-## Nozioni di base sugli EV
+## Nozioni di base sui veicoli elettrici
 
-Alcune proprietà dei veicoli elettrici spiegano perché i dati dei veicoli sono importanti.
+Alcune proprietà dei veicoli elettrici spiegano perché i dati sui veicoli sono importanti.
 
 ### Motorizzazioni
 
-Un veicolo ICE (motore a combustione interna) brucia carburante. Un EV funziona con l'elettricità di una batteria che viene ricaricata presso una stazione di ricarica. Il database copre quattro tipi di motorizzazione:
+Un veicolo ICE (motore a combustione interna) brucia carburante. Un veicolo elettrico funziona con l'elettricità di una batteria che viene ricaricata presso una stazione di ricarica. Il database copre quattro tipi di motorizzazione:
 
 | Motorizzazione | Descrizione |
 |:---|:---|
 | BEV | Veicolo elettrico a batteria. Funziona solo con la batteria. |
-| PHEV | Veicolo elettrico ibrido plug-in. Combina una batteria che può essere collegata alla rete con un motore a combustione. |
-| EREV | Veicolo elettrico con range extender. Trazione affidata alla batteria, con un motore a combustione che ne estende l'autonomia. |
-| HEV | Veicolo elettrico ibrido. Combina un motore a combustione e una batteria che non può essere collegata alla rete. |
+| PHEV | Veicolo elettrico ibrido plug-in. Combina una batteria ricaricabile da rete con un motore a combustione. |
+| EREV | Veicolo elettrico a autonomia estesa. Trazione tramite la batteria, con un motore a combustione che ne estende l'autonomia. |
+| HEV | Veicolo elettrico ibrido. Combina un motore a combustione e una batteria che non può essere ricaricata da rete. |
 
 ### Ricarica
 
-Gli EV si ricaricano usando uno tra diversi tipi di spina, quindi un caricatore è utile solo se il veicolo supporta il suo connettore. La velocità di ricarica rientra in tre livelli. I livelli 1 e 2 usano AC e richiedono ore. Il livello 3, detto anche ricarica rapida, usa DC e può ricaricare un veicolo in meno di un'ora. La velocità con cui un veicolo si ricarica davvero dipende dalla sua curva di ricarica, di cui il servizio di routing tiene conto.
+I veicoli elettrici si ricaricano con uno di diversi tipi di connettore, quindi un caricatore è utile solo se il veicolo ne supporta il connettore. La velocità di ricarica si divide in tre livelli. I livelli 1 e 2 usano la corrente alternata (AC) e richiedono ore. Il livello 3, chiamato anche ricarica rapida, usa la corrente continua (DC) e può ricaricare un veicolo in meno di un'ora. La velocità con cui un veicolo si ricarica effettivamente dipende dalla sua curva di ricarica, di cui il servizio di routing tiene conto.
 
 ### Cosa influisce sull'autonomia
 
-Le prestazioni della batteria cambiano con il meteo, l'uso del climatizzatore e le specifiche del veicolo, proprio come la batteria di un telefono si scarica più in fretta al freddo. Per questo un singolo valore di autonomia non basta per pianificare un viaggio. L'autonomia dipende dalle condizioni, e il servizio di routing ne tiene conto per prevedere quanta energia consuma un veicolo tra due punti. Questa previsione permette a un'applicazione di [consigliare soste di ricarica](/docs/getting-started/route) lungo un viaggio e di mostrare l'area che un veicolo può raggiungere con un'[isolina](/api-reference/core/isoline/mutation-create-isoline). Risponde all'ansia da autonomia, la paura di esaurire la carica prima di raggiungere una destinazione o un caricatore.
+Le prestazioni della batteria variano con il meteo, l'uso del climatizzatore e le specifiche del veicolo, proprio come la batteria di un telefono si scarica più velocemente al freddo. Per questo un singolo valore di autonomia non basta per pianificare un viaggio. L'autonomia dipende dalle condizioni e il servizio di routing ne tiene conto per prevedere quanta energia un veicolo utilizza tra due punti. Questa previsione permette a un'applicazione di [consigliare soste di ricarica](/docs/getting-started/route) lungo un viaggio e di mostrare l'area che un veicolo può raggiungere con una [isodistanza](/api-reference/core/isoline/mutation-create-isoline). Affronta l'ansia da autonomia, la paura di restare senza carica prima di raggiungere una destinazione o un caricatore.
 
 ## Database dei veicoli
 
-Il database contiene modelli BEV, PHEV, HEV ed EREV. Nuovi modelli vengono aggiunti man mano che arrivano sul mercato. Una panoramica di ogni veicolo:
+Il database contiene modelli BEV, PHEV, HEV ed EREV. I nuovi modelli vengono aggiunti man mano che arrivano sul mercato. Una panoramica di tutti i veicoli:
 
 <VehicleList />
 
@@ -41,8 +41,8 @@ Tutti i BEV ed EREV sono dotati di un modello di consumo validato. Tiene conto d
 
 ### Dati premium
 
-[Vehicle premium](/api-reference/core/vehicle/query-vehicle-premium) è un componente aggiuntivo con dati estesi su batteria, carrozzeria del veicolo, disponibilità, prezzi, efficienza, sicurezza e altro. [Contatta le vendite](https://www.chargetrip.com/contact/sales) per passare ai dati premium dei veicoli.
+[Veicolo premium](/api-reference/core/vehicle/query-vehicle-premium) è un componente aggiuntivo con dati estesi su batteria, carrozzeria del veicolo, disponibilità, prezzi, efficienza, sicurezza e altro. [Contatta il reparto vendite](https://www.chargetrip.com/contact/sales) per passare ai dati premium dei veicoli.
 
 ### Immagini
 
-Sono disponibili come componente aggiuntivo immagini dei veicoli con diritti già liberati. Hanno una qualità superiore rispetto a quelle incluse per impostazione predefinita. [Contatta le vendite](https://www.chargetrip.com/contact/sales) per abilitarle sul tuo progetto.
+Le immagini dei veicoli con diritti liberati sono disponibili come componente aggiuntivo. Hanno una qualità superiore rispetto alle immagini incluse per impostazione predefinita. [Contatta il reparto vendite](https://www.chargetrip.com/contact/sales) per abilitarle per il tuo progetto.

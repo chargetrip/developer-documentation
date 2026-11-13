@@ -1,19 +1,11 @@
 ---
-title: "Admin API referansı"
-description: "Workspace'iniz için öne çıkarma grupları gibi kaynakları yönetmekte kullandığınız Admin API'nin sorgularına ve mutasyonlarına göz atın."
+title: Admin API referansı
+description: "Çalışma alanınız için güçlendirme grupları gibi kaynakları yönetmekte kullandığınız Admin API'nin sorgularına ve mutation'larına göz atın."
 ---
 
-Admin API, kendi şemasına sahip ayrı bir GraphQL API'dir. Projenizin davranışını belirleyen kaynakları Chargetrip desteğinden talep etmek yerine bu API ile yönetin. Şu anda, yönlendirme sırasında tek tek şarj istasyonlarına öncelik vermenizi sağlayan öne çıkarma gruplarını kapsar.
-
-İstekler, API referansının geri kalanından farklı bir uç noktaya gider ve oluşturduğunuz veya okuduğunuz her kaynak, `x-token` başlığınızın tanımladığı workspace'e aittir.
+Admin API, kendi şemasına sahip ayrı bir GraphQL API'sidir. Projenizin davranışını şekillendiren kaynakları Chargetrip desteğinden istemek yerine bu API ile yönetin. Bugün için, rotalama sırasında tek tek şarj istasyonlarına öncelik vermenizi sağlayan güçlendirme gruplarını kapsar. Güçlendirme gruplarının bir rotayı nasıl etkilediğini öğrenmek için [tek tek şarj istasyonlarına öncelik verme](/docs/getting-started/route-boosting-groups) sayfasına bakın.
 
 > [!WARNING] Alpha
-> Admin API alpha aşamasındadır ve ücretsiz planlarda kullanılamaz. Erişim için destekle iletişime geçin ve şemanın değişebileceğini unutmayın.
+> Admin API alpha aşamasındadır ve ücretsiz planlarda kullanılamaz. Erişim almak için destekle iletişime geçin ve şemanın değişebileceğini göz önünde bulundurun.
 
-## Kaynaklar
-
-| Kaynak | İşlemler |
-| --- | --- |
-| Öne çıkarma grupları | [`boostingGroup`](/api-reference/admin/boosting-group/query-boosting-group), [`boostingGroups`](/api-reference/admin/boosting-group/query-boosting-groups), [`createBoostingGroup`](/api-reference/admin/boosting-group/mutation-create-boosting-group), [`updateBoostingGroup`](/api-reference/admin/boosting-group/mutation-update-boosting-group), [`deleteBoostingGroup`](/api-reference/admin/boosting-group/mutation-delete-boosting-group) |
-
-Öne çıkarma gruplarının bir rotayı nasıl etkilediğini öğrenmek için [bireysel şarj istasyonlarına öncelik verin](/docs/getting-started/route-boosting-groups) kılavuzuna bakın.
+<ApiReferenceOverview product="admin" />

@@ -1,16 +1,16 @@
 ---
-title: Navigasyonu başlat mutasyonu
+title: Navigasyonu başlatma mutation'ı
 heading: Navigasyonu başlat
-description: "Sürücü hesaplanmış bir rotayı izlemeye başladığında startNavigation mutasyonuyla mevcut bir rota üzerinde navigasyon oturumu başlatın."
+description: "Bir sürücü hesaplanmış bir rotayı izlemeye başladığında startNavigation mutation'ı ile mevcut bir rotanın üzerinde navigasyon oturumu başlatın."
 schemaName: startNavigation
 schemaType: Mutation
 ---
 
-startNavigation mutasyonunu kullanarak mevcut bir rota üzerinde yeni bir navigasyon oturumu başlatın. Bu, bir sürücü hesaplanmış bir rotayı takip etmeye başladığında kullanışlıdır.
+startNavigation mutation'ını kullanarak mevcut bir rotanın üzerinde yeni bir navigasyon oturumu başlatın. Bir sürücü hesaplanmış bir rotayı izlemeye başladığında kullanışlıdır.
 
 > [!WARNING] Oturum süresi
-> Bir navigasyon oturumu, 48 saat boyunca etkinlik olmazsa otomatik olarak bitirilir.
+> Bir navigasyon oturumu, 48 saat hareketsiz kaldığında otomatik olarak bitirilir.
 
-## Mutasyon
+## Mutation
 
-Bir navigasyon oturumu başlatmak için bir `route_id`, `route_details_id` ve `current_location` gereklidir. Her iki rota kimliği de [getRoute sorgusu](/api-reference/core/route/query-get-route) üzerinden alınabilir. Mutasyon, oturumu almak, güncellemek veya bitirmek için kullanılabilecek bir navigasyon oturumu `id` döndürür.
+Bir navigasyon oturumu başlatmak için bir `route_id`, `route_details_id` ve `current_location` gerekir. Her iki rota kimliğini de [getRoute sorgusu](/api-reference/core/route/query-get-route) ile alabilirsiniz. Mutation, oturumu almak, güncellemek veya bitirmek için kullanılabilecek bir navigasyon oturumu `id` değeri döndürür.

@@ -1,20 +1,9 @@
 ---
-title: API Reference legacy
-description: "Esplora le query, le mutation e le subscription deprecate e trova l'operazione che sostituisce ciascuna."
+title: Operazioni deprecate
+description: "Sfoglia le query, le mutation e le subscription deprecate e trova l'operazione che sostituisce ciascuna di esse."
+toc: false
 ---
 
-## Politica di deprecazione
+Queste operazioni sono deprecate. Un'operazione deprecata continua a funzionare normalmente per almeno 12 mesi. Trascorso tale periodo viene rimossa e le richieste che la utilizzano restituiscono errori GraphQL. Consulta le [deprecazioni](/deprecations) per il calendario e per l'operazione che sostituisce ciascuna di esse.
 
-Queste operazioni sono deprecate. Un'operazione deprecata continua a funzionare normalmente per almeno 12 mesi. Dopo questo periodo viene rimossa e le richieste che la utilizzano restituiscono errori GraphQL. Consulta le [deprecazioni](/deprecations) per le scadenze.
-
-## Sostituzioni
-
-Le nuove integrazioni dovrebbero usare le operazioni sostitutive indicate di seguito.
-
-| Operazione legacy | Sostituzione |
-| --- | --- |
-| [mutation `newRoute`](/api-reference/legacy/route/mutation-new-route) | [mutation `createRoute`](/api-reference/core/route/mutation-create-route) |
-| [query `route`](/api-reference/legacy/route/query-route) | [query `getRoute`](/api-reference/core/route/query-get-route) |
-| [query `routePath`](/api-reference/legacy/route/query-route-path) | campo `RouteDetails.path_plot` |
-| [query `routeEmissions`](/api-reference/legacy/route/query-route-emissions) | [query `getRouteEmissions`](/api-reference/core/emissions/query-emissions) |
-| [subscription `routeUpdatedById`](/api-reference/legacy/route/subscription-route-updated-by-id) | [subscription `route`](/api-reference/core/route/subscription-route) |
+<ApiReferenceOverview product="legacy" />

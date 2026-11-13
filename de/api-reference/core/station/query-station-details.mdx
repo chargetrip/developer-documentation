@@ -1,13 +1,13 @@
 ---
-title: "Station abfragen Query"
-heading: "Station abfragen"
-description: "Rufen Sie mit der Query station die Details einer Station ab, inklusive Ladepunkten, Standort und weiteren verfügbaren Informationen."
+title: Station Query
+heading: Station abfragen
+description: "Rufen Sie mit der station-Query die Details einer Station ab, einschließlich Ladepunkten, Standort und weiteren verfügbaren Informationen."
 schemaName: station
 schemaType: Query
 ---
 
-Rufen Sie bestimmte Stationsdetails mit der Query station ab. Dies ist nützlich, wenn Sie Typ und Anzahl der Ladepunkte, den Standort oder andere aktuell verfügbare Details einer Station anzeigen möchten.
+Rufen Sie mit der station-Query bestimmte Stationsdetails ab. Das ist nützlich, wenn Sie den Typ und die Anzahl der Ladepunkte, den Standort, die Ladekosten oder andere aktuell verfügbare Details einer Station anzeigen möchten. Die [Anleitung zur Stationspreisgestaltung](/docs/getting-started/station-pricing) behandelt die Preisgestaltung im Detail.
 
 ## Query
 
-Zum Abrufen der Stationsdetails ist die `id` oder `evse_id` einer Station erforderlich. Die `id` erhalten Sie entweder über eine [Route](/api-reference/core/route/query-get-route), den [Kachel-Service](/api-reference/core/tiles/mvt) oder die [Query stationAround](/api-reference/core/station/query-station-around).
+Um Stationsdetails abzurufen, ist die `id` oder `evse_id` einer Station erforderlich. Die `id` erhalten Sie entweder über eine [Route](/api-reference/core/route/query-get-route), den [Tile-Service](/api-reference/core/tiles/mvt) oder die [Station-Around-Query](/api-reference/core/station/query-station-around).

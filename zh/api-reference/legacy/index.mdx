@@ -1,20 +1,9 @@
 ---
-title: 旧版 API 参考
-description: "浏览已弃用的查询、变更和订阅，并找到替代每一项的操作。"
+title: 已弃用的操作
+description: "浏览已弃用的查询、mutation 和 subscription，并找到替代每一项的操作。"
+toc: false
 ---
 
-## 弃用政策
+这些操作已弃用。已弃用的操作至少会继续正常工作 12 个月。此后它将被移除，使用它的请求会返回 GraphQL 错误。有关时间安排以及替代每一项的操作，请参阅[弃用](/deprecations)。
 
-这些操作已被弃用。已弃用的操作将继续正常工作至少 12 个月。此期限过后，它将被移除，使用它的请求将返回 GraphQL 错误。有关时间安排，请参见[弃用](/deprecations)。
-
-## 替代操作
-
-新的集成应使用下面列出的替代操作。
-
-| 旧版操作 | 替代操作 |
-| --- | --- |
-| [`newRoute` 变更](/api-reference/legacy/route/mutation-new-route) | [`createRoute` 变更](/api-reference/core/route/mutation-create-route) |
-| [`route` 查询](/api-reference/legacy/route/query-route) | [`getRoute` 查询](/api-reference/core/route/query-get-route) |
-| [`routePath` 查询](/api-reference/legacy/route/query-route-path) | `RouteDetails.path_plot` 字段 |
-| [`routeEmissions` 查询](/api-reference/legacy/route/query-route-emissions) | [`getRouteEmissions` 查询](/api-reference/core/emissions/query-emissions) |
-| [`routeUpdatedById` 订阅](/api-reference/legacy/route/subscription-route-updated-by-id) | [`route` 订阅](/api-reference/core/route/subscription-route) |
+<ApiReferenceOverview product="legacy" />

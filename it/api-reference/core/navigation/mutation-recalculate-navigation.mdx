@@ -1,14 +1,14 @@
 ---
-title: Ricalcola navigazione mutation
+title: Mutation Ricalcola navigazione
 heading: Ricalcola navigazione
-description: "Ricalcola il percorso di una sessione di navigazione attiva con la mutation recalculateNavigation quando un conducente devia o le condizioni cambiano."
+description: "Ricalcola la rotta di una sessione di navigazione attiva con la mutation recalculateNavigation quando un conducente devia o le condizioni cambiano."
 schemaName: recalculateNavigation
 schemaType: Mutation
 ---
 
-Ricalcola il percorso di una sessione di navigazione attiva usando la mutation recalculateNavigation. È utile quando un conducente si discosta dal percorso originale o le condizioni cambiano lungo la strada.
+Ricalcola la rotta di una sessione di navigazione attiva utilizzando la mutation recalculateNavigation. È utile quando un conducente devia dalla rotta originale o le condizioni cambiano lungo il percorso.
 
 ## Mutation
 
-Per ricalcolare il percorso di una sessione di navigazione sono necessari il suo `id` e `current_location`. Facoltativamente includi `state_of_charge`, `via` o `telemetry` per affinare il nuovo percorso. L'`id` si ottiene tramite la [mutation startNavigation](/api-reference/core/navigation/mutation-start-navigation).
+Per ricalcolare la rotta di una sessione di navigazione sono obbligatori il suo `id` e `current_location`. Facoltativamente includi `state_of_charge`, `via` o `telemetry` per affinare la nuova rotta. L'`id` può essere ottenuto tramite la [mutation startNavigation](/api-reference/core/navigation/mutation-start-navigation).
 

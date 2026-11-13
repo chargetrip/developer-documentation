@@ -1,31 +1,31 @@
 ---
-title: 订阅 v2
+title: Subscriptions v2
 date: 01-08-2026
 ---
 
-## 订阅 v2
+## Subscriptions v2
 
-![订阅](../../../assets/changelog/2026/august.jpg)
+![Subscriptions](../../../assets/changelog/2026/august.jpg)
 
-我们推出了全新的订阅服务，托管在专用域名（`subscription.chargetrip.io`）下，带来更高的可靠性、标准子协议以及新的传输方式选择。
+我们推出了托管在专用域名（`subscription.chargetrip.io`）下的全新 subscription 服务，带来更高的可靠性、标准子协议和新的传输选择。
 
-- 使用现代的 `graphql-transport-ws` 协议，通过 `wss://subscription.chargetrip.io/ws` 以 WebSocket 方式连接；
-- 通过 `https://subscription.chargetrip.io/sse`，使用 Server-Sent Events 以 HTTP 方式流式传输订阅；
-- 当资源达到最终状态时（例如路线/等值线的 `done`、`error` 或 `not_found`，以及导航的 `finished` 或 `error`），活跃的订阅连接会自动关闭；
-- 错误负载现在遵循一致的 GraphQL 错误约定，并附带结构化的扩展元数据。
+- 通过 `wss://subscription.chargetrip.io/ws` 使用现代的 `graphql-transport-ws` 协议建立 WebSocket 连接；
+- 通过 `https://subscription.chargetrip.io/sse` 使用 Server-Sent Events 经 HTTP 流式传输 subscription；
+- 当资源达到最终状态时（例如路线/等值线的 `done`、`error` 或 `not_found`，以及导航的 `finished` 或 `error`），活跃的 subscription 连接会自动关闭；
+- 错误载荷现在遵循一致的 GraphQL 错误约定，并带有结构化的扩展元数据。
 
-### 充电站查询中的充电站提升组
+### 充电站查询中的充电站推广组
 
-我们扩展了充电站查询，以便查看某个充电站是否属于活跃的提升组。
+我们扩展了充电站查询，以便了解某个充电站是否属于某个活跃的推广组。
 
-- 在 `station`、`stationList` 和 `stationAround` 查询的 `Station` 类型中新增了 `boosting_group_ids` 字段；
-- 返回为您的项目配置的活跃提升组 ID 数组；如果该充电站当前未被提升，则返回空列表（`[]`）。
+- 在 `station`、`stationList` 和 `stationAround` 查询的 `Station` 类型中添加了 `boosting_group_ids` 字段；
+- 返回为您的项目配置的活跃推广组 ID 数组；如果该充电站当前未被推广，则返回空列表（`[]`）。
 
 
 
 <details>
   <summary>修复</summary>
   
-  - 修复了包含多个渡轮连接的路线可能导致车辆抵达充电站时电量状态（State of Charge）为负的问题。
-  - 修复了在起点和终点位置非常接近时计算路线会产生无效线串（line string）错误，并以 404 响应失败的问题。
+  - 修复了包含多次渡轮连接的路线可能导致车辆以负的电量状态（State of Charge）到达充电站的问题。
+  - 修复了在彼此距离非常近的起点和终点之间计算路线时，会产生无效的线串错误并返回 404 响应的问题。
 </details>

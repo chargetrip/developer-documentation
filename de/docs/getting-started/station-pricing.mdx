@@ -1,34 +1,34 @@
 ---
-title: "Stationspreise"
-description: "Zeigen Sie Ladepreise über den Tile Service auf einer Karte an oder in allen Details über die Preise eines Steckers."
+title: Stationspreise
+description: "Zeigen Sie Ladepreise über den Tile-Dienst auf einer Karte oder im Detail über die Preise eines Anschlusses an."
 ---
 
-Ladepreise lassen sich auf zwei Ebenen anzeigen: direkt auf einer Karte über den Tile-Service oder im Detail über die Preise eines Steckers.
+Ladepreise lassen sich auf zwei Ebenen anzeigen: direkt auf einer Karte über den Tile-Dienst oder im Detail über die Preise eines Anschlusses.
 
-## Tile-Service
+## Tile-Dienst
 
-Der Tile-Service unterstützt Preise sowohl als Filter als auch als Selektoren.
+Der Tile-Dienst unterstützt Preise sowohl als Filter als auch als Selektoren.
 
 - Als [Filter](/api-reference/core/tiles/filters) übergeben Sie `minimum_energy_price` und `maximum_energy_price` zusammen mit `currency`, um den Bereich in die richtige Währung umzurechnen, und schließen so Stationen, deren Preis in diesen Bereich fällt, dynamisch ein oder aus.
-- Als [Selektor](/api-reference/core/tiles/selectors) fordern Sie `connector_minimum_energy_price`, `connector_maximum_energy_price`, `price_vat`, `price_valid_until`, `price_original_currency` und `price_conversion_rate` an, um Preisdetails anzuzeigen. Sie werden in den Eigenschaften des Station-Features zurückgegeben (`properties.count == 1`). Der Preis ist immer der Stationspreis, und mit `price_original_currency` und `price_conversion_rate` können Sie ihn an Ihre eigene Umrechnung anpassen.
+- Als [Selektor](/api-reference/core/tiles/selectors) fordern Sie `connector_minimum_energy_price`, `connector_maximum_energy_price`, `price_vat`, `price_valid_until`, `price_original_currency` und `price_conversion_rate` an, um Preisdetails anzuzeigen. Sie werden in den Feature-Eigenschaften der Station zurückgegeben (`properties.count == 1`). Der Preis ist immer der Stationspreis, und mit `price_original_currency` und `price_conversion_rate` können Sie ihn für Ihre eigene Umrechnung anpassen.
 
 ## Stationspreise
 
 Woher die Preisdetails stammen, hängt von der Stationsdatenbank hinter einer Station ab.
 
-- Wenn Ecomovement verwendet wird, finden sich die Preise im Preisobjekt der Stecker einer Station unter `evses[].connectors[].prices`.
+- Wird Ecomovement verwendet, finden Sie die Preise im Preisobjekt der Anschlüsse einer Station unter `evses[].connectors[].prices`.
 - Für jede andere Stationsdatenbank verwenden Sie stattdessen die dedizierten Queries [tariffList](/api-reference/core/tariff/query-tariff-list) und [tariff](/api-reference/core/tariff/query-tariff).
 
-Ein Stecker kann mehrere Preiselemente haben, die zu unterschiedlichen Zeiten aktiv sind. Gehen Sie sie der Reihe nach durch, um den richtigen Preis darzustellen.
+Ein Anschluss kann mehrere Preiselemente haben, die zu unterschiedlichen Zeiten aktiv sind. Gehen Sie sie der Reihe nach durch, um den richtigen Preis darzustellen.
 
-1. **Aktives Preiselement finden**
-   Jedes Preiselement hat `restrictions`, etwa `day_of_week`, `start_time`/`end_time` oder minimale und maximale kWh, Leistung oder Dauer. Anhand dieser Angaben bestimmen Sie, welches Preiselement aktuell gilt.
+1. **Das aktive Preiselement finden**
+   Jedes Preiselement hat `restrictions`, wie `day_of_week`, `start_time`/`end_time` oder minimale und maximale kWh, Leistung oder Dauer. Anhand dieser bestimmen Sie, welches Preiselement aktuell gilt.
 2. **Alle Preiskomponenten anzeigen**
-   Ein Preiselement kann mehrere Komponenten gleichzeitig kombinieren. Eine `energy`-Komponente gibt den Preis pro kWh an. Eine `time`-Komponente gibt den Preis pro Intervall an, abgerechnet in Blöcken, die durch ihre `step_size` definiert sind. Eine `step_size` von `300` bei einer `time`-Komponente rechnet beispielsweise in Blöcken von 5 Minuten ab. Eine `flat`-Komponente fügt der Sitzung einen festen Betrag hinzu, unabhängig von der verbrauchten Energie oder der verbrachten Zeit.
-3. **Blockiergebühr berücksichtigen**
-   Eine `parking_time`-Komponente berechnet eine Standgebühr für das Verbunden-Bleiben nach Abschluss des Ladevorgangs, da in der Zwischenzeit niemand sonst den Stecker nutzen kann. Sie greift, sobald die Overstay-Einschränkungen des Steckers, etwa `overstay_time` oder `overstay_battery_percentage`, erfüllt sind.
+   Ein Preiselement kann mehrere Komponenten gleichzeitig kombinieren. Eine `energy`-Komponente gibt Ihnen den Preis pro kWh. Eine `time`-Komponente gibt Ihnen den Preis pro Intervall, abgerechnet in Blöcken, die durch ihren `step_size` definiert sind. Ein `step_size` von `300` bei einer `time`-Komponente rechnet beispielsweise in Blöcken von 5 Minuten ab. Eine `flat`-Komponente fügt der Sitzung einen festen Betrag hinzu, unabhängig von der genutzten Energie oder der verbrachten Zeit.
+3. **Die Blockiergebühr berücksichtigen**
+   Eine `parking_time`-Komponente berechnet eine Standgebühr dafür, dass das Fahrzeug nach Abschluss des Ladevorgangs angeschlossen bleibt, da in der Zwischenzeit niemand sonst den Anschluss nutzen kann. Sie greift, sobald die Overstay-Einschränkungen des Anschlusses, wie `overstay_time` oder `overstay_battery_percentage`, erfüllt sind.
 
-Jeder Stecker kann einen eigenen Preis haben, und der Betreiber kann Preise jederzeit dynamisch ändern.
+Jeder Anschluss kann einen eigenen Preis haben, und Preise können vom Betreiber jederzeit dynamisch geändert werden.
 
-> [!WARNING] Auf last_updated achten
-> Da sich Preise jederzeit ändern können, prüfen Sie immer das Feld `last_updated` eines Preisobjekts, bevor Sie einen Preis zwischenspeichern oder wiederverwenden, anstatt davon auszugehen, dass er gültig bleibt.
+> [!WARNING] Verlassen Sie sich auf last_updated
+> Da sich Preise jederzeit ändern können, prüfen Sie immer das Feld `last_updated` eines Preisobjekts, bevor Sie einen Preis zwischenspeichern oder wiederverwenden, statt anzunehmen, dass er gültig bleibt.

@@ -7,33 +7,33 @@ date: 01-03-2026
 
 ![Verkehrsunterstützung](../../../assets/changelog/2026/march.jpg)
 
-Aktivieren Sie verkehrsabhängiges Routing, um bei der Routenberechnung die globale Verkehrslage zu berücksichtigen. Verkehr und Störungen bei gleichzeitiger Optimierung des Ladens zu berücksichtigen, galt lange als der heilige Gral der Routenoptimierung für EVs. Wenn die Funktion aktiviert ist, enthält die Routenantwort:
+Aktivieren Sie verkehrsabhängiges Routing, um bei der Routenberechnung die weltweite Verkehrslage zu berücksichtigen. Verkehr und Störungen bei der Optimierung des Ladens zu berücksichtigen, galt lange als der Heilige Gral der Routenoptimierung für E-Fahrzeuge. Wenn aktiviert, enthält die Routenantwort:
 
 - **Abschnitte** der Route, die vom Verkehr betroffen sind;
 - **Staugrad** auf diesen Abschnitten;
-- **Verzögerung**, die zur Gesamtdauer der Route hinzukommt.
+- **Verzögerung**, die der Gesamtdauer der Route hinzugefügt wird.
 
 Das liefert eine realistischere Schätzung der Reisezeit, wenn die Verkehrslage die Route beeinflusst, und ermöglicht es Ihnen, Ihren Kunden global optimierte Routen für die Turn-by-Turn-Navigation bereitzustellen.
 
 ### Routenwarnungen
 
-Routing ist oft ein Best-Effort-Prozess. Manchmal kann die Routing-Engine nicht alle angeforderten Bedingungen vollständig erfüllen. Warnungen helfen zu erklären, warum eine Route von der ursprünglichen Anfrage abweichen kann. Beispiele:
+Routing ist häufig ein Best-Effort-Prozess. Manchmal kann die Routing-Engine nicht alle angeforderten Bedingungen vollständig erfüllen. Warnungen helfen zu erklären, warum eine Route von der ursprünglichen Anfrage abweichen kann. Beispiele:
 
-- **Nicht verfügbare Betreiber**: Stationen mit bevorzugten Lade-Betreibern sind auf dieser Etappe der Route nicht verfügbar.
-- **Einschränkungen**: Der angeforderte End-Ladezustand konnte nicht erreicht werden.
+- **Nicht verfügbare Betreiber**: Für diese Routenetappe sind keine Stationen mit bevorzugten Ladebetreibern verfügbar.
+- **Einschränkungen**: Der angeforderte Ladezustand am Ziel konnte nicht erreicht werden.
 
-Warnungen ermöglichen es Front-End-Teams, Fahrern nützliches Feedback anzuzeigen, oder geben Entwicklern tiefere Einblicke in das Routing-Verhalten. Dadurch lassen sich Routing-Ergebnisse leichter nachvollziehen und Sonderfälle leichter analysieren.
+Mit Warnungen können Front-End-Teams Fahrern hilfreiches Feedback geben oder Entwicklern tiefere Einblicke in das Routing-Verhalten ermöglichen. So lassen sich Routing-Ergebnisse leichter verstehen und Sonderfälle leichter analysieren.
 
 
 
 <details>
   <summary>Verbesserungen</summary>
 
-    - Die Validierung des Betreiber-Rankings in `createRoute` wurde gelockert: Wenn Betreiberpräferenzen (bevorzugt oder erforderlich) angefordert werden, ohne dass in der Anfrage Stufen angegeben oder in den Projekteinstellungen konfiguriert sind, ist die Routenberechnung nun erfolgreich, ohne Betreiber zu priorisieren, und gibt in getRoute eine nicht blockierende Warnung `OPERATOR_PREFERENCES_NOT_FOUND` zurück (ebenfalls dokumentiert über /public/warnings).
+    - Die Validierung des Betreiber-Rankings in `createRoute` wurde gelockert: Werden Betreiberpräferenzen (bevorzugt oder erforderlich) angefordert, ohne dass in der Anfrage Stufen angegeben oder in den Projekteinstellungen konfiguriert sind, ist die Routenberechnung nun erfolgreich, und zwar ohne Betreiberpriorisierung, und gibt in getRoute eine nicht blockierende Warnung `OPERATOR_PREFERENCES_NOT_FOUND` zurück (ebenfalls dokumentiert über /public/warnings).
 </details>
 
 <details>
   <summary>Fehlerbehebungen</summary>
 
-  - Es wurde ein Problem behoben, bei dem das Suchen oder Filtern der Fahrzeugliste (vehicleList) nach Zeichenfolgen mit Klammern (etwa Hersteller- oder Modellnamen) zu Fehlern beim Parsen der Abfrage führte und einen internen Serverfehler zurückgab.
+  - Es wurde ein Problem behoben, bei dem das Durchsuchen oder Filtern der Fahrzeugliste (vehicleList) nach Strings mit Klammern (etwa Namen von Fahrzeugherstellern oder -modellen) zu Fehlern beim Parsen der Query führte und einen internen Serverfehler zurückgab.
 </details>

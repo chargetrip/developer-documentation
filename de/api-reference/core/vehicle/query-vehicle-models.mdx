@@ -1,12 +1,12 @@
 ---
-title: "Fahrzeugmodelle Query"
-heading: "Fahrzeugmodelle"
-description: "Rufen Sie mit der Query vehicleModels die eindeutigen Modelle eines Herstellers ab, um eine schrittweise Fahrzeugauswahl zu erstellen."
+title: Fahrzeugmodelle Query
+heading: Fahrzeugmodelle
+description: "Rufen Sie mit der vehicleModels-Query die eindeutigen Modelle eines Fahrzeugherstellers ab, um eine aufeinander aufbauende Fahrzeugauswahl zu erstellen."
 schemaName: vehicleModels
 schemaType: Query
 ---
 
-Rufen Sie mit der Query vehicleModels eine Liste eindeutiger Fahrzeugmodelle ab. Diese Query ist in Kombination mit der vehicleMakes-[Query](/api-reference/core/vehicle/query-vehicle-makes) nützlich, um eine sequenzielle Fahrzeugauswahl aufzubauen.
+Rufen Sie mit der vehicleModels-Query eine Liste eindeutiger Fahrzeugmodelle ab. Diese Query ist in Kombination mit der vehicleMakes-[Query](/api-reference/core/vehicle/query-vehicle-makes) nützlich, um eine aufeinander aufbauende Fahrzeugauswahl zu erstellen.
 
 ## Query
-Zum Abrufen der Modelle ist die `id` eines Fahrzeugherstellers erforderlich. Die ID erhalten Sie über die vehicleMakes-[Query](/api-reference/core/vehicle/query-vehicle-makes). Verwenden Sie die Argumente `first` und `after`, um die Ergebnisse zu [paginieren](/api-reference/core/api/pagination), `filters`, um die Suchergebnisse einzugrenzen, und das Argument `country`, um die Daten zu lokalisieren.
+Um die Modelle eines Fahrzeugherstellers abzurufen, ist dessen `id` erforderlich. Die id erhalten Sie über die vehicleMakes-[Query](/api-reference/core/vehicle/query-vehicle-makes). Mit den Argumenten `first` und `after` [paginieren](/api-reference/core/api/pagination) Sie die Ergebnisse, mit `filters` grenzen Sie die Suchergebnisse ein und mit dem Argument `country` lokalisieren Sie die Daten.

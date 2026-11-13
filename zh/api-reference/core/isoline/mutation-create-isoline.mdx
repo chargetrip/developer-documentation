@@ -1,13 +1,13 @@
 ---
-title: 创建等值线变更
+title: 创建等值线 mutation
 heading: 创建等值线
-description: "使用 createIsoline 变更创建基于能耗的等值线，以可视化车辆从某一点出发可到达的区域。"
+description: "使用 createIsoline mutation 创建基于能耗的等值线，以可视化车辆从给定地点出发可到达的区域。"
 schemaName: createIsoline
 schemaType: Mutation
 ---
 
-使用 createIsoline 变更创建基于能耗的等值线。当您想可视化车辆从某一给定点出发可到达的区域时，此操作非常有用。
+使用 createIsoline mutation 创建基于能耗的等值线。当您想可视化车辆从给定地点出发可到达的区域，例如作为续航地图时，这会很有用。[车辆续航范围指南](/docs/getting-started/vehicle-range)展示了如何将结果转换为可放置在地图上的形状。
 
-## 变更
+## Mutation
 
-创建等值线需要 `vehicle_id` 和 `origin`。您还可以添加 `state_of_charge`、`polygon_count` 或其他偏好设置来优化计算。该变更会返回等值线的 `id`，可用于获取等值线详情或订阅更新。
+创建等值线需要提供 `vehicle_id` 和 `origin`。还可以选择性地添加 `state_of_charge`、`polygon_count` 或其他偏好设置来优化计算。该 mutation 返回等值线 `id`，可用于获取等值线详情或订阅更新。

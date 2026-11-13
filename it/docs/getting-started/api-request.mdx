@@ -9,52 +9,52 @@ Una volta create le tue credenziali nella dashboard di Chargetrip, puoi iniziare
 ## La configurazione
 
 
-L'API Chargetrip utilizza due endpoint distinti a seconda del tipo di operazione: un URL HTTPS per query e mutation e un URL WebSocket (WSS) per le subscription. Puoi trovare maggiori informazioni sull'API nel [riferimento API GraphQL](/api-reference).
+L'API di Chargetrip utilizza due endpoint distinti a seconda del tipo di operazione: un URL HTTPS per query e mutation e un URL WebSocket (WSS) per le subscription. Puoi trovare ulteriori informazioni sull'API nel [riferimento API GraphQL](/api-reference/core).
 
 ### Query e mutation
 Query e mutation vengono eseguite tramite richieste HTTP POST all'endpoint GraphQL principale.
 
 
-```bash URL dell'endpoint GraphQL per query e mutation
+```bash GraphQL queries and mutations endpoint URL
 https://api.chargetrip.io/graphql
 ```
 
 ### Subscription
-Le subscription richiedono una connessione persistente tramite WebSocket e possono essere implementate usando il protocollo `graphql-transport-ws`. Scopri come usare i websocket nel dettaglio [qui](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications).
+Le subscription richiedono una connessione persistente tramite WebSocket e possono essere implementate usando il protocollo `graphql-transport-ws`. Scopri come usare i websocket in dettaglio [qui](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications).
 
 
-```bash URL della subscription GraphQL
+```bash GraphQL Subscription URL
 wss://api.chargetrip.io/subscription
 ```
 
 > [!WARNING] Il protocollo graphql-ws è deprecato
-> Il protocollo di subscription legacy graphql-ws è deprecato e verrà presto rimosso. Esegui la migrazione al protocollo graphql-transport-ws per evitare errori nelle subscription e interruzioni del servizio.
+> Il protocollo di subscription legacy graphql-ws è deprecato e sarà presto rimosso. Passa al protocollo graphql-transport-ws per evitare errori nelle subscription e interruzioni del servizio.
 
 
 ## Header di autorizzazione
 
-Dopo aver ottenuto l'URL di base, aggiungi i seguenti header a ogni richiesta. Gli header contrassegnati come obbligatori devono essere sempre inviati.
+Dopo aver ottenuto l'URL di base, aggiungi i seguenti header a ogni richiesta. Gli header contrassegnati come obbligatori devono sempre essere inviati.
 
 `x-client-id` · <span class="text-accent">obbligatorio</span>
-: Un id di progetto che contiene la configurazione del progetto.
+: L'ID di un progetto che contiene la configurazione del progetto.
 
 `x-app-id` · <span class="text-accent">obbligatorio</span>
-: Un id di app per la sicurezza e la suddivisione delle analisi.
+: L'ID di un'app, per la sicurezza e per suddividere le analisi.
 
 `x-app-identifier`
 : Un bundle identifier iOS o Android.
 
 `x-app-fingerprint`
-: Un'impronta SHA Android.
+: Un fingerprint SHA di Android.
 
 > [!TIP] Proteggi le tue chiavi
-> Per la massima sicurezza, limita la tua applicazione all'accesso machine-to-machine (M2M) e conserva le credenziali sul tuo server dietro la tua autenticazione, anziché esporle a un browser o a un dispositivo. Consulta [Sicurezza](/api-reference/core/api/security) per tutti i tipi di restrizione disponibili.
+> Per la massima sicurezza, limita la tua applicazione all'accesso machine-to-machine (M2M) e conserva le credenziali sul tuo server, dietro la tua autenticazione, invece di esporle a un browser o a un dispositivo. Consulta [Sicurezza](/api-reference/core/api/security) per tutti i tipi di restrizione disponibili.
 
 ## Invio di una richiesta autorizzata
 
-Per comunicare con l'API, devi autenticare ogni richiesta con gli header `x-client-id` e `x-app-id`. Per impostazione predefinita, per ogni progetto viene generato un `x-app-id` univoco.
+Per comunicare con l'API, devi autenticare ogni richiesta con gli header `x-client-id` e `x-app-id`. Per impostazione predefinita, viene generato un `x-app-id` univoco per ogni progetto.
 
-```bash Esempio di richiesta
+```bash Example request
 curl -X POST \
   -H "Content-Type: application/json" \
   -H "x-client-id: YOUR_KEY_HERE" \

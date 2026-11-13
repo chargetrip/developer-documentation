@@ -1,20 +1,9 @@
 ---
-title: "Référence de l'API legacy"
-description: "Parcourez les queries, mutations et subscriptions dépréciées et trouvez l'opération qui remplace chacune d'elles."
+title: Opérations obsolètes
+description: "Parcourez les requêtes, mutations et souscriptions obsolètes, et trouvez l'opération qui remplace chacune d'entre elles."
+toc: false
 ---
 
-## Politique de dépréciation
+Ces opérations sont obsolètes. Une opération obsolète continue de fonctionner normalement pendant au moins 12 mois. Passé ce délai, elle est supprimée et les requêtes qui l'utilisent renvoient des erreurs GraphQL. Consultez les [obsolescences](/deprecations) pour le calendrier et pour l'opération qui remplace chacune d'entre elles.
 
-Ces opérations sont dépréciées. Une opération dépréciée continue de fonctionner normalement pendant au moins 12 mois. Passé ce délai, elle est supprimée et les requêtes qui l'utilisent retournent des erreurs GraphQL. Consultez les [dépréciations](/deprecations) pour le calendrier.
-
-## Remplacements
-
-Les nouvelles intégrations doivent utiliser les opérations de remplacement ci-dessous.
-
-| Opération legacy | Remplacement |
-| --- | --- |
-| [`newRoute` mutation](/api-reference/legacy/route/mutation-new-route) | [`createRoute` mutation](/api-reference/core/route/mutation-create-route) |
-| [`route` query](/api-reference/legacy/route/query-route) | [`getRoute` query](/api-reference/core/route/query-get-route) |
-| [`routePath` query](/api-reference/legacy/route/query-route-path) | champ `RouteDetails.path_plot` |
-| [`routeEmissions` query](/api-reference/legacy/route/query-route-emissions) | [`getRouteEmissions` query](/api-reference/core/emissions/query-emissions) |
-| [`routeUpdatedById` subscription](/api-reference/legacy/route/subscription-route-updated-by-id) | [`route` subscription](/api-reference/core/route/subscription-route) |
+<ApiReferenceOverview product="legacy" />

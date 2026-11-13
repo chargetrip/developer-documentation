@@ -1,13 +1,13 @@
 ---
-title: "Créer un véhicule connecté mutation"
-heading: Créer un véhicule connecté
-description: "Connectez un véhicule à un fournisseur de connectivité avec la mutation createConnectedVehicle pour récupérer des données en direct du véhicule."
+title: "Mutation de création de véhicule connecté"
+heading: "Créer un véhicule connecté"
+description: "Connectez un véhicule à un fournisseur de connectivité avec la mutation createConnectedVehicle pour récupérer des données de véhicule en direct, depuis le véhicule lui-même."
 schemaName: createConnectedVehicle
 schemaType: Mutation
 ---
 
-Connectez un véhicule à un fournisseur de connectivité à l'aide de la mutation createConnectedVehicle. Elle est utile lorsque vous souhaitez récupérer les données en direct directement depuis le véhicule plutôt que depuis un calcul d'itinéraire.
+Connectez un véhicule à un fournisseur de connectivité en utilisant la mutation createConnectedVehicle. Elle est utile lorsque vous souhaitez récupérer des données de véhicule en direct, depuis le véhicule lui-même, plutôt qu'à partir d'un calcul d'itinéraire.
 
 ## Mutation
 
-Un `vehicle_id` et un `provider` sont requis pour créer un véhicule connecté, ainsi que des `options` propres au fournisseur. La mutation renvoie un `id` de véhicule connecté et une `authorization_url`, qui permettent de finaliser l'autorisation via la [mutation authorizeConnectedVehicle](/api-reference/core/connected-vehicle/mutation-authorize-connected-vehicle).
+Un `vehicle_id` et un `provider` sont obligatoires pour créer un véhicule connecté, ainsi que des `options` propres au fournisseur. La mutation renvoie un `id` de véhicule connecté et une `authorization_url`, qui peut servir à terminer l'autorisation via la [mutation authorizeConnectedVehicle](/api-reference/core/connected-vehicle/mutation-authorize-connected-vehicle).

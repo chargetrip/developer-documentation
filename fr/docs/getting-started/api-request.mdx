@@ -1,26 +1,26 @@
 ---
-title: Envoyer votre première requête
-description: "Envoyez votre première requête à l'API avec les URL de base, le point de terminaison WebSocket pour les subscriptions et les en-têtes d'authentification requis."
+title: Envoyez votre première requête
+description: "Envoyez votre première requête à l'API à l'aide des URL de base, du endpoint WebSocket pour les souscriptions et des en-têtes d'authentification requis."
 tag: Configuration
 ---
 
-Une fois vos identifiants créés dans le dashboard Chargetrip, vous pouvez commencer à effectuer des requêtes autorisées à l'aide de nos URL de base et des en-têtes d'authentification requis.
+Une fois vos identifiants créés dans le tableau de bord Chargetrip, vous pouvez commencer à envoyer des requêtes autorisées à l'aide de nos URL de base et des en-têtes d'authentification requis.
 
 ## La configuration
 
 
-L'API Chargetrip utilise deux points de terminaison distincts selon le type d'opération : une URL HTTPS pour les requêtes et les mutations, et une URL WebSocket (WSS) pour les abonnements. Vous trouverez plus d'informations sur l'API dans la [référence de l'API GraphQL](/api-reference).
+L'API Chargetrip utilise deux endpoints distincts selon le type d'opération : une URL HTTPS pour les requêtes et les mutations, et une URL WebSocket (WSS) pour les souscriptions. Vous trouverez plus d'informations sur l'API dans la [référence de l'API GraphQL](/api-reference/core).
 
 ### Requêtes et mutations
-Les requêtes et les mutations sont exécutées via des requêtes HTTP POST vers le point de terminaison GraphQL principal.
+Les requêtes et les mutations sont exécutées via des requêtes HTTP POST vers le endpoint GraphQL principal.
 
 
 ```bash GraphQL queries and mutations endpoint URL
 https://api.chargetrip.io/graphql
 ```
 
-### Abonnements
-Les abonnements nécessitent une connexion persistante via WebSockets et peuvent être implémentés à l'aide du protocole `graphql-transport-ws`. Pour en savoir plus sur l'utilisation des websockets, consultez [cette page](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications).
+### Souscriptions
+Les souscriptions nécessitent une connexion persistante via WebSockets et peuvent être implémentées à l'aide du protocole `graphql-transport-ws`. Découvrez en détail comment utiliser les websockets [ici](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications).
 
 
 ```bash GraphQL Subscription URL
@@ -28,18 +28,18 @@ wss://api.chargetrip.io/subscription
 ```
 
 > [!WARNING] Le protocole graphql-ws est obsolète
-> L'ancien protocole d'abonnement graphql-ws est obsolète et sera bientôt supprimé. Veuillez migrer vers le protocole graphql-transport-ws afin d'éviter les erreurs d'abonnement et les interruptions de service.
+> Le protocole de souscription historique graphql-ws est obsolète et sera bientôt supprimé. Veuillez migrer vers le protocole graphql-transport-ws afin d'éviter les erreurs de souscription et les interruptions de service.
 
 
 ## En-têtes d'autorisation
 
-Après avoir obtenu l'URL de base, ajoutez les en-têtes suivants à chaque requête. Les en-têtes marqués comme requis doivent toujours être envoyés.
+Après avoir obtenu l'URL de base, ajoutez les en-têtes suivants à chaque requête. Les en-têtes marqués comme obligatoires doivent toujours être envoyés.
 
-`x-client-id` · <span class="text-accent">requis</span>
+`x-client-id` · <span class="text-accent">required</span>
 : Un identifiant de projet qui contient la configuration du projet.
 
-`x-app-id` · <span class="text-accent">requis</span>
-: Un identifiant d'application pour la sécurité et la séparation des analyses.
+`x-app-id` · <span class="text-accent">required</span>
+: Un identifiant d'application pour la sécurité et la répartition des analyses.
 
 `x-app-identifier`
 : Un identifiant de bundle iOS ou Android.
@@ -47,8 +47,8 @@ Après avoir obtenu l'URL de base, ajoutez les en-têtes suivants à chaque requ
 `x-app-fingerprint`
 : Une empreinte SHA Android.
 
-> [!TIP] Sécurisez vos clés
-> Pour une sécurité maximale, restreignez votre application à un accès machine à machine (M2M) et conservez les identifiants sur votre propre serveur, derrière votre propre authentification, plutôt que de les exposer à un navigateur ou à un appareil. Consultez [Sécurité](/api-reference/core/api/security) pour tous les types de restrictions disponibles.
+> [!TIP] Protégez vos clés
+> Pour une sécurité maximale, limitez votre application à un accès machine à machine (M2M) et conservez les identifiants sur votre propre serveur, derrière votre propre authentification, plutôt que de les exposer à un navigateur ou à un appareil. Consultez [Sécurité](/api-reference/core/api/security) pour tous les types de restriction disponibles.
 
 ## Envoyer une requête autorisée
 

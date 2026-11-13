@@ -1,17 +1,17 @@
 ---
-title: Concordance d'itinéraire
+title: Correspondance d'itinéraire
 date: 01-09-2026
 ---
 
-## Concordance d'itinéraire
+## Correspondance d'itinéraire
 
-![Concordance d'itinéraire](../../../assets/changelog/2026/september.jpg)
+![Correspondance d'itinéraire](../../../assets/changelog/2026/september.jpg)
 
-Nous avons introduit les opérations de concordance d'itinéraire (Route Matching), qui vous permettent d'aligner sur la carte des traces GPS externes et de les soumettre à notre moteur d'itinéraires pour calculer la consommation d'énergie et insérer des arrêts de recharge optimaux.
+Nous avons introduit les opérations de correspondance d'itinéraire, qui vous permettent d'aligner sur la carte des traces GPS externes et de les soumettre à notre moteur de calcul d'itinéraire afin de calculer la consommation d'énergie et d'insérer des arrêts de recharge optimaux.
 
 - Calculez des itinéraires concordants à partir de séquences de coordonnées avec la nouvelle mutation `createMatchedRoute` ;
-- Désignez des étapes intermédiaires avec `vias` définis par l'index dans le tableau de coordonnées (`via.index`), avec prise en charge de la mise à jour dynamique du nombre de passagers et du poids de la cargaison tout au long du trajet ;
-- Activez `plan_charging_stops: true` pour évaluer la consommation d'énergie du véhicule le long du tracé prédéfini et insérer automatiquement des arrêts de recharge compatibles lorsque nécessaire ;
+- Désignez des étapes intermédiaires avec `vias` définis par l'index dans le tableau de coordonnées (`via.index`), avec prise en charge de la mise à jour dynamique du nombre de passagers et du poids de la cargaison du véhicule le long du trajet ;
+- Activez `plan_charging_stops: true` pour évaluer la consommation d'énergie du véhicule le long du tracé prédéterminé et insérer automatiquement des arrêts de recharge compatibles lorsque nécessaire ;
 - Interrogez les profils complets d'émissions de CO₂ des itinéraires concordants terminés avec `getRouteEmissions`.
 
 <details>
@@ -21,8 +21,8 @@ Nous avons introduit les opérations de concordance d'itinéraire (Route Matchin
 </details>
 
 <details>
-  <summary>Corrections</summary>
+  <summary>Correctifs</summary>
 
-    - Correction d'un problème où l'inscription au tableau de bord avec une adresse e-mail contenant des majuscules empêchait l'affichage des invitations d'espace de travail en attente lors de la connexion.
+    - Correction d'un problème où l'inscription au tableau de bord avec une adresse e-mail contenant des majuscules empêchait l'affichage des invitations d'espace de travail en attente à la connexion.
     - Correction d'un écart de calcul et d'arrondi où la somme des durées de conduite des sections de tronçon ne correspondait pas aux durées totales de conduite (`durations.driving`) dans les détails de l'itinéraire.
 </details>

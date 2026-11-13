@@ -4,38 +4,47 @@ description: "Karo yüklerini küçük ve hızlı tutarken, seçicilerle MVT ve 
 tag: Rest
 ---
 
-Yanıt süresini ve boyutunu optimize etmek için MVT ve JSON API varsayılan olarak küçültülmüş bir yanıt döndürür. Bu yaklaşım en yüksek performansı sağlar ve akıcı harita etkileşimleri için kritik olan karo (tile) yük boyutlarını azaltır. Seçicileri kullanarak, uygulamanızın özellikle ihtiyaç duyduğu ek veri noktalarını dahil edebilirsiniz.
+Ağ gecikmesini ve oluşturma performansını optimize etmek için Chargetrip MVT ve JSON karo servisleri varsayılan olarak minimum bir yük döndürür. Bu varsayılan yük, harita karolarını hızlı oluşturmak için gereken temel geometri ve kümeleme verilerini sağlar.
+
+Seçicileri kullanarak, gereksiz yük oluşturmadan istemci uygulamanızın ihtiyaç duyduğu belirli istasyon veri niteliklerini isteyebilirsiniz.
+
+
+
+## Uygulama
+
+Belirli istasyon niteliklerini istemek için karo isteği URL'nize `station_properties[]` sorgu parametresini ekleyin. Dahil etmek istediğiniz her seçici için parametreyi tekrarlayın:
+
+```bash Tile / Selectors / Example
+https://api.chargetrip.io/v2/station/...?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
+```
 
 ## Kullanılabilir seçiciler
+Seçiciler yalnızca **istasyon özelliklerine** uygulanır; küme özellikleri etkilenmez ve her zaman `count` ve `expansion_zoom` döndürür.
 
-MVT ve JSON karoları için istasyon özelliklerinde listelenen herhangi bir alan, JSON uç noktasında döndürülen zorunlu GeoJSON alanları hariç, ilgili serviste seçici olarak kullanılabilir.
 
 `count` · `integer` · <span class="text-accent">default</span>
-: Bir kümedeki istasyon sayısı. 1 olan bir sayı Station özelliğini, 1'den büyük bir sayı ise Cluster özelliğini ifade eder.
+: Bir kümedeki istasyon sayısı. 1 değeri bir istasyon özelliğini, 1'den büyük bir değer ise bir küme özelliğini gösterir.
 
-`expansion_zoom` · `integer` · <span class="text-accent">default</span>
-: Bir kümenin birden fazla daha küçük kümeye veya istasyona ayrıldığı yakınlaştırma seviyesi.
-
-`id` · `string`
-: İstasyonun tanımlayıcısı.
+`id` · `string` · <span class="text-accent">default</span>
+: İstasyonun benzersiz Chargetrip tanımlayıcısı. Yalnızca [MVT karoları](/api-reference/core/tiles/mvt) için geçerlidir.
 
 `lng` · `float`
-: İstasyonun boylamı.
+: İstasyonun boylamı. Yalnızca [MVT karoları](/api-reference/core/tiles/mvt) için geçerlidir.
 
 `lat` · `float`
-: İstasyonun enlemi.
+: İstasyonun enlemi. Yalnızca [MVT karoları](/api-reference/core/tiles/mvt) için geçerlidir.
 
 `operator_id` · `string`
 : İstasyonun operatörünün benzersiz Chargetrip kimliği. Operatör bilinmiyorsa döndürülmez.
 
 `station_maximum_power` · `integer`
-: İstasyonda sunulan maksimum şarj gücü (kW cinsinden). Bu değer statiktir ve konnektör filtrelerinden bağımsız olarak her zaman istasyonun en yüksek kapasitesini yansıtır.
+: İstasyonda bulunan maksimum şarj gücü (kW cinsinden). Bu değer statiktir ve konnektör filtrelerinden bağımsız olarak her zaman istasyonun en yüksek kapasitesini yansıtır.
 
 `connector_maximum_power` · `integer`
-: `connectors[]` filtresiyle eşleşen konnektörlerden sunulan maksimum şarj gücü (kW cinsinden). Filtre verilmezse tüm konnektörler dikkate alınır ve değer `station_maximum_power` ile aynı olur.
+: `connectors[]` filtresiyle eşleşen konnektörlerden elde edilebilen maksimum şarj gücü (kW cinsinden). Filtre sağlanmazsa tüm konnektörler dikkate alınır ve değer `station_maximum_power` ile eşleşir.
 
 `preferred_operator` · `boolean`
-: Bir istasyonun operatörünün tercih edilen operatör olup olmadığını belirtir. Tercih edilen operatörler Dashboard'da proje düzeyinde yönetilebilir.
+: Bir istasyonun operatörünün tercih edilen operatör olup olmadığını belirtir. Operatör tercihleri [Chargetrip panosunda](https://account.chargetrip.io/projects) yönetilebilir.
 
 `connector_minimum_energy_price` · `float` · [beta](tip:Beta;;Bu alan beta aşamasındadır ve kararlı hale gelmeden önce değişebilir.)
 : İstasyonun konektörleri arasındaki en düşük enerji fiyatı. Mevcut değilse döndürülmez. Yalnızca Eco-Movement istasyon veritabanı kullanılıyorsa geçerlidir; aksi halde yok sayılır.
@@ -79,74 +88,112 @@ MVT ve JSON karoları için istasyon özelliklerinde listelenen herhangi bir ala
 `evses_inoperative` · `integer`
 : inoperative durumundaki EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türlerinden en az birine sahip çalışmayan EVSE'leri sayar.
 
-## Uygulama
+## Örnekler
 
-Belirli özellikleri istemek için karo isteği URL'sine `station_properties[]` sorgu parametresini ekleyin.
+<details>
+  <summary>JSON karolarında istasyon gücünü ve operatör tercihini isteyin</summary>
 
-```bash Tile / Selectors / Example
-https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
+JSON karolarında zorunlu özellik yapısı (`type`, `geometry`, `id`) istasyon özelliklerinde her zaman korunur; `properties` ise yalnızca istenen seçicileri içerir (varsayılan `count` niteliği istenmediği için dahil edilmez). Küme özellikleri seçicilerden etkilenmez ve yine `count` ve `expansion_zoom` döndürür.
+
+```bash Example request {{ mark: [2,3] }}
+https://api.chargetrip.io/v2/station/10/582/325/tile.json
+  ?station_properties[]=station_maximum_power
+  &station_properties[]=preferred_operator
 ```
 
-## Davranış örnekleri
-
-Seçiciler verildiğinde istek yalnızca belirtilen alanları döndürür.
-
-### GeoJSON
-
-GeoJSON uç noktasında zorunlu GeoJSON alanları (`type`, `geometry` ve `id`), seçilen seçicilerden bağımsız olarak her zaman döndürülür.
-
-```json JSON Selectors example
+```json Example response {{ mark: [13,14,15,16] }}
 {
   "type": "FeatureCollection",
   "features": [
-    // Station feature
+    // Station feature (count = 1)
     {
-      "id": "132313",
+      "id": "5e5f3e8f8e0c1a0012345678",
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [6.789, 52.234]
+        "coordinates": [4.895168, 52.370216]
       },
-      // 'count' is missing because it wasn't provided as selector
       "properties": {
         "station_maximum_power": 350,
         "preferred_operator": true
       }
     },
-    // Cluster feature
-    // Cluster feature is not modified, as it's not affected by the selectors.
+   // Cluster feature (unaffected by selectors)
     {
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [6.723, 50.0]
+        "coordinates": [5.1214, 52.0907]
       },
       "properties": {
-        "count": 3,
-        "expansion_zoom": 18
+        "count": 4,
+        "expansion_zoom": 14
       }
     }
   ]
 }
 ```
 
-### MVT
+</details>
 
-MVT uç noktasında zorunlu alan olmadığından yalnızca açıkça seçilen parametreler döndürülür.
+<details>
+  <summary>MVT vektör karolarında istasyon kimliğini, gücünü ve operatör tercihini isteyin</summary>
 
-```json MVT Selectors example
-// Station feature
-// 'count' is missing because it wasn't provided as a selector.
+ MVT karolarında istasyon özelliğine yalnızca açıkça istenen seçiciler kodlanır (varsayılan `count` niteliği dışarıda bırakılır); küme özellikleri ise seçicilerden etkilenmez ve her zaman `count` ve `expansion_zoom` değerlerini korur.
+
+```bash Example request {{ mark: [2,3,4] }}
+https://api.chargetrip.io/v2/station/10/582/325/tile.mvt
+  ?station_properties[]=id
+  &station_properties[]=station_maximum_power
+  &station_properties[]=preferred_operator
+```
+
+```json Example response {{ mark: [2,3,4,5,6] }}
+// Station feature ('count' is omitted because it wasn't requested as a selector)
 {
-  "id": "132313",
-  "preferred_operator": false,
+  "id": "5e5f3e8f8e0c1a0012345678",
+  "preferred_operator": true,
   "station_maximum_power": 350
 }
 
-// Cluster feature
-// Cluster feature is not modified, as it's not affected by the selectors.
+// Cluster feature (unaffected by selectors)
 {
-  "count": 3,
-  "expansion_zoom": 32
+  "count": 4,
+  "expansion_zoom": 14
 }
 ```
+
+</details>
+
+<details>
+  <summary>Gerçek zamanlı EVSE durumu için seçicileri konnektör filtreleriyle birleştirin</summary>
+
+  Belirli bir konnektör türüne göre filtrelerken (ör. CCS / `IEC_62196_T2_COMBO`), `connector_maximum_power` ve `evse_status_available` sayıları yalnızca bu konnektör filtresiyle eşleşen EVSE'leri yansıtır.
+
+```bash Example request {{ mark: [2,3,4] }}
+https://api.chargetrip.io/v2/station/10/582/325/tile.json
+  ?connectors[]=IEC_62196_T2_COMBO
+  &station_properties[]=connector_maximum_power
+  &station_properties[]=evse_status_available
+```
+
+```json Example response {{ mark: [12,13,14,15] }}
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "id": "5e5f3e8f8e0c1a0012345678",
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [4.895168, 52.370216]
+      },
+      "properties": {
+        "connector_maximum_power": 300,
+        "evse_status_available": 2
+      }
+    }
+  ]
+}
+```
+</details>

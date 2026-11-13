@@ -1,13 +1,13 @@
 ---
-title: Percorso camion query
+title: Query percorso camion
 heading: Percorso camion
-description: "Ottieni i dettagli di un percorso per camion calcolato in precedenza con la query getTruckRoute, incluse soste di ricarica, distanza e durata."
+description: "Ottieni i dettagli di un percorso camion calcolato in precedenza con la query getTruckRoute, incluse soste di ricarica, distanza e durata."
 schemaName: getTruckRoute
 schemaType: Query
 ---
 
-Ottieni i dettagli di un percorso camion calcolato in precedenza usando la query getTruckRoute. È utile quando vuoi mostrare le tappe di ricarica, la distanza e la durata di un percorso camion.
+Ottieni i dettagli di un percorso camion calcolato in precedenza utilizzando la query getTruckRoute. È utile quando vuoi mostrare le soste di ricarica, la distanza e la durata di un percorso camion.
 
 ## Query
 
-Per ottenere i dettagli del percorso è necessario l'`id` del percorso camion. L'`id` si ottiene tramite la [mutation createTruckRoute](/api-reference/core/truck-route/mutation-create-truck-route).
+Per ottenere i dettagli del percorso è necessario un `id` del percorso camion. L'`id` può essere ottenuto tramite la [mutation createTruckRoute](/api-reference/core/truck-route/mutation-create-truck-route).

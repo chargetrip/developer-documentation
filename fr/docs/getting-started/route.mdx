@@ -1,49 +1,49 @@
 ---
 title: Itinéraire
-description: "Planifiez des itinéraires de véhicules électriques avec arrêts de recharge automatiques selon la capacité de batterie, la consommation, le relief, la météo et la disponibilité des réseaux."
+description: "Planifiez des itinéraires VE avec des arrêts de recharge automatiques selon la capacité de la batterie, la consommation d'énergie, la topographie, la météo et la disponibilité des réseaux de recharge."
 tag: Guide
 ---
 
-La planification d'itinéraires pour les EV s'accompagne de défis uniques. La capacité de la batterie, la consommation d'énergie réelle, la topographie, la météo et la disponibilité du réseau de recharge déterminent tous si un véhicule atteindra sa destination.
+La planification d'itinéraires pour les VE comporte des défis uniques. La capacité de la batterie, la consommation d'énergie réelle, la topographie, la météo et la disponibilité des réseaux de recharge déterminent tous si un véhicule atteindra sa destination.
 
-L'API Route prend en compte toutes ces variables pour trouver des itinéraires EV optimaux. Grâce à un modèle de consommation d'énergie de classe mondiale, elle place automatiquement les arrêts de recharge exactement quand et où ils sont nécessaires. Les itinéraires sont entièrement personnalisables, ce qui vous permet de les affiner selon vos propres règles métier.
+L'API Route prend en compte toutes ces variables pour trouver des itinéraires VE optimaux. Grâce à un modèle de consommation d'énergie de classe mondiale, elle place automatiquement les arrêts de recharge exactement au moment et à l'endroit où ils sont nécessaires. Les itinéraires sont entièrement personnalisables, ce qui vous permet de les ajuster à vos propres règles métier.
 
-## Fonctionnement
+## Comment ça fonctionne
 
-Pour garantir de hautes performances, l'API Route fonctionne de manière asynchrone, selon le même [modèle asynchrone](/api-reference/core/api/async-operations) que celui utilisé dans toute l'API. La création et la récupération d'un itinéraire se font en deux étapes distinctes.
+Pour garantir de hautes performances, l'API Route fonctionne de manière asynchrone, en suivant le même [modèle asynchrone](/api-reference/core/api/async-operations) que celui utilisé dans toute l'API. La création et la récupération d'un itinéraire se font en étapes distinctes.
 
 1. **Créer un itinéraire**
-   Appelez la mutation `createRoute` avec au minimum un `vehicle`, une `origin` et une `destination`. La mutation renvoie immédiatement un `id` d'itinéraire, que vous utiliserez à l'étape suivante pour suivre et récupérer l'itinéraire. De nombreuses autres options de personnalisation sont disponibles ; consultez [personnaliser votre itinéraire](#personnaliser-votre-itinéraire) ci-dessous.
-2. **Ouvrir un abonnement**
-   Abonnez-vous à la subscription `route` en utilisant l'`id` de l'étape précédente. Pendant le calcul de l'itinéraire, l'abonnement envoie des mises à jour de statut que vous pouvez utiliser pour piloter un état de chargement asynchrone dans votre interface.
+   Appelez la mutation `createRoute` avec au moins un `vehicle`, une `origin` et une `destination`. La mutation renvoie immédiatement un `id` d'itinéraire, que vous utiliserez à l'étape suivante pour suivre et récupérer l'itinéraire. De nombreuses autres options de personnalisation sont disponibles ; consultez [personnaliser votre itinéraire](#personnaliser-votre-itinéraire) ci-dessous.
+2. **Ouvrir une souscription**
+   Souscrivez à la souscription `route` en utilisant l'`id` de l'étape précédente. Pendant le calcul de l'itinéraire, la souscription envoie des mises à jour de statut que vous pouvez utiliser pour piloter un état de chargement asynchrone dans votre interface.
 3. **Afficher le résultat**
    Une fois que le `status` de l'itinéraire passe à `done`, `error` ou `not_found`, affichez l'interface correspondant à ce résultat.
 4. **Récupérer à la demande**
-   Un itinéraire qui a atteint un statut final réussi est stocké avec tous ses détails. Si vous devez l'afficher à nouveau plus tard, par exemple après y être revenu, utilisez la requête `getRoute` plutôt que d'ouvrir un nouvel abonnement.
+   Un itinéraire qui a atteint un statut final réussi est stocké avec tous ses détails. Si vous devez l'afficher à nouveau plus tard, par exemple après y être revenu, utilisez la requête `getRoute` plutôt que d'ouvrir une nouvelle souscription.
 
 > [!WARNING] Véhicules hybrides
-> Les véhicules hybrides et hybrides rechargeables ne dépendent pas uniquement de leur batterie, leurs itinéraires n'incluent donc pas d'arrêts de recharge.
+> Les véhicules hybrides et hybrides rechargeables ne dépendent pas uniquement de leur batterie : leurs itinéraires n'incluent donc pas d'arrêts de recharge.
 
 ## Personnaliser votre itinéraire
 
-`createRoute` accepte une série de paramètres facultatifs pour affiner le calcul d'un itinéraire. Vous trouverez plus de détails sur chaque champ dans la [référence de l'API](/api-reference/core/route/mutation-create-route).
+`createRoute` accepte une série d'entrées facultatives pour affiner le calcul d'un itinéraire. Vous trouverez plus de détails sur chaque champ dans la [référence de l'API](/api-reference/core/route/mutation-create-route).
 
 | Fonctionnalité | Description |
 | --- | --- |
-| [Étapes](/api-reference/core/route/mutation-create-route#arg-input-via) | Ajoutez des arrêts intermédiaires. Fournissez `via.properties.station.station_id` pour forcer un arrêt de recharge à une station précise, ou uniquement `via.geometry` pour un simple point de passage sans recharge. |
-| [Durée d'arrêt](/api-reference/core/route/mutation-create-route#arg-input-via-properties-station-stop_duration) | Définissez la durée, en secondes, pendant laquelle le véhicule reste à une étape ou à la destination, avec `properties.station.stop_duration` ou `properties.location.stop_duration`. |
-| [Recharge sur autoroute](/api-reference/core/route/mutation-create-route#arg-input-station_preferences) | Donnez la priorité aux stations de recharge situées directement sur l'autoroute avec `station_preferences.prefer_highway_charging`, en évitant les arrêts qui nécessitent de quitter l'autoroute. |
-| [Météo](/api-reference/core/route/mutation-create-route#arg-input-weather) | Appliquez un préréglage météo ou des conditions météorologiques personnalisées au modèle de consommation. Utilise par défaut les données météo en temps réel. |
-| [Saison](/api-reference/core/route/mutation-create-route#arg-input-season) | Supposez des conditions météorologiques `summer`, `winter` ou `current`, comme alternative plus simple à `weather`. |
-| [Éléments d'itinéraire à éviter](/api-reference/core/route/mutation-create-route#arg-input-avoid) | Évitez `toll_road` ou `ferry` dans la mesure du possible. |
-| [Classement des opérateurs](/api-reference/core/route/mutation-create-route#arg-input-operators-ranking) | Privilégiez des réseaux de recharge spécifiques avec `type: preferred`, ou limitez le calcul d'itinéraire à ces seuls réseaux avec `type: required`. Classez les opérateurs en `high`, `medium` ou `low`, et limitez un classement à des pays précis pour chaque opérateur. |
-| [Exclusions d'opérateurs](/api-reference/core/route/mutation-create-route#arg-input-operators-exclude) | Excluez entièrement un opérateur de l'itinéraire avec `operators.exclude`. Revient à la configuration du dashboard de votre projet lorsqu'il n'est pas défini au niveau de la requête. |
-| [Évitement d'opérateurs](/api-reference/core/route/mutation-create-route#arg-input-operators-avoid) | Évitez un opérateur sans l'exclure complètement, avec `operators.avoid`. |
+| [Points de passage](/api-reference/core/route/mutation-create-route#arg-input-via) | Ajoutez des arrêts intermédiaires. Fournissez `via.properties.station.station_id` pour forcer un arrêt de recharge à une station précise, ou uniquement `via.geometry` pour un simple point de passage sans recharge. |
+| [Durée d'arrêt](/api-reference/core/route/mutation-create-route#arg-input-via-properties-station-stop_duration) | Définissez la durée, en secondes, pendant laquelle le véhicule reste à un point de passage ou à la destination, à l'aide de `properties.station.stop_duration` ou `properties.location.stop_duration`. |
+| [Recharge sur autoroute](/api-reference/core/route/mutation-create-route#arg-input-station_preferences) | Priorisez les stations de recharge situées directement sur l'autoroute avec `station_preferences.prefer_highway_charging`, en évitant les arrêts qui nécessitent de quitter l'autoroute. |
+| [Météo](/api-reference/core/route/mutation-create-route#arg-input-weather) | Appliquez un préréglage météo ou des conditions météo personnalisées au modèle de consommation. Par défaut, les données météo en temps réel sont utilisées. |
+| [Saison](/api-reference/core/route/mutation-create-route#arg-input-season) | Supposez des conditions météo `summer`, `winter` ou `current`, comme alternative plus simple à `weather`. |
+| [Éléments d'itinéraire à éviter](/api-reference/core/route/mutation-create-route#arg-input-avoid) | Évitez `toll_road` ou `ferry` au mieux. |
+| [Classement des opérateurs](/api-reference/core/route/mutation-create-route#arg-input-operators-ranking) | Privilégiez des réseaux de recharge spécifiques avec `type: preferred`, ou limitez l'itinéraire à ces seuls réseaux avec `type: required`. Classez les opérateurs en `high`, `medium` ou `low`, et limitez un classement à des pays spécifiques pour chaque opérateur. |
+| [Exclusions d'opérateurs](/api-reference/core/route/mutation-create-route#arg-input-operators-exclude) | Excluez entièrement un opérateur de l'itinéraire avec `operators.exclude`. Utilise la configuration du tableau de bord de votre projet lorsqu'elle n'est pas définie au niveau de la requête. |
+| [Évitement d'opérateurs](/api-reference/core/route/mutation-create-route#arg-input-operators-avoid) | Évitez un opérateur sans l'exclure complètement, à l'aide de `operators.avoid`. |
 | [Stations de recharge alternatives](/api-reference/core/route/mutation-create-route#arg-input-alternative_station_radius) | Recherchez des stations de recharge alternatives dans un rayon compris entre 500 et 5000 mètres le long de l'itinéraire. |
-| [Itinéraires alternatifs](/api-reference/core/route/mutation-create-route#arg-input-alternative_routes) | Demandez des options d'itinéraire supplémentaires, dans la mesure du possible. Définissez `0` pour ne calculer que l'itinéraire recommandé. |
+| [Itinéraires alternatifs](/api-reference/core/route/mutation-create-route#arg-input-alternative_routes) | Demandez des options d'itinéraire supplémentaires, au mieux. Définissez `0` pour ne calculer que l'itinéraire recommandé. |
 | [Préférences de conduite](/api-reference/core/route/mutation-create-route#arg-input-driving_preferences) | Ajustez le style de conduite avec `speed_factor` ou `maximum_speed`, ou choisissez un `style` `eco` ou `sport`. |
-| [Prise en compte du trafic](/api-reference/core/route/mutation-create-route#arg-input-traffic_aware) | Prenez en compte les embouteillages en temps réel. Contactez le support pour l'activer sur votre projet. |
-| [Heure de départ](/api-reference/core/route/mutation-create-route#arg-input-departure_time) | Calculez les heures d'arrivée prévues à partir du trafic en temps réel et de la météo historique, actuelle ou prévue. |
-| [Destination sous forme de station](/api-reference/core/route/mutation-create-route#arg-input-destination-properties-station) | Définissez une station précise comme destination de l'itinéraire. Elle est traitée comme un arrêt sans recharge. |
-| [Charge du véhicule par étape](/api-reference/core/route/mutation-create-route#arg-input-origin-properties-vehicle) | Définissez `occupants`, `total_occupant_weight` et `total_cargo_weight` sur `origin` ou `via`. Ces valeurs se propagent sur le reste du trajet et peuvent être remplacées à n'importe quel point `via` ultérieur. |
-| [Puissance de recharge minimale](/api-reference/core/route/mutation-create-route#arg-input-vehicle-charging-minimum_power) | Par défaut, le calcul d'itinéraire exclut les connecteurs de moins de 43 kW. Définissez un minimum différent pour correspondre à la vitesse de recharge de votre véhicule. Les bornes de puissance supérieure sont tout de même sélectionnées même si votre véhicule se recharge plus lentement que leur puissance maximale. |
+| [Prise en compte du trafic](/api-reference/core/route/mutation-create-route#arg-input-traffic_aware) | Tenez compte des embouteillages en temps réel. Contactez le support pour l'activer pour votre projet. |
+| [Heure de départ](/api-reference/core/route/mutation-create-route#arg-input-departure_time) | Calculez les heures d'arrivée prévues à l'aide du trafic en temps réel et de la météo historique, actuelle ou prévue. |
+| [Destination en tant que station](/api-reference/core/route/mutation-create-route#arg-input-destination-properties-station) | Définissez une station spécifique comme destination de l'itinéraire. Elle est traitée comme un arrêt sans recharge. |
+| [Charge du véhicule par point de passage](/api-reference/core/route/mutation-create-route#arg-input-origin-properties-vehicle) | Définissez `occupants`, `total_occupant_weight` et `total_cargo_weight` sur `origin` ou `via`. Ces valeurs se propagent pour le reste du trajet et peuvent être remplacées à tout point via ultérieur. |
+| [Puissance de recharge minimale](/api-reference/core/route/mutation-create-route#arg-input-vehicle-charging-minimum_power) | Par défaut, le calcul d'itinéraire exclut les connecteurs de moins de 43 kW. Définissez un minimum différent pour correspondre à la vitesse de recharge de votre véhicule. Les bornes de puissance supérieure restent sélectionnées même si votre véhicule se recharge plus lentement que leur débit maximal. |

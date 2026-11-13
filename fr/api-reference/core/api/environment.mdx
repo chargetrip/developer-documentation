@@ -1,0 +1,67 @@
+---
+title: "Environnement"
+description: "Obtenez les URL de base, le point de terminaison WebSocket pour les souscriptions et les en-têtes d'authentification nécessaires pour commencer à envoyer des requêtes à l'API."
+---
+
+L'API utilise deux points de terminaison distincts selon le type d'opération : une URL HTTPS pour les requêtes et les mutations, et une URL WebSocket (WSS) pour les souscriptions.
+
+## Points de terminaison
+
+### Requêtes et mutations
+
+Les requêtes et les mutations sont exécutées via des requêtes HTTP POST envoyées au point de terminaison GraphQL principal.
+
+```bash GraphQL queries and mutations endpoint URL
+https://api.chargetrip.io/graphql
+```
+
+### Souscriptions
+
+Les souscriptions nécessitent une connexion persistante via WebSockets et peuvent être implémentées avec le protocole `graphql-transport-ws`.
+
+```bash GraphQL subscription URL
+wss://api.chargetrip.io/subscription
+```
+
+> [!WARNING] Le protocole graphql-ws est déprécié
+> L'ancien protocole de souscription graphql-ws est déprécié et sera bientôt supprimé. Veuillez migrer vers le protocole graphql-transport-ws afin d'éviter les erreurs de souscription et les interruptions de service.
+
+### Server-Sent Events
+
+Les Server-Sent Events (SSE) constituent une alternative aux WebSockets pour recevoir des mises à jour en temps réel. Ce n'est pas un type de souscription mais un autre mode de transport des messages : il diffuse les résultats des souscriptions via une connexion HTTP classique au lieu d'un WebSocket persistant.
+
+```bash Server-Sent Events URL
+https://subscription.chargetrip.io/sse
+```
+
+## En-têtes d'autorisation
+
+Ajoutez les en-têtes suivants à chaque requête. Les en-têtes marqués comme obligatoires doivent toujours être envoyés.
+
+`x-client-id` · <span class="text-accent">required</span>
+: Un identifiant de projet qui contient la configuration du projet.
+
+`x-app-id` · <span class="text-accent">required</span>
+: Un identifiant d'application pour la sécurité et la répartition des statistiques.
+
+`x-app-identifier`
+: Un identifiant de bundle iOS ou Android.
+
+`x-app-fingerprint`
+: Une empreinte SHA Android.
+
+> [!TIP] Protégez vos clés
+> Pour une sécurité maximale, limitez votre application à un accès de machine à machine (M2M) et conservez les identifiants sur votre propre serveur, derrière votre propre authentification, plutôt que de les exposer à un navigateur ou à un appareil. Consultez [Sécurité](/api-reference/core/api/security) pour tous les types de restriction disponibles.
+
+## Envoyer une requête autorisée
+
+Par défaut, un `x-app-id` unique est généré pour chaque projet.
+
+```bash Example request
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "x-client-id: YOUR_KEY_HERE" \
+  -H "x-app-id: YOUR_KEY_HERE" \
+  -d '{ "query": "{ } " }' \
+  https://api.chargetrip.io/graphql
+```

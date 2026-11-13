@@ -1,0 +1,45 @@
+---
+title: 环境
+description: "获取 Admin API 的基础 URL，在仪表板中创建管理密钥，并使用 x-token 请求头发送您的第一个已授权请求。"
+---
+
+Admin API 是一个拥有独立环境的 GraphQL API。它有单独的端点，并使用自己的管理密钥进行授权，因此您需要独立于 API 的其余部分进行设置。
+
+## 端点
+
+请求以 HTTP POST 请求的形式发送到 Admin API 的 GraphQL 端点。
+
+```bash Admin API endpoint URL
+https://admin.chargetrip.io/graphql
+```
+
+## 授权请求头
+
+在每个请求中添加以下请求头。
+
+`x-token` · <span class="text-accent">必填</span>
+: 用于标识您的工作区的管理密钥。您创建或读取的每个资源都属于该工作区。
+
+### 获取管理密钥
+
+管理密钥仅向高级版客户提供。请按照以下步骤创建。
+
+1. **打开您的工作区**
+   登录 Chargetrip 仪表板，并选择您要管理的工作区。
+2. **前往管理密钥**
+   在您的工作区中打开 **管理密钥**。
+3. **创建密钥**
+   创建一个新密钥并复制它。在每个请求中将其作为 `x-token` 请求头发送。
+
+> [!TIP] 保护您的密钥
+> 为获得最高安全性，请将您的应用限制为机器对机器 (M2M) 访问，并将凭据保存在您自己的服务器上、置于您自己的身份验证之后，而不是将其暴露给浏览器或设备。
+
+## 发送已授权的请求
+
+```bash Example request
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "x-token: YOUR_KEY_HERE" \
+  -d '{ "query": "{ boostingGroups { nodes { id } } }" }' \
+  https://admin.chargetrip.io/graphql
+```

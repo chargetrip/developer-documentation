@@ -1,23 +1,23 @@
 ---
 title: Filtres
-description: "Affinez les stations de recharge renvoyées par l'API Tile Service avec des filtres, et découvrez comment ils excluent des stations et transforment leurs données."
+description: "Affinez les stations de recharge renvoyées par l'API Tile Service avec des filtres, et découvrez comment ils excluent des stations et transforment les données des stations."
 tag: Rest
 ---
 
-Les filtres permettent aux applications d'affiner les stations de recharge renvoyées par l'API du service de tuiles. Au-delà du simple masquage des résultats non correspondants, certains filtres transforment aussi les données des stations afin que la réponse reste pertinente selon le contexte.
+Les filtres permettent aux applications d'affiner les stations de recharge renvoyées par l'API Tile Service. Au-delà du simple masquage des résultats non correspondants, certains filtres transforment également les données des stations afin que la réponse reste pertinente selon le contexte.
 
-## Comment les filtres affectent les données
+## Effet des filtres sur les données
 
 Lorsqu'une requête inclut des filtres, le service de tuiles effectue deux opérations distinctes :
 
 1. **Exclusion des stations non correspondantes**
-   Toute station ne répondant pas aux critères de filtrage spécifiés est entièrement supprimée de la réponse. Cette opération a lieu lorsque des filtres au niveau de la station ou de l'EVSE sont utilisés.
+   Toute station qui ne répond pas aux critères de filtrage spécifiés est entièrement retirée de la réponse. Cette opération a lieu lorsque des filtres de niveau station ou de niveau EVSE sont utilisés.
 2. **Transformation des données**
-   Lorsque certains paramètres de filtrage sont fournis, le service de tuiles recalcule certaines propriétés dynamiques de la station. Cette opération a lieu lorsque des filtres au niveau de l'EVSE sont utilisés.
+   Lorsque certains paramètres de filtrage sont fournis, le service de tuiles recalcule certaines propriétés dynamiques de la station. Cette opération a lieu lorsque des filtres de niveau EVSE sont utilisés.
 
-## Implémentation
+## Mise en œuvre
 
-Les paramètres de filtre peuvent être ajoutés à l'URL de la requête sous forme de chaînes de requête pour n'importe quel endpoint du service de tuiles (MVT, JSON ou Count). Si aucun filtre n'est appliqué, toutes les stations de recharge disponibles sont renvoyées et aucune transformation de données n'est effectuée.
+Les paramètres de filtre peuvent être ajoutés sous forme de chaînes de requête à l'URL de n'importe quel endpoint du service de tuiles (MVT, JSON ou Count). Si aucun filtre n'est appliqué, toutes les stations de recharge disponibles sont renvoyées et aucune transformation de données n'est effectuée.
 
 ```bash Tile / Filter / Example
 https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?{filter_1}&{filter_2}&{filter_n}
@@ -25,26 +25,26 @@ https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?{filter_1}&{filter_2}&{
 
 ## Niveaux
 
-Les filtres peuvent exister à deux niveaux : au niveau de l'EVSE ou au niveau de la station, chacun avec son propre impact et ses propres résultats, comme décrit ci-dessous.
+Les filtres peuvent exister à deux niveaux : le niveau EVSE ou le niveau station, chacun ayant son propre impact et ses propres résultats, comme décrit ci-dessous.
 
 ### Niveau station
 
-Filtres qui évaluent les attributs globaux de la station. Ces filtres servent uniquement à exclure : ils excluent les stations non correspondantes mais ne modifient jamais les champs de données renvoyés.
+Filtres qui évaluent les attributs globaux de la station. Ces filtres servent uniquement à exclure : ils écartent les stations non correspondantes, mais ne modifient jamais les champs de données renvoyés.
 
-`amenities` · `enum` · [Afficher l'URL d'exemple](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?amenities[]=HOTEL)
+`amenities` · `enum` · [Afficher un exemple d'URL](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?amenities[]=HOTEL)
 : Filtre pour inclure uniquement les stations qui proposent les équipements spécifiés.
 : `HOTEL`, `SHOPPING`, `BATHROOM`, `SUPERMARKET`, `PLAYGROUND`, `PHARMACY`, `MUSEUM`, `COFFEE`, `PARK`, `RESTAURANT`
 
-`preferred_operators` · `boolean` · [Afficher l'URL d'exemple](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?preferred_operators=true)
-: Filtre pour inclure uniquement les stations exploitées par des opérateurs configurés comme préférés. Les opérateurs préférés peuvent être définis dans les paramètres du projet dans le dashboard.
+`preferred_operators` · `boolean` · [Afficher un exemple d'URL](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?preferred_operators=true)
+: Filtre pour inclure uniquement les stations exploitées par des opérateurs configurés comme préférés. Les opérateurs préférés peuvent être définis dans les paramètres du projet, dans le tableau de bord.
 : `true`, `false`
 
-`hide_excluded_operators` · `boolean` · [Afficher l'URL d'exemple](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?hide_excluded_operators=true)
-: Filtre pour exclure les stations exploitées par des opérateurs configurés comme exclus. Les opérateurs exclus peuvent être définis dans les paramètres du projet dans le dashboard.
+`hide_excluded_operators` · `boolean` · [Afficher un exemple d'URL](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?hide_excluded_operators=true)
+: Filtre pour exclure les stations exploitées par des opérateurs configurés comme exclus. Les opérateurs exclus peuvent être définis dans les paramètres du projet, dans le tableau de bord.
 : `true`, `false`
 
-`operator_ids` · `string` · [Afficher l'URL d'exemple](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?operator_ids[]=631834841e604d2273ffb2b5&operator_ids[]=64e6979d49ed0ae2316ec052)
-: Filtre pour inclure uniquement les stations exploitées par des identifiants d'opérateur spécifiques. Accepte un tableau d'identifiants d'opérateur.
+`operator_ids` · `string` · [Afficher un exemple d'URL](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?operator_ids[]=631834841e604d2273ffb2b5&operator_ids[]=64e6979d49ed0ae2316ec052)
+: Filtre pour inclure uniquement les stations exploitées par des ID d'opérateurs spécifiques. Accepte un tableau d'ID d'opérateurs.
 
 `truck_dedicated` · `boolean` · [Afficher l'URL d'exemple](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?truck_dedicated=true)
 : Filtre pour inclure uniquement les stations dédiées ou principalement destinées à la recharge de camions. Applicable uniquement si la base de données de stations Eco-Movement est utilisée ; sinon, il est ignoré.
@@ -56,13 +56,13 @@ Filtres qui évaluent les attributs globaux de la station. Ces filtres servent u
 
 ### Niveau EVSE
 
-Filtres qui évaluent les capacités de charge spécifiques de la station. Ces filtres effectuent une exclusion et une [transformation](/api-reference/core/tiles/filters#exemples-de-transformation-des-données) : les stations non correspondantes sont exclues, et les champs dynamiques des stations correspondantes sont recalculés.
+Filtres qui évaluent les capacités de recharge spécifiques de la station. Ces filtres effectuent une exclusion et une [transformation](/api-reference/core/tiles/filters#exemples-de-transformation-des-données) : les stations non correspondantes sont exclues, et les champs dynamiques des stations correspondantes sont recalculés.
 
-`minimum_power` · `integer` · [Afficher l'URL d'exemple](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?minimum_power=50)
-: Filtre pour inclure uniquement les stations dont au moins un connecteur atteint ou dépasse la puissance spécifiée (en kW). Accepte un entier supérieur à 0.
+`minimum_power` · `integer` · [Afficher un exemple d'URL](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?minimum_power=50)
+: Filtre pour inclure uniquement les stations dont au moins un connecteur atteint ou dépasse la valeur de puissance spécifiée (en kW). Accepte un entier supérieur à 0.
 
-`maximum_power` · `integer` · [Afficher l'URL d'exemple](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?maximum_power=150)
-: Filtre pour inclure uniquement les stations dont la puissance de charge maximale d'aucun connecteur ne dépasse la puissance spécifiée (en kW). Accepte un entier supérieur à 0.
+`maximum_power` · `integer` · [Afficher un exemple d'URL](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?maximum_power=150)
+: Filtre pour inclure uniquement les stations dont la puissance de recharge maximale de n'importe quel connecteur ne dépasse pas la valeur de puissance spécifiée (en kW). Accepte un entier supérieur à 0.
 
 `minimum_energy_price` · `number` · [beta](tip:Bêta;;Ce filtre est en bêta et peut changer avant de devenir stable.) · [Afficher l'URL d'exemple](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?minimum_energy_price=0.2&currency=EUR)
 : Filtre pour inclure uniquement les stations dont les connecteurs compatibles ont au moins un prix actif supérieur ou égal à la valeur spécifiée, évalué dans la devise définie par `currency`. Voir [tarification des stations](/docs/getting-started/station-pricing). Applicable uniquement si la base de données de stations Eco-Movement est utilisée ; sinon, il est ignoré.
@@ -70,24 +70,24 @@ Filtres qui évaluent les capacités de charge spécifiques de la station. Ces f
 `maximum_energy_price` · `number` · [beta](tip:Bêta;;Ce filtre est en bêta et peut changer avant de devenir stable.) · [Afficher l'URL d'exemple](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?maximum_energy_price=0.5&currency=EUR)
 : Filtre pour inclure uniquement les stations dont les connecteurs compatibles ont au moins un prix actif inférieur ou égal à la valeur spécifiée, évalué dans la devise définie par `currency`. Voir [tarification des stations](/docs/getting-started/station-pricing). Applicable uniquement si la base de données de stations Eco-Movement est utilisée ; sinon, il est ignoré.
 
-`connectors` · `enum` · [Afficher l'URL d'exemple](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=CHADEMO)
-: Filtre pour inclure uniquement les stations dont les EVSE ont les types de connecteurs spécifiés. Accepte un tableau de chaînes avec n'importe quelle valeur de connecteur OCPI 2.2.1.
+`connectors` · `enum` · [Afficher un exemple d'URL](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=CHADEMO)
+: Filtre pour inclure uniquement les stations qui ont des EVSE avec les types de connecteurs spécifiés. Accepte un tableau de chaînes contenant n'importe quelle valeur de connecteur OCPI 2.2.1.
 : `CHADEMO`, `DOMESTIC_A`, `DOMESTIC_B`, `DOMESTIC_C`, `DOMESTIC_D`, `DOMESTIC_E`, `DOMESTIC_F`, `DOMESTIC_G`, `DOMESTIC_H`, `DOMESTIC_I`, `DOMESTIC_J`, `DOMESTIC_K`,
 `DOMESTIC_L`, `DOMESTIC_M`, `DOMESTIC_N`, `DOMESTIC_O`, `IEC_60309_2_single_16`, `IEC_60309_2_three_16`, `IEC_60309_2_three_32`, `IEC_60309_2_three_64`, `IEC_62196_T1`,
 `IEC_62196_T1_COMBO`, `IEC_62196_T2`, `IEC_62196_T2_COMBO`, `IEC_62196_T3A`, `IEC_62196_T3C`, `PANTOGRAPH_BOTTOM_UP`, `PANTOGRAPH_TOP_DOWN`, `TESLA_R`, `TESLA_S`, `GB_T`,
 `CHAOJI`, `NEMA_5_20`, `NEMA_6_30`, `NEMA_6_50`, `NEMA_10_30`, `NEMA_10_50`, `NEMA_14_30`, `NEMA_14_50`
 
-`evse_statuses` · `enum` · [Afficher l'URL d'exemple](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?evse_statuses[]=AVAILABLE&evse_statuses[]=CHARGING)
+`evse_statuses` · `enum` · [Afficher un exemple d'URL](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?evse_statuses[]=AVAILABLE&evse_statuses[]=CHARGING)
 : Filtre pour inclure uniquement les stations dont les EVSE ont les statuts spécifiés.
 : `BLOCKED`, `PLANNED`, `AVAILABLE`, `CHARGING`, `UNKNOWN`, `RESERVED`, `OUT_OF_ORDER`, `INOPERATIVE`
 
 ## Conversion de devise
 
-Le paramètre de requête `currency` est pris en charge par l'endpoint du service de tuiles (`tile.json`, `tile.mvt` et `count`). Il définit la devise des prix de l'énergie renvoyés et utilisés pour le filtrage.
+Le paramètre de requête `currency` est pris en charge sur l'ensemble des endpoints du service de tuiles (`tile.json`, `tile.mvt` et `count`). Il définit la devise des prix de l'énergie renvoyés et filtrés.
 
 - Lorsque `currency` est omis, `connector_minimum_energy_price` et `connector_maximum_energy_price` sont renvoyés en EUR.
 - Lorsque `currency` est un code de devise ISO 4217 valide, tel que `USD`, `GBP`, `DKK` ou `EUR` :
-  - Les valeurs renvoyées dans `connector_minimum_energy_price` et `connector_maximum_energy_price` sont converties de leur devise d'origine vers la devise demandée côté serveur, à l'aide du taux de conversion actif.
+  - Les valeurs renvoyées dans `connector_minimum_energy_price` et `connector_maximum_energy_price` sont converties de leur devise source vers la devise demandée côté serveur, à l'aide du taux de conversion actif.
   - Les filtres `minimum_energy_price` et `maximum_energy_price` sont évalués sur les prix convertis dans la devise demandée, ou en EUR si `currency` est omis.
 - Lorsque la devise d'origine est identique à la devise demandée, `price_conversion_rate` est renvoyé avec la valeur `1.0`.
 - Lorsque `currency` n'est pas un code de devise ISO 4217 valide, le service de tuiles renvoie une erreur avec les détails suivants :
@@ -101,37 +101,37 @@ https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?maximum_energy_price=0.
 
 ## Exemples
 
-Pour illustrer le comportement, des exemples de filtrage et de transformation des données sont fournis ci-dessous.
+Pour illustrer le comportement, des exemples de filtrage et de transformation de données sont fournis ci-dessous.
 
-### Exemples de filtres
+### Exemples de filtrage
 
-Les filtres peuvent exister à deux niveaux : au niveau de l'EVSE ou au niveau de la station, chacun avec son propre impact et ses propres résultats, comme décrit ci-dessous.
+Les filtres peuvent exister à deux niveaux : le niveau EVSE ou le niveau station, chacun ayant son propre impact et ses propres résultats, comme décrit ci-dessous.
 
 <details>
   <summary>Même type de filtre, valeurs différentes</summary>
 
-```bash Exemple d'URL
+```bash Example URL
 https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=IEC_62196_T1_COMBO&connectors[]=CHADEMO
 ```
 
-  | Station | Propriétés                                                                            | Correspond                                                             |
+  | Station | Propriétés                                                                            | Correspondance                                                         |
   |---------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------|
-  | A       | 2x `IEC_62196_T1_COMBO` <br /> 1x `CHAdeMO` <br /> 1x `TOILET` <br /> 1x `RESTAURANT` | [true](tip:Raison de la correspondance;;Dispose d'un chargeur CHAdeMO) |
-  | B       | 1x `IEC_62196_T1_COMBO` <br /> 1x `IEC_62196_T2_COMBO` <br /> 1x `RESTAURANT`         | [true](tip:Titre;;Le texte de description;;optional-copy-value)        |
-  | C       | 2x `IEC_62196_T2_COMBO` <br /> 1x `TOILET`                                            | [false](tip:Titre;;Le texte de description;;optional-copy-value) |
+  | A       | 2x `IEC_62196_T1_COMBO` <br /> 1x `CHAdeMO` <br /> 1x `TOILET` <br /> 1x `RESTAURANT` | [oui](tip:Raison de la correspondance;;Possède une borne CHAdeMO)                        |
+  | B       | 1x `IEC_62196_T1_COMBO` <br /> 1x `IEC_62196_T2_COMBO` <br /> 1x `RESTAURANT`         | [oui](tip:Titre;;Le texte de description;;optional-copy-value)            |
+  | C       | 2x `IEC_62196_T2_COMBO` <br /> 1x `TOILET`                                            | [non](tip:Titre;;Le texte de description;;optional-copy-value)  |
 </details>
 
 <details>
   <summary>Plusieurs types de filtres différents</summary>
 
-```bash Exemple d'URL
+```bash Example URL
 https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?minimum_power=120&evse_statuses[]=AVAILABLE&connectors[]=IEC_62196_T1_COMBO
 ```
-  | Station | Propriétés                                                                            | Correspond                                                             |
+  | Station | Propriétés                                                                            | Correspondance                                                         |
   |---------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------|
-  | A       | 2x `IEC_62196_T1_COMBO` <br /> 1x `CHAdeMO` <br /> 1x `TOILET` <br /> 1x `RESTAURANT` | [true](tip:Titre;;Le texte de description;;optional-copy-value)        |
-  | B       | 1x `IEC_62196_T1_COMBO` <br /> 1x `IEC_62196_T2_COMBO` <br /> 1x `RESTAURANT`         | [true](tip:Titre;;Le texte de description;;optional-copy-value)        |
-  | C       | 2x `IEC_62196_T2_COMBO` <br /> 1x `TOILET`                                            | [false](tip:Titre;;Le texte de description;;optional-copy-value)       |
+  | A       | 2x `IEC_62196_T1_COMBO` <br /> 1x `CHAdeMO` <br /> 1x `TOILET` <br /> 1x `RESTAURANT` | [oui](tip:Titre;;Le texte de description;;optional-copy-value)            |
+  | B       | 1x `IEC_62196_T1_COMBO` <br /> 1x `IEC_62196_T2_COMBO` <br /> 1x `RESTAURANT`         | [oui](tip:Titre;;Le texte de description;;optional-copy-value)            |
+  | C       | 2x `IEC_62196_T2_COMBO` <br /> 1x `TOILET`                                            | [non](tip:Titre;;Le texte de description;;optional-copy-value)           |
 </details>
 
 ### Exemples de transformation des données
@@ -141,13 +141,13 @@ Ces champs de sortie « dynamiques » sont `connector_maximum_power`, `connector
 
 <details>
   <summary>Même type de filtre, valeurs différentes</summary>
-  La requête inclut un filtre de connecteur CHADEMO. La station est incluse car elle possède un connecteur CHADEMO, mais les champs dynamiques sont transformés pour ignorer les chargeurs Combo Type 1.
+  La requête inclut un filtre de connecteur CHADEMO. La station est incluse car elle possède un connecteur CHADEMO, mais les champs dynamiques sont transformés pour ignorer les bornes Combo Type 1.
 
-```bash Exemple d'URL
+```bash Example URL
 https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=IEC_62196_T1_COMBO&connectors[]=CHADEMO
 ```
 
-```json Réponse
+```json Response
 {
   "id": "station_a",
   // Static: Remains 150 kW (This represents the station maximum power across all connectors)
@@ -179,7 +179,7 @@ https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=IEC_62196_
 https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?maximum_energy_price=0.40
 ```
 
-Correspondance : Les EVSE 2 et 3 correspondent. L'EVSE 1 est exclu.
+Correspondance : les EVSE 2 et 3 sont retenus. L'EVSE 1 est exclu.
 
 ```json Response
 {
@@ -198,7 +198,7 @@ Correspondance : Les EVSE 2 et 3 correspondent. L'EVSE 1 est exclu.
 https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=CCS
 ```
 
-Correspondance : Les EVSE 1 et 2 correspondent.
+Correspondance : les EVSE 1 et 2 sont retenus.
 
 ```json Response
 {
@@ -220,10 +220,10 @@ https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=CCS&maximu
 Correspondance :
 
 - Évalue `connector == CCS AND price <= 0.30`.
-- Les connecteurs CCS (EVSE 1 et 2) coûtent 0,65 € et 0,35 €, ils ne respectent donc pas le filtre de prix.
-- Le connecteur Type 2 (EVSE 3) respecte le prix, mais pas le filtre de connecteur.
+- Les connecteurs CCS (EVSE 1 et 2) coûtent 0,65 € et 0,35 €, ils ne passent donc pas le filtre de prix.
+- Le connecteur Type 2 (EVSE 3) respecte le prix, mais ne passe pas le filtre de connecteur.
 
-Résultat : Station exclue (0 EVSE correspondant).
+Résultat : station exclue (0 EVSE correspondant).
 
 **Scénario 4 : filtre de prix et de puissance**
 
@@ -237,5 +237,5 @@ Correspondance :
 - Le connecteur de 150 kW est trop cher (0,65 €).
 - Les connecteurs moins chers (0,25 € à 0,35 €) sont trop lents (50 kW ou moins).
 
-Résultat : Station exclue (0 EVSE correspondant).
+Résultat : station exclue (0 EVSE correspondant).
 </details>

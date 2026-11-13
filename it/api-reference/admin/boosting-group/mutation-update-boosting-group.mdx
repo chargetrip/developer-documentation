@@ -1,23 +1,20 @@
 ---
-title: "Aggiorna Boosting Group mutation"
-heading: "Aggiorna Boosting Group"
-description: "Modifica il nome, la descrizione o lo stato di un Boosting Group con la mutation updateBoostingGroup."
+title: Mutation Aggiorna gruppo di boosting
+heading: Aggiorna gruppo di boosting
+description: "Modifica il nome, la descrizione o lo stato di un gruppo di boosting con la mutation updateBoostingGroup."
 schemaName: updateBoostingGroup
 schemaType: Mutation
 ---
 
-Aggiorna un Boosting Group usando la mutation updateBoostingGroup. È utile quando vuoi attivare o disattivare un gruppo senza eliminarlo.
+Aggiorna un gruppo di boosting utilizzando la mutation updateBoostingGroup. È utile quando vuoi attivare o disattivare un gruppo senza eliminarlo.
 
 ## Mutation
 
-È necessario l'`id` di un Boosting Group. L'`id` si ottiene tramite la [mutation createBoostingGroup](/api-reference/admin/boosting-group/mutation-create-boosting-group). Invia solo i campi che vuoi modificare. Questa mutation non modifica le stazioni di un gruppo.
-
-> [!WARNING] Alpha
-> Questa operazione è in alpha e non è disponibile nei piani gratuiti. Contatta il supporto per l'accesso.
+È obbligatorio l'`id` di un gruppo di boosting. L'`id` può essere ottenuto tramite la [mutation createBoostingGroup](/api-reference/admin/boosting-group/mutation-create-boosting-group). Invia solo i campi che vuoi modificare. Questa mutation non modifica le stazioni di un gruppo.
 
 <details>
-  <summary>Disattivare un Boosting Group.</summary>
-  Un gruppo inattivo non viene più usato nei calcoli dei percorsi.
+  <summary>Disattiva un gruppo di boosting.</summary>
+  Un gruppo inattivo non viene più utilizzato nel calcolo delle rotte.
 
 ```graphql Example request
 mutation UpdateBoostingGroup {

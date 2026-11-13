@@ -1,11 +1,11 @@
 ---
-title: Itinéraire avec arrêts
-description: "Ajoutez des arrêts intermédiaires entre l'origine et la destination avec via, en utilisant des arrêts de lieu ou de recharge pour des trajets réalistes."
+title: "Itinéraire avec arrêts"
+description: "Ajoutez des arrêts intermédiaires entre l'origine et la destination avec via, en utilisant des arrêts de lieu ou des arrêts de recharge pour des scénarios de déplacement réels."
 ---
 
-Lors du calcul d'un itinéraire EV avec l'API Route de Chargetrip, vous pouvez ajouter des arrêts intermédiaires entre l'origine et la destination à l'aide de `via`.
+Lors du calcul d'un itinéraire VE avec l'API Route de Chargetrip, vous pouvez ajouter des arrêts intermédiaires entre l'origine et la destination à l'aide de `via`.
 
-Les arrêts vous permettent de personnaliser le calcul d'itinéraire pour des scénarios de déplacement réels, comme recharger dans une station de recharge préférée, prendre des passagers ou s'arrêter dans un restaurant.
+Les arrêts vous permettent d'adapter l'itinéraire à des scénarios de déplacement réels, comme recharger à une station de recharge préférée, prendre des passagers ou s'arrêter dans un restaurant.
 
 
 ## Types d'arrêts
@@ -15,54 +15,54 @@ Chargetrip prend en charge deux types d'arrêts intermédiaires :
 | Arrêt | Recharge |  Champ d'entrée | Objectif |
 | :--- | :--- | :--- | :--- |
 | **Lieu** | Non |  `via.geometry`| Arrêt géographique (prise en charge, livraison, détour touristique, pause café).
-| **Station** | Oui | `via.properties.station.station_id`| Station de recharge sélectionnée explicitement.
+| **Station** | Oui | `via.properties.station.station_id`| Station de recharge explicitement sélectionnée.
 
 
 ## Durée d'arrêt
 
-Vous pouvez configurer la durée de chaque arrêt. Selon le type d'arrêt (avec ou sans recharge), le `stop_duration` est configuré à des emplacements différents et se comporte différemment :
+Vous pouvez configurer la durée de chaque arrêt. Selon le type d'arrêt (avec ou sans recharge), `stop_duration` est configuré à différents endroits et a des comportements différents :
 
-### 1. Dans les arrêts sans recharge
+### 1. Pour les arrêts sans recharge
 
-La durée d'arrêt est configurée dans `input.via.properties.location.stop_duration`. Cette durée représente la **durée d'arrêt exacte** et s'ajoute directement à la durée totale du trajet sans affecter le temps de recharge ou de conduite du véhicule.
+La durée d'arrêt est configurée dans `input.via.properties.location.stop_duration`. Cette durée représente la **durée d'arrêt exacte** et s'ajoute directement à la durée totale du trajet, sans affecter le temps de recharge ni de conduite du véhicule.
 
-### 2. Dans les arrêts avec recharge
+### 2. Pour les arrêts de recharge
 
-La durée d'arrêt est configurée dans `input.via.properties.station.stop_duration`. Cette valeur représente **la durée d'arrêt minimale**. Le véhicule reste à la station au moins ce temps, mais le planificateur d'itinéraire peut prolonger l'arrêt en fonction du `charge_mode` configuré :
+La durée d'arrêt est configurée dans `input.via.properties.station.stop_duration`. Cette valeur représente **la durée d'arrêt minimale**. Le véhicule reste à la station au moins ce temps, mais le planificateur d'itinéraire peut prolonger l'arrêt selon le `charge_mode` configuré :
 
-  * `ALWAYS_TO_MAX_CHARGE` : prolonge le temps de recharge si nécessaire pour atteindre le SoC maximal configuré. Si le `stop_duration` demandé dépasse le temps nécessaire pour atteindre le SoC maximal, le temps restant est consigné comme temps d'arrêt inactif.
+  * `ALWAYS_TO_MAX_CHARGE` : prolonge le temps de recharge si nécessaire pour atteindre l'état de charge (SoC) maximal configuré. Si le `stop_duration` demandé dépasse le temps nécessaire pour atteindre le SoC maximal, le temps restant est enregistré comme arrêt inactif.
 
-  * `OPTIMIZE_TRAVEL_TIME` : prolonge le séjour au-delà de `stop_duration` uniquement si cela réduit la durée totale du trajet (par exemple, en supprimant un arrêt de recharge ultérieur). Sinon, recharge pendant la durée exacte demandée. Si le `stop_duration` demandé dépasse le temps nécessaire pour atteindre le SoC maximal, le temps restant est consigné comme temps d'arrêt inactif.
+  * `OPTIMIZE_TRAVEL_TIME` : prolonge le séjour au-delà de `stop_duration` uniquement si cela réduit la durée totale du trajet (par exemple, en éliminant un arrêt de recharge ultérieur). Sinon, recharge pendant exactement la durée demandée. Si le `stop_duration` demandé dépasse le temps nécessaire pour atteindre le SoC optimal, le temps restant est enregistré comme arrêt inactif.
 
 Si aucune valeur n'est fournie, le planificateur optimise la durée de recharge uniquement en fonction du `charge_mode` de l'itinéraire.
 
 
 ## Ajouter une station à un itinéraire existant
 
-Un scénario courant : un utilisateur choisit une station de recharge pour un itinéraire qui comporte déjà des arrêts, par exemple une station alternative affichée dans votre interface. La solution no-code utilise cette approche pour ajouter automatiquement une station comme arrêt `via`, sans logique de réorganisation, afin que l'itinéraire se mette à jour de façon fluide.
+Un scénario courant est celui d'un utilisateur qui choisit une station de recharge pour un itinéraire qui comporte déjà des arrêts, par exemple une station alternative affichée dans votre interface. La solution sans code utilise cette approche pour ajouter automatiquement une station comme arrêt `via`, sans logique de réorganisation, de sorte que l'itinéraire se met à jour de manière fluide.
 
-L'ordre du tableau `via` correspond à l'ordre dans lequel les arrêts sont parcourus. Une station ajoutée à la fin est visitée en dernier, même si elle se trouve près du début de l'itinéraire. Pour l'insérer à la bonne position, comparez l'emplacement de la station avec les points de passage déjà présents sur l'itinéraire :
+L'ordre du tableau `via` est l'ordre dans lequel les arrêts sont visités. Une station ajoutée à la fin est visitée en dernier, même si elle se trouve près du début de l'itinéraire. Pour l'insérer à la bonne position, comparez l'emplacement de la station avec les points de passage déjà présents sur l'itinéraire :
 
-1. **Rassemblez les points de passage dans l'ordre.** Prenez `origin`, chaque arrêt `via` existant et `destination` dans le `request_input` de l'itinéraire à modifier. Chaque point de passage du `request_input` dispose de sa `geometry`, y compris les arrêts créés avec une simple `station_id`.
+1. **Collectez les points de passage dans l'ordre.** Prenez l'`origin`, chaque arrêt `via` existant et la `destination` depuis le `request_input` de l'itinéraire que vous souhaitez modifier. Chaque point de passage du `request_input` dispose de sa `geometry`, y compris les arrêts créés avec uniquement un `station_id`.
 
-2. **Tracez une ligne passant par les points de passage.** Reliez les points de passage dans l'ordre pour former une ligne. Chaque partie de cette ligne entre deux points de passage est un segment.
+2. **Tracez une ligne à travers les points de passage.** Reliez les points de passage dans l'ordre pour former une ligne. Chaque partie de cette ligne entre deux points de passage est un segment.
 
-3. **Trouvez le segment le plus proche de la station.** Utilisez une bibliothèque géospatiale pour trouver le point de la ligne le plus proche des coordonnées de la station. <a href="https://turfjs.org" target="_blank" rel="noopener noreferrer">turf.js</a> propose par exemple `nearestPointOnLine`, qui renvoie aussi l'index du segment contenant ce point. Cet index est celui du point de passage où commence le segment.
+3. **Trouvez le segment le plus proche de la station.** Utilisez une bibliothèque géospatiale pour trouver le point de la ligne le plus proche des coordonnées de la station. Par exemple, <a href="https://turfjs.org" target="_blank" rel="noopener noreferrer">turf.js</a> propose `nearestPointOnLine`, qui renvoie également l'index du segment contenant ce point. Cet index est celui du point de passage où commence le segment.
 
-4. **Insérez la station après ce point de passage.** La liste des points de passage commence par `origin` : l'index d'un point de passage dans cette liste correspond donc à la position où insérer un nouvel élément dans `via` pour qu'il se place juste après. Un index de `0` signifie que la station est insérée comme premier arrêt.
+4. **Insérez la station après ce point de passage.** La liste des points de passage commence par l'`origin` : l'index d'un point de passage dans cette liste correspond donc à la position où un nouvel élément est inséré dans `via` pour se retrouver juste après lui. Un index de `0` signifie que la station est insérée comme premier arrêt.
 
-5. **N'insérez jamais après la destination.** Lorsque le point le plus proche se trouve sur le dernier segment, l'index peut pointer vers `destination`. L'insérer ainsi placerait la station après la fin de l'itinéraire. Utilisez plutôt le point de passage précédent, afin que la station soit insérée comme dernier arrêt avant `destination`.
+5. **N'insérez jamais après la destination.** Lorsque le point le plus proche se trouve sur le dernier segment, l'index peut pointer vers la `destination`. L'insérer à cet endroit placerait la station après la fin de l'itinéraire : utilisez donc le point de passage précédent. Ainsi, la station est insérée comme dernier arrêt avant la `destination`.
 
-### À garder à l'esprit
+### Points à garder à l'esprit
 
-* La ligne relie les points de passage par des segments droits et ne suit pas les routes de l'itinéraire. Les stations alternatives se trouvent toujours dans un couloir de 5 à 10 km autour de l'itinéraire : elles ne s'en écartent donc jamais beaucoup et le segment le plus proche est généralement exact. Pour les stations situées hors de ce couloir, d'autres solutions peuvent être plus adaptées.
-* Le `request_input` de l'itinéraire fait foi. Construisez la nouvelle requête à partir de lui et laissez tous les autres champs, comme `vehicle` et les paramètres `charging`, inchangés.
+* La ligne relie les points de passage par des segments droits et ne suit pas les routes de l'itinéraire. Les stations alternatives se trouvent toujours dans un couloir de 5 à 10 km autour de l'itinéraire : elles ne s'en écartent donc jamais beaucoup et le segment le plus proche est généralement exact. Pour les stations situées en dehors de ce couloir, d'autres solutions peuvent être plus adaptées.
+* Le `request_input` de l'itinéraire est la source de vérité. Construisez la nouvelle requête à partir de celui-ci et conservez tous les autres champs, tels que le `vehicle` et les paramètres `charging`, inchangés.
 
 ## Exemples
 
 <details>
-  <summary>Calculer un itinéraire avec un arrêt de 30 minutes sans recharge.</summary>
-  Sur cet arrêt, un `stop_duration` de 1800 secondes (30 minutes) a été ajouté. Ce sera la durée d'arrêt, puisqu'il ne peut y avoir aucun avantage supplémentaire.
+  <summary>Calculer un itinéraire avec un arrêt sans recharge de 30 minutes.</summary>
+  Sur cet arrêt, un `stop_duration` de 1800 secondes (30 minutes) a été ajouté. Ce sera la durée d'arrêt exacte.
 
 ```graphql Example request
 mutation CreateRouteWithWaypoint {
@@ -106,7 +106,7 @@ mutation CreateRouteWithWaypoint {
 
 <details>
   <summary>Calculer un itinéraire avec un arrêt de recharge d'au moins 30 minutes.</summary>
-  Sur cet arrêt, un `stop_duration` de 1800 secondes (30 minutes) a été ajouté. Ce sera la durée d'arrêt **minimale**. Si une recharge plus longue est bénéfique pour l'itinéraire, elle sera prolongée.
+  Sur cet arrêt, un `stop_duration` de 1800 secondes (30 minutes) a été ajouté. Ce sera la durée d'arrêt **minimale**. Comme `vehicle.charging.mode:OPTIMIZE_TRAVEL_TIME` est utilisé, si une recharge plus longue améliore la durée du trajet, la durée sera automatiquement augmentée.
   
 ```graphql Example request
 mutation CreateRouteWithChargingVia {
@@ -146,7 +146,7 @@ mutation CreateRouteWithChargingVia {
 
 <details>
   <summary>Calculer un itinéraire avec un arrêt de recharge sans durée d'arrêt minimale.</summary>
-  Sur cet arrêt, `stop_duration` est omis : le planificateur calcule le temps de recharge optimal en fonction du mode de recharge.
+  Sur cet arrêt, `stop_duration` est omis. Le planificateur calcule la durée de recharge optimale uniquement en fonction du mode de recharge choisi (`OPTIMIZE_TRAVEL_TIME`).
 
 ```graphql Example request
 mutation CreateRouteWithChargingVia {

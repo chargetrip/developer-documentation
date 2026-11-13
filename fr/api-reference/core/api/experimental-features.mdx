@@ -1,55 +1,55 @@
 ---
-title: Fonctionnalités expérimentales
-description: "Accédez en avant-première aux futures capacités de l'API grâce au programme alpha et bêta, et voyez en quoi les fonctionnalités expérimentales diffèrent des stables."
+title: "Fonctionnalités expérimentales"
+description: "Bénéficiez d'un accès anticipé aux prochaines capacités de l'API grâce au programme alpha et bêta, et découvrez en quoi les fonctionnalités expérimentales diffèrent des fonctionnalités stables."
 ---
 
-Chargetrip introduit de nouvelles capacités importantes via un programme expérimental structuré. Il vous donne un accès anticipé pour évaluer les fonctionnalités à venir et influencer leur conception avant que les schémas et les contrats ne deviennent définitifs.
+Chargetrip introduit de nouvelles capacités importantes via un programme expérimental structuré. Il vous donne un accès anticipé pour évaluer les fonctionnalités à venir et influencer leur conception avant que les schémas et les contrats ne deviennent permanents.
 
-> [!WARNING] Exemption de la politique d'obsolescence de 12 mois
-> Les fonctionnalités en alpha et en bêta sont exemptées de la [politique d'obsolescence de 12 mois](/api-reference/core/api/lifecycle#calendrier-dobsolescence) et peuvent changer ou être retirées plus tôt.
+> [!WARNING] Exemption de la politique de dépréciation de 12 mois
+> Les fonctionnalités en alpha et en bêta sont exemptées de la [politique de dépréciation de 12 mois](/api-reference/core/api/lifecycle#calendrier-de-dépréciation) et peuvent changer ou être retirées plus tôt.
 
 ## Types de fonctionnalités expérimentales
 
-- Nouvelles opérations : des queries, mutations ou subscriptions entièrement nouvelles.
-- Extensions d'opérations existantes : de nouveaux arguments optionnels ou champs de sortie ajoutés à des opérations stables existantes.
+- Nouvelles opérations : des requêtes, mutations ou souscriptions entièrement nouvelles.
+- Extensions d'opérations existantes : de nouveaux arguments facultatifs ou champs de sortie ajoutés à des opérations stables existantes.
 
 ## Phases des fonctionnalités expérimentales
 
 | Dimension | Alpha | Bêta |
  | ----- | ----- | ----- |
-| **Prêt pour la production** | Fortement déconseillé dans les environnements de production. | Adapté aux pilotes contrôlés. Déconseillé pour les flux critiques. |
-| **Activation** | Désactivée par défaut. Nécessite une activation explicite dans le Dashboard. | Activée par défaut pour tous les clients. |
-| **Stabilité** | Stable mais sujette à de fréquents changements de schéma.| Stable. Peut subir des changements de schéma mineurs. |
+| **Préparation à la production** | Fortement déconseillé dans les environnements de production. | Adapté aux projets pilotes contrôlés. Déconseillé pour les flux critiques. |
+| **Activation** | Désactivée par défaut. Nécessite une adhésion explicite dans le tableau de bord. | Activée par défaut pour tous les clients. |
+| **Stabilité** | Stable, mais sujette à des changements de schéma fréquents.| Stable. Peut subir des changements de schéma mineurs. |
 | **Indicateur dans le schéma** | Marquée `[ALPHA]` dans les descriptions des champs du schéma. | Marquée `[BETA]` dans les descriptions des champs du schéma. |
-| **Préavis d'arrêt** | Aucun. Sujette à modification ou retrait immédiat. | Contact direct proactif auprès des clients en cours d'intégration. |
+| **Préavis d'arrêt** | Aucun. Sujette à une modification ou un retrait immédiats. | Contact direct proactif auprès des clients qui l'intègrent activement. |
 
-Pour connaître les garanties des fonctionnalités stables, consultez [cycle de vie de l'API](/api-reference/core/api/lifecycle).
+Pour connaître les garanties des fonctionnalités stables, consultez le [cycle de vie de l'API](/api-reference/core/api/lifecycle).
 
 
 ## Bonnes pratiques
 
- - Utilisez les fonctionnalités alpha pour l'évaluation en sandbox, les preuves de concept et les retours. Si vous en déployez une malgré tout, vous ne recevrez aucun préavis ni protection de compatibilité lorsqu'elle change.
- - Si vous exposez des capacités bêta à vos utilisateurs finaux, affichez un badge « bêta » pour qu'ils sachent que la capacité est encore en cours de stabilisation.
+ - Utilisez les fonctionnalités alpha pour l'évaluation en bac à sable, les preuves de concept et les retours. Si vous en déployez une malgré tout, vous ne recevez aucun préavis ni protection de compatibilité lorsqu'elle change.
+ - Si vous exposez des capacités bêta aux utilisateurs finaux, affichez un badge « bêta » pour qu'ils sachent que la capacité est encore en cours de stabilisation.
 
 
 ## Cycle de graduation
 
-1. **De alpha à bêta** Lorsque la fonctionnalité et le schéma atteignent une maturité suffisante, la fonctionnalité passe en bêta. Le tag de description passe de `[ALPHA]` à `[BETA]`, l'accès est activé par défaut pour tous les clients, et les changements sont annoncés dans les notes de version.
+1. **De l'alpha à la bêta** Lorsque la fonctionnalité et le schéma atteignent une maturité suffisante, la fonctionnalité passe en bêta. La balise de description passe de `[ALPHA]` à `[BETA]`, l'accès est activé par défaut pour tous les clients et les changements sont annoncés dans les notes de version.
 
-2. **De bêta à stable** Lorsque la fiabilité et la maturité sont validées auprès de plusieurs clients, le tag de description `[BETA]` et les avertissements à l'exécution sont supprimés et la fonctionnalité passe dans le [cycle de vie stable](/api-reference/core/api/lifecycle).
+2. **De la bêta à la version stable** Lorsque la fiabilité et la maturité sont validées auprès de plusieurs clients, la balise de description `[BETA]` et les avertissements d'exécution sont supprimés et la fonctionnalité passe dans le [cycle de vie stable](/api-reference/core/api/lifecycle).
 
 
 ## Tarification
 - Les requêtes vers des opérations marquées comme expérimentales sont **gratuites**.
-- Les requêtes vers des endpoints stables qui incluent des arguments d'entrée ou des champs de sortie expérimentaux optionnels sont **facturées** conformément à votre abonnement.
+- Les requêtes envoyées à des points de terminaison stables qui incluent des arguments d'entrée ou des champs de sortie expérimentaux facultatifs sont **facturées** conformément à votre offre.
 
 ## Avertissements programmatiques
-Pour tenir votre équipe de développement informée des dépendances expérimentales dans le trafic actif, les réponses de l'API utilisant des capacités alpha ou bêta renvoient des métadonnées d'avertissement dans le bloc `extensions` de GraphQL :
+Pour tenir votre équipe de développement informée des dépendances expérimentales dans le trafic actif, les réponses de l'API qui utilisent des capacités alpha ou bêta renvoient des métadonnées d'avertissement dans le bloc GraphQL `extensions` :
 
 <details>
-  <summary>Exemple d'avertissement pour une fonctionnalité alpha</summary>
+  <summary>Exemple d'avertissement d'une fonctionnalité alpha</summary>
 
-```json Exemple de requête et de réponse
+```json Example request and response
 {
   "data": {
     "getTruckRoute": {
@@ -72,9 +72,9 @@ Pour tenir votre équipe de développement informée des dépendances expérimen
 
 
 <details>
-  <summary>Exemple d'avertissement pour une fonctionnalité bêta</summary>
+  <summary>Exemple d'avertissement d'une fonctionnalité bêta</summary>
 
-```json Exemple de requête et de réponse
+```json Example request and response
 {
   "data": {
     "vehicleMakes": {

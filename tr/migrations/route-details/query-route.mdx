@@ -6,22 +6,22 @@ migrateBefore: 01-01-2027
 
 # Rota ayrıntıları
 
-Şu tarihten önce geçiş yapın: 2027 Q1
+Şu tarihten önce geçiş yapın: 2027 1. Çeyrek
 
-Eski Rota hizmetinden en son sürüme geçin. Yeni hizmet; yeniden düzenlenmiş bir şema, ülke bazlı operatör tercihleri, daha hızlı rota hesaplama ve daha kolay sürdürülebilirlik sunar.
+Eski Rota hizmetinden en son sürüme geçin. Yeni hizmet yeniden düzenlenmiş bir şema, ülke bazında operatör tercihleri, daha hızlı rota hesaplama ve daha iyi sürdürülebilirlik sunar.
 
 ## İşlemler
 
-| Eski               | Yeni                                                  |
+| Eski                | Yeni                                                   |
 | ------------------ | ------------------------------------------------------|
 | `route`            | [`getRoute`](/api-reference/core/route/query-get-route)     |
 | `routeUpdatedById`  | [`route`](/api-reference/core/route/subscription-route)     |
 
 ## Genel şema değişiklikleri
 
-- **Açık tür tanımlama**: daha önce esnek olan JSON alanları, yapıyı ve doğrulamayı iyileştirmek için artık şemada açıkça türlendirilmiştir.
+- **Açık tür tanımları**: daha önce esnek olan JSON alanları, yapıyı ve doğrulamayı iyileştirmek için artık şemada açıkça türlendirilmiştir.
 - **Adlandırma kuralları**: alanlar artık `camelCase` yerine `snake_case` kullanır.
-- **Birim desteği**: sayısal girdiler artık farklı birim türlerini destekler; bunlar `value`, `type` ve isteğe bağlı bir `source` (`manual`, `telemetry` veya `default`) içeren bir nesne olarak ifade edilir.
+- **Birim desteği**: sayısal girdiler artık farklı birim türlerini destekler ve `value`, `type` ile isteğe bağlı bir `source` (`manual`, `telemetry` veya `default`) içeren bir nesne olarak ifade edilir.
 
 ## Sorgu ve abonelik değişiklikleri
 
@@ -29,12 +29,12 @@ Alan adlandırması ve gruplandırması gözden geçirilmiş, gereksiz alanlar k
 
 ### Üst düzey
 
-Üst düzeyde alanların çoğu `recommended` altına taşınır; `ev`, `telemetry` ve `routeRequest` girdileri ise tek bir `request_input` nesnesinde birleştirilir.
+Üst düzeyde alanların çoğu `recommended` altına taşınır ve `ev`, `telemetry` ile `routeRequest` girdileri tek bir `request_input` nesnesinde birleştirilir.
 
-| Alan           | Taşındığı yer          |
+| Alan          | Taşındığı yer               |
 | -------------- | ---------------------- |
 | `route`        | `recommended`          |
-| `alternatives` | Kaldırıldı             |
+| `alternatives` | Kaldırıldı                |
 | `ev`           | `request_input`        |
 | `telemetry`    | `request_input`        |
 | `routeRequest` | `request_input`        |
@@ -43,9 +43,9 @@ Alan adlandırması ve gruplandırması gözden geçirilmiş, gereksiz alanlar k
 
 ### Rota
 
-Rota düzeyinde alanların çoğu kendi adlarını koruyarak `recommended` altına taşınır; birkaç alan ise açıkça yeniden adlandırılır.
+Rota düzeyinde alanların çoğu, birkaç açık yeniden adlandırmayla birlikte kendi adlarını koruyarak `recommended` altına taşınır.
 
-| Alan                  | Taşındığı yer                        |
+| Alan                 | Taşındığı yer                             |
 | --------------------- | ------------------------------------ |
 | `rangeStart*`         | `range_at_origin`                    |
 | `rangeEnd*`           | `range_at_destination`               |
@@ -57,32 +57,32 @@ Rota düzeyinde alanların çoğu kendi adlarını koruyarak `recommended` altı
 | `pathPlot`            | `recommended.path_plot`              |
 | `legs`                | `recommended.legs`                   |
 | `tags`                | `recommended.tags`                   |
-| `instructions`        | Kaldırıldı                           |
-| `amenityRanking`      | Kaldırıldı                           |
+| `instructions`        | Kaldırıldı                              |
+| `amenityRanking`      | Kaldırıldı                              |
 | `stationsAlongRoute`  | `recommended.alternative_stations`   |
 
-### Bölümler (legs)
+### Bölümler
 
-Bölüm düzeyinde menzil alanları rotayla aynı yeniden adlandırmayı izler; yolcu ve kargo ayrıntıları ise her bölümün `origin` ve `via` konum özelliklerine taşınır.
+Bölüm düzeyinde menzil alanları rotayla aynı yeniden adlandırmayı izler; yolcu ve yük ayrıntıları ise her bölümün `origin` ve `via` konum özelliklerine taşınır.
 
-| Alan          | Taşındığı yer                           |
+| Alan         | Taşındığı yer                               |
 | ------------- | --------------------------------------- |
 | `rangeStart*` | `range_at_origin`                       |
 | `rangeEnd*`   | `range_at_destination`                  |
 | `steps`       | `sections`                              |
 | `stationId`   | `recommended.legs.station.station_id`   |
 
-Bölümlere ayrıca yeni bir `range_after_charge` alanı da eklenmiştir.
+Bölümlere ayrıca yeni bir `range_after_charge` alanı eklenir.
 
 ## Öne çıkan değişiklikler
 
-Yanıt ayrıca rota kesitleri için yeni ve daha yapılandırılmış bir şekil sunar. Bu aşağıda daha ayrıntılı olarak ele alınmıştır.
+Yanıt ayrıca rota kesimleri için yeni, daha yapılandırılmış bir biçim sunar. Aşağıda daha ayrıntılı olarak ele alınmıştır.
 
-### Kesitler
+### Kesimler
 
-Adımlar (steps), her kesit için başlangıç ve varış ayrıntıları dahil daha ayrıntılı bilgi sağlayan kesitlerle (sections) değiştirilmiştir.
+Adımların yerini, her kesim için başlangıç ve varış ayrıntıları dahil daha ayrıntılı bilgi sağlayan kesimler (sections) almıştır.
 
-```graphql Kesitler {{ mark: [1,13,14,26,27] }}
+```graphql Sections {{ mark: [1,13,14,26,27] }}
 sections {
   type
   tags

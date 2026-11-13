@@ -1,20 +1,9 @@
 ---
-title: "Legacy-API-Referenz"
-description: "Durchsuchen Sie die veralteten Queries, Mutations und Subscriptions und finden Sie die Operation, die jede davon ersetzt."
+title: Veraltete Operationen
+description: "Durchsuchen Sie die veralteten Queries, Mutations und Subscriptions und finden Sie die Operation, die jeweils an ihre Stelle tritt."
+toc: false
 ---
 
-## Richtlinie zur Veraltung
+Diese Operationen sind veraltet. Eine veraltete Operation funktioniert mindestens 12 Monate lang weiterhin normal. Danach wird sie entfernt, und Anfragen, die sie verwenden, geben GraphQL-Fehler zurück. Den Zeitplan und die jeweils ersetzende Operation finden Sie unter [Veraltete Funktionen](/deprecations).
 
-Diese Operationen sind veraltet. Eine veraltete Operation funktioniert mindestens 12 Monate lang normal. Nach diesem Zeitraum wird sie entfernt, und Anfragen, die sie verwenden, geben GraphQL-Fehler zurück. Den Zeitplan finden Sie unter [veraltete Funktionen](/deprecations).
-
-## Ersatz-Operationen
-
-Neue Integrationen sollten die unten aufgeführten Ersatz-Operationen verwenden.
-
-| Legacy-Operation | Ersatz |
-| --- | --- |
-| [`newRoute` Mutation](/api-reference/legacy/route/mutation-new-route) | [`createRoute` Mutation](/api-reference/core/route/mutation-create-route) |
-| [`route` Query](/api-reference/legacy/route/query-route) | [`getRoute` Query](/api-reference/core/route/query-get-route) |
-| [`routePath` Query](/api-reference/legacy/route/query-route-path) | Feld `RouteDetails.path_plot` |
-| [`routeEmissions` Query](/api-reference/legacy/route/query-route-emissions) | [`getRouteEmissions` Query](/api-reference/core/emissions/query-emissions) |
-| [`routeUpdatedById` Subscription](/api-reference/legacy/route/subscription-route-updated-by-id) | [`route` Subscription](/api-reference/core/route/subscription-route) |
+<ApiReferenceOverview product="legacy" />

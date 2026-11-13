@@ -1,28 +1,28 @@
 ---
 title: Percorso
-description: "Pianifica percorsi per EV con soste di ricarica automatiche in base a capacità della batteria, consumo, topografia, meteo e disponibilità delle reti di ricarica."
+description: "Pianifica percorsi per veicoli elettrici con soste di ricarica automatiche in base a capacità della batteria, consumo energetico, topografia, meteo e disponibilità delle reti di ricarica."
 tag: Guida
 ---
 
-La pianificazione dei percorsi per gli EV presenta sfide uniche. La capacità della batteria, il consumo energetico reale, la topografia, il meteo e la disponibilità della rete di ricarica determinano se un veicolo raggiungerà la destinazione.
+Pianificare percorsi per veicoli elettrici comporta sfide uniche. Capacità della batteria, consumo energetico reale, topografia, meteo e disponibilità delle reti di ricarica determinano tutti se un veicolo raggiungerà la destinazione.
 
-La Route API considera tutte queste variabili per trovare percorsi EV ottimali. Grazie a un modello di consumo energetico di livello mondiale, inserisce automaticamente le tappe di ricarica esattamente quando e dove servono. I percorsi sono completamente personalizzabili, così puoi perfezionarli per adattarli alle tue regole di business.
+La Route API considera tutte queste variabili per trovare percorsi ottimali per veicoli elettrici. Grazie a un modello di consumo energetico di livello mondiale, inserisce automaticamente le soste di ricarica esattamente quando e dove servono. I percorsi sono completamente personalizzabili, così puoi perfezionarli in base alle tue regole aziendali.
 
 ## Come funziona
 
-Per garantire prestazioni elevate, la Route API opera in modo asincrono, seguendo lo stesso [pattern asincrono](/api-reference/core/api/async-operations) utilizzato in tutta l'API. La creazione e il recupero di un percorso avvengono in passaggi separati.
+Per garantire prestazioni elevate, la Route API opera in modo asincrono, seguendo lo stesso [pattern asincrono](/api-reference/core/api/async-operations) usato in tutta l'API. La creazione e il recupero di un percorso avvengono in passaggi separati.
 
 1. **Crea un percorso**
-   Chiama la mutation `createRoute` con almeno un `vehicle`, un `origin` e una `destination`. La mutation restituisce subito l'`id` del percorso, che userai nel passaggio successivo per monitorare e recuperare il percorso. Sono disponibili molte altre opzioni di personalizzazione; vedi [personalizza il tuo percorso](#personalizza-il-tuo-percorso) più sotto.
+   Chiama la mutation `createRoute` con almeno un `vehicle`, un `origin` e una `destination`. La mutation restituisce subito un `id` del percorso, che userai nel passaggio successivo per seguire e recuperare il percorso. Sono disponibili molte altre opzioni di personalizzazione; consulta [personalizza il tuo percorso](#personalizza-il-tuo-percorso) più sotto.
 2. **Apri una subscription**
    Sottoscrivi la subscription `route` usando l'`id` del passaggio precedente. Mentre il percorso viene calcolato, la subscription invia aggiornamenti di stato che puoi usare per gestire uno stato di caricamento asincrono nella tua interfaccia.
 3. **Mostra il risultato**
-   Quando lo `status` del percorso diventa `done`, `error` o `not_found`, mostra l'interfaccia corrispondente a quell'esito.
+   Quando lo `status` del percorso si risolve in `done`, `error` o `not_found`, mostra l'interfaccia corrispondente a quell'esito.
 4. **Recupera di nuovo su richiesta**
-   Un percorso che ha raggiunto uno stato finale positivo viene memorizzato con tutti i suoi dettagli. Se devi mostrarlo di nuovo in seguito, ad esempio dopo esserci tornato con la navigazione, usa la query `getRoute` invece di aprire una nuova subscription.
+   Un percorso che ha raggiunto uno stato finale con esito positivo viene memorizzato con tutti i suoi dettagli. Se devi mostrarlo di nuovo in seguito, ad esempio dopo essere tornato a esso, usa la query `getRoute` invece di aprire una nuova subscription.
 
 > [!WARNING] Veicoli ibridi
-> I veicoli ibridi e ibridi plug-in non si affidano esclusivamente alla batteria, quindi i loro percorsi non includono tappe di ricarica.
+> I veicoli ibridi e ibridi plug-in non si affidano solo alla batteria, quindi i loro percorsi non includono soste di ricarica.
 
 ## Personalizza il tuo percorso
 
@@ -30,20 +30,20 @@ Per garantire prestazioni elevate, la Route API opera in modo asincrono, seguend
 
 | Funzionalità | Descrizione |
 | --- | --- |
-| [Punti di passaggio](/api-reference/core/route/mutation-create-route#arg-input-via) | Aggiungi tappe intermedie. Fornisci `via.properties.station.station_id` per forzare una tappa di ricarica in una stazione specifica, oppure solo `via.geometry` per un semplice punto di transito senza ricarica. |
-| [Durata della tappa](/api-reference/core/route/mutation-create-route#arg-input-via-properties-station-stop_duration) | Imposta per quanto tempo, in secondi, il veicolo resta in un punto di passaggio o a destinazione, usando `properties.station.stop_duration` o `properties.location.stop_duration`. |
+| [Waypoint](/api-reference/core/route/mutation-create-route#arg-input-via) | Aggiungi tappe intermedie. Fornisci `via.properties.station.station_id` per forzare una sosta di ricarica in una stazione specifica, oppure solo `via.geometry` per un semplice punto di transito senza ricarica. |
+| [Durata della sosta](/api-reference/core/route/mutation-create-route#arg-input-via-properties-station-stop_duration) | Imposta per quanto tempo, in secondi, il veicolo resta a un waypoint o alla destinazione, usando `properties.station.stop_duration` o `properties.location.stop_duration`. |
 | [Ricarica in autostrada](/api-reference/core/route/mutation-create-route#arg-input-station_preferences) | Dai priorità alle stazioni di ricarica situate direttamente sull'autostrada con `station_preferences.prefer_highway_charging`, evitando soste che richiedono di uscire dall'autostrada. |
-| [Meteo](/api-reference/core/route/mutation-create-route#arg-input-weather) | Applica un preset meteo o condizioni meteo personalizzate al modello di consumo. Per impostazione predefinita usa i dati meteo in tempo reale. |
-| [Stagione](/api-reference/core/route/mutation-create-route#arg-input-season) | Presuppone condizioni meteo `summer`, `winter` o `current`, come alternativa più semplice a `weather`. |
-| [Elementi del percorso da evitare](/api-reference/core/route/mutation-create-route#arg-input-avoid) | Evita `toll_road` o `ferry` secondo il principio del massimo impegno. |
-| [Classifica degli operatori](/api-reference/core/route/mutation-create-route#arg-input-operators-ranking) | Preferisci reti di ricarica specifiche con `type: preferred`, oppure limita il percorso solo a quelle reti con `type: required`. Classifica gli operatori come `high`, `medium` o `low` e limita la classifica a paesi specifici per ciascun operatore. |
-| [Esclusione di operatori](/api-reference/core/route/mutation-create-route#arg-input-operators-exclude) | Escludi completamente un operatore dal percorso con `operators.exclude`. Se non è impostato a livello di richiesta, usa la configurazione della dashboard del tuo progetto. |
-| [Elusione di operatori](/api-reference/core/route/mutation-create-route#arg-input-operators-avoid) | Evita un operatore senza escluderlo del tutto, usando `operators.avoid`. |
+| [Meteo](/api-reference/core/route/mutation-create-route#arg-input-weather) | Applica al modello di consumo un preset meteo o condizioni meteo personalizzate. Per impostazione predefinita usa i dati meteo in tempo reale. |
+| [Stagione](/api-reference/core/route/mutation-create-route#arg-input-season) | Presupponi condizioni meteo `summer`, `winter` o `current`, come alternativa più semplice a `weather`. |
+| [Elementi del percorso da evitare](/api-reference/core/route/mutation-create-route#arg-input-avoid) | Evita `toll_road` o `ferry` secondo il principio del best effort. |
+| [Classificazione degli operatori](/api-reference/core/route/mutation-create-route#arg-input-operators-ranking) | Preferisci specifiche reti di ricarica con `type: preferred`, oppure limita l'instradamento solo a quelle reti con `type: required`. Classifica gli operatori come `high`, `medium` o `low` e limita la classificazione a paesi specifici per ciascun operatore. |
+| [Esclusione degli operatori](/api-reference/core/route/mutation-create-route#arg-input-operators-exclude) | Escludi completamente un operatore dal percorso con `operators.exclude`. Se non è impostato a livello di richiesta, si usa la configurazione della dashboard del tuo progetto. |
+| [Evitare gli operatori](/api-reference/core/route/mutation-create-route#arg-input-operators-avoid) | Evita un operatore senza escluderlo del tutto, usando `operators.avoid`. |
 | [Stazioni di ricarica alternative](/api-reference/core/route/mutation-create-route#arg-input-alternative_station_radius) | Cerca stazioni di ricarica alternative entro un raggio compreso tra 500 e 5000 metri lungo il percorso. |
-| [Percorsi alternativi](/api-reference/core/route/mutation-create-route#arg-input-alternative_routes) | Richiedi opzioni di percorso aggiuntive, secondo il principio del massimo impegno. Imposta `0` per calcolare solo il percorso consigliato. |
+| [Percorsi alternativi](/api-reference/core/route/mutation-create-route#arg-input-alternative_routes) | Richiedi opzioni di percorso aggiuntive, secondo il principio del best effort. Imposta su `0` per calcolare solo il percorso consigliato. |
 | [Preferenze di guida](/api-reference/core/route/mutation-create-route#arg-input-driving_preferences) | Regola lo stile di guida con `speed_factor` o `maximum_speed`, oppure scegli uno `style` tra `eco` e `sport`. |
-| [Consapevolezza del traffico](/api-reference/core/route/mutation-create-route#arg-input-traffic_aware) | Tieni conto della congestione del traffico in tempo reale. Contatta il supporto per abilitarla nel tuo progetto. |
+| [Consapevolezza del traffico](/api-reference/core/route/mutation-create-route#arg-input-traffic_aware) | Tieni conto della congestione del traffico in tempo reale. Contatta il supporto per abilitarla sul tuo progetto. |
 | [Orario di partenza](/api-reference/core/route/mutation-create-route#arg-input-departure_time) | Calcola gli orari di arrivo previsti usando il traffico in tempo reale e il meteo storico, attuale o previsto. |
-| [Destinazione come stazione](/api-reference/core/route/mutation-create-route#arg-input-destination-properties-station) | Imposta una stazione specifica come destinazione del percorso. Viene trattata come una tappa senza ricarica. |
-| [Carico del veicolo per punto di passaggio](/api-reference/core/route/mutation-create-route#arg-input-origin-properties-vehicle) | Imposta `occupants`, `total_occupant_weight` e `total_cargo_weight` su `origin` o `via`. Questi valori si propagano per il resto del viaggio e possono essere sovrascritti in qualsiasi punto via successivo. |
-| [Potenza di ricarica minima](/api-reference/core/route/mutation-create-route#arg-input-vehicle-charging-minimum_power) | Per impostazione predefinita, il calcolo del percorso esclude i connettori sotto i 43 kW. Imposta un minimo diverso per adattarlo alla velocità di ricarica del tuo veicolo. I caricatori con potenza nominale superiore vengono comunque selezionati anche se il tuo veicolo si ricarica più lentamente della loro velocità massima. |
+| [Destinazione come stazione](/api-reference/core/route/mutation-create-route#arg-input-destination-properties-station) | Imposta una stazione specifica come destinazione del percorso. Viene trattata come una sosta senza ricarica. |
+| [Carico del veicolo per waypoint](/api-reference/core/route/mutation-create-route#arg-input-origin-properties-vehicle) | Imposta `occupants`, `total_occupant_weight` e `total_cargo_weight` su `origin` o `via`. Questi valori si propagano nel resto del viaggio e possono essere sostituiti in qualsiasi punto via successivo. |
+| [Potenza di ricarica minima](/api-reference/core/route/mutation-create-route#arg-input-vehicle-charging-minimum_power) | Per impostazione predefinita, l'instradamento esclude i connettori sotto i 43 kW. Imposta un minimo diverso in base alla velocità di ricarica del tuo veicolo. I caricatori con potenza nominale più alta vengono comunque selezionati anche se il tuo veicolo ricarica più lentamente della loro velocità massima. |

@@ -1,14 +1,14 @@
 ---
-title: "Supprimer l'avis de l'utilisateur mutation"
-heading: Supprimer l'avis de l'utilisateur
+title: "Mutation de suppression d'avis d'utilisateur"
+heading: "Supprimer l'avis d'un utilisateur"
 description: "Supprimez un avis ajouté par l'utilisateur authentifié avec la mutation deleteUserReview. Il s'agit d'une fonctionnalité premium."
 schemaName: deleteUserReview
 schemaType: Mutation
 ---
 
-Supprimez un avis ajouté par l'utilisateur authentifié à l'aide de la mutation deleteUserReview. Il s'agit d'une fonctionnalité premium. Contactez-nous pour plus d'informations.
+Supprimez un avis ajouté par l'utilisateur authentifié en utilisant la mutation deleteUserReview. Il s'agit d'une fonctionnalité premium. Contactez-nous pour plus d'informations.
 
 ## Mutation
 
-Un `id` d'avis est requis pour le supprimer. Un en-tête `x-token` est obligatoire pour autoriser l'utilisateur. L'avis doit lui appartenir, sinon une erreur se produit.
+Un `id` d'avis est obligatoire pour le supprimer. Un en-tête `x-token` est obligatoire pour autoriser l'utilisateur. L'avis doit lui appartenir, sinon une erreur se produit.
 

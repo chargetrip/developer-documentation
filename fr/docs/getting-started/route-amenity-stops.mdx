@@ -1,39 +1,39 @@
 ---
-title: Arrêts avec services le long de l'itinéraire
+title: Arrêts de commodités le long de l'itinéraire
 ---
 
-Les conducteurs de véhicules électriques aiment souvent choisir eux-mêmes leurs lieux de recharge en fonction des services disponibles à proximité.
+Les conducteurs de VE aiment souvent choisir eux-mêmes leurs lieux de recharge en fonction des commodités à proximité.
 
-La requête `getRouteStationsWithAmenities` renvoie les bornes de recharge situées le long d'un itinéraire existant et à distance de marche de certaines catégories de services, tout en indiquant pour chaque borne le nom des services à proximité. Les conducteurs peuvent ainsi organiser leur arrêt de recharge autour d'un service précis, comme leur chaîne de restaurants préférée ou un café avec terrasse.
+La requête `getRouteStationsWithAmenities` renvoie les stations de recharge situées le long d'un itinéraire existant et à distance de marche de catégories de commodités spécifiques, tout en listant pour chaque station les commodités proches par leur nom. Cela permet aux conducteurs de planifier leur arrêt de recharge autour d'une commodité précise, comme leur chaîne de restaurants préférée ou un café avec terrasse.
 
-## Fonctionnement
+## Comment ça fonctionne
  
-L'ajout d'un arrêt avec services à un itinéraire se fait en quatre étapes :
+Ajouter un arrêt de commodité à un itinéraire se fait en quatre étapes :
  
 1. **Créer un itinéraire.** Demandez un itinéraire avec `createRoute`.
-2. **Sélectionner une option d'itinéraire.** Choisissez l'une des options d'itinéraire renvoyées par l'abonnement `route` ou la requête `getRoute`.
-3. **Rechercher des bornes avec services.** Transmettez à `getRouteStationsWithAmenities` l'option d'itinéraire choisie en tant que `route_id` et l'identifiant de demande d'itinéraire renvoyé par `createRoute` en tant que `route_request_id`, ainsi que le `amenity_type` recherché et un `time_window` qui définit jusqu'où chercher dans le trajet. Vous obtiendrez une liste de bornes compatibles le long de l'itinéraire, chacune accompagnée des services précis situés à proximité.
-4. **Recalculer l'itinéraire avec la borne sélectionnée.** Une fois que le conducteur a choisi la borne, appelez à nouveau `createRoute` et ajoutez la borne à l'entrée `via` comme arrêt de recharge à l'aide de `via.properties.station.station_id`. Consultez [Itinéraire avec arrêts](/docs/getting-started/route-stop) pour en savoir plus sur ce fonctionnement.
+2. **Sélectionner une option d'itinéraire.** Sélectionnez l'une des options d'itinéraire renvoyées par la souscription `route` ou la requête `getRoute`.
+3. **Rechercher des stations avec commodités.** Transmettez l'option d'itinéraire choisie en tant que `route_id` et l'identifiant de la demande d'itinéraire renvoyé par `createRoute` en tant que `route_request_id` à `getRouteStationsWithAmenities`. Vous obtiendrez une liste de stations compatibles le long de l'itinéraire, chacune avec les lieux de commodités spécifiques à proximité.
+4. **Recalculer l'itinéraire avec la station sélectionnée.** Une fois que le conducteur a choisi la station, appelez à nouveau `createRoute` et ajoutez la station à l'entrée `via` en tant qu'arrêt de recharge à l'aide de `via.properties.station.station_id`. Consultez [Itinéraire avec arrêts](/docs/getting-started/route-stop) pour plus de détails sur son fonctionnement.
 
-## Sélection des bornes
+## Comment les stations sont sélectionnées
 
-Une borne n'est incluse dans les résultats que si elle remplit **tous** les critères suivants :
+Une station n'est incluse dans les résultats que si elle répond à **tous** les critères suivants :
  
 | Critère | Description |
 |---|---|
-| Fenêtre de trajet | La borne est atteinte dans la fenêtre de temps demandée (`center` ± `margin`), mesurée en secondes de temps de trajet depuis le début de l'itinéraire. |
-| Compatibilité du véhicule | La borne dispose d'au moins un connecteur compatible avec le véhicule utilisé dans l'itinéraire d'origine. |
-| Distance par rapport à l'itinéraire | La borne se trouve dans la distance maximale autorisée par rapport au tracé de l'itinéraire. |
-| Correspondance des services | Au moins un service du type demandé se trouve dans la distance de marche autorisée depuis la borne. |
+| Fenêtre de trajet | La station est atteinte dans la fenêtre de temps demandée (`center` ± `margin`), mesurée en secondes de temps de trajet depuis le début de l'itinéraire. |
+| Compatibilité du véhicule | La station dispose d'au moins un connecteur compatible avec le véhicule utilisé dans l'itinéraire d'origine. |
+| Distance par rapport à l'itinéraire | La station se trouve à une distance maximale autorisée du tracé de l'itinéraire. |
+| Correspondance de commodité | Au moins une commodité du type demandé se trouve à la distance de marche autorisée de la station. |
  
-Si aucune borne ne remplit tous les critères, essayez d'élargir la `margin` de votre fenêtre de temps ou d'assouplir vos `filters`.
+Si aucune station ne répond à tous les critères, essayez d'élargir la `margin` de votre fenêtre de temps ou d'assouplir vos `filters`.
  
 ## Exemples
  
 <details>
-  <summary>Rechercher des bornes avec un café après environ 1 heure de trajet</summary>
-  Recherchez des bornes compatibles avec un café à distance de marche, atteintes entre 45 et 75 minutes après le début du trajet (`center: 3600`, `margin: 900`).
-```graphql Exemple de requête  {{ mark: [5,6] }}
+  <summary>Rechercher des stations avec un café environ 1 heure après le début du trajet</summary>
+  Recherchez des stations compatibles avec un café à distance de marche, atteintes entre 45 et 75 minutes après le début du trajet (`center: 3600`, `margin: 900`).
+```graphql Example request  {{ mark: [5,6] }}
 getRouteStationsWithAmenities(
   input: {
     route_id: "6527e1f1a8b4c2d3e4f5a6b7"
@@ -52,7 +52,7 @@ getRouteStationsWithAmenities(
 }
 ```
  
-```json Exemple de réponse
+```json Example response
 {
   "data": {
     "getRouteStationsWithAmenities": [
@@ -79,9 +79,9 @@ getRouteStationsWithAmenities(
 </details>
 
 <details>
-  <summary>Recalculer un itinéraire avec la borne sélectionnée et un arrêt de 45 minutes</summary>
-  Une fois que le conducteur a sélectionné une borne, créez un nouvel itinéraire qui l'inclut comme arrêt de recharge. Définir `stop_duration` sur `2700` indique au planificateur d'itinéraire que le conducteur restera au moins 45 minutes, afin d'optimiser la recharge autour de la pause déjeuner.
-```graphql Exemple de requête  {{ mark: [12,13,14,15,16,17,18,19,20,21,22] }}
+  <summary>Recalculer un itinéraire avec la station de commodité sélectionnée et un arrêt de 45 minutes</summary>
+  Une fois que le conducteur a sélectionné une station, créez un nouvel itinéraire qui l'inclut en tant qu'arrêt de recharge. Définir `stop_duration` sur `2700` indique au planificateur d'itinéraire que le conducteur restera au moins 45 minutes, de sorte que la recharge est optimisée autour de la pause déjeuner.
+```graphql Example request  {{ mark: [12,13,14,15,16,17,18,19,20,21,22] }}
 createRoute(
   input: {
     vehicle: { id: "607823b2c246f9001b97b1a2" }

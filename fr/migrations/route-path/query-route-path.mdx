@@ -8,7 +8,7 @@ migrateBefore: 01-01-2027
 
 Migrer avant : T1 2027
 
-Migrez de l'ancien service Route vers la dernière version. Le nouveau service offre un schéma réorganisé, des préférences d'opérateur par pays, un calcul d'itinéraire plus rapide et une meilleure maintenabilité.
+Migrez de l'ancien service Route vers la dernière version. Le nouveau service apporte un schéma réorganisé, des préférences d'opérateurs par pays, un calcul d'itinéraire plus rapide et une meilleure maintenabilité.
 
 ## Opérations
 
@@ -16,12 +16,12 @@ Migrez de l'ancien service Route vers la dernière version. Le nouveau service o
 | ----------- | ------------------------------------------------------|
 | `routePath` | [`getRoute`](/api-reference/core/route/query-get-route)    |
 
-## Changements généraux du schéma
+## Modifications générales du schéma
 
 - **Typage explicite** : les champs JSON auparavant flexibles sont désormais explicitement typés dans le schéma pour améliorer la structure et la validation.
 - **Conventions de nommage** : les champs utilisent désormais `snake_case` au lieu de `camelCase`.
-- **Prise en charge des unités** : les entrées numériques prennent désormais en charge différents types d'unités, exprimées sous la forme d'un objet avec `value`, `type` et une `source` facultative (`manual`, `telemetry` ou `default`).
+- **Prise en charge des unités** : les entrées numériques prennent désormais en charge différents types d'unités, exprimées sous la forme d'un objet avec `value`, `type` et un `source` facultatif (`manual`, `telemetry` ou `default`).
 
-## Changements de requête
+## Modifications de la requête
 
-Le chemin de l'itinéraire est désormais déjà inclus dans la réponse `getRoute` sous `recommended.path_plot`, une requête distincte pour le récupérer n'est donc plus nécessaire.
+Le chemin de l'itinéraire est désormais déjà inclus dans la réponse de `getRoute` sous `recommended.path_plot` : une requête distincte pour le récupérer n'est donc plus nécessaire.

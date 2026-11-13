@@ -1,13 +1,13 @@
 ---
 title: Eşleştirilmiş rota sorgusu
 heading: Eşleştirilmiş rota
-description: "Yeni abonelik açmadan, getMatchedRoute sorgusuyla daha önce hesaplanmış eşleştirilmiş rotayı yeniden alın."
+description: "getMatchedRoute sorgusuyla daha önce hesaplanmış bir eşleştirilmiş rotayı yeni bir subscription açmadan yeniden alın."
 schemaName: getMatchedRoute
 schemaType: Query
 ---
 
-getMatchedRoute sorgusunu kullanarak daha önce hesaplanmış bir eşleştirilmiş rotanın ayrıntılarını alın. Bu, yeni bir abonelik açmadan eşleştirilmiş bir rotayı yeniden almak istediğinizde kullanışlıdır.
+getMatchedRoute sorgusunu kullanarak daha önce hesaplanmış bir eşleştirilmiş rotanın ayrıntılarını alın. Yeni bir subscription açmadan bir eşleştirilmiş rotayı yeniden almak istediğinizde kullanışlıdır.
 
 ## Sorgu
 
-Rota ayrıntılarını almak için bir eşleştirilmiş rota `id` gereklidir. `id`, [createMatchedRoute mutasyonu](/api-reference/core/matched-route/mutation-create-matched-route) üzerinden alınabilir.
+Rota ayrıntılarını almak için bir eşleştirilmiş rota `id` değeri gerekir. `id` değerini [createMatchedRoute mutation'ı](/api-reference/core/matched-route/mutation-create-matched-route) ile alabilirsiniz.

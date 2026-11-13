@@ -6,9 +6,9 @@ migrateBefore: 01-01-2027
 
 # Crea percorso
 
-Migra entro: Q1 2027
+Esegui la migrazione entro: Q1 2027
 
-Esegui la migrazione dal servizio Route legacy all'ultima versione. Il nuovo servizio offre uno schema riorganizzato, preferenze degli operatori per paese, un calcolo del percorso più veloce e una maggiore manutenibilità.
+Passa dal servizio Route legacy alla versione più recente. Il nuovo servizio offre uno schema riorganizzato, preferenze degli operatori per paese, un calcolo del percorso più rapido e maggiore manutenibilità.
 
 ## Operazioni
 
@@ -18,9 +18,9 @@ Esegui la migrazione dal servizio Route legacy all'ultima versione. Il nuovo ser
 
 ## Modifiche generali allo schema
 
-- **Tipizzazione esplicita**: i campi JSON in precedenza flessibili ora sono tipizzati esplicitamente nello schema per migliorare struttura e validazione.
+- **Tipizzazione esplicita**: i campi JSON in precedenza flessibili sono ora tipizzati esplicitamente nello schema per migliorare struttura e validazione.
 - **Convenzioni di denominazione**: i campi ora usano `snake_case` invece di `camelCase`.
-- **Supporto delle unità**: gli input numerici ora supportano diversi tipi di unità, espressi come oggetto con `value`, `type` e un `source` facoltativo (`manual`, `telemetry` o `default`).
+- **Supporto delle unità**: gli input numerici ora supportano diversi tipi di unità, espressi come oggetto con `value`, `type` e un `source` opzionale (`manual`, `telemetry` o `default`).
 
 ## Modifiche alla mutation
 
@@ -28,7 +28,7 @@ L'argomento `input` di `createRoute` è stato riorganizzato e semplificato.
 
 ### routeRequest
 
-A livello radice, i seguenti campi sono stati rimossi. I campi relativi agli operatori sono ora coperti dalle [preferenze degli operatori](#preferenze-degli-operatori), mentre quelli relativi ai servizi sono stati spostati nella loro [query dedicata per i servizi](/api-reference/core/route/query-get-route-stations-with-amenities).
+Al livello radice, i seguenti campi sono stati rimossi. I campi relativi agli operatori sono ora coperti dalle [preferenze degli operatori](#preferenze-degli-operatori), mentre i campi relativi ai servizi sono stati spostati nella loro [query sui servizi](/api-reference/core/route/query-get-route-stations-with-amenities) dedicata.
 
 | Campo                  | Spostato in                           |
 | ---------------------- | -------------------------------------- |
@@ -40,7 +40,7 @@ A livello radice, i seguenti campi sono stati rimossi. I campi relativi agli ope
 
 ### EV
 
-A livello di EV, la maggior parte dei campi di primo livello è stata spostata in un oggetto dedicato `vehicle`.
+A livello di EV, la maggior parte dei campi di primo livello è stata spostata in un oggetto `vehicle` dedicato.
 
 | Campo             | Spostato in                           |
 | ----------------- | -------------------------------------- |
@@ -55,7 +55,7 @@ A livello di EV, la maggior parte dei campi di primo livello è stata spostata i
 
 ### Carico del veicolo
 
-Le proprietà del carico del veicolo non vengono più impostate in un unico punto. Ora sono specificate per ciascun punto `origin` e `via`, offrendo un controllo più granulare sul peso di occupanti e carico per ogni tratta. Si trovano sotto `properties.vehicle` di ciascuna posizione, e i nomi dei loro campi cambiano come segue:
+Le proprietà del carico del veicolo non si impostano più in un unico punto. Ora vengono specificate per ogni punto `origin` e `via`, offrendo un controllo più granulare su occupanti e peso del carico per ogni tratta. Si trovano sotto `properties.vehicle` di ciascuna posizione e i loro nomi di campo cambiano come segue:
 
 | Campo       | Spostato in           |
 | ----------- | --------------------- |
@@ -66,7 +66,7 @@ Le proprietà del carico del veicolo non vengono più impostate in un unico punt
 
 I seguenti dati di telemetria sono stati spostati dal livello radice all'oggetto `vehicle`.
 
-| Campo                 | Spostato in      |
+| Campo                 | Spostato in     |
 | --------------------- | ---------------- |
 | `heading`             | `vehicle`  |
 | `motor_rpm`           | `vehicle`  |
@@ -81,9 +81,9 @@ Alcuni campi dell'argomento `input` hanno ora strutture nuove e più organizzate
 
 ### Preferenze degli operatori
 
-Le preferenze degli operatori sono semplificate in tre livelli: `high`, `medium` e `low`. Ogni voce, che sia in classifica, esclusa o da evitare, può essere limitata a paesi specifici tramite il campo `countries`. Se omesso, vengono considerati tutti i paesi.
+Le preferenze degli operatori sono semplificate in tre livelli: `high`, `medium` e `low`. Ogni voce, che sia classificata, esclusa o da evitare, può essere limitata a paesi specifici tramite il campo `countries`. Se omesso, vengono considerati tutti i paesi.
 
-```graphql Preferenze degli operatori {{ mark: [6,9,12] }}
+```graphql Operator preferences {{ mark: [6,9,12] }}
 input: {
   operators: {
     ranking: {
@@ -108,9 +108,9 @@ input: {
 
 ### Peso totale degli occupanti
 
-Un nuovo campo `total_occupant_weight` ti consente di sostituire il peso predefinito degli occupanti, espresso con il nuovo oggetto unità.
+Un nuovo campo `total_occupant_weight` ti permette di sostituire il peso predefinito degli occupanti, espresso con il nuovo oggetto unità.
 
-```graphql Peso totale degli occupanti {{ mark: [6,7,8,9,10] }}
+```graphql Total occupant weight {{ mark: [6,7,8,9,10] }}
 input: {
   origin: {
     properties: {

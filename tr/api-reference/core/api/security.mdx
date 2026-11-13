@@ -3,14 +3,14 @@ title: Güvenlik
 description: "Uygulama kimliğinizle hangi platformun veya kaynağın istek gönderebileceğini kısıtlayarak uygulamalarınızın yetkisiz kullanımını önleyin."
 ---
 
-`x-app-id` dahil, bir istekle gönderilen başlıklar, ağ trafiğini inceleyen herkes tarafından görülebilir. Uygulamalarınızın yetkisiz kullanımını önlemek için, hangi platformun veya kaynağın kullanabileceğini sınırlayan bir kısıtlama uygulayın.
+`x-app-id` dahil olmak üzere bir istekle gönderilen başlıklar, ağ trafiğini inceleyen herkes tarafından görülebilir. Uygulamalarınızın yetkisiz kullanımını önlemek için, hangi platformun veya kaynağın uygulamayı kullanabileceğini sınırlayan bir kısıtlama uygulayın.
 
-> [!WARNING] Uygulama başına tek kısıtlama
+> [!WARNING] Uygulama başına bir kısıtlama
 > Uygulama başına yalnızca bir kısıtlama uygulanabilir. Kısıtlamaları birleştirmek için, örneğin bir web ve bir mobil istemci için, her biri için ayrı bir uygulama oluşturun.
 
 ## Kısıtlama türleri
 
-Her biri farklı bir platforma veya iletişim modeline uygun dört kısıtlama türü vardır.
+Her biri farklı bir platforma veya iletişim modeline uygun dört kısıtlama türü bulunur.
 
 ### Web
 
@@ -18,7 +18,7 @@ Bir web uygulamasını, `x-app-id` başlığına uygulanan HTTP referrer ile kı
 
 ### Makineden makineye (M2M)
 
-Sunucudan sunucuya iletişimi, uygulama panelinde yapılandırılan IP adresi (IPv4 ve IPv6 desteklenir) ile kısıtlayın. Kimlik bilgileri hiçbir zaman bir tarayıcıya veya cihaza ulaşmadığından bu en güvenli seçenektir.
+Sunucudan sunucuya iletişimi, uygulama panosunda yapılandırılan IP adresi (IPv4 ve IPv6 desteklenir) ile kısıtlayın. Kimlik bilgileri hiçbir zaman bir tarayıcıya veya cihaza ulaşmadığından bu en güvenli seçenektir.
 
 ### Android
 
@@ -26,4 +26,4 @@ Bir Android uygulamasını, her istekle birlikte gönderilen `x-app-identifier` 
 
 ### iOS
 
-Bir iOS uygulamasını, uygulamanın bundle tanımlayıcısını taşıyan `x-app-identifier` başlığıyla kısıtlayın.
+Bir iOS uygulamasını, uygulamanın paket tanımlayıcısını taşıyan `x-app-identifier` başlığıyla kısıtlayın.

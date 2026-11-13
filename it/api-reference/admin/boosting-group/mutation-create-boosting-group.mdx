@@ -1,23 +1,20 @@
 ---
-title: "Crea Boosting Group mutation"
-heading: "Crea Boosting Group"
-description: "Crea un gruppo di stazioni da promuovere durante il calcolo del percorso con la mutation createBoostingGroup."
+title: Mutation Crea gruppo di boosting
+heading: Crea gruppo di boosting
+description: "Crea un gruppo di stazioni da favorire durante il calcolo della rotta con la mutation createBoostingGroup."
 schemaName: createBoostingGroup
 schemaType: Mutation
 ---
 
-Crea un Boosting Group usando la mutation createBoostingGroup. È utile quando vuoi indirizzare i percorsi verso stazioni di ricarica specifiche, ad esempio grazie a un accordo commerciale più vantaggioso. I gruppi attivi vengono applicati automaticamente a ogni percorso calcolato con [createRoute](/api-reference/core/route/mutation-create-route). Per saperne di più, consulta la [guida ai Boosting Groups](/docs/getting-started/route-boosting-groups).
+Crea un gruppo di boosting utilizzando la mutation createBoostingGroup. È utile quando vuoi orientare le rotte verso specifiche stazioni di ricarica, ad esempio per un accordo commerciale più vantaggioso. I gruppi attivi vengono applicati automaticamente a ogni rotta che calcoli con [createRoute](/api-reference/core/route/mutation-create-route). Per scoprire come funziona, consulta la [guida ai gruppi di boosting](/docs/getting-started/route-boosting-groups).
 
 ## Mutation
 
-Sono necessari un `name`, un `client_id` e un elenco di `stations`. Identifica ogni stazione tramite il suo `id` oppure tramite l'`external_id` usato dal tuo fornitore di stazioni. Imposta `status` su `inactive` per creare il gruppo senza ancora usarlo per il calcolo dei percorsi.
-
-> [!WARNING] Alpha
-> Questa operazione è in alpha e non è disponibile nei piani gratuiti. Contatta il supporto per l'accesso.
+Sono obbligatori un `name`, un `client_id` e un elenco di `stations`. Identifica ogni stazione tramite il suo `id` oppure tramite l'`external_id` usato dal tuo provider di stazioni. Imposta `status` su `inactive` per creare il gruppo senza utilizzarlo ancora per il calcolo delle rotte.
 
 <details>
-  <summary>Creare un Boosting Group inattivo con due stazioni.</summary>
-  Una stazione è identificata dal suo `id` interno, l'altra dall'`external_id` del tuo fornitore.
+  <summary>Crea un gruppo di boosting inattivo con due stazioni.</summary>
+  Una stazione è identificata dal suo `id` interno, l'altra dall'`external_id` del tuo provider.
 
 ```graphql Example request
 mutation CreateBoostingGroup {

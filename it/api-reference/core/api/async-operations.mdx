@@ -1,27 +1,27 @@
 ---
 title: Operazioni asincrone
-description: "Scopri come funzionano le operazioni asincrone nell'API: creale con una mutation, poi segui e recupera il risultato con una subscription o una query."
+description: "Scopri come funzionano le operazioni asincrone nell'API: crea con una mutation, poi monitora e recupera il risultato con una subscription o una query."
 ---
 
-Alcune operazioni, come la creazione di un percorso o di un percorso associato, vengono eseguite in modo asincrono per mantenere l'API reattiva. Invece di attendere che una mutation restituisca il risultato completo, ottieni subito un `id` e lo usi per seguire e recuperare il risultato.
+Alcune operazioni, come la creazione di una rotta o di una rotta abbinata, vengono eseguite in modo asincrono per mantenere l'API reattiva. Invece di attendere che una mutation restituisca il risultato completo, ottieni subito un `id` e lo usi in seguito per monitorarlo e recuperarlo.
 
 ## Come funziona
 
 1. **Crea**
-   Chiama la mutation. Restituisce subito un `id`, che userai nel passaggio successivo per seguire e recuperare il risultato.
+   Chiama la mutation. Restituisce subito un `id`, che userai nel passaggio successivo per monitorare e recuperare il risultato.
 2. **Apri una subscription**
-   Sottoscrivi usando l'`id` del passaggio precedente. Mentre il risultato viene calcolato, la subscription invia aggiornamenti di stato che puoi usare per gestire uno stato di caricamento asincrono nella tua UI.
+   Sottoscriviti usando l'`id` del passaggio precedente. Mentre il risultato viene calcolato, la subscription invia aggiornamenti di stato che puoi usare per gestire uno stato di caricamento asincrono nella tua interfaccia.
 3. **Mostra il risultato**
-   Quando `status` assume un valore finale, mostra la UI corrispondente a quell'esito.
+   Quando `status` assume un valore finale, mostra l'interfaccia corrispondente a quell'esito.
 4. **Recupera di nuovo un risultato completato**
-   Quando un risultato raggiunge uno stato finale, è già precalcolato. Se ti serve di nuovo più tardi, ad esempio dopo esserci tornato, usa la query corrispondente invece di aprire una nuova subscription.
+   Quando un risultato raggiunge uno stato finale, è già precalcolato. Se ti serve di nuovo in seguito, ad esempio dopo esserci tornato, usa la query corrispondente invece di aprire una nuova subscription.
 
 ## Dove si applica
 
 | Funzionalità | Mutation | Subscription | Query |
 | --- | --- | --- | --- |
-| [Percorso](/docs/getting-started/route) | `createRoute` | `route` | `getRoute` |
-| [Percorso associato](/api-reference/core/matched-route/mutation-create-matched-route) | `createMatchedRoute` | `matchedRoute` | `getMatchedRoute` |
-| [Isolina](/api-reference/core/isoline/mutation-create-isoline) | `createIsoline` | `isoline` | `isoline` |
-| [Percorso camion](/api-reference/core/truck-route/mutation-create-truck-route) | `createTruckRoute` | `truckRoute` | `getTruckRoute` |
+| [Rotta](/docs/getting-started/route) | `createRoute` | `route` | `getRoute` |
+| [Rotta abbinata](/api-reference/core/matched-route/mutation-create-matched-route) | `createMatchedRoute` | `matchedRoute` | `getMatchedRoute` |
+| [Isoline](/api-reference/core/isoline/mutation-create-isoline) | `createIsoline` | `isoline` | `isoline` |
+| [Rotta camion](/api-reference/core/truck-route/mutation-create-truck-route) | `createTruckRoute` | `truckRoute` | `getTruckRoute` |
 | [Navigazione](/api-reference/core/navigation/mutation-start-navigation) | `startNavigation` | `navigation` | `navigation` |

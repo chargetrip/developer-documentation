@@ -1,14 +1,13 @@
 ---
-title: "Liste des équipements query"
+title: Requête de liste des équipements
 heading: Liste des équipements
-description: "Listez les services autour d'une station avec la query amenityList, comme les restaurants et commerces à visiter pendant la recharge d'un véhicule."
+description: "Listez les équipements autour d'une station avec la requête amenityList, tels que les restaurants et les commerces à visiter pendant la recharge d'un véhicule."
 schemaName: amenityList
 schemaType: Query
 ---
 
-Obtenez la liste des équipements disponibles autour d'une station donnée à l'aide de la requête amenityList. Elle est utile lorsque vous souhaitez afficher les restaurants, commerces ou autres installations à proximité pendant la recharge d'un véhicule.
+Obtenez la liste des équipements disponibles autour d'une station donnée avec la requête amenityList. C'est utile lorsque vous souhaitez afficher les restaurants, commerces ou autres services à proximité pendant la recharge d'un véhicule.
 
-## Query
+## Requête
 
-Un `id` de station est requis pour obtenir ses équipements. L'`id` peut être obtenu via un [itinéraire](/api-reference/core/route/query-get-route), le [service de tuiles](/api-reference/core/tiles/mvt) ou la [requête station around](/api-reference/core/station/query-station-around). Utilisez l'argument `filter` pour affiner les résultats selon des critères spécifiques, ainsi que les arguments `size` et `page` pour les [paginer](/api-reference/core/api/pagination).
-
+Un `id` de station est requis pour obtenir ses équipements. L'`id` peut être obtenu via un [itinéraire](/api-reference/core/route/query-get-route), le [service de tuiles](/api-reference/core/tiles/mvt) ou la [requête de stations à proximité](/api-reference/core/station/query-station-around). Utilisez l'argument `filter` pour affiner les résultats selon des critères précis, et les arguments `size` et `page` pour les [paginer](/api-reference/core/api/pagination).

@@ -1,19 +1,19 @@
 ---
 title: Paginazione
-description: "Scorri le query di elenco con la paginazione basata su cursore e su offset, compresi i limiti che si applicano a ogni pagina."
+description: "Scorri le query di elenco con la paginazione basata su cursore e quella basata su offset, inclusi i limiti che si applicano a ogni pagina."
 ---
 
-Per mantenere l'API veloce e reattiva, le query di elenco limitano la quantità di dati restituiti in una singola richiesta. Nell'API vengono utilizzati due tipi di paginazione:
+Per mantenere l'API veloce e reattiva, le query di elenco limitano la quantità di dati restituita in una singola richiesta. Nell'API vengono usati due tipi di paginazione:
 
-- Basata su cursore (attuale): utilizzata dalle query di elenco di nuova realizzazione.
-- Basata su offset (legacy): utilizzata dalla maggior parte delle query di elenco esistenti. Verranno prima o poi sostituite da versioni basate su cursore.
+- Basata su cursore (attuale): usata dalle query di elenco sviluppate di recente.
+- Basata su offset (legacy): usata dalla maggior parte delle query di elenco esistenti. In futuro verranno sostituite da versioni basate su cursore.
 
 > [!WARNING] Limiti di paginazione
 > Indipendentemente dal tipo di paginazione, le query di elenco restituiscono al massimo 100 elementi per pagina, ad eccezione della query `getRouteStationsWithAmenities`, che è limitata a 10.
 
 ## Paginazione basata su cursore
 
-La paginazione basata su cursore è lo standard attuale. Ti permette di definire il punto di partenza di una richiesta tramite un cursore, un identificatore univoco per una posizione nel set di risultati.
+La paginazione basata su cursore è lo standard attuale. Ti permette di definire il punto di partenza di una richiesta tramite un cursore, un identificatore univoco di una posizione nell'insieme dei risultati.
 
 ### Argomenti
 
@@ -21,17 +21,17 @@ La paginazione basata su cursore è lo standard attuale. Ti permette di definire
 : Il numero di elementi da restituire.
 
 `after` · <span class="text-muted">String</span>
-: Il cursore da cui iniziare. Ometti questo argomento, o impostalo su `null`, per recuperare la prima pagina. Per le pagine successive, usa il valore `page_info.end_cursor` della risposta precedente.
+: Il cursore da cui partire. Ometti questo argomento, o impostalo su `null`, per ottenere la prima pagina. Per le pagine successive, usa il valore `page_info.end_cursor` della risposta precedente.
 
 ### Risposta
 
 La risposta restituisce i risultati direttamente tramite un array `nodes`, insieme ai metadati di paginazione.
 
 `nodes` · <span class="text-muted">Array</span>
-: L'elenco degli oggetti dati per la pagina corrente.
+: L'elenco degli oggetti dati della pagina corrente.
 
 `total_count` · <span class="text-muted">Integer</span>
-: Il numero totale di elementi che corrispondono alla query, su tutte le pagine.
+: Il numero totale di elementi che corrispondono alla query, in tutte le pagine.
 
 `page_info.has_next_page` · <span class="text-muted">Boolean</span>
 : Indica se sono disponibili altri risultati dopo la pagina corrente.
@@ -47,7 +47,7 @@ La risposta restituisce i risultati direttamente tramite un array `nodes`, insie
 
 ## Paginazione basata su offset (legacy)
 
-La paginazione basata su offset è lo standard legacy, ancora utilizzato dalla maggior parte delle query di elenco. Usa `page` per saltare un determinato numero di record e `size` per restituire una finestra fissa di risultati.
+La paginazione basata su offset è lo standard legacy, ancora usato dalla maggior parte delle query di elenco. Usa `page` per saltare un numero definito di record e `size` per restituire una finestra fissa di risultati.
 
 ### Argomenti
 
@@ -55,7 +55,7 @@ La paginazione basata su offset è lo standard legacy, ancora utilizzato dalla m
 : Il numero di elementi da restituire per pagina.
 
 `page` · <span class="text-muted">Integer</span>
-: Il numero della pagina da recuperare. Ometti questo argomento, o impostalo su `0`, per recuperare la prima pagina.
+: Il numero della pagina da ottenere. Ometti questo argomento, o impostalo su `0`, per ottenere la prima pagina.
 
 ### Risposta
 

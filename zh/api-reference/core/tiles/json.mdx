@@ -1,14 +1,14 @@
 ---
 title: JSON
-description: "使用 JSON 瓦片服务获取 JSON 格式的充电站相关地理数据，请求路径中包含缩放级别和瓦片坐标。"
+description: "通过 JSON 瓦片服务以 JSON 格式获取与充电站相关的地理数据，请求路径中使用缩放级别和瓦片坐标。"
 tag: Rest
 ---
 
-JSON 瓦片服务以 JSON 格式提供与充电站相关的地理数据。
+JSON 瓦片服务以 JSON 格式提供与充电站相关的地理数据访问。
 
 ## 设置
 
-要以 JSON 格式获取充电站数据，请向以下端点发送请求：
+要以 JSON 格式访问充电站数据，请向以下端点发送请求：
 
 ```bash Tile / JSON / Base URL
 https://api.chargetrip.io/v2/station/{z}/{x}/{y}/tile.json
@@ -20,13 +20,75 @@ JSON URL 使用以下路径参数：
 - `x`：瓦片的 x 坐标。
 - `y`：瓦片的 y 坐标。
 
-大多数地图提供商都内置了将纬度和经度转换为像素坐标的方法。若要手动将纬度和经度坐标转换为 x 和 y，请使用 [Web 墨卡托投影](https://en.wikipedia.org/wiki/Web_Mercator_projection)。
+大多数地图提供商都内置了将纬度和经度转换为像素坐标的方法。要手动将纬度和经度坐标转换为 x 和 y，请使用[Web 墨卡托投影](https://en.wikipedia.org/wiki/Web_Mercator_projection)。
 
 ### 筛选
-使用 `filter` 查询参数，根据特定条件筛选返回的充电站。更多信息请参见[筛选文档](/api-reference/core/tiles/filters)。
+使用 `filter` 查询参数按特定条件筛选返回的充电站。更多信息请参阅[筛选文档](/api-reference/core/tiles/filters)。
 
 ### 选择器
-使用 `station_properties[]` 查询参数指定为每个充电站要素返回的字段。更多信息请参见[选择器文档](/api-reference/core/tiles/selectors)。
+使用 `station_properties[]` 查询参数指定每个充电站要素返回的字段。更多信息请参阅[选择器文档](/api-reference/core/tiles/selectors)。
 
+## 响应
+API 返回一个 GeoJSON `FeatureCollection`，其中包含必需的 GeoJSON 字段（id、type、geometry 和 properties）。`features` 中的每一项代表单个充电站（`count: 1`）或充电站聚合点（`count > 1`）。
+
+
+
+`id` · `string` · <span class="text-accent">mandatory</span>
+: 充电站的唯一标识符。仅在单个充电站要素上返回。
+
+`type` · `string` · <span class="text-accent">mandatory</span>
+: 始终设置为 `"Feature"`。
+
+`geometry` · `object` · <span class="text-accent">mandatory</span>
+: 标准 GeoJSON `Point` 几何对象，包含 `[longitude, latitude]` 坐标。
+
+`properties` · `object` · <span class="text-accent">mandatory</span>
+: 要素属性。默认情况下，充电站要素返回 `{ "count": 1 }`，聚合要素返回 `{ "count": N, "expansion_zoom": Z }`。可以使用[选择器](/api-reference/core/tiles/selectors)请求更多充电站字段。
+
+`properties` 中返回的字段取决于要素类型和提供的选择器：
+
+- 聚合要素：始终返回 `{ "count": N, "expansion_zoom": Z }`。
+
+- 充电站要素：如果未提供选择器，则返回 `{ "count": 1 }`；如果提供了[选择器](/api-reference/core/tiles/selectors)，则仅返回请求的字段。
+
+
+<details>
+  <summary>默认 JSON 瓦片响应</summary>
+
+
+
+```json Example response
+{
+  "type": "FeatureCollection",
+  "features": [
+    // Station feature
+    {
+      "id": "5e5f3e8f8e0c1a0012345678",
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [4.895168, 52.370216]
+      },
+      "properties": {
+        "count": 1
+      }
+    },
+    // Cluster feature
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [5.1214, 52.0907]
+      },
+      "properties": {
+        "count": 4,
+        "expansion_zoom": 14
+      }
+    }
+  ]
+}
+```
+
+</details>
 ### 货币
-使用 `currency` 查询参数设置返回及筛选所用能源价格的货币。更多信息请参阅[货币转换文档](/api-reference/core/tiles/filters)。
+使用 `currency` 查询参数设置返回及筛选所用的能源价格的货币。更多信息请参阅[货币转换文档](/api-reference/core/tiles/filters)。

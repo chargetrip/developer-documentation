@@ -1,15 +1,15 @@
 ---
 title: "Lebenszyklus"
-description: "Erfahren Sie mehr über die Stabilitätsstufen der API, den Unterschied zwischen Breaking und Non-Breaking Changes und den Umgang mit Deprecations."
+description: "Erfahren Sie mehr über die Stabilitätsstufen der API, den Unterschied zwischen Breaking und Non-Breaking Changes und wie Verwerfungen gehandhabt werden."
 ---
 
-Die API basiert auf einem einzigen, sich weiterentwickelnden GraphQL-Endpoint. Diese Architektur stellt sicher, dass neue Funktionen und Leistungsverbesserungen kontinuierlich bereitgestellt werden, ohne dass eine Migration zwischen API-Versionen erforderlich ist.
+Die API basiert auf einem einzigen, sich weiterentwickelnden GraphQL-Endpunkt. Diese Architektur stellt sicher, dass neue Funktionen und Leistungsverbesserungen fortlaufend bereitgestellt werden, ohne dass eine Migration zwischen API-Versionen erforderlich ist.
 
-Diese Seite beschreibt die verschiedenen Stabilitätsstufen der API, die Stabilitätsgarantien der stabilen API, die Arten von Änderungen (breaking vs. nicht-breaking) und wie Verwerfungen gehandhabt werden. Informationen zu Funktionen, die sich derzeit in der Vorschau befinden, finden Sie unter [experimentelle Funktionen](/api-reference/core/api/experimental-features).
+Diese Seite beschreibt die verschiedenen Stabilitätsstufen der API, die Stabilitätsgarantien der stabilen API, die Arten von Änderungen (Breaking vs. Non-Breaking) und wie Verwerfungen gehandhabt werden. Informationen zu Funktionen in der Vorschau finden Sie unter [experimentelle Funktionen](/api-reference/core/api/experimental-features).
 
 ## Funktions-Lebenszyklus
 
-Jede Funktion befindet sich auf einer von drei Stabilitätsstufen: Alpha, Beta oder Stabil. Die meisten Funktionen durchlaufen diese der Reihe nach, und stabile Funktionen können nur über einen Verwerfungsprozess eingestellt werden.
+Jede Funktion befindet sich auf einer von drei Stabilitätsstufen: Alpha, Beta oder Stabil. Die meisten Funktionen durchlaufen sie der Reihe nach, und stabile Funktionen können nur über einen Verwerfungsprozess eingestellt werden.
 
 ```text Lifecycle
 [ ALPHA ] ──> [ BETA ] ──> [ STABLE ] ──> [ DEPRECATED ] ──> [ REMOVED ]
@@ -19,40 +19,40 @@ Jede Funktion befindet sich auf einer von drei Stabilitätsstufen: Alpha, Beta o
 
 
 ## Stabile API
-Stabile Funktionen bilden den produktionsreifen Kern der API. Änderungen werden in zwei Kategorien eingeteilt: nicht-breaking und breaking.
+Stabile Funktionen bilden den produktionsreifen Kern der API. Änderungen werden in zwei Kategorien eingeteilt: Non-Breaking und Breaking.
 
-### Nicht-breaking Änderungen
-Abwärtskompatible Ergänzungen, die bestehende Integrationen nicht beeinträchtigen. Diese werden kontinuierlich und ohne Vorankündigung oder Verwerfung veröffentlicht.
+### Non-Breaking Changes
+Abwärtskompatible Ergänzungen, die bestehende Integrationen nicht stören. Sie werden fortlaufend ohne Vorankündigung oder Verwerfung veröffentlicht.
 
-Zu den nicht-breaking Änderungen gehören:
+Zu den Non-Breaking Changes gehören:
 
 - Hinzufügen einer neuen Query, Mutation oder Subscription.
 - Hinzufügen eines neuen optionalen Eingabearguments zu einer bestehenden Operation.
 - Hinzufügen eines neuen Arguments mit einem Standardwert, der das bestehende Verhalten beibehält.
 - Hinzufügen eines neuen Felds zur Ausgabe einer bestehenden Operation.
-- Ändern eines erforderlichen Eingabearguments in ein optionales.
+- Ändern eines erforderlichen Eingabearguments zu optional.
 - Hinzufügen eines neuen Werts zu einem bestehenden Enum-Typ.
 
 
-#### Auf nicht-breaking Änderungen vorbereiten
+#### Auf Non-Breaking Changes vorbereiten
 
-Auch nicht-breaking Änderungen können Clients beeinträchtigen, die starre Annahmen treffen. So halten Sie Integrationen robust:
+Non-Breaking Changes können dennoch Clients beeinträchtigen, die starre Annahmen treffen. So bleiben Integrationen robust:
 
-- Vermeiden Sie strikte Objekt-Deserialisierung, die fehlschlägt, wenn in Payloads zusätzliche Eigenschaften auftauchen.
-- GraphQL-`enum`-Typen sind nicht abschließend und wachsen mit der Zeit. Implementieren Sie in der Client-Logik immer einen Fallback-Standardfall.
-- Prüfen Sie die Werte von `extensions.exception.code` in Fehlern, anstatt gegen für Menschen lesbare Fehlerstrings abzugleichen.
+- Vermeiden Sie strikte Objekt-Deserialisierung, die fehlschlägt, wenn zusätzliche Eigenschaften in Payloads auftauchen.
+- GraphQL-`enum`-Typen sind nicht abschließend und wachsen im Lauf der Zeit. Implementieren Sie in der Client-Logik immer einen Standardfall als Fallback.
+- Prüfen Sie die Werte von `extensions.exception.code` bei Fehlern, statt gegen für Menschen lesbare Fehlertexte zu vergleichen.
 
-### Breaking Änderungen und Verwerfungen
+### Breaking Changes und Verwerfungen
 
-Eine breaking Änderung kann aktive bestehende Integrationen beeinträchtigen. Deshalb muss jede breaking Änderung zuerst einen 12-monatigen Verwerfungsprozess durchlaufen.
+Ein Breaking Change kann aktive bestehende Integrationen beeinträchtigen. Daher muss jeder Breaking Change zunächst einen 12-monatigen Verwerfungsprozess durchlaufen.
 
-Zu den breaking Änderungen gehören:
+Zu den Breaking Changes gehören:
 
-- Entfernen oder Umbenennen einer bestehenden Query, Mutation, Subscription, eines Felds oder Eingabearguments.
+- Entfernen oder Umbenennen einer bestehenden Query, Mutation, Subscription, eines Felds oder eines Eingabearguments.
 - Entfernen oder Umbenennen von Enum-Werten.
 - Ändern des Datentyps eines bestehenden Felds oder Eingabearguments.
 - Hinzufügen eines neuen erforderlichen Eingabearguments.
-- Ändern eines optionalen Eingabearguments in ein erforderliches.
+- Ändern eines optionalen Eingabearguments zu erforderlich.
 - Ändern der Geschäftslogik oder des Verhaltens eines bestehenden Felds.
 - Ändern eines Ausgabefelds von nicht nullable (!) zu nullable.
 - Ändern des Standardwerts eines Eingabearguments oder Felds.
@@ -61,17 +61,17 @@ Zu den breaking Änderungen gehören:
 
 #### Verwerfungszeitplan
 
-Wenn eine breaking Änderung das Entfernen oder Ersetzen einer stabilen Funktion erfordert, folgt sie einem strikten Zeitplan in drei Phasen:
+Wenn ein Breaking Change das Entfernen oder Ersetzen einer stabilen Funktion erfordert, folgt er einem strikten Zeitplan in drei Phasen:
 
-1. **Verwerfungsankündigung**
+1. **Ankündigung der Verwerfung**
     Die Funktion wird im GraphQL-Schema mit der Direktive `@deprecated` gekennzeichnet. Falls zutreffend, wird ein Migrationspfad bereitgestellt. Die Verwerfung und das jeweilige Entfernungsdatum werden gleichzeitig über [drei Überwachungskanäle](#verwerfungen-nachverfolgen) angekündigt.
-2. **Aktive Ankündigungsfrist (Monate 1–12)**
-    Die verworfene Funktion bleibt voll funktionsfähig. Wenn ein Migrationspfad bereitgestellt wird, sollten Integratoren ihre Anwendungen in diesem 12-Monats-Zeitraum aktualisieren und die neuen Felder übernehmen.
+2. **Aktive Hinweisphase (Monate 1–12)**
+    Die verworfene Funktion bleibt voll funktionsfähig. Wenn ein Migrationspfad bereitgestellt wird, sollten Integratoren ihre Anwendungen in diesem 12-monatigen Zeitraum aktualisieren und die neuen Felder übernehmen.
 3. **Endgültiges Entfernen**
-    Zum Entfernungsdatum wird die Funktion endgültig entfernt. Alle nachfolgenden Anfragen, die die Funktion verwenden, schlagen bei der Schemavalidierung mit einem GraphQL-Fehler fehl.
+    Zum Entfernungsdatum wird die Funktion endgültig entfernt. Alle folgenden Anfragen, die die Funktion verwenden, schlagen bei der Schemavalidierung mit einem GraphQL-Fehler fehl.
 
 > [!TIP] Migrationen frühzeitig planen
-> Um Fehler und Serviceunterbrechungen zu vermeiden, schließen Sie Ihre Migrationen vor dem geplanten Entfernungsdatum ab.
+> Um Fehler und Dienstunterbrechungen zu vermeiden, schließen Sie Ihre Migrationen vor dem geplanten Entfernungsdatum ab.
 
 #### Verwerfungen nachverfolgen
 
@@ -79,7 +79,7 @@ Erkennen und verfolgen Sie bevorstehende Einstellungen über drei Kanäle:
 
 - Prüfen Sie `@deprecated(reason: "...")`-Direktiven in Ihren Schema-Tools.
 - Sehen Sie sich Sunset-Daten und Migrationsleitfäden im Legacy-Bereich der API oder im [Verwerfungsportal](/deprecations) an.
-- Überwachen Sie `DEPRECATED_FEATURE`-Warnungen, die direkt in API-Antworten zurückgegeben werden.
+- Beobachten Sie `DEPRECATED_FEATURE`-Warnungen, die direkt in API-Antworten zurückgegeben werden.
 
 
 <details>

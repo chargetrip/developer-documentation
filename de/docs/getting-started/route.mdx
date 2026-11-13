@@ -1,28 +1,28 @@
 ---
-title: "Route"
-description: "Planen Sie E-Fahrzeug-Routen mit automatischen Ladestopps anhand von Batteriekapazität, Energieverbrauch, Topografie, Wetter und Verfügbarkeit der Ladenetzwerke."
-tag: Anleitung
+title: Route
+description: "Planen Sie E-Fahrzeug-Routen mit automatischen Ladestopps anhand von Batteriekapazität, Energieverbrauch, Topografie, Wetter und Verfügbarkeit von Ladenetzwerken."
+tag: Leitfaden
 ---
 
-Die Routenplanung für EVs bringt besondere Herausforderungen mit sich. Batteriekapazität, realer Energieverbrauch, Topografie, Wetter und die Verfügbarkeit von Ladenetzen bestimmen gemeinsam, ob ein Fahrzeug sein Ziel erreicht.
+Die Routenplanung für E-Fahrzeuge bringt besondere Herausforderungen mit sich. Batteriekapazität, realer Energieverbrauch, Topografie, Wetter und die Verfügbarkeit von Ladenetzwerken entscheiden darüber, ob ein Fahrzeug sein Ziel erreicht.
 
-Die Route API berücksichtigt all diese Variablen, um optimale EV-Routen zu finden. Mit einem erstklassigen Energieverbrauchsmodell platziert sie Ladestopps automatisch genau dann und dort, wo sie benötigt werden. Routen sind vollständig anpassbar, sodass Sie sie auf Ihre eigenen Geschäftsregeln abstimmen können.
+Die Route API berücksichtigt alle diese Variablen, um optimale E-Fahrzeug-Routen zu finden. Mit einem erstklassigen Energieverbrauchsmodell platziert sie Ladestopps automatisch genau dort und dann, wo sie gebraucht werden. Routen sind vollständig anpassbar, sodass Sie sie auf Ihre eigenen Geschäftsregeln abstimmen können.
 
 ## So funktioniert es
 
-Um eine hohe Performance sicherzustellen, arbeitet die Route API asynchron, nach demselben [asynchronen Muster](/api-reference/core/api/async-operations), das in der gesamten API verwendet wird. Das Erstellen und das Abrufen einer Route erfolgen in getrennten Schritten.
+Für hohe Performance arbeitet die Route API asynchron und folgt dabei demselben [asynchronen Muster](/api-reference/core/api/async-operations), das in der gesamten API verwendet wird. Das Erstellen und das Abrufen einer Route erfolgen in separaten Schritten.
 
 1. **Route erstellen**
-   Rufen Sie die Mutation `createRoute` mindestens mit `vehicle`, `origin` und `destination` auf. Die Mutation gibt sofort eine Routen-`id` zurück, die Sie im nächsten Schritt verwenden, um die Route zu verfolgen und abzurufen. Es stehen viele weitere Anpassungsoptionen zur Verfügung; siehe [Route anpassen](#route-anpassen) weiter unten.
+   Rufen Sie die Mutation `createRoute` mit mindestens `vehicle`, `origin` und `destination` auf. Die Mutation gibt sofort eine Routen-`id` zurück, die Sie im nächsten Schritt verwenden, um die Route zu verfolgen und abzurufen. Es stehen viele weitere Anpassungsoptionen zur Verfügung, siehe [Route anpassen](#route-anpassen) weiter unten.
 2. **Subscription öffnen**
-   Abonnieren Sie die Subscription `route` mit der `id` aus dem vorherigen Schritt. Während die Route berechnet wird, sendet die Subscription Status-Updates, mit denen Sie einen asynchronen Ladezustand in Ihrer Oberfläche steuern können.
+   Abonnieren Sie die Subscription `route` mit der `id` aus dem vorherigen Schritt. Während die Route berechnet wird, sendet die Subscription Statusaktualisierungen, mit denen Sie einen asynchronen Ladezustand in Ihrer Benutzeroberfläche steuern können.
 3. **Ergebnis darstellen**
-   Sobald der `status` der Route zu `done`, `error` oder `not_found` wechselt, stellen Sie die passende Oberfläche für dieses Ergebnis dar.
+   Sobald der `status` der Route `done`, `error` oder `not_found` erreicht, stellen Sie die zum jeweiligen Ergebnis passende Benutzeroberfläche dar.
 4. **Bei Bedarf erneut abrufen**
    Eine Route, die einen erfolgreichen Endstatus erreicht hat, wird mit allen Details gespeichert. Wenn Sie sie später erneut anzeigen müssen, zum Beispiel nach dem Zurücknavigieren, verwenden Sie die Query `getRoute`, anstatt eine neue Subscription zu öffnen.
 
 > [!WARNING] Hybridfahrzeuge
-> Hybrid- und Plug-in-Hybridfahrzeuge sind nicht ausschließlich auf ihre Batterie angewiesen, daher enthalten ihre Routen keine Ladestopps.
+> Hybrid- und Plug-in-Hybridfahrzeuge verlassen sich nicht ausschließlich auf ihre Batterie, daher enthalten ihre Routen keine Ladestopps.
 
 ## Route anpassen
 
@@ -33,17 +33,17 @@ Um eine hohe Performance sicherzustellen, arbeitet die Route API asynchron, nach
 | [Wegpunkte](/api-reference/core/route/mutation-create-route#arg-input-via) | Fügen Sie Zwischenstopps hinzu. Geben Sie `via.properties.station.station_id` an, um einen Ladestopp an einer bestimmten Station zu erzwingen, oder nur `via.geometry` für einen reinen Durchfahrtspunkt ohne Laden. |
 | [Stoppdauer](/api-reference/core/route/mutation-create-route#arg-input-via-properties-station-stop_duration) | Legen Sie mit `properties.station.stop_duration` oder `properties.location.stop_duration` fest, wie lange in Sekunden das Fahrzeug an einem Wegpunkt oder am Ziel bleibt. |
 | [Laden an der Autobahn](/api-reference/core/route/mutation-create-route#arg-input-station_preferences) | Priorisieren Sie Ladestationen direkt an der Autobahn mit `station_preferences.prefer_highway_charging` und vermeiden Sie Stopps, für die die Autobahn verlassen werden muss. |
-| [Wetter](/api-reference/core/route/mutation-create-route#arg-input-weather) | Wenden Sie eine Wettervoreinstellung oder benutzerdefinierte Wetterbedingungen auf das Verbrauchsmodell an. Standardmäßig Echtzeit-Wetterdaten. |
-| [Jahreszeit](/api-reference/core/route/mutation-create-route#arg-input-season) | Nehmen Sie `summer`, `winter` oder `current` als Wetterbedingungen an, als einfachere Alternative zu `weather`. |
-| [Zu vermeidende Routenmerkmale](/api-reference/core/route/mutation-create-route#arg-input-avoid) | Vermeiden Sie `toll_road` oder `ferry` nach bestem Bemühen. |
-| [Betreiber-Ranking](/api-reference/core/route/mutation-create-route#arg-input-operators-ranking) | Bevorzugen Sie bestimmte Ladenetze mit `type: preferred` oder beschränken Sie das Routing mit `type: required` ausschließlich auf diese Netze. Stufen Sie Betreiber als `high`, `medium` oder `low` ein und beschränken Sie ein Ranking pro Betreiber auf bestimmte Länder. |
+| [Wetter](/api-reference/core/route/mutation-create-route#arg-input-weather) | Wenden Sie eine Wettervorgabe oder benutzerdefinierte Wetterbedingungen auf das Verbrauchsmodell an. Standardmäßig werden Echtzeit-Wetterdaten verwendet. |
+| [Jahreszeit](/api-reference/core/route/mutation-create-route#arg-input-season) | Gehen Sie von `summer`, `winter` oder `current` Wetterbedingungen aus, als einfachere Alternative zu `weather`. |
+| [Zu vermeidende Routenmerkmale](/api-reference/core/route/mutation-create-route#arg-input-avoid) | Vermeiden Sie `toll_road` oder `ferry` nach dem Best-Effort-Prinzip. |
+| [Betreiber-Ranking](/api-reference/core/route/mutation-create-route#arg-input-operators-ranking) | Bevorzugen Sie bestimmte Ladenetzwerke mit `type: preferred` oder beschränken Sie das Routing mit `type: required` ausschließlich auf diese Netzwerke. Stufen Sie Betreiber als `high`, `medium` oder `low` ein und begrenzen Sie ein Ranking pro Betreiber auf bestimmte Länder. |
 | [Betreiberausschlüsse](/api-reference/core/route/mutation-create-route#arg-input-operators-exclude) | Schließen Sie einen Betreiber mit `operators.exclude` vollständig von der Route aus. Greift auf die Dashboard-Konfiguration Ihres Projekts zurück, wenn es nicht auf Anfrageebene gesetzt ist. |
-| [Betreibervermeidung](/api-reference/core/route/mutation-create-route#arg-input-operators-avoid) | Vermeiden Sie mit `operators.avoid` einen Betreiber, ohne ihn völlig auszuschließen. |
-| [Alternative Ladestationen](/api-reference/core/route/mutation-create-route#arg-input-alternative_station_radius) | Suchen Sie entlang der Route nach alternativen Ladestationen in einem Radius zwischen 500 und 5000 Metern. |
-| [Alternative Routen](/api-reference/core/route/mutation-create-route#arg-input-alternative_routes) | Fordern Sie zusätzliche Routenoptionen nach bestem Bemühen an. Setzen Sie den Wert auf `0`, um nur die empfohlene Route zu berechnen. |
+| [Betreibervermeidung](/api-reference/core/route/mutation-create-route#arg-input-operators-avoid) | Meiden Sie einen Betreiber mit `operators.avoid`, ohne ihn gänzlich auszuschließen. |
+| [Alternative Ladestationen](/api-reference/core/route/mutation-create-route#arg-input-alternative_station_radius) | Suchen Sie entlang der Route in einem Radius zwischen 500 und 5000 Metern nach alternativen Ladestationen. |
+| [Alternative Routen](/api-reference/core/route/mutation-create-route#arg-input-alternative_routes) | Fordern Sie nach dem Best-Effort-Prinzip zusätzliche Routenoptionen an. Setzen Sie den Wert auf `0`, um nur die empfohlene Route zu berechnen. |
 | [Fahrpräferenzen](/api-reference/core/route/mutation-create-route#arg-input-driving_preferences) | Passen Sie den Fahrstil mit `speed_factor` oder `maximum_speed` an oder wählen Sie einen `style` von `eco` oder `sport`. |
-| [Verkehrsberücksichtigung](/api-reference/core/route/mutation-create-route#arg-input-traffic_aware) | Berücksichtigen Sie Staus in Echtzeit. Wenden Sie sich an den Support, um dies für Ihr Projekt zu aktivieren. |
-| [Abfahrtszeit](/api-reference/core/route/mutation-create-route#arg-input-departure_time) | Berechnen Sie erwartete Ankunftszeiten anhand von Echtzeit-Verkehr und historischem, aktuellem oder prognostiziertem Wetter. |
+| [Verkehrsberücksichtigung](/api-reference/core/route/mutation-create-route#arg-input-traffic_aware) | Berücksichtigen Sie den aktuellen Verkehrsstau in Echtzeit. Wenden Sie sich an den Support, um dies für Ihr Projekt zu aktivieren. |
+| [Abfahrtszeit](/api-reference/core/route/mutation-create-route#arg-input-departure_time) | Berechnen Sie voraussichtliche Ankunftszeiten anhand des Echtzeit-Verkehrs und historischer, aktueller oder prognostizierter Wetterdaten. |
 | [Ziel als Station](/api-reference/core/route/mutation-create-route#arg-input-destination-properties-station) | Legen Sie eine bestimmte Station als Ziel der Route fest. Dies wird als Stopp ohne Laden behandelt. |
-| [Fahrzeugbeladung pro Wegpunkt](/api-reference/core/route/mutation-create-route#arg-input-origin-properties-vehicle) | Legen Sie `occupants`, `total_occupant_weight` und `total_cargo_weight` bei `origin` oder `via` fest. Diese gelten für den Rest der Fahrt und können an jedem späteren Via-Punkt überschrieben werden. |
-| [Minimale Ladeleistung](/api-reference/core/route/mutation-create-route#arg-input-vehicle-charging-minimum_power) | Standardmäßig schließt das Routing Stecker unter 43 kW aus. Legen Sie ein anderes Minimum fest, das zur Ladegeschwindigkeit Ihres Fahrzeugs passt. Leistungsstärkere Ladesäulen werden weiterhin ausgewählt, auch wenn Ihr Fahrzeug langsamer lädt als deren Höchstleistung. |
+| [Fahrzeugbeladung pro Wegpunkt](/api-reference/core/route/mutation-create-route#arg-input-origin-properties-vehicle) | Legen Sie `occupants`, `total_occupant_weight` und `total_cargo_weight` an `origin` oder `via` fest. Diese gelten für den Rest der Fahrt und können an jedem späteren Via-Punkt überschrieben werden. |
+| [Minimale Ladeleistung](/api-reference/core/route/mutation-create-route#arg-input-vehicle-charging-minimum_power) | Standardmäßig schließt das Routing Anschlüsse unter 43 kW aus. Legen Sie ein anderes Minimum fest, das zur Ladegeschwindigkeit Ihres Fahrzeugs passt. Ladestationen mit höherer Nennleistung werden weiterhin ausgewählt, auch wenn Ihr Fahrzeug langsamer lädt als deren maximale Rate. |

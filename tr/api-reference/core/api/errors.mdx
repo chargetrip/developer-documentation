@@ -1,25 +1,25 @@
 ---
 title: Hata yönetimi
-description: "API'nin hataları kısmi verilerle birlikte nasıl döndürdüğünü ve neden HTTP durum koduna değil yanıt gövdesine bakmanız gerektiğini öğrenin."
+description: "API'nin hataları kısmi verilerle birlikte nasıl döndürdüğünü ve neden HTTP durum koduna güvenmek yerine yanıt gövdesini kontrol etmeniz gerektiğini öğrenin."
 ---
 
-API, hataları normal bir yanıtın parçası olarak, yine de çözümlenebilen verilerle birlikte döndürür. Bir istek kısmen başarılı olabilir; bu nedenle bir hatayı tespit etmek için yalnızca HTTP durum koduna bakmak yeterli değildir.
+API, hataları çözümlenmiş verilerle birlikte normal bir yanıtın parçası olarak döndürür. Bir istek kısmen başarılı olabilir; bu nedenle bir hatayı tespit etmek için yalnızca HTTP durum kodunu kontrol etmek yeterli değildir.
 
 > [!WARNING] Kısmi yanıtlar
-> API, hata içerseler bile çoğu istek için HTTP 200 döndürür. `data` ve `errors` birlikte döndürülebileceğinden, HTTP durum koduna güvenmek yerine yanıt gövdesinde her zaman bir `errors` dizisi olup olmadığını kontrol edin.
+> API, hata içerseler bile çoğu istek için HTTP 200 döndürür. `data` ve `errors` birlikte döndürülebildiğinden, HTTP durum koduna güvenmek yerine yanıt gövdesinde her zaman bir `errors` dizisi olup olmadığını kontrol edin.
 
 ## Hatalar
 
 Her hata, `data` ile birlikte en üst düzeydeki `errors` dizisinde döndürülür.
 
 `message` · <span class="text-muted">String</span>
-: Hatanın insan tarafından okunabilir açıklaması.
+: Hatanın insanlar tarafından okunabilir açıklaması.
 
 `locations` · <span class="text-muted">Array</span>
 : Hatanın oluştuğu istekteki satır ve sütun.
 
 `path` · <span class="text-muted">Array</span>
-: Hataya neden olan alanın yolu, örneğin `["vehicleList"]`.
+: Hataya neden olan alana giden yol, örneğin `["vehicleList"]`.
 
 `extensions.exception.code` · <span class="text-muted">String</span>
 : Makine tarafından okunabilir bir hata kodu. Hataları programatik olarak yönetmek için `message` ile eşleştirme yapmak yerine bu alanı kullanın.
@@ -28,11 +28,11 @@ Her hata, `data` ile birlikte en üst düzeydeki `errors` dizisinde döndürül�
 : Hataya karşılık gelen HTTP durum kodu, örneğin `403`.
 
 `extensions.exception.message` · <span class="text-muted">String</span>
-: Hatanın insan tarafından okunabilir açıklaması; en üst düzeydeki `message` alanıyla aynıdır.
+: Hatanın insanlar tarafından okunabilir açıklaması; en üst düzeydeki `message` alanıyla aynıdır.
 
 `extensions.exception.response` · <span class="text-muted">String</span>
-: Temeldeki istisnanın yanıt gövdesi; genellikle `message` ile aynıdır.
+: Altta yatan istisnanın yanıt gövdesi, çoğunlukla `message` ile aynıdır.
 
 ### Yerelleştirme
 
-Hata mesajlarını doğru şekilde yönetmek ve yerelleştirmek için `message` yerine `extensions.exception.code` kullanın. Her kodun ne anlama geldiğine dair açıklama için API referansındaki ilgili işlemin sayfasına bakın. `message` yalnızca geliştirici bağlamı için kullanılmalı, son kullanıcılara gösterilmemelidir.
+Hata mesajlarını doğru şekilde yönetmek ve yerelleştirmek için `message` yerine `extensions.exception.code` kullanın. Her kodun ne anlama geldiğini öğrenmek için API referansındaki ilgili işlemin sayfasına bakın. `message` yalnızca geliştirici bağlamı için kullanılmalı, son kullanıcılara gösterilmemelidir.

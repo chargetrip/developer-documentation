@@ -1,14 +1,14 @@
 ---
-title: "Créer un itinéraire mutation"
-heading: Créer un itinéraire
-description: "Créez un itinéraire avec la mutation createRoute pour calculer arrêts de recharge, consommation d'énergie et temps de trajet entre une origine et une destination."
+title: "Mutation de création d'itinéraire"
+heading: "Créer un itinéraire"
+description: "Créez un itinéraire avec la mutation createRoute pour calculer les arrêts de recharge, la consommation d'énergie et la durée de conduite entre une origine et une destination."
 schemaName: createRoute
 schemaType: Mutation
 ---
 
-Créez un nouvel itinéraire à l'aide de la mutation createRoute. Elle est utile lorsque vous souhaitez calculer les arrêts de recharge, la consommation d'énergie et la durée de conduite entre une origine et une destination.
+Créez un nouvel itinéraire en utilisant la mutation createRoute. Elle est utile lorsque vous souhaitez calculer les arrêts de recharge, la consommation d'énergie et la durée de conduite entre une origine et une destination. Si vous débutez avec le calcul d'itinéraire, le [guide de l'itinéraire](/docs/getting-started/route) vous accompagne d'une première requête jusqu'à un itinéraire personnalisé. Vous pouvez ensuite [orienter les réseaux de recharge privilégiés par un itinéraire](/docs/getting-started/route-operators) grâce aux préférences d'opérateurs, ou [façonner le trajet autour de vos propres points de passage](/docs/getting-started/route-stop) grâce aux arrêts via.
 
 ## Mutation
 
-Un `vehicle`, un `origin` et un `destination` sont requis pour créer un itinéraire. Vous pouvez ajouter des points `via`, des `operators`, `weather` ou d'autres préférences pour affiner le calcul. La mutation renvoie un `id` d'itinéraire, qui permet de récupérer les détails de l'itinéraire, les émissions ou les équipements en chemin.
+Un `vehicle`, un `origin` et un `destination` sont obligatoires pour créer un itinéraire. Ajoutez éventuellement des points `via`, des `operators`, `weather` ou d'autres préférences pour affiner le calcul. La mutation renvoie un `id` d'itinéraire, qui peut servir à récupérer les détails de l'itinéraire, les émissions ou les services en chemin.
 

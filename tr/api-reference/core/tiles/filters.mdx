@@ -1,23 +1,23 @@
 ---
 title: Filtreler
-description: "Tile Service API'nin döndürdüğü şarj istasyonlarını filtrelerle daraltın ve filtrelerin istasyonları nasıl hariç tuttuğunu ve verileri nasıl dönüştürdüğünü öğrenin."
+description: "Tile Service API tarafından döndürülen şarj istasyonlarını filtrelerle daraltın; filtrelerin istasyonları nasıl dışarıda bıraktığını ve istasyon verilerini nasıl dönüştürdüğünü öğrenin."
 tag: Rest
 ---
 
-Filtreler, uygulamaların Tile Service API tarafından döndürülen şarj istasyonlarını daraltmasına olanak tanır. Eşleşmeyen sonuçları gizlemenin ötesinde, bazı filtreler yanıtın bağlama uygun olması için istasyon verilerini de dönüştürür.
+Filtreler, uygulamaların Tile Service API tarafından döndürülen şarj istasyonlarını daraltmasına olanak tanır. Eşleşmeyen sonuçları yalnızca gizlemenin ötesinde, bazı filtreler yanıtın bağlama uygun olmasını sağlamak için istasyon verilerini de dönüştürür.
 
 ## Filtreler verileri nasıl etkiler
 
-Bir istek filtreler içerdiğinde Tile servisi iki ayrı işlem gerçekleştirir:
+Bir istek filtre içerdiğinde Tile servisi iki ayrı işlem gerçekleştirir:
 
-1. **Eşleşmeyen istasyonların hariç tutulması**
-   Belirtilen filtreleme ölçütlerini karşılamayan tüm istasyonlar yanıttan tamamen çıkarılır. Bu işlem, istasyon düzeyi filtreler veya EVSE düzeyi filtreler kullanıldığında gerçekleşir.
-2. **Veri dönüştürme**
-   Belirli filtreleme parametreleri verildiğinde Tile Service, istasyonun bazı dinamik özelliklerini yeniden hesaplar. Bu işlem, EVSE düzeyi filtreler kullanıldığında gerçekleşir.
+1. **Eşleşmeyen istasyonların dışarıda bırakılması**
+   Belirtilen filtreleme ölçütlerini karşılamayan her istasyon yanıttan tamamen çıkarılır. Bu işlem, istasyon düzeyi filtreler veya EVSE düzeyi filtreler kullanıldığında gerçekleşir.
+2. **Veri dönüşümü**
+   Belirli filtreleme parametreleri sağlandığında Tile Service, istasyonun bazı dinamik özelliklerini yeniden hesaplar. Bu işlem, EVSE düzeyi filtreler kullanıldığında gerçekleşir.
 
 ## Uygulama
 
-Filtre parametreleri, Tile Service uç noktalarının herhangi birine (MVT, JSON veya Count) sorgu dizeleri olarak istek URL'sine eklenebilir. Hiçbir filtre uygulanmazsa mevcut tüm şarj istasyonları döndürülür ve hiçbir veri dönüştürmesi yapılmaz.
+Filtre parametreleri, Tile Service uç noktalarından herhangi birine (MVT, JSON veya Count) sorgu dizesi olarak istek URL'sine eklenebilir. Hiçbir filtre uygulanmazsa mevcut tüm şarj istasyonları döndürülür ve veri dönüşümü yapılmaz.
 
 ```bash Tile / Filter / Example
 https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?{filter_1}&{filter_2}&{filter_n}
@@ -25,26 +25,26 @@ https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?{filter_1}&{filter_2}&{
 
 ## Düzeyler
 
-Filtreler iki düzeyde bulunabilir: EVSE düzeyi veya istasyon düzeyi. Her birinin etkisi ve sonuçları aşağıda açıklanmıştır.
+Filtreler iki düzeyde bulunabilir: EVSE düzeyi veya istasyon düzeyi. Her birinin etkisi ve sonuçları aşağıda açıklandığı gibidir.
 
 ### İstasyon düzeyi
 
-İstasyonun genel özelliklerini değerlendiren filtrelerdir. Bu filtreler yalnızca hariç tutma yapar: eşleşmeyen istasyonları dışarıda bırakır ancak döndürülen veri alanlarını asla değiştirmez.
+İstasyonun genel niteliklerini değerlendiren filtreler. Bu filtreler yalnızca dışarıda bırakma işlevi görür: eşleşmeyen istasyonları dışarıda bırakır ancak döndürülen veri alanlarını asla değiştirmez.
 
-`amenities` · `enum` · [Örnek URL'yi göster](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?amenities[]=HOTEL)
+`amenities` · `enum` · [Show example url](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?amenities[]=HOTEL)
 : Yalnızca belirtilen olanakları sunan istasyonları dahil eden filtre.
 : `HOTEL`, `SHOPPING`, `BATHROOM`, `SUPERMARKET`, `PLAYGROUND`, `PHARMACY`, `MUSEUM`, `COFFEE`, `PARK`, `RESTAURANT`
 
-`preferred_operators` · `boolean` · [Örnek URL'yi göster](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?preferred_operators=true)
-: Yalnızca tercih edilen olarak yapılandırılmış operatörler tarafından işletilen istasyonları dahil eden filtre. Tercih edilen operatörler dashboard'daki proje ayarlarından belirlenebilir.
+`preferred_operators` · `boolean` · [Show example url](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?preferred_operators=true)
+: Yalnızca tercih edilen olarak yapılandırılmış operatörler tarafından işletilen istasyonları dahil eden filtre. Tercih edilen operatörler, panodaki proje ayarlarından belirlenebilir.
 : `true`, `false`
 
-`hide_excluded_operators` · `boolean` · [Örnek URL'yi göster](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?hide_excluded_operators=true)
-: Yalnızca hariç tutulan olarak yapılandırılmış operatörler tarafından işletilen istasyonları dışarıda bırakan filtre. Hariç tutulan operatörler dashboard'daki proje ayarlarından belirlenebilir.
+`hide_excluded_operators` · `boolean` · [Show example url](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?hide_excluded_operators=true)
+: Hariç tutulan olarak yapılandırılmış operatörler tarafından işletilen istasyonları dışarıda bırakan filtre. Hariç tutulan operatörler, panodaki proje ayarlarından belirlenebilir.
 : `true`, `false`
 
-`operator_ids` · `string` · [Örnek URL'yi göster](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?operator_ids[]=631834841e604d2273ffb2b5&operator_ids[]=64e6979d49ed0ae2316ec052)
-: Yalnızca belirli operatör kimlikleri tarafından işletilen istasyonları dahil eden filtre. Operatör kimliklerinden oluşan bir dizi kabul eder.
+`operator_ids` · `string` · [Show example url](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?operator_ids[]=631834841e604d2273ffb2b5&operator_ids[]=64e6979d49ed0ae2316ec052)
+: Yalnızca belirli operatör ID'leri tarafından işletilen istasyonları dahil eden filtre. Operatör ID'lerinden oluşan bir dizi kabul eder.
 
 `truck_dedicated` · `boolean` · [Örnek URL'yi göster](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?truck_dedicated=true)
 : Yalnızca kamyon şarjına ayrılmış veya öncelikli olarak kamyon şarjı için tasarlanmış istasyonları dahil eden filtre. Yalnızca Eco-Movement istasyon veritabanı kullanılıyorsa geçerlidir; aksi halde yok sayılır.
@@ -56,13 +56,13 @@ Filtreler iki düzeyde bulunabilir: EVSE düzeyi veya istasyon düzeyi. Her biri
 
 ### EVSE düzeyi
 
-İstasyonun belirli şarj yeteneklerini değerlendiren filtrelerdir. Bu filtreler hariç tutma ve [dönüştürme](/api-reference/core/tiles/filters#veri-dönüştürme-örnekleri) yapar: eşleşmeyen istasyonlar hariç tutulur ve eşleşen istasyonların dinamik alanları yeniden hesaplanır.
+İstasyonun belirli şarj yeteneklerini değerlendiren filtreler. Bu filtreler hem dışarıda bırakma hem de [dönüşüm](/api-reference/core/tiles/filters#veri-dönüşümü-örnekleri) işlemi yapar: eşleşmeyen istasyonlar dışarıda bırakılır, eşleşen istasyonların dinamik alanları ise yeniden hesaplanır.
 
-`minimum_power` · `integer` · [Örnek URL'yi göster](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?minimum_power=50)
-: Yalnızca en az bir konektörü belirtilen güç değerine (kW cinsinden) ulaşan veya bu değeri aşan istasyonları dahil eden filtre. 0'dan büyük bir tam sayı kabul eder.
+`minimum_power` · `integer` · [Show example url](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?minimum_power=50)
+: Yalnızca en az bir konnektörü belirtilen güç değerini (kW cinsinden) karşılayan veya aşan istasyonları dahil eden filtre. 0'dan büyük bir tam sayı kabul eder.
 
-`maximum_power` · `integer` · [Örnek URL'yi göster](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?maximum_power=150)
-: Yalnızca hiçbir konektörünün maksimum şarj gücü belirtilen güç değerini (kW cinsinden) aşmayan istasyonları dahil eden filtre. 0'dan büyük bir tam sayı kabul eder.
+`maximum_power` · `integer` · [Show example url](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?maximum_power=150)
+: Yalnızca herhangi bir konnektörün maksimum şarj gücü belirtilen güç değerini (kW cinsinden) aşmayan istasyonları dahil eden filtre. 0'dan büyük bir tam sayı kabul eder.
 
 `minimum_energy_price` · `number` · [beta](tip:Beta;;Bu filtre beta aşamasındadır ve kararlı hale gelmeden önce değişebilir.) · [Örnek URL'yi göster](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?minimum_energy_price=0.2&currency=EUR)
 : Yalnızca uyumlu konektörlerinden en az birinin etkin fiyatı belirtilen değerden büyük veya ona eşit olan istasyonları dahil eden filtre; değerlendirme `currency` ile belirlenen para biriminde yapılır. Bkz. [istasyon fiyatlandırması](/docs/getting-started/station-pricing). Yalnızca Eco-Movement istasyon veritabanı kullanılıyorsa geçerlidir; aksi halde yok sayılır.
@@ -70,27 +70,27 @@ Filtreler iki düzeyde bulunabilir: EVSE düzeyi veya istasyon düzeyi. Her biri
 `maximum_energy_price` · `number` · [beta](tip:Beta;;Bu filtre beta aşamasındadır ve kararlı hale gelmeden önce değişebilir.) · [Örnek URL'yi göster](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?maximum_energy_price=0.5&currency=EUR)
 : Yalnızca uyumlu konektörlerinden en az birinin etkin fiyatı belirtilen değerden küçük veya ona eşit olan istasyonları dahil eden filtre; değerlendirme `currency` ile belirlenen para biriminde yapılır. Bkz. [istasyon fiyatlandırması](/docs/getting-started/station-pricing). Yalnızca Eco-Movement istasyon veritabanı kullanılıyorsa geçerlidir; aksi halde yok sayılır.
 
-`connectors` · `enum` · [Örnek URL'yi göster](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=CHADEMO)
-: Yalnızca belirtilen konnektör türlerine sahip EVSE'leri bulunan istasyonları dahil eden filtre. Herhangi bir OCPI 2.2.1 konnektör değerini içeren bir dize dizisi kabul eder.
+`connectors` · `enum` · [Show example url](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=CHADEMO)
+: Yalnızca belirtilen konnektör türlerine sahip EVSE'leri bulunan istasyonları dahil eden filtre. Herhangi bir OCPI 2.2.1 konnektör değerini içeren bir dizi dizesi kabul eder.
 : `CHADEMO`, `DOMESTIC_A`, `DOMESTIC_B`, `DOMESTIC_C`, `DOMESTIC_D`, `DOMESTIC_E`, `DOMESTIC_F`, `DOMESTIC_G`, `DOMESTIC_H`, `DOMESTIC_I`, `DOMESTIC_J`, `DOMESTIC_K`,
 `DOMESTIC_L`, `DOMESTIC_M`, `DOMESTIC_N`, `DOMESTIC_O`, `IEC_60309_2_single_16`, `IEC_60309_2_three_16`, `IEC_60309_2_three_32`, `IEC_60309_2_three_64`, `IEC_62196_T1`,
 `IEC_62196_T1_COMBO`, `IEC_62196_T2`, `IEC_62196_T2_COMBO`, `IEC_62196_T3A`, `IEC_62196_T3C`, `PANTOGRAPH_BOTTOM_UP`, `PANTOGRAPH_TOP_DOWN`, `TESLA_R`, `TESLA_S`, `GB_T`,
 `CHAOJI`, `NEMA_5_20`, `NEMA_6_30`, `NEMA_6_50`, `NEMA_10_30`, `NEMA_10_50`, `NEMA_14_30`, `NEMA_14_50`
 
-`evse_statuses` · `enum` · [Örnek URL'yi göster](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?evse_statuses[]=AVAILABLE&evse_statuses[]=CHARGING)
+`evse_statuses` · `enum` · [Show example url](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?evse_statuses[]=AVAILABLE&evse_statuses[]=CHARGING)
 : Yalnızca belirtilen durumlara sahip EVSE'leri bulunan istasyonları dahil eden filtre.
 : `BLOCKED`, `PLANNED`, `AVAILABLE`, `CHARGING`, `UNKNOWN`, `RESERVED`, `OUT_OF_ORDER`, `INOPERATIVE`
 
 ## Para birimi dönüşümü
 
-`currency` sorgu parametresi, Tile Service endpoint'inde (`tile.json`, `tile.mvt` ve `count`) desteklenir. Döndürülen ve filtrelemede kullanılan enerji fiyatlarının para birimini belirler.
+`currency` sorgu parametresi, Tile Service uç noktalarının tamamında (`tile.json`, `tile.mvt` ve `count`) desteklenir. Döndürülen ve filtrelemede kullanılan enerji fiyatlarının para birimini belirler.
 
 - `currency` belirtilmezse `connector_minimum_energy_price` ve `connector_maximum_energy_price` EUR cinsinden döndürülür.
 - `currency`, `USD`, `GBP`, `DKK` veya `EUR` gibi geçerli bir ISO 4217 para birimi kodu olduğunda:
-  - `connector_minimum_energy_price` ve `connector_maximum_energy_price` içinde döndürülen değerler, sunucu tarafında geçerli dönüşüm oranı kullanılarak kaynak para biriminden istenen para birimine dönüştürülür.
-  - `minimum_energy_price` ve `maximum_energy_price` filtreleri, istenen para birimindeki (`currency` belirtilmemişse EUR) dönüştürülmüş fiyatlara göre değerlendirilir.
-- Özgün para birimi istenen para birimiyle aynıysa `price_conversion_rate` `1.0` olarak döndürülür.
-- `currency` geçerli bir ISO 4217 para birimi kodu değilse tile hizmeti aşağıdaki ayrıntılarla bir hata döndürür:
+  - `connector_minimum_energy_price` ve `connector_maximum_energy_price` içinde döndürülen değerler, sunucuda geçerli dönüşüm oranı kullanılarak kaynak para biriminden istenen para birimine dönüştürülür.
+  - `minimum_energy_price` ve `maximum_energy_price` filtreleri, istenen para birimindeki veya `currency` belirtilmemişse EUR cinsindeki dönüştürülmüş fiyatlara göre değerlendirilir.
+- Özgün para birimi istenen para birimiyle aynıysa `price_conversion_rate` değeri `1.0` olarak döndürülür.
+- `currency` geçerli bir ISO 4217 para birimi kodu değilse karo servisi şu ayrıntılarla bir hata döndürür:
   - Durum: `400 Bad Request`
   - Kod: `TILE_INVALID_PARAMETER_VALUE`
   - Mesaj: `Invalid parameter 'currency': found string {invalid currency} but expected one of {supported currencies}.`
@@ -101,11 +101,11 @@ https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?maximum_energy_price=0.
 
 ## Örnekler
 
-Davranışı göstermek için filtreleme ve veri dönüştürme örnekleri aşağıda verilmiştir.
+Davranışı göstermek için aşağıda filtreleme ve veri dönüşümüne ilişkin örnekler verilmiştir.
 
 ### Filtre örnekleri
 
-Filtreler iki düzeyde bulunabilir: EVSE düzeyi veya istasyon düzeyi. Her birinin etkisi ve sonuçları aşağıda açıklanmıştır.
+Filtreler iki düzeyde bulunabilir: EVSE düzeyi veya istasyon düzeyi. Her birinin etkisi ve sonuçları aşağıda açıklandığı gibidir.
 
 <details>
   <summary>Aynı filtre türü, farklı değerler</summary>
@@ -114,11 +114,11 @@ Filtreler iki düzeyde bulunabilir: EVSE düzeyi veya istasyon düzeyi. Her biri
 https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=IEC_62196_T1_COMBO&connectors[]=CHADEMO
 ```
 
-  | İstasyon | Özellikler                                                                            | Eşleşme                                                                |
+  | İstasyon | Özellikler                                                                            | Eşleşir                                                                |
   |---------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------|
-  | A       | 2x `IEC_62196_T1_COMBO` <br /> 1x `CHAdeMO` <br /> 1x `TOILET` <br /> 1x `RESTAURANT` | [true](tip:Eşleşme nedeni;;CHAdeMO şarj cihazı var)                    |
-  | B       | 1x `IEC_62196_T1_COMBO` <br /> 1x `IEC_62196_T2_COMBO` <br /> 1x `RESTAURANT`         | [true](tip:Başlık;;Açıklama metni;;optional-copy-value)                |
-  | C       | 2x `IEC_62196_T2_COMBO` <br /> 1x `TOILET`                                            | [false](tip:Başlık;;Açıklama metni;;optional-copy-value)               |
+  | A       | 2x `IEC_62196_T1_COMBO` <br /> 1x `CHAdeMO` <br /> 1x `TOILET` <br /> 1x `RESTAURANT` | [true](tip:Eşleşme nedeni;;CHAdeMO şarj cihazı var)                       |
+  | B       | 1x `IEC_62196_T1_COMBO` <br /> 1x `IEC_62196_T2_COMBO` <br /> 1x `RESTAURANT`         | [true](tip:Başlık;;Açıklama metni;;optional-copy-value)           |
+  | C       | 2x `IEC_62196_T2_COMBO` <br /> 1x `TOILET`                                            | [false](tip:Başlık;;Açıklama metni;;optional-copy-value) |
 </details>
 
 <details>
@@ -127,21 +127,21 @@ https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=IEC_62196_
 ```bash Example URL
 https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?minimum_power=120&evse_statuses[]=AVAILABLE&connectors[]=IEC_62196_T1_COMBO
 ```
-  | İstasyon | Özellikler                                                                            | Eşleşme                                                                |
+  | İstasyon | Özellikler                                                                            | Eşleşir                                                                |
   |---------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------|
-  | A       | 2x `IEC_62196_T1_COMBO` <br /> 1x `CHAdeMO` <br /> 1x `TOILET` <br /> 1x `RESTAURANT` | [true](tip:Başlık;;Açıklama metni;;optional-copy-value)                |
-  | B       | 1x `IEC_62196_T1_COMBO` <br /> 1x `IEC_62196_T2_COMBO` <br /> 1x `RESTAURANT`         | [true](tip:Başlık;;Açıklama metni;;optional-copy-value)                |
-  | C       | 2x `IEC_62196_T2_COMBO` <br /> 1x `TOILET`                                            | [false](tip:Başlık;;Açıklama metni;;optional-copy-value)               |
+  | A       | 2x `IEC_62196_T1_COMBO` <br /> 1x `CHAdeMO` <br /> 1x `TOILET` <br /> 1x `RESTAURANT` | [true](tip:Başlık;;Açıklama metni;;optional-copy-value)           |
+  | B       | 1x `IEC_62196_T1_COMBO` <br /> 1x `IEC_62196_T2_COMBO` <br /> 1x `RESTAURANT`         | [true](tip:Başlık;;Açıklama metni;;optional-copy-value)           |
+  | C       | 2x `IEC_62196_T2_COMBO` <br /> 1x `TOILET`                                            | [false](tip:Başlık;;Açıklama metni;;optional-copy-value)          |
 </details>
 
-### Veri dönüştürme örnekleri
+### Veri dönüşümü örnekleri
 
 EVSE düzeyi filtreler uygulandığında bazı çıktılar yeniden hesaplanır. Bu alanlar, kullanıcının arama ölçütleriyle eşleşmeyen konnektörleri yok saymak üzere "dönüştürülür".
 Bu "dinamik" çıktı alanları `connector_maximum_power`, `connector_minimum_energy_price`, `connector_maximum_energy_price` ve `evses_*` alanlarıdır.
 
 <details>
   <summary>Aynı filtre türü, farklı değerler</summary>
-  İstek bir CHADEMO konnektör filtresi içerir. İstasyon bir CHADEMO konnektörüne sahip olduğu için dahil edilir, ancak dinamik alanlar Combo Type 1 şarj cihazlarını yok sayacak şekilde dönüştürülür.
+  İstek bir CHADEMO konnektör filtresi içerir. İstasyon bir CHADEMO konnektörüne sahip olduğu için dahil edilir, ancak dinamik alanlar Combo Tip 1 şarj cihazlarını yok sayacak şekilde dönüştürülür.
 
 ```bash Example URL
 https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=IEC_62196_T1_COMBO&connectors[]=CHADEMO
@@ -164,14 +164,14 @@ https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=IEC_62196_
 
 <details>
   <summary>Fiyat filtreleri</summary>
-  İstek, isteğe bağlı olarak diğer EVSE düzeyi filtrelerle birleştirilmiş bir `maximum_energy_price` filtresi içerir. Bir konektör yalnızca tüm filtreleri aynı anda karşılıyorsa eşleşir ve dinamik fiyat alanları yalnızca eşleşen konektörler için yeniden hesaplanır.
+  İstek, isteğe bağlı olarak diğer EVSE düzeyi filtrelerle birleştirilmiş bir `maximum_energy_price` filtresi içerir. Bir konnektör yalnızca tüm filtreleri aynı anda karşıladığında eşleşir ve dinamik fiyat alanları yalnızca eşleşen konnektörler için yeniden hesaplanır.
 
 
 **Temel istasyon A**
 
-- **EVSE 1:** CCS • 150 kW • Müsait • 0,65 €
-- **EVSE 2:** CCS • 50 kW • Müsait • 0,35 €
-- **EVSE 3:** Tip 2 • 22 kW • Müsait • 0,25 €
+- **EVSE 1:** CCS • 150 kW • Müsait • 0.65 €
+- **EVSE 2:** CCS • 50 kW • Müsait • 0.35 €
+- **EVSE 3:** Tip 2 • 22 kW • Müsait • 0.25 €
 
 **Senaryo 1: yalnızca fiyat filtresi**
 
@@ -179,7 +179,7 @@ https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=IEC_62196_
 https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?maximum_energy_price=0.40
 ```
 
-Eşleşme: EVSE 2 ve 3 uygundur. EVSE 1 hariç tutulur.
+Eşleşme: EVSE 2 ve 3 uygundur. EVSE 1 dışarıda bırakılır.
 
 ```json Response
 {
@@ -192,7 +192,7 @@ Eşleşme: EVSE 2 ve 3 uygundur. EVSE 1 hariç tutulur.
 }
 ```
 
-**Senaryo 2: yalnızca konektör filtresi**
+**Senaryo 2: yalnızca konnektör filtresi**
 
 ```bash Example URL
 https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=CCS
@@ -211,7 +211,7 @@ Eşleşme: EVSE 1 ve 2 uygundur.
 }
 ```
 
-**Senaryo 3: fiyat ve konektör filtresi**
+**Senaryo 3: fiyat ve konnektör filtresi**
 
 ```bash Example URL
 https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=CCS&maximum_energy_price=0.30
@@ -219,11 +219,11 @@ https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=CCS&maximu
 
 Eşleşme:
 
-- `connector == CCS AND price <= 0.30` olarak değerlendirilir.
-- CCS konektörleri (EVSE 1 ve 2) 0,65 € ve 0,35 € olduğundan fiyat filtresini karşılamaz.
-- Tip 2 konektörü (EVSE 3) fiyatı karşılar ancak konektör filtresini karşılamaz.
+- `connector == CCS AND price <= 0.30` ifadesine göre değerlendirilir.
+- CCS konnektörlerinin (EVSE 1 ve 2) maliyeti 0.65 € ve 0.35 € olduğundan fiyat filtresini karşılamazlar.
+- Tip 2 konnektörü (EVSE 3) fiyatı karşılar, ancak konnektör filtresini karşılamaz.
 
-Sonuç: İstasyon hariç tutuldu (eşleşen 0 EVSE).
+Sonuç: İstasyon dışarıda bırakılır (eşleşen EVSE yok: 0).
 
 **Senaryo 4: fiyat ve güç filtresi**
 
@@ -233,9 +233,9 @@ https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?minimum_power=100&maxim
 
 Eşleşme:
 
-- Aynı **EVSE** üzerinde `power >= 100 kW AND price <= 0.40 €` olarak değerlendirilir.
-- 150 kW'lık konektör çok pahalıdır (0,65 €).
-- Daha ucuz konektörler (0,25 € ile 0,35 € arası) çok yavaştır (50 kW veya daha az).
+- **Aynı EVSE** üzerinde `power >= 100 kW AND price <= 0.40 €` ifadesine göre değerlendirilir.
+- 150 kW'lık konnektör çok pahalıdır (0.65 €).
+- Daha ucuz konnektörler (0.25 € ile 0.35 € arası) çok yavaştır (50 kW veya daha az).
 
-Sonuç: İstasyon hariç tutuldu (eşleşen 0 EVSE).
+Sonuç: İstasyon dışarıda bırakılır (eşleşen EVSE yok: 0).
 </details>

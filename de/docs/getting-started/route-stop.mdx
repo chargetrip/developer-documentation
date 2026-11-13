@@ -1,14 +1,14 @@
 ---
-title: "Route mit Zwischenstopps"
-description: "Fügen Sie mit via Zwischenstopps zwischen Start und Ziel hinzu, als Standortstopps oder Ladestopps für realistische Reiseszenarien."
+title: "Route mit Stopps"
+description: "Fügen Sie mit via Zwischenstopps zwischen Start und Ziel hinzu, als Standortstopps oder Ladestopps für reale Reiseszenarien."
 ---
 
-Bei der Berechnung einer EV-Route mit der Chargetrip Route API können Sie mit `via` Zwischenstopps zwischen Start und Ziel hinzufügen.
+Bei der Berechnung einer E-Fahrzeug-Route mit der Chargetrip Route API können Sie mit `via` Zwischenstopps zwischen Start und Ziel hinzufügen.
 
-Mit Zwischenstopps können Sie das Routing an reale Reiseszenarien anpassen, etwa Laden an einer bevorzugten Ladestation, Passagiere abholen oder an einem Restaurant halten.
+Mit Stopps passen Sie das Routing an reale Reiseszenarien an, etwa um an einer bevorzugten Ladestation zu laden, Mitfahrer abzuholen oder in einem Restaurant zu halten.
 
 
-## Arten von Zwischenstopps
+## Arten von Stopps
 
 Chargetrip unterstützt zwei Arten von Zwischenstopps:
 
@@ -24,47 +24,47 @@ Sie können die Dauer jedes Stopps konfigurieren. Je nach Art des Stopps (mit od
 
 ### 1. Bei Stopps ohne Laden
 
-Die Stoppdauer wird unter `input.via.properties.location.stop_duration` konfiguriert. Diese Dauer entspricht der **genauen Stoppdauer** und wird direkt zur Gesamtreisedauer addiert, ohne die Lade- oder Fahrzeit des Fahrzeugs zu beeinflussen.
+Die Stoppdauer wird unter `input.via.properties.location.stop_duration` konfiguriert. Diese Dauer entspricht der **exakten Stoppdauer** und wird direkt zur Gesamtfahrzeit addiert, ohne die Lade- oder Fahrzeit des Fahrzeugs zu beeinflussen.
 
 ### 2. Bei Ladestopps
 
-Die Stoppdauer wird unter `input.via.properties.station.stop_duration` konfiguriert. Dieser Wert entspricht **der minimalen Stoppdauer**. Das Fahrzeug bleibt mindestens so lange an der Station, aber der Routenplaner kann den Stopp je nach konfiguriertem `charge_mode` verlängern:
+Die Stoppdauer wird unter `input.via.properties.station.stop_duration` konfiguriert. Dieser Wert entspricht **der minimalen Stoppdauer**. Das Fahrzeug bleibt mindestens so lange an der Station, aber der Routenplaner kann den Stopp abhängig vom konfigurierten `charge_mode` verlängern:
 
-  * `ALWAYS_TO_MAX_CHARGE`: Verlängert die Ladezeit bei Bedarf, um den maximal konfigurierten SoC zu erreichen. Übersteigt die angeforderte `stop_duration` die Zeit, die bis zum maximalen SoC erforderlich ist, wird die verbleibende Zeit als Standzeit erfasst.
+  * `ALWAYS_TO_MAX_CHARGE`: Verlängert bei Bedarf die Ladezeit, um den maximal konfigurierten SoC zu erreichen. Übersteigt die angeforderte `stop_duration` die Zeit, die bis zum maximalen SoC erforderlich ist, wird die verbleibende Zeit als Standzeit (Idle Stopover) erfasst.
 
-  * `OPTIMIZE_TRAVEL_TIME`: Verlängert den Aufenthalt über `stop_duration` hinaus nur, wenn dadurch die Gesamtreisezeit sinkt (zum Beispiel durch den Wegfall eines nachfolgenden Ladestopps). Andernfalls wird genau die angeforderte Dauer geladen. Übersteigt die angeforderte `stop_duration` die Zeit, die bis zum maximalen SoC erforderlich ist, wird die verbleibende Zeit als Standzeit erfasst.
+  * `OPTIMIZE_TRAVEL_TIME`: Verlängert den Aufenthalt über `stop_duration` hinaus nur, wenn dadurch die Gesamtfahrzeit sinkt (zum Beispiel durch den Wegfall eines nachfolgenden Ladestopps). Andernfalls wird genau für die angeforderte Dauer geladen. Übersteigt die angeforderte `stop_duration` die Zeit, die bis zum optimalen SoC erforderlich ist, wird die verbleibende Zeit als Standzeit (Idle Stopover) erfasst.
 
-Wird kein Wert angegeben, optimiert der Planer die Ladedauer allein anhand des `charge_mode` der Route.
+Wenn kein Wert angegeben wird, optimiert der Planer die Ladedauer ausschließlich anhand des `charge_mode` der Route.
 
 
-## Eine Station zu einer bestehenden Route hinzufügen
+## Station zu einer bestehenden Route hinzufügen
 
-Ein häufiges Szenario: Ein Nutzer wählt eine Ladestation für eine Route, die bereits Zwischenstopps enthält, zum Beispiel eine alternative Station, die in Ihrer UI angezeigt wird. Die No-Code-Lösung nutzt diesen Ansatz, um eine Station automatisch als `via`-Stopp hinzuzufügen, ganz ohne Logik zur Neuordnung, sodass sich die Route nahtlos aktualisiert.
+Ein häufiges Szenario ist, dass ein Nutzer eine Ladestation für eine Route auswählt, die bereits Stopps enthält, zum Beispiel eine alternative Station, die in Ihrer Benutzeroberfläche angezeigt wird. Die No-Code-Lösung nutzt diesen Ansatz, um eine Station automatisch als `via`-Stopp hinzuzufügen, ohne Logik zur Neuanordnung, sodass sich die Route nahtlos aktualisiert.
 
-Die Reihenfolge des `via`-Arrays entspricht der Reihenfolge, in der die Stopps angefahren werden. Eine Station, die am Ende angehängt wird, wird zuletzt angefahren, auch wenn sie nahe am Start der Route liegt. Um sie an der richtigen Position einzufügen, vergleichen Sie den Standort der Station mit den Wegpunkten, die bereits auf der Route liegen:
+Die Reihenfolge des Arrays `via` ist die Reihenfolge, in der die Stopps angefahren werden. Eine Station, die am Ende angehängt wird, wird zuletzt angefahren, auch wenn sie nahe am Start der Route liegt. Um sie an der richtigen Position einzufügen, vergleichen Sie den Standort der Station mit den Wegpunkten, die sich bereits auf der Route befinden:
 
-1. **Wegpunkte der Reihe nach sammeln.** Nehmen Sie `origin`, jeden vorhandenen `via`-Stopp und `destination` aus dem `request_input` der Route, die Sie ändern möchten. Jeder Wegpunkt im `request_input` hat seine `geometry` verfügbar, auch Stopps, die nur mit einer `station_id` erstellt wurden.
+1. **Wegpunkte der Reihe nach sammeln.** Nehmen Sie `origin`, jeden bestehenden `via`-Stopp und `destination` aus dem `request_input` der Route, die Sie ändern möchten. Jeder Wegpunkt im `request_input` hat seine `geometry` verfügbar, auch Stopps, die nur mit einer `station_id` erstellt wurden.
 
-2. **Eine Linie durch die Wegpunkte ziehen.** Verbinden Sie die Wegpunkte der Reihe nach zu einer Linie. Jeder Abschnitt dieser Linie zwischen zwei Wegpunkten ist ein Segment.
+2. **Eine Linie durch die Wegpunkte ziehen.** Verbinden Sie die Wegpunkte der Reihe nach zu einer Linie. Jeder Teil dieser Linie zwischen zwei Wegpunkten ist ein Segment.
 
-3. **Das Segment finden, das der Station am nächsten liegt.** Verwenden Sie eine Geodaten-Bibliothek, um den Punkt auf der Linie zu finden, der den Koordinaten der Station am nächsten liegt. <a href="https://turfjs.org" target="_blank" rel="noopener noreferrer">turf.js</a> bietet zum Beispiel `nearestPointOnLine`, das auch den Index des Segments zurückgibt, das diesen Punkt enthält. Dieser Index ist der Index des Wegpunkts, an dem das Segment beginnt.
+3. **Das der Station nächstgelegene Segment finden.** Verwenden Sie eine Geodaten-Bibliothek, um den Punkt auf der Linie zu finden, der den Koordinaten der Station am nächsten liegt. Zum Beispiel bietet <a href="https://turfjs.org" target="_blank" rel="noopener noreferrer">turf.js</a> die Funktion `nearestPointOnLine`, die auch den Index des Segments zurückgibt, das diesen Punkt enthält. Dieser Index ist der Index des Wegpunkts, an dem das Segment beginnt.
 
-4. **Die Station nach diesem Wegpunkt einfügen.** Die Liste der Wegpunkte beginnt mit `origin`. Der Index eines Wegpunkts in dieser Liste entspricht daher der Position, an der ein neues Element in `via` eingefügt wird, damit es direkt danach steht. Ein Index von `0` bedeutet, dass die Station als erster Stopp eingefügt wird.
+4. **Die Station nach diesem Wegpunkt einfügen.** Die Wegpunktliste beginnt mit `origin`, daher entspricht der Index eines Wegpunkts in dieser Liste der Position, an der ein neues Element in `via` eingefügt wird, damit es direkt danach steht. Ein Index von `0` bedeutet, dass die Station als erster Stopp eingefügt wird.
 
-5. **Niemals nach dem Ziel einfügen.** Liegt der nächstgelegene Punkt auf dem letzten Segment, kann der Index auf `destination` zeigen. Ein Einfügen an dieser Stelle würde die Station hinter das Ende der Route setzen. Verwenden Sie stattdessen den vorherigen Wegpunkt, damit die Station als letzter Stopp vor `destination` eingefügt wird.
+5. **Nie nach dem Ziel einfügen.** Liegt der nächstgelegene Punkt auf dem letzten Segment, kann der Index auf `destination` zeigen. Ein Einfügen dort würde die Station hinter das Ende der Route setzen, verwenden Sie daher stattdessen den vorherigen Wegpunkt. So wird die Station als letzter Stopp vor `destination` eingefügt.
 
-### Das sollten Sie beachten
+### Wichtige Hinweise
 
-* Die Linie verbindet die Wegpunkte mit geraden Segmenten und folgt nicht den Straßen der Route. Alternative Stationen liegen immer in einem Korridor von 5 bis 10 km um die Route, weichen also nie stark von ihr ab, und das nächstgelegene Segment ist meist treffsicher. Für Stationen außerhalb dieses Korridors sind unter Umständen andere Lösungen besser geeignet.
-* Der `request_input` der Route ist die maßgebliche Quelle. Erstellen Sie die neue Anfrage daraus und lassen Sie alle anderen Felder, etwa `vehicle` und die `charging`-Einstellungen, unverändert.
+* Die Linie verbindet die Wegpunkte mit geraden Segmenten und folgt nicht dem Straßenverlauf der Route. Alternative Stationen liegen stets in einem Korridor von 5 bis 10 km um die Route, weichen also nie stark von ihr ab, und das nächstgelegene Segment ist meist zutreffend. Für Stationen außerhalb dieses Korridors sind möglicherweise andere Lösungen besser geeignet.
+* Der `request_input` der Route ist die maßgebliche Quelle. Erstellen Sie die neue Anfrage daraus und lassen Sie alle anderen Felder, wie `vehicle` und die `charging`-Einstellungen, unverändert.
 
 ## Beispiele
 
 <details>
-  <summary>Eine Route mit einem 30-minütigen Stopp ohne Laden berechnen.</summary>
-  Bei diesem Stopp wurde eine `stop_duration` von 1800 Sekunden (30 Minuten) hinzugefügt. Dies ist die Stoppdauer, da kein zusätzlicher Nutzen möglich ist.
+  <summary>Route mit einem 30-minütigen Stopp ohne Laden berechnen.</summary>
+  Bei diesem Stopp wurde eine `stop_duration` von 1800 Sekunden (30 Minuten) hinzugefügt. Dies ist die exakte Stoppdauer.
 
-```graphql Beispielanfrage
+```graphql Example request
 mutation CreateRouteWithWaypoint {
   createRoute(
     input: {
@@ -105,10 +105,10 @@ mutation CreateRouteWithWaypoint {
 
 
 <details>
-  <summary>Eine Route mit einem Ladestopp von mindestens 30 Minuten berechnen.</summary>
-  Bei diesem Stopp wurde eine `stop_duration` von 1800 Sekunden (30 Minuten) hinzugefügt. Dies ist die **minimale** Stoppdauer. Wenn längeres Laden der Reiseroute zugutekommt, verlängert sie sich.
+  <summary>Route mit einem Ladestopp von mindestens 30 Minuten berechnen.</summary>
+  Bei diesem Stopp wurde eine `stop_duration` von 1800 Sekunden (30 Minuten) hinzugefügt. Dies ist die **minimale** Stoppdauer. Da `vehicle.charging.mode:OPTIMIZE_TRAVEL_TIME` gilt, wird die Dauer automatisch erhöht, wenn längeres Laden die Fahrzeit verkürzt.
   
-```graphql Beispielanfrage
+```graphql Example request
 mutation CreateRouteWithChargingVia {
   createRoute(
     input: {
@@ -145,10 +145,10 @@ mutation CreateRouteWithChargingVia {
 
 
 <details>
-  <summary>Eine Route mit einem Ladestopp ohne minimale Stoppdauer berechnen.</summary>
-  Bei diesem Stopp wird `stop_duration` weggelassen: Der Planer berechnet die optimale Ladezeit anhand des Lademodus.
+  <summary>Route mit einem Ladestopp ohne minimale Stoppdauer berechnen.</summary>
+  Bei diesem Stopp wird `stop_duration` weggelassen. Der Planer berechnet die optimale Ladezeit ausschließlich anhand des gewählten Lademodus (`OPTIMIZE_TRAVEL_TIME`).
 
-```graphql Beispielanfrage
+```graphql Example request
 mutation CreateRouteWithChargingVia {
   createRoute(
     input: {

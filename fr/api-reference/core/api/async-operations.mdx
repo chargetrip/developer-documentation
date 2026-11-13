@@ -1,24 +1,24 @@
 ---
-title: Opérations asynchrones
-description: "Découvrez le fonctionnement des opérations asynchrones de l'API : créez avec une mutation, puis suivez et récupérez le résultat avec une subscription ou une query."
+title: "Opérations asynchrones"
+description: "Découvrez comment fonctionnent les opérations asynchrones de l'API : créez avec une mutation, puis suivez et récupérez le résultat avec une souscription ou une requête."
 ---
 
-Certaines opérations, comme la création d'un itinéraire ou d'un itinéraire concordant, s'exécutent de manière asynchrone pour que l'API reste réactive. Au lieu d'attendre qu'une mutation renvoie le résultat complet, vous obtenez immédiatement un `id` que vous utilisez ensuite pour suivre et récupérer le résultat.
+Certaines opérations, comme la création d'un itinéraire ou d'un itinéraire concordant, s'exécutent de manière asynchrone afin de garder l'API réactive. Plutôt que d'attendre qu'une mutation renvoie le résultat complet, vous obtenez immédiatement un `id`, puis vous l'utilisez pour suivre et récupérer le résultat.
 
-## Comment ça fonctionne
+## Fonctionnement
 
 1. **Créer**
    Appelez la mutation. Elle renvoie immédiatement un `id`, que vous utilisez à l'étape suivante pour suivre et récupérer le résultat.
-2. **Ouvrir une subscription**
-   Souscrivez en utilisant l'`id` de l'étape précédente. Pendant le calcul du résultat, la subscription envoie des mises à jour de statut que vous pouvez utiliser pour piloter un état de chargement asynchrone dans votre interface.
+2. **Ouvrir une souscription**
+   Souscrivez avec l'`id` de l'étape précédente. Pendant le calcul du résultat, la souscription envoie des mises à jour de statut que vous pouvez utiliser pour piloter un état de chargement asynchrone dans votre interface.
 3. **Afficher le résultat**
    Une fois que `status` prend une valeur finale, affichez l'interface correspondant à ce résultat.
 4. **Récupérer à nouveau un résultat terminé**
-   Une fois qu'un résultat atteint un statut final, il est déjà précalculé. Si vous en avez de nouveau besoin plus tard, par exemple après y être revenu par navigation, utilisez la query correspondante plutôt que d'ouvrir une nouvelle subscription.
+   Une fois qu'un résultat a atteint un statut final, il est déjà précalculé. Si vous en avez de nouveau besoin plus tard, par exemple après y être revenu par la navigation, utilisez la requête correspondante au lieu d'ouvrir une nouvelle souscription.
 
 ## Où cela s'applique
 
-| Fonctionnalité | Mutation | Subscription | Query |
+| Fonctionnalité | Mutation | Souscription | Requête |
 | --- | --- | --- | --- |
 | [Itinéraire](/docs/getting-started/route) | `createRoute` | `route` | `getRoute` |
 | [Itinéraire concordant](/api-reference/core/matched-route/mutation-create-matched-route) | `createMatchedRoute` | `matchedRoute` | `getMatchedRoute` |

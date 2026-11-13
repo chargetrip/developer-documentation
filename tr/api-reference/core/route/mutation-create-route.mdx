@@ -1,14 +1,13 @@
 ---
-title: Rota oluştur mutasyonu
+title: Rota oluşturma mutation'ı
 heading: Rota oluştur
-description: "Başlangıç ve varış noktası arasındaki şarj duraklarını, enerji tüketimini ve sürüş süresini hesaplamak için createRoute mutasyonuyla rota oluşturun."
+description: "Bir başlangıç ve bir varış noktası arasındaki şarj duraklarını, enerji tüketimini ve sürüş süresini hesaplamak için createRoute mutation'ı ile rota oluşturun."
 schemaName: createRoute
 schemaType: Mutation
 ---
 
-createRoute mutasyonunu kullanarak yeni bir rota oluşturun. Bu, bir başlangıç noktası ile bir varış noktası arasındaki şarj duraklarını, enerji tüketimini ve sürüş süresini hesaplamak istediğinizde kullanışlıdır.
+createRoute mutation'ını kullanarak yeni bir rota oluşturun. Bir başlangıç ve bir varış noktası arasındaki şarj duraklarını, enerji tüketimini ve sürüş süresini hesaplamak istediğinizde kullanışlıdır. Rotalamada yeniyseniz [rota kılavuzu](/docs/getting-started/route) sizi ilk istekten özelleştirilmiş bir rotaya götürür. Buradan, operatör tercihleriyle [bir rotanın hangi şarj ağlarını tercih edeceğini yönlendirebilir](/docs/getting-started/route-operators) veya via durakları ile [yolculuğu kendi ara noktalarınız etrafında şekillendirebilirsiniz](/docs/getting-started/route-stop).
 
-## Mutasyon
+## Mutation
 
-Bir rota oluşturmak için bir `vehicle`, `origin` ve `destination` gereklidir. Hesaplamayı iyileştirmek için isteğe bağlı olarak `via` noktaları, `operators`, `weather` veya diğer tercihleri ekleyin. Mutasyon, rota ayrıntılarını, emisyonları veya yol boyunca olanakları almak için kullanılabilecek bir rota `id` döndürür.
-
+Bir rota oluşturmak için bir `vehicle`, `origin` ve `destination` gerekir. İsteğe bağlı olarak hesaplamayı iyileştirmek için `via` noktaları, `operators`, `weather` veya diğer tercihleri ekleyin. Mutation, rota ayrıntılarını, emisyonları veya yol boyunca olanakları almak için kullanılabilecek bir rota `id` değeri döndürür.

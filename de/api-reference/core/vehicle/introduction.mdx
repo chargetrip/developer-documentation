@@ -1,35 +1,35 @@
 ---
-title: "Fahrzeug Einführung"
-heading: "Einführung"
-description: "Was die Fahrzeugdatenbank enthält, wie die Eigenschaften von Elektrofahrzeugen Routing und Laden beeinflussen und welche Queries Sie für den Zugriff verwenden."
+title: Fahrzeug Einführung
+heading: Einführung
+description: "Was die Fahrzeugdatenbank enthält, wie Eigenschaften von Elektrofahrzeugen Routing und Laden beeinflussen und mit welchen Queries Sie darauf zugreifen."
 ---
 
-Die Routenplanung für ein EV unterscheidet sich von der für ein Benzinfahrzeug. Wie weit ein Fahrzeug fahren kann, welche Ladegeräte es nutzen kann und wie schnell es lädt, hängt alles vom Fahrzeug selbst ab. Die Fahrzeugdatenbank liefert Ihnen diese Informationen, sodass Sie sie nicht selbst sammeln und pflegen müssen.
+Das Routing eines E-Fahrzeugs unterscheidet sich vom Routing eines Benzinfahrzeugs. Wie weit ein Fahrzeug fahren kann, welche Ladepunkte es nutzen kann und wie schnell es lädt, hängt vom Fahrzeug selbst ab. Die Fahrzeugdatenbank liefert Ihnen diese Informationen, sodass Sie sie nicht selbst erfassen und pflegen müssen.
 
-Jede Routen- und Isolinien-Anfrage benötigt eine Fahrzeug-`id`. Dieselben Daten ermöglichen es Ihnen außerdem, Fahrzeugauswahlen zu erstellen, Spezifikationen anzuzeigen und Ladestationen auf solche zu filtern, die der Fahrer nutzen kann.
+Jede Routen- und Isolinien-Anfrage benötigt eine Fahrzeug-`id`. Dieselben Daten ermöglichen es Ihnen außerdem, Fahrzeugauswahlen zu erstellen, Spezifikationen anzuzeigen und Ladestationen auf diejenigen zu filtern, die der Fahrer nutzen kann.
 
-## EV-Grundlagen
+## Grundlagen zu E-Fahrzeugen
 
 Einige Eigenschaften von Elektrofahrzeugen erklären, warum Fahrzeugdaten wichtig sind.
 
 ### Antriebsarten
 
-Ein ICE-Fahrzeug (Verbrennungsmotor) verbrennt Kraftstoff. Ein EV fährt mit Strom aus einer Batterie, die an einer Ladestation aufgeladen wird. Die Datenbank deckt vier Antriebsarten ab:
+Ein ICE-Fahrzeug (Verbrennungsmotor, internal combustion engine) verbrennt Kraftstoff. Ein E-Fahrzeug fährt mit Strom aus einer Batterie, die an einer Ladestation aufgeladen wird. Die Datenbank deckt vier Antriebsarten ab:
 
 | Antriebsart | Beschreibung |
 |:---|:---|
 | BEV | Batterieelektrisches Fahrzeug. Fährt ausschließlich mit der Batterie. |
 | PHEV | Plug-in-Hybrid-Elektrofahrzeug. Kombiniert eine extern aufladbare Batterie mit einem Verbrennungsmotor. |
-| EREV | Elektrofahrzeug mit Reichweitenverlängerer. Wird von der Batterie angetrieben, mit einem Verbrennungsmotor, der die Reichweite verlängert. |
-| HEV | Hybrid-Elektrofahrzeug. Kombiniert einen Verbrennungsmotor und eine Batterie, die nicht extern aufgeladen werden kann. |
+| EREV | Elektrofahrzeug mit Reichweitenverlängerer. Wird von der Batterie angetrieben, wobei ein Verbrennungsmotor die Reichweite erhöht. |
+| HEV | Hybrid-Elektrofahrzeug. Kombiniert einen Verbrennungsmotor mit einer Batterie, die nicht extern aufgeladen werden kann. |
 
 ### Laden
 
-EVs laden über einen von mehreren Steckertypen, daher ist ein Ladegerät nur nützlich, wenn das Fahrzeug dessen Stecker unterstützt. Die Ladegeschwindigkeit lässt sich in drei Stufen einteilen. Stufe 1 und 2 verwenden AC und dauern Stunden. Stufe 3, auch Schnellladen genannt, verwendet DC und kann ein Fahrzeug in weniger als einer Stunde laden. Wie schnell ein Fahrzeug tatsächlich lädt, hängt von seiner Ladekurve ab, die der Routing-Service berücksichtigt.
+E-Fahrzeuge laden über einen von mehreren Steckertypen, daher ist ein Ladepunkt nur nützlich, wenn das Fahrzeug dessen Anschluss unterstützt. Die Ladegeschwindigkeit fällt in drei Stufen. Stufe 1 und 2 nutzen Wechselstrom (AC) und dauern Stunden. Stufe 3, auch Schnellladen genannt, nutzt Gleichstrom (DC) und kann ein Fahrzeug in unter einer Stunde laden. Wie schnell ein Fahrzeug tatsächlich lädt, hängt von seiner Ladekurve ab, die der Routing-Service berücksichtigt.
 
 ### Was die Reichweite beeinflusst
 
-Die Batterieleistung ändert sich mit dem Wetter, der Nutzung der Klimaanlage und den Spezifikationen des Fahrzeugs, ähnlich wie sich ein Smartphone-Akku bei Kälte schneller entlädt. Deshalb reicht ein einzelner Reichweitenwert nicht aus, um eine Fahrt zu planen. Die Reichweite hängt von den Bedingungen ab, und der Routing-Service berücksichtigt sie, um vorherzusagen, wie viel Energie ein Fahrzeug zwischen zwei Punkten verbraucht. Mit dieser Vorhersage kann eine Anwendung entlang einer Strecke [Ladestopps empfehlen](/docs/getting-started/route) und mit einer [Isoline](/api-reference/core/isoline/mutation-create-isoline) das Gebiet anzeigen, das ein Fahrzeug erreichen kann. Sie begegnet der Reichweitenangst, der Angst, mit leerer Batterie liegen zu bleiben, bevor man das Ziel oder ein Ladegerät erreicht.
+Die Leistung der Batterie verändert sich mit dem Wetter, der Nutzung der Klimaanlage und den Spezifikationen des Fahrzeugs, ähnlich wie sich ein Smartphone-Akku bei Kälte schneller entlädt. Deshalb reicht ein einzelner Reichweitenwert nicht aus, um eine Fahrt zu planen. Die Reichweite hängt von den Bedingungen ab, und der Routing-Service berücksichtigt sie, um vorherzusagen, wie viel Energie ein Fahrzeug zwischen zwei Punkten verbraucht. Anhand dieser Vorhersage kann eine Anwendung [Ladestopps empfehlen](/docs/getting-started/route) und den Bereich anzeigen, den ein Fahrzeug erreichen kann, mit einer [Isoline](/api-reference/core/isoline/mutation-create-isoline). Sie begegnet der Reichweitenangst, der Sorge, dass die Ladung nicht bis zu einem Ziel oder einem Ladepunkt reicht.
 
 ## Fahrzeugdatenbank
 
@@ -37,12 +37,12 @@ Die Datenbank enthält BEV-, PHEV-, HEV- und EREV-Modelle. Neue Modelle werden h
 
 <VehicleList />
 
-Alle BEVs und EREVs werden mit einem validierten Verbrauchsmodell geliefert. Es berücksichtigt Eigenschaften wie Luftwiderstandsbeiwert und Rollwiderstand in Abhängigkeit von Geschwindigkeit, Höhenprofil, Ladegeschwindigkeit, Ladetemperatur und Batterietemperatur. Dadurch sind die Reichweiten- und Routenvorhersagen spezifisch für das gefahrene Fahrzeug.
+Alle BEVs und EREVs werden mit einem validierten Verbrauchsmodell geliefert. Es berücksichtigt Eigenschaften wie Luftwiderstandsbeiwert und Rollwiderstand in Abhängigkeit von Geschwindigkeit, Höhenprofil, Ladegeschwindigkeit, Ladetemperatur und Batterietemperatur. Dadurch sind die Reichweiten- und Routenvorhersagen spezifisch für das jeweils gefahrene Fahrzeug.
 
 ### Premium-Daten
 
-[Vehicle Premium](/api-reference/core/vehicle/query-vehicle-premium) ist eine Zusatzoption mit erweiterten Daten zu Batterie, Karosserie, Verfügbarkeit, Preisen, Effizienz, Sicherheit und mehr. [Kontaktieren Sie den Vertrieb](https://www.chargetrip.com/contact/sales), um auf Premium-Fahrzeugdaten umzusteigen.
+[Fahrzeug Premium](/api-reference/core/vehicle/query-vehicle-premium) ist ein Add-on mit erweiterten Daten zu Batterie, Karosserie des Fahrzeugs, Verfügbarkeit, Preisen, Effizienz, Sicherheit und mehr. [Kontaktieren Sie den Vertrieb](https://www.chargetrip.com/contact/sales), um auf Premium-Fahrzeugdaten umzusteigen.
 
 ### Bilder
 
-Bilder mit geklärten Nutzungsrechten sind als Zusatzoption erhältlich. Sie haben eine höhere Qualität als die standardmäßig enthaltenen Bilder. [Kontaktieren Sie den Vertrieb](https://www.chargetrip.com/contact/sales), um sie für Ihr Projekt zu aktivieren.
+Rechtlich freigegebene Fahrzeugbilder sind als Add-on verfügbar. Sie haben eine höhere Qualität als die standardmäßig enthaltenen Bilder. [Kontaktieren Sie den Vertrieb](https://www.chargetrip.com/contact/sales), um sie für Ihr Projekt zu aktivieren.

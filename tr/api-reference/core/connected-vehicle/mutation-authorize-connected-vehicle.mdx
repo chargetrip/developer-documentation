@@ -1,13 +1,13 @@
 ---
-title: Bağlı aracı yetkilendir mutasyonu
+title: Bağlı aracı yetkilendirme mutation'ı
 heading: Bağlı aracı yetkilendir
-description: "Son kullanıcı sağlayıcı üzerinden erişim verdikten sonra, authorizeConnectedVehicle mutasyonuyla bağlı aracın yetkilendirmesini tamamlayın."
+description: "Son kullanıcı sağlayıcı üzerinden erişim izni verdikten sonra authorizeConnectedVehicle mutation'ı ile bağlı aracın yetkilendirmesini tamamlayın."
 schemaName: authorizeConnectedVehicle
 schemaType: Mutation
 ---
 
-authorizeConnectedVehicle mutasyonunu kullanarak bağlı bir aracın yetkilendirmesini tamamlayın. Bu, son kullanıcı bağlantı sağlayıcısı üzerinden erişim izni verdikten sonra kullanışlıdır.
+authorizeConnectedVehicle mutation'ını kullanarak bir bağlı aracın yetkilendirmesini tamamlayın. Son kullanıcı bağlantı sağlayıcısı üzerinden erişim izni verdikten sonra kullanışlıdır.
 
-## Mutasyon
+## Mutation
 
-Bağlı bir aracı yetkilendirmek için bir `id` ve sağlayıcıya özel `options` gereklidir. `id`, [createConnectedVehicle mutasyonu](/api-reference/core/connected-vehicle/mutation-create-connected-vehicle) üzerinden alınabilir.
+Bir bağlı aracı yetkilendirmek için bir `id` ve sağlayıcıya özel `options` gerekir. `id` değerini [createConnectedVehicle mutation'ı](/api-reference/core/connected-vehicle/mutation-create-connected-vehicle) ile alabilirsiniz.

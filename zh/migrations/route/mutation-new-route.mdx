@@ -6,20 +6,20 @@ migrateBefore: 01-01-2027
 
 # 创建路线
 
-迁移截止时间：2027 年第一季度
+迁移截止期：2027 年第一季度
 
-从旧版路线服务迁移到最新版本。新服务提供了重新组织的 schema、按国家设置的运营商偏好、更快的路线计算以及更好的可维护性。
+从旧版 Route 服务迁移到最新版本。新服务提供重新组织的 schema、按国家/地区设置的运营商偏好、更快的路线计算以及更好的可维护性。
 
 ## 操作
 
-| 旧版              | 新版                                                            |
+| 旧               | 新                                                             |
 | ----------------- | ----------------------------------------------------------------|
 | `newRoute`        | [`createRoute`](/api-reference/core/route/mutation-create-route)     |
 
 ## 通用 schema 变更
 
-- **显式类型**：以前灵活的 JSON 字段现在在 schema 中有了明确的类型，以改进结构和验证。
-- **命名约定**：字段现在使用 `snake_case`，而不是 `camelCase`。
+- **显式类型**：之前灵活的 JSON 字段现在已在 schema 中显式定义类型，以改进结构和验证。
+- **命名约定**：字段现在使用 `snake_case` 而不是 `camelCase`。
 - **单位支持**：数值输入现在支持不同的单位类型，以包含 `value`、`type` 和可选 `source`（`manual`、`telemetry` 或 `default`）的对象表示。
 
 ## Mutation 变更
@@ -28,21 +28,21 @@ migrateBefore: 01-01-2027
 
 ### routeRequest
 
-在根层级，以下字段已被移除。与运营商相关的字段现在由[运营商偏好](#运营商偏好)涵盖，与设施相关的字段已移至其专用的[设施查询](/api-reference/core/route/query-get-route-stations-with-amenities)。
+在根级别，以下字段已被移除。与运营商相关的字段现在由[运营商偏好](#运营商偏好)涵盖，与便利设施相关的字段已移至其专用的[便利设施查询](/api-reference/core/route/query-get-route-stations-with-amenities)。
 
-| 字段                   | 移至                                   |
+| 字段                  | 移至                              |
 | ---------------------- | -------------------------------------- |
-| `operatorIds`          | 已移除                                 |
-| `amenities`            | 已移除                                 |
-| `amenity_preferences`  | 已移除                                 |
-| `operatorRequired`     | 已移除                                 |
-| `operatorPrefer`       | 已移除                                 |
+| `operatorIds`          | 已移除                                |
+| `amenities`            | 已移除                                |
+| `amenity_preferences`  | 已移除                                |
+| `operatorRequired`     | 已移除                                |
+| `operatorPrefer`       | 已移除                                |
 
 ### EV
 
 在 EV 层级，大多数顶层字段已移入专用的 `vehicle` 对象。
 
-| 字段              | 移至                                   |
+| 字段             | 移至                              |
 | ----------------- | -------------------------------------- |
 | `ev.id`           | `vehicle.id`                     |
 | `battery`         | `vehicle`                        |
@@ -51,22 +51,22 @@ migrateBefore: 01-01-2027
 | `plugs`           | `vehicle.charging.connectors`    |
 | `safeRiskMargin`       | `vehicle.charging.risk_margin`   |
 | `chargeMode`           | `vehicle.charging.mode`          |
-| `bmsConsumption`  | 已移除                                 |
+| `bmsConsumption`  | 已移除                                |
 
-### 车辆负载
+### 车辆载荷
 
-车辆负载属性不再在单一位置设置。现在它们按每个 `origin` 和 `via` 点分别指定，从而可以按路段更精细地控制乘员和载货重量。它们位于每个位置的 `properties.vehicle` 下，字段名称变更如下：
+车辆载荷属性不再在单一位置设置。现在它们按每个 `origin` 和 `via` 点分别指定，从而可以按路段更细致地控制乘员和货物重量。它们位于每个位置的 `properties.vehicle` 下，字段名称的变化如下：
 
-| 字段        | 移至                  |
+| 字段       | 移至             |
 | ----------- | --------------------- |
-| `occupants` | 不变                   |
+| `occupants` | 不变              |
 | `cargo`     | `total_cargo_weight`  |
 
 ### 遥测
 
-以下遥测数据已从根层级移入 `vehicle` 对象。
+以下遥测数据已从根级别移入 `vehicle` 对象。
 
-| 字段                  | 移至            |
+| 字段                 | 移至        |
 | --------------------- | ---------------- |
 | `heading`             | `vehicle`  |
 | `motor_rpm`           | `vehicle`  |
@@ -77,13 +77,13 @@ migrateBefore: 01-01-2027
 
 ## 重点变更
 
-`input` 参数上的一些字段现在具有新的、结构更清晰的形态。下文将更详细地介绍。
+`input` 参数上的一些字段现在具有新的、结构更清晰的形式。下面将更详细地介绍。
 
 ### 运营商偏好
 
-运营商偏好被简化为三个级别：`high`、`medium` 和 `low`。每个条目（无论是排名、排除还是避开）都可以通过 `countries` 字段限定到特定国家。如果省略，则会考虑所有国家。
+运营商偏好简化为三个级别：`high`、`medium` 和 `low`。每个条目，无论是排名、排除还是避开，都可以通过 `countries` 字段限定到特定国家/地区。如果省略，则考虑所有国家/地区。
 
-```graphql 运营商偏好 {{ mark: [6,9,12] }}
+```graphql Operator preferences {{ mark: [6,9,12] }}
 input: {
   operators: {
     ranking: {
@@ -106,11 +106,11 @@ input: {
 }
 ```
 
-### 乘员总重量
+### 总乘员重量
 
-新的 `total_occupant_weight` 字段允许您覆盖默认的乘员重量，使用新的单位对象表示。
+新的 `total_occupant_weight` 字段可让您覆盖默认的乘员重量，使用新的单位对象表示。
 
-```graphql 乘员总重量 {{ mark: [6,7,8,9,10] }}
+```graphql Total occupant weight {{ mark: [6,7,8,9,10] }}
 input: {
   origin: {
     properties: {

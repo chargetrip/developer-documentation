@@ -6,9 +6,9 @@ migrateBefore: 01-01-2027
 
 # Route erstellen
 
-Migrieren vor: Q1 2027
+Migrieren bis: Q1 2027
 
-Migrieren Sie vom veralteten Route-Service auf die neueste Version. Der neue Service bietet ein neu organisiertes Schema, länderspezifische Betreiberpräferenzen, eine schnellere Routenberechnung und bessere Wartbarkeit.
+Migrieren Sie vom veralteten Route-Dienst auf die neueste Version. Der neue Dienst bietet ein neu organisiertes Schema, Betreiberpräferenzen pro Land, eine schnellere Routenberechnung und bessere Wartbarkeit.
 
 ## Operationen
 
@@ -28,7 +28,7 @@ Das Argument `input` von `createRoute` wurde neu organisiert und vereinfacht.
 
 ### routeRequest
 
-Auf Root-Ebene wurden die folgenden Felder entfernt. Betreiberbezogene Felder werden jetzt durch [Betreiberpräferenzen](#betreiberpräferenzen) abgedeckt, und ausstattungsbezogene Felder wurden in die eigene [Ausstattungsabfrage](/api-reference/core/route/query-get-route-stations-with-amenities) verschoben.
+Auf der Wurzelebene wurden die folgenden Felder entfernt. Betreiberbezogene Felder werden jetzt durch [Betreiberpräferenzen](#betreiberpräferenzen) abgedeckt, und ausstattungsbezogene Felder wurden in ihre eigene dedizierte [Ausstattungs-Query](/api-reference/core/route/query-get-route-stations-with-amenities) verlagert.
 
 | Feld                   | Verschoben nach                        |
 | ---------------------- | -------------------------------------- |
@@ -38,9 +38,9 @@ Auf Root-Ebene wurden die folgenden Felder entfernt. Betreiberbezogene Felder we
 | `operatorRequired`     | Entfernt                               |
 | `operatorPrefer`       | Entfernt                               |
 
-### EV
+### E-Fahrzeug
 
-Auf EV-Ebene wurden die meisten Felder der obersten Ebene in ein eigenes `vehicle`-Objekt verschoben.
+Auf der Ebene des E-Fahrzeugs wurden die meisten Felder der obersten Ebene in ein eigenes Objekt `vehicle` verschoben.
 
 | Feld              | Verschoben nach                        |
 | ----------------- | -------------------------------------- |
@@ -55,7 +55,7 @@ Auf EV-Ebene wurden die meisten Felder der obersten Ebene in ein eigenes `vehicl
 
 ### Fahrzeugbeladung
 
-Eigenschaften der Fahrzeugbeladung werden nicht mehr an einer einzigen Stelle festgelegt. Sie werden jetzt pro `origin`- und `via`-Punkt angegeben, was eine feinere Steuerung von Insassen- und Ladungsgewicht pro Etappe ermöglicht. Sie befinden sich bei jedem Standort unter `properties.vehicle`, und ihre Feldnamen ändern sich wie folgt:
+Eigenschaften der Fahrzeugbeladung werden nicht mehr an einer einzigen Stelle festgelegt. Sie werden jetzt pro `origin`- und `via`-Punkt angegeben, was eine granularere Kontrolle über Insassen- und Ladungsgewicht pro Abschnitt ermöglicht. Sie befinden sich unter `properties.vehicle` an jedem Standort, und ihre Feldnamen ändern sich wie folgt:
 
 | Feld        | Verschoben nach       |
 | ----------- | --------------------- |
@@ -64,7 +64,7 @@ Eigenschaften der Fahrzeugbeladung werden nicht mehr an einer einzigen Stelle fe
 
 ### Telemetrie
 
-Die folgenden Telemetriedaten wurden von der Root-Ebene in das `vehicle`-Objekt verschoben.
+Die folgenden Telemetriedaten wurden von der Wurzelebene in das Objekt `vehicle` verschoben.
 
 | Feld                  | Verschoben nach  |
 | --------------------- | ---------------- |
@@ -77,13 +77,13 @@ Die folgenden Telemetriedaten wurden von der Root-Ebene in das `vehicle`-Objekt 
 
 ## Hervorgehobene Änderungen
 
-Einige Felder des Arguments `input` haben jetzt neue, stärker strukturierte Formen. Sie werden unten ausführlicher behandelt.
+Einige Felder des Arguments `input` haben jetzt neue, stärker strukturierte Formen. Diese werden weiter unten ausführlicher beschrieben.
 
 ### Betreiberpräferenzen
 
-Betreiberpräferenzen wurden auf drei Stufen vereinfacht: `high`, `medium` und `low`. Jeder Eintrag, ob eingestuft, ausgeschlossen oder gemieden, kann über das Feld `countries` auf bestimmte Länder beschränkt werden. Wenn es weggelassen wird, werden alle Länder berücksichtigt.
+Betreiberpräferenzen werden auf drei Stufen vereinfacht: `high`, `medium` und `low`. Jeder Eintrag, ob eingestuft, ausgeschlossen oder gemieden, kann über das Feld `countries` auf bestimmte Länder begrenzt werden. Wird es weggelassen, werden alle Länder berücksichtigt.
 
-```graphql Betreiberpräferenzen {{ mark: [6,9,12] }}
+```graphql Operator preferences {{ mark: [6,9,12] }}
 input: {
   operators: {
     ranking: {
@@ -110,7 +110,7 @@ input: {
 
 Mit einem neuen Feld `total_occupant_weight` können Sie das standardmäßige Insassengewicht überschreiben, ausgedrückt mit dem neuen Einheitenobjekt.
 
-```graphql Gesamtgewicht der Insassen {{ mark: [6,7,8,9,10] }}
+```graphql Total occupant weight {{ mark: [6,7,8,9,10] }}
 input: {
   origin: {
     properties: {

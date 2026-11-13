@@ -7,20 +7,20 @@ date: 01-02-2026
 
 ![Fahrstile](../../../assets/changelog/2026/february.jpg)
 
-Die Fahrgeschwindigkeit wirkt sich direkt auf den Energieverbrauch von EVs aus. Damit Routen das reale Fahrzeugverhalten und die Fahrtdauer genauer widerspiegeln, führen wir zwei neue Steuerungsmöglichkeiten ein: Geschwindigkeitsfaktor und Fahrstile.
+Die Fahrgeschwindigkeit beeinflusst den Energieverbrauch von E-Fahrzeugen unmittelbar. Damit Routen das reale Fahrzeugverhalten und die Fahrtdauer genauer abbilden, führen wir zwei neue Steuerungsmöglichkeiten ein: Geschwindigkeitsfaktor und Fahrstile.
 
 Fahrstile verändern die geschätzte Ankunftszeit und den Energieverbrauch.
 
-- **Eco** geht von einem ruhigeren, effizienten Tempo aus, um den Akku zu schonen;
-- **Sport** geht von höheren Geschwindigkeiten und größerem Verbrauch für eine schnellere Ankunft aus.
+- **Eco** geht von einem gelasseneren, effizienten Tempo aus, um Batterie zu sparen;
+- **Sport** geht von höheren Geschwindigkeiten und einem höheren Verbrauch für eine schnellere Ankunft aus.
 
-Mit diesen Funktionen können Sie die Routenberechnung daran anpassen, wie ein Fahrzeug tatsächlich gefahren wird. Das ergibt präzisere Verbrauchsschätzungen und Ankunftszeiten.
+Mit diesen Funktionen passen Sie die Routing-Berechnungen daran an, wie ein Fahrzeug tatsächlich gefahren wird. Das führt zu präziseren Verbrauchsschätzungen und Ankunftszeiten.
 
 
-### Aktualisiertes getRouteStationsWithAmenities-Schema
+### Aktualisiertes Schema von getRouteStationsWithAmenities
 
-Wir haben die Abfrage `getRouteStationsWithAmenities` aktualisiert, um die Eingaben zu vereinfachen und die Filterung nach mehreren Ausstattungsmerkmalen zu unterstützen.
+Wir haben die Query `getRouteStationsWithAmenities` aktualisiert, um die Eingaben zu vereinfachen und das Filtern nach mehreren Ausstattungen zu unterstützen.
 
-- **Suche nach mehreren Ausstattungsmerkmalen**: Fragen Sie mehrere Ausstattungskategorien gleichzeitig mit logischer ODER-Filterung ab;
+- **Suche nach mehreren Ausstattungen**: Fragen Sie mehrere Ausstattungskategorien gleichzeitig mit logischer ODER-Filterung ab;
 - **Direkte Zeiteingaben**: Übergeben Sie Zeitfenster direkt in Sekunden ab dem Routenstart;
-- **Externe Stations-ID**: Greifen Sie auf `external_id` an den Stationsknoten zu.
+- **Externe Stations-ID**: Greifen Sie auf `external_id` an den Station-Knoten zu.
