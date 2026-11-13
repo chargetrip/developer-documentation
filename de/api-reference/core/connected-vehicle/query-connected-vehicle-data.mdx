@@ -1,0 +1,13 @@
+---
+title: "Daten verbundener Fahrzeuge Query"
+heading: "Daten verbundener Fahrzeuge"
+description: "Rufen Sie mit der Query connectedVehicleData Echtzeitdaten wie Ladezustand oder Standort direkt von einem verbundenen Fahrzeug ab."
+schemaName: connectedVehicleData
+schemaType: Query
+---
+
+Rufen Sie Live-Fahrzeugdaten mit der Query connectedVehicleData ab. Das ist nützlich, wenn Sie Echtzeitdaten wie den Ladezustand oder den Standort direkt von einem verbundenen Fahrzeug abrufen möchten.
+
+## Query
+
+Zum Abrufen der Live-Daten ist die `id` eines verbundenen Fahrzeugs erforderlich. Die `id` erhalten Sie über die [Mutation createConnectedVehicle](/api-reference/core/connected-vehicle/mutation-create-connected-vehicle).

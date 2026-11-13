@@ -1,0 +1,13 @@
+---
+title: "Requête de liste d'avis"
+heading: "Liste des avis"
+description: "Obtenez les avis des utilisateurs sur une station avec la requête reviewList, y compris la note, le message et les détails du VE utilisé pour la recharge."
+schemaName: reviewList
+schemaType: Query
+---
+
+Chaque station peut être accompagnée d'avis d'utilisateurs. Interrogez des propriétés telles que la note et le message, ou recevez des données sur le VE utilisé pour la recharge. Les avis sont limités à une seule base de données de stations et ne peuvent pas être utilisés entre différents projets.
+
+## Requête
+
+Un `id` de station est obligatoire pour obtenir ses avis. L'`id` peut être obtenu via un [itinéraire](/api-reference/core/route/query-get-route), le [service de tuiles](/api-reference/core/tiles/mvt) ou la [requête station around](/api-reference/core/station/query-station-around). Utilisez les arguments `size` et `page` pour les [paginer](/api-reference/core/api/pagination).

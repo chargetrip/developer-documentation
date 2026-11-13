@@ -1,46 +1,46 @@
 ---
-title: Itinéraire avec opérateurs préférés
-description: "Contrôlez les réseaux de recharge privilégiés par le service de routage en définissant des préférences d'opérateurs dans le tableau de bord ou par requête."
+title: "Itinéraire avec opérateurs préférés"
+description: "Contrôlez les réseaux de recharge que le service d'itinéraires privilégie en définissant des préférences d'opérateurs dans le tableau de bord ou pour chaque requête."
 ---
-Les préférences d'opérateur vous permettent de contrôler quels réseaux de recharge le service de calcul d'itinéraire privilégie lors du calcul d'un itinéraire EV.
+Les préférences d'opérateurs vous permettent de contrôler les réseaux de recharge que le service d'itinéraires privilégie lors du calcul d'un itinéraire VE.
 
 Vous pouvez configurer les préférences à deux endroits :
-- [Dashboard Chargetrip](https://account.chargetrip.io/projects) : définissez la configuration globale des préférences d'opérateur pour votre projet sous project / advanced / station operator preferences.
-- [Requête Create Route](/api-reference/route/mutation-create-route#arg-input-operators) : définissez les préférences dynamiquement ou remplacez la configuration des préférences d'opérateur du dashboard pour chaque requête à l'aide du champ `input.operators` de la mutation `createRoute`.
+- [Tableau de bord Chargetrip](https://account.chargetrip.io/projects) : définissez la configuration globale des préférences d'opérateurs de votre projet sous project / advanced / station operator preferences.
+- [Requête de création d'itinéraire](/api-reference/core/route/mutation-create-route#arg-input-operators) : définissez les préférences dynamiquement ou remplacez la configuration des préférences d'opérateurs du tableau de bord pour chaque requête, à l'aide du champ `input.operators` de la mutation `createRoute`.
 
 ---
 
 ### 1. Types de préférences et comportement de l'itinéraire
 
 
-Les préférences d'opérateur existent en quatre types, et chacune peut être limitée à des pays spécifiques :
+Les préférences d'opérateurs existent en quatre types, et chacune peut être limitée à des pays spécifiques :
 
-| Préférence | Comportement du calcul d'itinéraire |
+| Préférence | Comportement de l'itinéraire |
 |:---|:---|
 | Exclu | Les stations de ces opérateurs sont strictement exclues en toutes circonstances. |
 | Évité  |  Les stations de ces opérateurs sont évitées, sauf s'il n'existe aucune meilleure alternative. |
 | Préféré | Les stations de ces opérateurs sont priorisées selon leur classement (high, medium, low). Plus le niveau est élevé, plus la station a de chances d'être sélectionnée. L'itinéraire utilisera tout de même des stations non classées ou évitées s'il n'existe aucune meilleure alternative.|
-| Obligatoire  | Seules les stations de ces opérateurs sont utilisées. Au sein de ce groupe autorisé, les niveaux de classement s'appliquent toujours, ce qui signifie que les opérateurs de rang élevé sont préférés à ceux de rang moyen et faible. Si le véhicule ne peut pas atteindre la destination en n'utilisant que des stations classées, le calcul de l'itinéraire échoue.|
+| Requis  | Seules les stations de ces opérateurs sont utilisées. Au sein de ce groupe autorisé, les niveaux de classement s'appliquent toujours : les opérateurs de rang high sont donc préférés à ceux de rang medium et low. Si le véhicule ne peut pas atteindre la destination en utilisant uniquement des stations classées, le calcul de l'itinéraire échoue.|
 
 
 ---
 
-### 2. Comment les préférences du dashboard sont appliquées
+### 2. Comment les préférences du tableau de bord sont appliquées
 
-Comprendre comment les entrées au niveau de la requête interagissent avec les paramètres du dashboard garantit un comportement de calcul d'itinéraire prévisible :
+Comprendre comment les entrées au niveau de la requête interagissent avec les paramètres du tableau de bord garantit un comportement d'itinéraire prévisible :
 
-- **Les opérateurs exclus et évités du dashboard s'appliquent automatiquement** :
-Les opérateurs configurés comme exclus ou évités dans le dashboard s'appliquent à chaque calcul d'itinéraire sans nécessiter aucun paramètre dans votre requête `createRoute`.
-- **Les niveaux de classement du dashboard restent inactifs sans type de classement** :
-Les opérateurs configurés dans des niveaux de classement doivent être activés en définissant `input.operators.ranking.type` dans votre requête `createRoute`, faute de quoi ils n'influencent pas la sélection des stations.
-- **Les opérateurs au niveau de la requête remplacent les préférences correspondantes du dashboard** :
-Spécifier des identifiants d'opérateur dans la requête `createRoute` ne remplace que la configuration correspondante du dashboard. Par exemple, fournir `input.operators.exclude[]` remplace l'intégralité de la configuration des opérateurs exclus du dashboard, tandis que les opérateurs évités du dashboard continuent de s'appliquer.
+- **Les opérateurs exclus et évités du tableau de bord s'appliquent automatiquement** :
+Les opérateurs configurés comme exclus ou évités dans le tableau de bord s'appliquent à chaque calcul d'itinéraire, sans nécessiter de paramètre dans votre requête `createRoute`.
+- **Les niveaux de classement du tableau de bord restent inactifs sans type de classement** :
+Les opérateurs configurés dans des niveaux de classement doivent être activés en définissant `input.operators.ranking.type` dans votre requête `createRoute`, sinon ils n'ont aucun effet sur la sélection des stations.
+- **Les opérateurs au niveau de la requête remplacent les préférences correspondantes du tableau de bord** :
+Spécifier des identifiants d'opérateurs dans la requête `createRoute` ne remplace que la configuration correspondante du tableau de bord. Par exemple, fournir `input.operators.exclude[]` remplace toute la configuration des opérateurs exclus du tableau de bord, tandis que les opérateurs à éviter du tableau de bord continuent de s'appliquer.
 ---
 ### 3. Exemples d'implémentation
 
 <details>
-  <summary>Utiliser uniquement les exclusions et les évitements du dashboard</summary>
-  Applique les configurations d'opérateurs exclus et évités définies dans le dashboard. Les paramètres de classement du dashboard sont inactifs car aucun `input.operators.ranking.type` n'est spécifié.
+  <summary>Utiliser uniquement les exclusions et les évitements du tableau de bord</summary>
+  Applique les configurations d'opérateurs exclus et évités définies dans le tableau de bord. Les paramètres de classement du tableau de bord sont inactifs, car aucun `input.operators.ranking.type` n'est spécifié.
 
 ```graphql Example request
 createRoute(
@@ -60,8 +60,8 @@ createRoute(
 </details>
 
 <details>
-  <summary>Utiliser les opérateurs classés du dashboard comme « Préférés »</summary>
-  Applique les configurations d'opérateurs exclus et évités du dashboard, et privilégie les stations appartenant aux niveaux de classement du dashboard.
+  <summary>Utiliser les opérateurs classés du tableau de bord comme « Préférés »</summary>
+  Applique les configurations d'opérateurs exclus et évités du tableau de bord, et privilégie les stations qui appartiennent aux niveaux de classement du tableau de bord.
 
 ```graphql Example request {{ mark: [14] }}
 createRoute(
@@ -86,8 +86,8 @@ createRoute(
 </details>
 
 <details>
-  <summary>Utiliser les opérateurs classés du dashboard comme « Obligatoires »</summary>
-  Limite l'itinéraire à une recharge exclusivement dans les stations appartenant aux opérateurs configurés dans les niveaux de classement du dashboard.
+  <summary>Utiliser les opérateurs classés du tableau de bord comme « Requis »</summary>
+  Limite l'itinéraire à des recharges exclusivement dans les stations appartenant aux opérateurs configurés dans les niveaux de classement du tableau de bord.
 
 ```graphql Example request {{ mark: [14] }}
 createRoute(
@@ -112,8 +112,8 @@ createRoute(
 </details>
 
 <details>
-  <summary>Définir des préférences personnalisées et remplacer les paramètres du dashboard</summary>
-  Fournissez des configurations d'opérateurs complètes directement dans l'appel d'API. Tout champ spécifié (ranking, avoid ou exclude) remplace la configuration correspondante du dashboard pour cette requête.
+  <summary>Définir des préférences personnalisées et remplacer les paramètres du tableau de bord</summary>
+  Fournissez les configurations d'opérateurs complètes directement dans l'appel d'API. Tout champ spécifié (ranking, avoid ou exclude) remplace la configuration correspondante du tableau de bord pour cette requête.
 
 ```graphql Example request  {{ mark: [13,14,15,16,17,18,19,20,21] }}
 createRoute(
@@ -145,7 +145,7 @@ createRoute(
 
 <details>
   <summary>Définir des préférences personnalisées pour des pays spécifiques</summary>
-  Fournissez des configurations d'opérateurs complètes directement dans l'appel d'API. Tout champ spécifié (ranking, avoid ou exclude) remplace la configuration correspondante du dashboard pour cette requête.
+  Fournissez les configurations d'opérateurs complètes directement dans l'appel d'API. Tout champ spécifié (ranking, avoid ou exclude) remplace la configuration correspondante du tableau de bord pour cette requête.
 
 ```graphql Example request  {{ mark: [13,14,15,16,17,18,19,20,21] }}
 createRoute(

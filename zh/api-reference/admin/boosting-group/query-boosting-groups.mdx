@@ -1,0 +1,13 @@
+---
+title: 增强组列表查询
+heading: 增强组列表
+description: "使用 boostingGroups 查询列出您工作区的增强组，可按客户端或状态进行筛选。"
+schemaName: boostingGroups
+schemaType: Query
+---
+
+使用 boostingGroups 查询列出您工作区的增强组。当您想构建增强组的概览，或查找当前处于激活状态的组时，这会很有用。
+
+## 查询
+
+执行此查询无需任何输入。使用 `first` 和 `after` 参数对结果进行[分页](/api-reference/core/api/pagination)，并使用 `filter` 参数按 `client_id` 或 `status` 缩小范围。

@@ -1,0 +1,13 @@
+---
+title: Güçlendirme grubu silme mutation'ı
+heading: Güçlendirme grubunu sil
+description: "Bir güçlendirme grubunun istasyonlarını artık öne çıkarmak istemediğinizde deleteBoostingGroup mutation'ı ile grubu kaldırın."
+schemaName: deleteBoostingGroup
+schemaType: Mutation
+---
+
+deleteBoostingGroup mutation'ını kullanarak bir güçlendirme grubunu silin. Bir gruptaki istasyonları artık öne çıkarmak istemediğinizde kullanışlıdır. Bir grubu geçici olarak kullanmayı bırakmak için bunun yerine [durumunu inactive olarak ayarlayın](/api-reference/admin/boosting-group/mutation-update-boosting-group).
+
+## Mutation
+
+Bir güçlendirme grubu `id` değeri zorunludur. Mutation bir boolean döndürür.

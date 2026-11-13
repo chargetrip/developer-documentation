@@ -1,0 +1,16 @@
+---
+title: "Requête d'arrêt de service sur itinéraire"
+heading: "Arrêt de service sur itinéraire"
+description: "Trouvez des stations de recharge dotées de services à un certain point d'un itinéraire avec la requête getRouteStationsWithAmenities."
+schemaName: getRouteStationsWithAmenities
+schemaType: Query
+---
+
+Recherchez des stations de recharge dotées de services à un certain point d'un itinéraire en utilisant la requête getRouteStationsWithAmenities. Elle est utile lorsque vous souhaitez planifier un arrêt de recharge à proximité de restaurants, de commerces ou d'autres services.
+
+## Requête
+
+Un `route_id`, un `route_details_id`, un `time_window` et des `amenity_types` sont obligatoires pour rechercher des stations le long d'un itinéraire. Les deux identifiants peuvent être obtenus via la [requête getRoute](/api-reference/core/route/query-get-route). Utilisez l'argument `filter` pour restreindre les résultats selon des critères précis, et les arguments `first` et `after` pour les [paginer](/api-reference/core/api/pagination).
+
+> [!WARNING] Limites
+> `first` ne peut pas dépasser 10 pour cette requête.

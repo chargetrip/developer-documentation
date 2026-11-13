@@ -1,0 +1,67 @@
+---
+title: Ambiente
+description: "Ottieni gli URL di base, l'endpoint WebSocket per le subscription e gli header di autenticazione necessari per iniziare a inviare richieste all'API."
+---
+
+L'API utilizza due endpoint distinti a seconda del tipo di operazione: un URL HTTPS per query e mutation e un URL WebSocket (WSS) per le subscription.
+
+## Endpoint
+
+### Query e mutation
+
+Query e mutation vengono eseguite tramite richieste HTTP POST all'endpoint GraphQL principale.
+
+```bash GraphQL queries and mutations endpoint URL
+https://api.chargetrip.io/graphql
+```
+
+### Subscription
+
+Le subscription richiedono una connessione persistente tramite WebSocket e possono essere implementate usando il protocollo `graphql-transport-ws`.
+
+```bash GraphQL subscription URL
+wss://api.chargetrip.io/subscription
+```
+
+> [!WARNING] Il protocollo graphql-ws è deprecato
+> Il protocollo di subscription legacy graphql-ws è deprecato e verrà presto rimosso. Passa al protocollo graphql-transport-ws per evitare errori nelle subscription e interruzioni del servizio.
+
+### Server-Sent Events
+
+Server-Sent Events (SSE) è un'alternativa ai WebSocket per ricevere aggiornamenti in tempo reale. Non è un tipo di subscription ma un diverso trasporto dei messaggi: trasmette i risultati delle subscription tramite una normale connessione HTTP anziché un WebSocket persistente.
+
+```bash Server-Sent Events URL
+https://subscription.chargetrip.io/sse
+```
+
+## Header di autorizzazione
+
+Aggiungi i seguenti header a ogni richiesta. Gli header contrassegnati come obbligatori devono sempre essere inviati.
+
+`x-client-id` · <span class="text-accent">obbligatorio</span>
+: Un ID progetto che contiene la configurazione del progetto.
+
+`x-app-id` · <span class="text-accent">obbligatorio</span>
+: Un ID app per la sicurezza e per la suddivisione delle analisi.
+
+`x-app-identifier`
+: Un bundle identifier iOS o Android.
+
+`x-app-fingerprint`
+: Un'impronta SHA Android.
+
+> [!TIP] Proteggi le tue chiavi
+> Per la massima sicurezza, limita la tua applicazione all'accesso machine-to-machine (M2M) e conserva le credenziali sul tuo server, dietro la tua autenticazione, anziché esporle a un browser o a un dispositivo. Consulta [Sicurezza](/api-reference/core/api/security) per tutti i tipi di restrizione disponibili.
+
+## Inviare una richiesta autorizzata
+
+Per impostazione predefinita, viene generato un `x-app-id` univoco per ogni progetto.
+
+```bash Example request
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "x-client-id: YOUR_KEY_HERE" \
+  -H "x-app-id: YOUR_KEY_HERE" \
+  -d '{ "query": "{ } " }' \
+  https://api.chargetrip.io/graphql
+```

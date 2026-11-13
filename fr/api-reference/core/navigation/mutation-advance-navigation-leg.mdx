@@ -1,0 +1,13 @@
+---
+title: "Mutation d'avancement du tronçon de navigation"
+heading: "Avancer le tronçon de navigation"
+description: "Faites passer une session de navigation active au tronçon d'itinéraire suivant avec la mutation advanceNavigationLeg, par exemple après un arrêt de recharge."
+schemaName: advanceNavigationLeg
+schemaType: Mutation
+---
+
+Faites avancer une session de navigation active jusqu'au tronçon d'itinéraire suivant en utilisant la mutation advanceNavigationLeg. Elle est utile lorsqu'un conducteur termine un tronçon, par exemple en finissant un arrêt de recharge, et poursuit vers le suivant.
+
+## Mutation
+
+Un `id` de session de navigation et une `current_location` sont obligatoires pour passer au tronçon suivant. Incluez éventuellement `state_of_charge` pour indiquer le niveau de charge du véhicule à la position actuelle. L'`id` peut être obtenu via la [mutation startNavigation](/api-reference/core/navigation/mutation-start-navigation).

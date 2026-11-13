@@ -1,0 +1,13 @@
+---
+title: 车辆列表查询
+heading: 车辆列表
+description: "使用 vehicleList 查询搜索和筛选完整的车辆数据库，并按地区提供本地化的名称和插头类型。"
+schemaName: vehicleList
+schemaType: Query
+---
+
+使用 `vehicleList` 查询访问完整的车辆数据库。默认情况下，车辆数据库对车辆和插头类型使用欧盟的命名。
+
+## 查询
+
+执行 `vehicleList` 查询无需任何输入。使用 `filter` 和 `search` 缩小并自定义结果范围。将 country 参数与地区筛选结合使用，可返回您所在地区可用的车辆，并采用当地通用的名称和插头类型。使用 `size` 和 `page` 参数对结果进行[分页](/api-reference/core/api/pagination)。

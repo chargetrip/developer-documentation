@@ -7,22 +7,22 @@ date: 01-09-2026
 
 ![Route Matching](../../../assets/changelog/2026/september.jpg)
 
-Wir haben Route-Matching-Operationen eingeführt. Damit können Sie externe GPS-Spuren per Map Matching abgleichen und durch unsere Routing-Engine laufen lassen, um den Energieverbrauch zu berechnen und optimale Ladestopps einzufügen.
+Wir haben Route-Matching-Operationen eingeführt. Damit können Sie externe GPS-Spuren per Map-Matching auf das Straßennetz abbilden und durch unsere Routing-Engine laufen lassen, um den Energieverbrauch zu berechnen und optimale Ladestopps einzufügen.
 
 - Berechnen Sie zugeordnete Routen aus Koordinatenfolgen mit der neuen Mutation `createMatchedRoute`;
-- Legen Sie Zwischenstopps mit `vias` fest, die über den Koordinaten-Array-Index (`via.index`) definiert werden, mit Unterstützung für die dynamische Aktualisierung von Passagierzahl und Ladungsgewicht entlang der Fahrt;
+- Legen Sie Zwischenstopps mit `vias` fest, die über den Index im Koordinaten-Array (`via.index`) definiert werden, mit Unterstützung für die dynamische Aktualisierung von Passagierzahl und Frachtgewicht des Fahrzeugs entlang der Fahrt;
 - Aktivieren Sie `plan_charging_stops: true`, um den Energieverbrauch des Fahrzeugs entlang des vorgegebenen Pfads zu bewerten und bei Bedarf automatisch kompatible Ladestopps einzufügen;
-- Fragen Sie mit `getRouteEmissions` vollständige CO₂-Emissionsprofile für abgeschlossene zugeordnete Routen ab.
+- Rufen Sie mit `getRouteEmissions` vollständige CO₂-Emissionsprofile für abgeschlossene zugeordnete Routen ab.
 
 <details>
   <summary>Verbesserungen</summary>
 
-    - Die Abfrage operator wurde so aktualisiert, dass sie neben der internen id auch eine external_id akzeptiert.
+    - Die Operator-Query wurde aktualisiert und akzeptiert nun neben der internen id auch eine external_id.
 </details>
 
 <details>
   <summary>Fehlerbehebungen</summary>
 
     - Es wurde ein Problem behoben, bei dem die Registrierung im Dashboard mit einer E-Mail-Adresse mit Großbuchstaben dazu führte, dass ausstehende Workspace-Einladungen nach der Anmeldung nicht angezeigt wurden.
-    - Es wurde eine Berechnungs- und Rundungsabweichung behoben, bei der die Summe der Fahrtdauern der Etappenabschnitte nicht mit den gesamten Fahrtdauern (`durations.driving`) in den Routendetails übereinstimmte.
+    - Es wurde eine Abweichung bei Berechnung und Rundung behoben, bei der die Summe der Fahrdauern der Etappenabschnitte nicht mit den gesamten Fahrdauern (`durations.driving`) in den Routendetails übereinstimmte.
 </details>

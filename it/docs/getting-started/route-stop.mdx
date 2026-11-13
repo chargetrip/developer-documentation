@@ -1,11 +1,11 @@
 ---
-title: Percorso con tappe
+title: "Percorso con tappe"
 description: "Aggiungi tappe intermedie tra origine e destinazione con via, usando tappe di posizione o di ricarica per scenari di viaggio reali."
 ---
 
-Quando calcoli un percorso EV con la Route API di Chargetrip, puoi aggiungere tappe intermedie tra l'origine e la destinazione usando `via`.
+Quando calcoli un percorso per veicoli elettrici con la Route API di Chargetrip, puoi aggiungere tappe intermedie tra l'origine e la destinazione usando `via`.
 
-Le tappe ti permettono di personalizzare il calcolo del percorso per scenari di viaggio reali, ad esempio ricaricare in una stazione di ricarica preferita, far salire dei passeggeri o fermarsi a un ristorante.
+Le tappe ti permettono di personalizzare l'instradamento per scenari di viaggio reali, come ricaricare in una stazione di ricarica preferita, far salire dei passeggeri o fermarsi a un ristorante.
 
 
 ## Tipi di tappe
@@ -14,57 +14,57 @@ Chargetrip supporta due tipi di tappe intermedie:
 
 | Tappa | Ricarica |  Campo di input | Scopo |
 | :--- | :--- | :--- | :--- |
-| **Località** | No |  `via.geometry`| Tappa geografica (ritiro, consegna, deviazione panoramica, pausa caffè).
+| **Posizione** | No |  `via.geometry`| Tappa geografica (ritiro, consegna, deviazione panoramica, pausa caffè).
 | **Stazione** | Sì | `via.properties.station.station_id`| Stazione di ricarica selezionata esplicitamente.
 
 
-## Durata della tappa
+## Durata della sosta
 
-Puoi configurare la durata di ogni tappa. A seconda del tipo di tappa (con o senza ricarica), `stop_duration` viene configurato in posizioni diverse e ha comportamenti diversi:
+Puoi configurare la durata di ogni sosta. A seconda del tipo di tappa (con o senza ricarica), `stop_duration` si configura in posizioni diverse e ha comportamenti diversi:
 
 ### 1. Nelle tappe senza ricarica
 
-La durata della tappa viene configurata in `input.via.properties.location.stop_duration`. Questa durata rappresenta la **durata esatta della tappa** e viene aggiunta direttamente alla durata totale del viaggio senza influire sul tempo di ricarica o di guida del veicolo.
+La durata della sosta si configura in `input.via.properties.location.stop_duration`. Questa durata rappresenta la **durata esatta della sosta** e viene aggiunta direttamente alla durata totale del viaggio senza influire sul tempo di ricarica o di guida del veicolo.
 
-### 2. Nelle tappe con ricarica
+### 2. Nelle tappe di ricarica
 
-La durata della tappa viene configurata in `input.via.properties.station.stop_duration`. Questo valore rappresenta **la durata minima della tappa**. Il veicolo rimane alla stazione almeno per questo tempo, ma il pianificatore del percorso può prolungare la sosta in base al `charge_mode` configurato:
+La durata della sosta si configura in `input.via.properties.station.stop_duration`. Questo valore rappresenta **la durata minima della sosta**. Il veicolo rimane alla stazione almeno per questo tempo, ma il pianificatore di percorso può prolungare la sosta a seconda del `charge_mode` configurato:
 
-  * `ALWAYS_TO_MAX_CHARGE`: Prolunga il tempo di ricarica, se necessario, per raggiungere lo SoC massimo configurato. Se il `stop_duration` richiesto supera il tempo necessario per raggiungere lo SoC massimo, il tempo rimanente viene registrato come sosta inattiva.
+  * `ALWAYS_TO_MAX_CHARGE`: prolunga il tempo di ricarica, se necessario, per raggiungere lo SoC massimo configurato. Se il `stop_duration` richiesto supera il tempo necessario per raggiungere lo SoC massimo, il tempo rimanente viene registrato come sosta inattiva.
 
-  * `OPTIMIZE_TRAVEL_TIME`: Prolunga la sosta oltre `stop_duration` solo se questo riduce il tempo complessivo del viaggio (ad esempio eliminando una successiva tappa di ricarica). In caso contrario, ricarica per l'esatta durata richiesta. Se il `stop_duration` richiesto supera il tempo necessario per raggiungere lo SoC massimo, il tempo rimanente viene registrato come sosta inattiva.
+  * `OPTIMIZE_TRAVEL_TIME`: prolunga la sosta oltre `stop_duration` solo se ciò riduce il tempo complessivo del viaggio (ad esempio eliminando una successiva sosta di ricarica). In caso contrario, ricarica per la durata esatta richiesta. Se il `stop_duration` richiesto supera il tempo necessario per raggiungere lo SoC ottimale, il tempo rimanente viene registrato come sosta inattiva.
 
-Se non viene fornito alcun valore, il pianificatore ottimizza la durata della ricarica basandosi esclusivamente sul `charge_mode` del percorso.
+Se non viene fornito alcun valore, il pianificatore ottimizza la durata della ricarica esclusivamente in base al `charge_mode` del percorso.
 
 
-## Aggiungere una stazione a un percorso esistente
+## Aggiungi una stazione a un percorso esistente
 
-Uno scenario comune: un utente sceglie una stazione di ricarica per un percorso che ha già delle tappe, ad esempio una stazione alternativa mostrata nella tua UI. La soluzione no-code usa questo approccio per aggiungere automaticamente una stazione come tappa `via`, senza logica di riordino, in modo che il percorso si aggiorni senza interruzioni.
+Uno scenario comune è quello in cui un utente sceglie una stazione di ricarica per un percorso che ha già delle tappe, ad esempio una stazione alternativa mostrata nella tua interfaccia. La soluzione no-code usa questo approccio per aggiungere automaticamente una stazione come tappa `via`, senza alcuna logica di riordino, così il percorso si aggiorna in modo fluido.
 
-L'ordine dell'array `via` è l'ordine in cui le tappe vengono raggiunte. Una stazione aggiunta in fondo viene raggiunta per ultima, anche se si trova vicino all'inizio del percorso. Per inserirla nella posizione giusta, confronta la posizione della stazione con i punti di passaggio già presenti sul percorso:
+L'ordine dell'array `via` è l'ordine in cui le tappe vengono visitate. Una stazione aggiunta in fondo viene visitata per ultima, anche se si trova vicino all'inizio del percorso. Per inserirla nella posizione corretta, confronta la posizione della stazione con i waypoint già presenti nel percorso:
 
-1. **Raccogli i punti di passaggio in ordine.** Prendi `origin`, ogni tappa `via` esistente e `destination` dal `request_input` del percorso che vuoi modificare. Ogni punto di passaggio nel `request_input` ha la sua `geometry` disponibile, comprese le tappe create solo con una `station_id`.
+1. **Raccogli i waypoint in ordine.** Prendi l'`origin`, ogni tappa `via` esistente e la `destination` dal `request_input` del percorso che vuoi modificare. Ogni waypoint nel `request_input` ha la propria `geometry` disponibile, comprese le tappe create solo con uno `station_id`.
 
-2. **Traccia una linea che attraversa i punti di passaggio.** Collega i punti di passaggio in ordine per formare una linea. Ogni parte di questa linea tra due punti di passaggio è un segmento.
+2. **Traccia una linea attraverso i waypoint.** Collega i waypoint in ordine per formare una linea. Ogni parte di questa linea tra due waypoint è un segmento.
 
-3. **Trova il segmento più vicino alla stazione.** Usa una libreria geospaziale per trovare il punto della linea più vicino alle coordinate della stazione. <a href="https://turfjs.org" target="_blank" rel="noopener noreferrer">turf.js</a> offre ad esempio `nearestPointOnLine`, che restituisce anche l'indice del segmento che contiene questo punto. Quell'indice è l'indice del punto di passaggio da cui inizia il segmento.
+3. **Trova il segmento più vicino alla stazione.** Usa una libreria geospaziale per trovare il punto della linea più vicino alle coordinate della stazione. Ad esempio, <a href="https://turfjs.org" target="_blank" rel="noopener noreferrer">turf.js</a> offre `nearestPointOnLine`, che restituisce anche l'indice del segmento che contiene questo punto. Tale indice è l'indice del waypoint da cui parte il segmento.
 
-4. **Inserisci la stazione dopo quel punto di passaggio.** L'elenco dei punti di passaggio inizia con `origin`, quindi l'indice di un punto di passaggio in questo elenco corrisponde alla posizione in cui inserire un nuovo elemento in `via` per ritrovarlo subito dopo. Un indice `0` significa che la stazione viene inserita come prima tappa.
+4. **Inserisci la stazione dopo quel waypoint.** L'elenco dei waypoint inizia con l'`origin`, quindi l'indice di un waypoint in questo elenco corrisponde alla posizione in cui inserire un nuovo elemento in `via` per ritrovarsi subito dopo di esso. Un indice pari a `0` significa che la stazione viene inserita come prima tappa.
 
-5. **Non inserire mai dopo la destinazione.** Quando il punto più vicino si trova sull'ultimo segmento, l'indice può puntare a `destination`. Inserirla lì collocherebbe la stazione dopo la fine del percorso. Usa invece il punto di passaggio precedente, così la stazione viene inserita come ultima tappa prima di `destination`.
+5. **Non inserire mai dopo la destinazione.** Quando il punto più vicino si trova sull'ultimo segmento, l'indice può puntare alla `destination`. Inserirla lì collocherebbe la stazione dopo la fine del percorso, quindi usa invece il waypoint precedente. In questo modo la stazione viene inserita come ultima tappa prima della `destination`.
 
-### Da tenere a mente
+### Cose da tenere presente
 
-* La linea collega i punti di passaggio con segmenti rettilinei e non segue le strade del percorso. Le stazioni alternative si trovano sempre in un corridoio di 5-10 km attorno al percorso, quindi non se ne discostano mai di molto e il segmento più vicino è per lo più accurato. Per le stazioni fuori da questo corridoio potrebbero essere più adatte altre soluzioni.
-* Il `request_input` del percorso è la fonte di riferimento. Costruisci la nuova richiesta a partire da esso e lascia invariati tutti gli altri campi, come `vehicle` e le impostazioni `charging`.
+* La linea collega i waypoint con segmenti rettilinei e non segue le strade del percorso. Le stazioni alternative si trovano sempre in un corridoio di 5-10 km attorno al percorso, quindi non si discostano mai molto da esso e il segmento più vicino è per lo più accurato. Per le stazioni al di fuori di questo corridoio, altre soluzioni potrebbero essere più adatte.
+* Il `request_input` del percorso è la fonte di verità. Costruisci la nuova richiesta a partire da esso e mantieni invariati tutti gli altri campi, come le impostazioni `vehicle` e `charging`.
 
 ## Esempi
 
 <details>
-  <summary>Calcola un percorso con una tappa senza ricarica di 30 minuti.</summary>
-  In questa tappa è stato aggiunto un `stop_duration` di 1800 secondi (30 minuti). Questa sarà la durata della tappa, poiché non può esserci alcun ulteriore vantaggio.
+  <summary>Calcola un percorso con una sosta senza ricarica di 30 minuti.</summary>
+  In questa tappa è stato aggiunto un `stop_duration` di 1800 secondi (30 minuti). Questa sarà la durata esatta della sosta.
 
-```graphql Esempio di richiesta
+```graphql Example request
 mutation CreateRouteWithWaypoint {
   createRoute(
     input: {
@@ -105,10 +105,10 @@ mutation CreateRouteWithWaypoint {
 
 
 <details>
-  <summary>Calcola un percorso con una tappa di ricarica di almeno 30 minuti.</summary>
-  In questa tappa è stato aggiunto un `stop_duration` di 1800 secondi (30 minuti). Questa sarà la durata **minima** della tappa. Se ricaricare più a lungo è vantaggioso per l'itinerario, la durata aumenterà.
+  <summary>Calcola un percorso con una sosta di ricarica di almeno 30 minuti.</summary>
+  In questa tappa è stato aggiunto un `stop_duration` di 1800 secondi (30 minuti). Questa sarà la durata **minima** della sosta. Poiché `vehicle.charging.mode:OPTIMIZE_TRAVEL_TIME`, se ricaricare più a lungo è vantaggioso per il tempo di viaggio, la durata verrà aumentata automaticamente.
   
-```graphql Esempio di richiesta
+```graphql Example request
 mutation CreateRouteWithChargingVia {
   createRoute(
     input: {
@@ -145,10 +145,10 @@ mutation CreateRouteWithChargingVia {
 
 
 <details>
-  <summary>Calcola un percorso con una tappa di ricarica senza durata minima.</summary>
-  In questa tappa `stop_duration` è omesso: il pianificatore calcola il tempo di ricarica ottimale in base alla modalità di ricarica.
+  <summary>Calcola un percorso con una sosta di ricarica senza durata minima.</summary>
+  In questa tappa `stop_duration` è omesso. Il pianificatore calcola il tempo di ricarica ottimale esclusivamente in base alla modalità di ricarica scelta (`OPTIMIZE_TRAVEL_TIME`).
 
-```graphql Esempio di richiesta
+```graphql Example request
 mutation CreateRouteWithChargingVia {
   createRoute(
     input: {

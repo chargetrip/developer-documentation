@@ -1,0 +1,29 @@
+---
+title: "Mutation de mise à jour de groupe de boost"
+heading: "Mettre à jour un groupe de boost"
+description: "Modifiez le nom, la description ou le statut d'un groupe de boost avec la mutation updateBoostingGroup."
+schemaName: updateBoostingGroup
+schemaType: Mutation
+---
+
+Mettez à jour un groupe de boost en utilisant la mutation updateBoostingGroup. Elle est utile lorsque vous souhaitez activer ou désactiver un groupe sans le supprimer.
+
+## Mutation
+
+Un `id` de groupe de boost est obligatoire. L'`id` peut être obtenu via la [mutation createBoostingGroup](/api-reference/admin/boosting-group/mutation-create-boosting-group). Envoyez uniquement les champs que vous souhaitez modifier. Cette mutation ne modifie pas les stations d'un groupe.
+
+<details>
+  <summary>Désactiver un groupe de boost.</summary>
+  Un groupe inactif n'est plus utilisé dans les calculs d'itinéraire.
+
+```graphql Example request
+mutation UpdateBoostingGroup {
+  updateBoostingGroup(
+    input: { id: "6527e1f1a8b4c2d3e4f5a6b7", status: inactive }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>

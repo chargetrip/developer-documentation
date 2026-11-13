@@ -1,0 +1,42 @@
+---
+title: Admin API
+date: 01-10-2026
+---
+
+## Manage station boosting groups with the Admin API
+
+![Admin API](../../../assets/changelog/2026/october.jpg)
+
+We have added support for managing station boosting groups, including creation, update, deletion, listing, and individual retrieval, through a new Admin API (`https://admin.chargetrip.io/graphql`). Authenticated clients can define up to five active boosting groups of fast and ultra-fast charging stations to prioritize them in routing.
+
+The dashboard has also been updated to support generating, previewing, and deleting public Admin API access tokens securely. See the [Admin API reference](/api-reference/admin) for more information.
+
+### Real-time station prices in Tile Service
+
+Tile Service (v2) station properties now include real-time ad-hoc charging prices per kWh, allowing you to filter stations based on their active energy price (`maximum_energy_price`).
+
+- Prices are converted server-side to the requested ISO-4217 currency, defaulting to EUR;
+- Prices are evaluated dynamically per hour, based on the local time zone of each station;
+- Currently only available for the Eco-Movement database. Other databases will follow. Contact your Customer Success Manager for more information.
+
+<details>
+  <summary>Improvements</summary>
+
+  - Improved the leg-level warnings with the addition of `via_station_not_required_operator`, which indicates when a via or destination station does not belong to any of the required or mandatory operators defined in the routing settings.
+  - Improved the amenity data structure by automatically populating the `continent` field on amenity address records based on their country.
+  - Improved the validations on destination stations with strict vehicle compatibility validations to prevent incompatible stops.
+  - Improved the interpretation of via station stop durations from a hard maximum to a minimum stop duration, allowing the routing engine to optimize overall travel time by extending the stop duration.
+  - Improved user-facing error messages by replacing exclamation marks with periods to align with professional copywriting guidelines.
+</details>
+
+<details>
+  <summary>Fixes</summary>
+
+  - Fixed an issue where requesting alternative routes could trigger a non-nullable field error on the recommended route's charges or distance fields.
+  - Fixed an issue where filtering by station operator preferences set to `null` in the `getRouteStationsWithAmenities` query caused a server error.
+  - Fixed an issue where pagination descriptions incorrectly stated that the maximum number of items returned per page was 10 instead of 100 on `vehicleMakes` and `vehicleModels`.
+  - Fixed an issue where `risk_margin_soc_not_possible` and `final_soc_not_possible` warnings were incorrectly returned when values were equal to safe limits or final SoC was unspecified.
+  - Fixed an issue where querying multiple routes simultaneously could cause the recommended field of one of the routes to erroneously return `null`.
+  - Fixed an issue where sending an empty coordinates array when calculating an isoline resulted in an internal server error instead of a user-friendly validation error.
+  - Fixed an issue where the `@ocpi` schema directive failed to append the suffix *"This property is OCPI-compliant."* to GraphQL field descriptions.
+</details>

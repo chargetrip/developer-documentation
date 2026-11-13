@@ -1,0 +1,16 @@
+---
+title: Subscription Navigazione aggiornata per ID
+heading: Navigazione aggiornata per ID
+description: "Sottoscriviti a una sessione di navigazione per ricevere stato e aggiornamenti in tempo reale mentre un conducente procede lungo una rotta."
+schemaName: navigation
+schemaType: Subscription
+---
+
+Una volta ottenuto l'`id` di una sessione di navigazione dalla [mutation startNavigation](/api-reference/core/navigation/mutation-start-navigation), sottoscriviti per ricevere stato e dettagli degli aggiornamenti in tempo reale mentre il conducente procede lungo la rotta.
+
+> [!TIP] Resta iscritto
+> Usa questa subscription in ogni momento per non perdere gli aggiornamenti della sessione di navigazione.
+
+## Subscription
+
+Per sottoscriversi agli aggiornamenti di una sessione di navigazione è obbligatorio il suo `id`. L'`id` può essere ottenuto tramite la [mutation startNavigation](/api-reference/core/navigation/mutation-start-navigation). Usa `last_change.type` per vedere perché una sessione è stata aggiornata, ad esempio `route_updated` o `next_station_availability_updated`. `meta.updated_at` cambia ogni volta che la rotta deve essere ridisegnata, ad esempio dopo una chiamata alla [mutation recalculateNavigation](/api-reference/core/navigation/mutation-recalculate-navigation).

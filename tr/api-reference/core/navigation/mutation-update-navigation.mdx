@@ -1,0 +1,13 @@
+---
+title: Navigasyonu güncelleme mutation'ı
+heading: Navigasyonu güncelle
+description: "Etkin bir navigasyon oturumunu güncel tutmak için updateNavigation mutation'ı ile bir sürücünün rota üzerindeki konumunu bildirin."
+schemaName: updateNavigation
+schemaType: Mutation
+---
+
+updateNavigation mutation'ını kullanarak etkin bir navigasyon oturumunu güncelleyin. Bir sürücünün konumunu rota üzerinde ilerledikçe bildirmek istediğinizde kullanışlıdır.
+
+## Mutation
+
+Bir navigasyon oturumunu güncellemek için oturum `id` değeri ve `location_data` gerekir. `id` değerini [startNavigation mutation'ı](/api-reference/core/navigation/mutation-start-navigation) ile alabilirsiniz.

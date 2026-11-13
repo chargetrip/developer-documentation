@@ -1,44 +1,44 @@
 ---
 title: Araç menzilini görselleştirin
-description: "Gerçek yol ağını ve araçtaki enerjiyi kullanarak, bir EV'nin belirli bir noktadan ulaşabileceği alanı izoline ile görselleştirin."
-tag: Rehber
+description: "Gerçek yol ağını ve araçtaki enerjiyi kullanarak bir elektrikli aracın belirli bir noktadan ulaşabileceği alanı bir izoline ile görselleştirin."
+tag: Kılavuz
 ---
 
-İzoline, bir EV'nin üzerindeki enerjiyle belirli bir noktadan ulaşabileceği alanı gösterir. "Bu araç buradan ne kadar uzağa gidebilir" gibi basit bir soruyu yanıtlar ve yanıtı haritaya yerleştirebileceğiniz şekiller olarak çizer.
+Bir izoline, bir elektrikli aracın aracındaki enerjiyle belirli bir noktadan ulaşabileceği alanı gösterir. Basit bir soruyu yanıtlar, bu araç buradan ne kadar uzağa gidebilir, ve cevabı haritaya yerleştirebileceğiniz şekiller olarak çizer.
 
-Tipik kullanımlar; bir şehrin çevresindeki menzil haritası, "şarj etmeden oraya ulaşabilir miyim?" kontrolü veya yalnızca bir aracın gerçekten ulaşabileceği istasyonları gösteren bir filtredir.
+Tipik kullanımlar bir şehir çevresinde menzil haritası, "şarj etmeden oraya varabilir miyim?" kontrolü veya yalnızca bir aracın gerçekten ulaşabileceği istasyonları gösteren bir filtredir.
 
-İzoline, referans olarak gerçek yol ağını kullanır. Hesaplama, aracın yolla ulaşabileceği en uzak noktaları bulur ve dış hat bu noktaları birbirine bağlar. Sonuç, yolları izleyen bir çizgi değil dolu bir alandır; bu nedenle ormanlar veya tarlalar gibi yollar arasındaki alanlar da içine dahil olabilir. Nehirler, dağlar, tek yönlü sistemler ve ağdaki boşluklar yine de dış hattı şekillendirir; çünkü yolların aracı ne kadar uzağa götürdüğünü onlar belirler.
+Bir izoline, referans olarak gerçek yol ağını kullanır. Hesaplama, aracın yolla ulaşabileceği en uzak noktaları bulur ve dış hat bu noktaları birbirine bağlar. Sonuç, yolları izleyen bir çizgi değil dolu bir alandır; bu nedenle yollar arasındaki kesimler, örneğin ormanlar veya tarlalar, içine düşebilir. Nehirler, dağlar, tek yönlü sistemler ve ağdaki boşluklar yine de dış hattı şekillendirir, çünkü yolların aracı ne kadar ileri götüreceğini onlar belirler.
 
 ## Nasıl çalışır
 
-Rotalar gibi izolineler de API genelinde kullanılan aynı [eşzamansız kalıbı](/api-reference/api/async-operations) izleyerek eşzamansız hesaplanır. Bir izoline oluşturma ve alma ayrı adımlarda gerçekleşir.
+Rotalar gibi izolineler de API genelinde kullanılan aynı [eşzamansız kalıbı](/api-reference/core/api/async-operations) izleyerek eşzamansız olarak hesaplanır. Bir izolinein oluşturulması ve alınması ayrı adımlarda gerçekleşir.
 
 1. **Bir izoline oluşturun**
-   En az bir `vehicle_id` ve bir `origin` ile `createIsoline` mutasyonunu çağırın. Mutasyon hemen bir izoline `id` değeri döndürür; bunu bir sonraki adımda kullanacaksınız. Batarya seviyesi veya hava durumu gibi isteğe bağlı girdiler [bir izolini özelleştirin](#bir-izolini-özelleştirin) bölümünde ele alınmıştır.
+   En az bir `vehicle_id` ve bir `origin` ile `createIsoline` mutasyonunu çağırın. Mutasyon, sonraki adımda kullanacağınız bir izoline `id` değerini hemen döndürür. Batarya seviyesi veya hava durumu gibi isteğe bağlı girdiler [menzil izolinenizi özelleştirin](#menzil-izolinenizi-özelleştirin) bölümünde ele alınır.
 2. **Bir abonelik açın**
-   Önceki adımdaki `id` değerini kullanarak `isoline` aboneliğine abone olun. İzoline hesaplanırken durum `pending` olur. Bunu kullanıcı arayüzünüzde bir yükleme durumunu yönetmek için kullanın.
+   Önceki adımdaki `id` ile `isoline` aboneliğine abone olun. İzoline hesaplanırken durum `pending` olur. Bunu arayüzünüzde bir yükleme durumunu yönetmek için kullanın.
 3. **Sonucu gösterin**
-   `status` değeri `done` veya `error` olarak sonuçlandığında, uygun kullanıcı arayüzünü gösterin. `done` durumundaki bir izoline, haritaya çizilecek `polygons` değerlerini içerir.
-4. **İstendiğinde yeniden alın**
-   Tamamlanmış bir izoline, tüm ayrıntılarıyla saklanır. Daha sonra yeniden göstermek için, yeni bir abonelik açmak yerine aynı `id` ile `isoline` sorgusunu kullanın.
+   `status` değeri `done` veya `error` olarak sonuçlandığında, eşleşen arayüzü gösterin. `done` durumundaki bir izoline, haritaya çizilecek `polygons` içerir.
+4. **İhtiyaç halinde yeniden alın**
+   Tamamlanmış bir izoline tüm ayrıntılarıyla saklanır. Daha sonra yeniden göstermek için yeni bir abonelik açmak yerine aynı `id` ile `isoline` sorgusunu kullanın.
 
 ## Poligonlar
 
-Sonuç bir poligon listesidir. Birlikte, erişilebilir alanı başlangıç noktasına yakın yerden aracın sürebileceği en uzak noktaya kadar adımlar halinde tanımlarlar.
+Sonuç, bir poligon listesidir. Bunlar birlikte, erişilebilir alanı başlangıç noktasına yakın yerden aracın sürebileceği en uzak noktaya kadar adımlar halinde tanımlar.
 
-Kaç poligon alacağınızı seçmek için, en fazla 20 olmak üzere `polygon_count` kullanın.
+Kaç poligon alacağınızı seçmek için, en fazla 20 olmak üzere `polygon_count` değerini kullanın.
 
-- **Daha az poligon**, aracın erişimine dair basit ve kaba bir görünüm verir. Çizilmesi daha hızlı ve bir bakışta okunması daha kolaydır.
-- **Daha fazla poligon**, başlangıç noktası ile maksimum menzil arasında daha ince adımlar verir; bu da bir gradyan veya daha ayrıntılı bir menzil haritası için kullanışlıdır.
+- **Daha az poligon**, aracın erişimine dair basit ve kaba bir görünüm sağlar. Çizmesi daha hızlıdır ve bir bakışta okunması daha kolaydır.
+- **Daha fazla poligon**, başlangıç noktası ile azami menzil arasında daha ince adımlar sağlar; bu, bir renk geçişi veya daha ayrıntılı bir menzil haritası için yararlıdır.
 
-Her poligonun birbirinden ayırt edilmesi için `properties` içinde bir `index` değeri vardır ve `maximum_distance`, başlangıç noktasından ulaşılabilecek en uzak noktaya olan mesafeyi verir.
+Her poligonun birbirinden ayırt edilmesi için `properties` içinde bir `index` değeri vardır ve `maximum_distance`, başlangıç noktasından ulaşılabilir en uzak noktaya olan mesafeyi verir.
 
 ## İlk izolininizi oluşturun
 
-Bir izoline oluşturmak için `vehicle_id` ve `origin` yeterlidir. Bu örnek ayrıca batarya seviyesini, poligon sayısını ve hava durumunu ayarlar; böylece ana seçeneklerin birbirine nasıl uyduğunu görebilirsiniz.
+Bir izoline oluşturmak için bir `vehicle_id` ve `origin` yeterlidir. Bu örnek ayrıca batarya seviyesini, poligon sayısını ve hava durumunu ayarlar; böylece ana seçeneklerin nasıl bir araya geldiğini görebilirsiniz.
 
-```graphql Bir izoline oluşturun
+```graphql Create an isoline
 mutation CreateIsoline {
   createIsoline(
     input: {
@@ -55,9 +55,9 @@ mutation CreateIsoline {
 }
 ```
 
-Mutasyon izoline `id` değerini döndürür. Hesaplamayı takip etmek ve sonucu almak için bunu `isoline` aboneliğine iletin:
+Mutasyon, izoline `id` değerini döndürür. Hesaplamayı takip etmek ve sonucu almak için bunu `isoline` aboneliğine iletin:
 
-```graphql İzolineye abone olun
+```graphql Subscribe to the isoline
 subscription Isoline {
   isoline(id: "65f1a2b3c4d5e6f7a8b9c0d1") {
     id
@@ -78,23 +78,23 @@ subscription Isoline {
 
 Bu istekte:
 
-- `state_of_charge` aracı %80 bataryayla başlatır. Bu olmadan izoline, aracın tam kullanılabilir batarya kapasitesini kullanır.
-- `polygon_count`, başlangıç noktasına yakın yerden maksimum menzile kadar beş poligon döndürür.
+- `state_of_charge`, aracı %80 bataryayla başlatır. Bu olmadan izoline, aracın kullanılabilir tam batarya kapasitesini kullanır.
+- `polygon_count`, başlangıç noktasına yakın yerden azami menzile kadar beş poligon döndürür.
 - `weather`, soğuk koşulları varsayan ve genellikle gerçek zamanlı hava durumu varsayılanından daha küçük bir erişilebilir alan veren `winter` ön ayarını kullanır.
 
-## Bir izolini özelleştirin
+## Menzil izolinenizi özelleştirin
 
-`createIsoline`, hesaplamaya ince ayar yapmak için çeşitli isteğe bağlı girdileri kabul eder. Her alanla ilgili daha fazla ayrıntıyı [API referansında](/api-reference/isoline/mutation-create-isoline) bulabilirsiniz.
+`createIsoline`, hesaplamaya ince ayar yapmak için bir dizi isteğe bağlı girdi kabul eder. Her alan hakkında daha fazla ayrıntıyı [API referansında](/api-reference/core/isoline/mutation-create-isoline) bulabilirsiniz.
 
 | Özellik | Açıklama |
 | --- | --- |
-| [Batarya seviyesi](/api-reference/isoline/mutation-create-isoline#arg-input-state_of_charge) | Başlangıç bataryasını `state_of_charge` ile yüzde, kilovatsaat, kilometre veya mil olarak ayarlayın. Varsayılan olarak aracın kullanılabilir batarya kapasitesidir. |
-| [Minimum son şarj](/api-reference/isoline/mutation-create-isoline#arg-input-final_state_of_charge) | `final_state_of_charge` ile bir rezerv bırakın. İzoline yalnızca aracın bunun üzerinde kalarak ulaşabileceği noktaları içerir. Varsayılan değer 0'dır. |
-| [Poligon sayısı](/api-reference/isoline/mutation-create-isoline#arg-input-polygon_count) | En fazla 20 olmak üzere poligon sayısını seçin. |
-| [Gidiş-dönüş](/api-reference/isoline/mutation-create-isoline#arg-input-round_trip) | `round_trip` kullanarak yalnızca aracın başlangıç noktasına geri de sürebileceği noktaları dahil edin. |
-| [Kalite](/api-reference/isoline/mutation-create-isoline#arg-input-quality) | `quality` ile hassasiyetten hız için ödün verin; `high` veya `low` olarak ayarlayın. |
-| [Feribot bağlantıları](/api-reference/isoline/mutation-create-isoline#arg-input-ferry_connections) | `ferry_connections` ile feribotları dahil edin; `none` veya `single` olarak ayarlayın. Feribotlar hesaplama süresini ve poligon sayısını artırır. |
-| [Hava durumu](/api-reference/isoline/mutation-create-isoline#arg-input-weather) | `summer`, `winter` veya `actual` hava durumu ön ayarını ya da özel koşulları uygulayın. Varsayılan olarak gerçek zamanlı hava durumu verilerini kullanır. |
-| [Mevsim](/api-reference/isoline/mutation-create-isoline#arg-input-season) | `weather` alanına daha basit bir alternatif olarak `summer`, `winter` veya `current` koşullarını varsayın. |
-| [Araç yükü](/api-reference/isoline/mutation-create-isoline#arg-input-occupants) | Aracın taşıdığı ağırlığı hesaba katmak için `occupants`, `total_occupant_weight` ve `total_cargo_weight` değerlerini ayarlayın. |
-| [İklim kontrolü](/api-reference/isoline/mutation-create-isoline#arg-input-climate_control) | Isıtma ve soğutmayı tüketime dahil etmek için `climate_control` seçeneğini açın ve `heat_pump` ile `cabin` kurulumunu tanımlayın. |
+| [Batarya seviyesi](/api-reference/core/isoline/mutation-create-isoline#arg-input-state_of_charge) | Başlangıç bataryasını `state_of_charge` ile yüzde, kilovatsaat, kilometre veya mil cinsinden ayarlayın. Varsayılan olarak aracın kullanılabilir batarya kapasitesidir. |
+| [Asgari son şarj](/api-reference/core/isoline/mutation-create-isoline#arg-input-final_state_of_charge) | `final_state_of_charge` ile bir yedek bırakın. İzoline yalnızca aracın bu seviyenin üzerinde kalarak ulaşabileceği noktaları içerir. Varsayılan değer 0'dır. |
+| [Poligon sayısı](/api-reference/core/isoline/mutation-create-isoline#arg-input-polygon_count) | En fazla 20 olmak üzere poligon sayısını seçin. |
+| [Gidiş dönüş](/api-reference/core/isoline/mutation-create-isoline#arg-input-round_trip) | `round_trip` kullanarak yalnızca aracın başlangıç noktasına geri de sürebileceği noktaları dahil edin. |
+| [Kalite](/api-reference/core/isoline/mutation-create-isoline#arg-input-quality) | `high` veya `low` olarak ayarlanan `quality` ile hız için hassasiyetten ödün verin. |
+| [Feribot bağlantıları](/api-reference/core/isoline/mutation-create-isoline#arg-input-ferry_connections) | `none` veya `single` olarak ayarlanan `ferry_connections` ile feribotları dahil edin. Feribotlar hesaplama süresini ve poligon sayısını artırır. |
+| [Hava durumu](/api-reference/core/isoline/mutation-create-isoline#arg-input-weather) | `summer`, `winter` veya `actual` hava durumu ön ayarını ya da özel koşulları uygulayın. Varsayılan olarak gerçek zamanlı hava durumu verilerini kullanır. |
+| [Mevsim](/api-reference/core/isoline/mutation-create-isoline#arg-input-season) | `weather` için daha basit bir alternatif olarak `summer`, `winter` veya `current` koşullarını varsayın. |
+| [Araç yükü](/api-reference/core/isoline/mutation-create-isoline#arg-input-occupants) | Aracın taşıdığı ağırlığı hesaba katmak için `occupants`, `total_occupant_weight` ve `total_cargo_weight` değerlerini ayarlayın. |
+| [İklim kontrolü](/api-reference/core/isoline/mutation-create-isoline#arg-input-climate_control) | Isıtma ve soğutmayı tüketime dahil etmek için `climate_control` seçeneğini açın ve `heat_pump` ile `cabin` kurulumunu tanımlayın. |

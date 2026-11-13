@@ -2,35 +2,35 @@
 title: Einzelne Ladestationen priorisieren
 ---
 
-Mit Boosting Groups können Sie die Stationsauswahl anhand Ihrer eigenen Geschäftsregeln gezielt auf bestimmte Ladestandorte lenken.
+Mit Boosting Groups steuern Sie die Stationsauswahl anhand Ihrer eigenen Geschäftsregeln gezielt zu bestimmten Ladestandorten.
 
-Während Sie mit [Betreiberpräferenzen](/docs/getting-started/route-operators) ganze Ladenetzwerke priorisieren können, bieten Ihnen Boosting Groups eine detaillierte Steuerung auf Stationsebene. Unabhängig davon, warum Sie bestimmte Stationen bevorzugen, etwa aufgrund günstigerer Preise, geringer Auslastung oder besserer kommerzieller Konditionen, können Sie diese ganz nach oben in der Stationshierarchie setzen.
+Während Sie mit [Betreiberpräferenzen](/docs/getting-started/route-operators) ganze Ladenetzwerke priorisieren können, bieten Boosting Groups eine granulare Steuerung auf Stationsebene. Aus welchem Grund Sie diese Stationen auch bevorzugen, etwa niedrigere Preise, geringe Auslastung oder ein besseres kommerzielles Angebot, Sie können sie an die Spitze der Stationshierarchie setzen.
 
 ## So priorisieren Sie Stationen
 
-Kontaktieren Sie zum Einstieg einfach den [Support](https://www.chargetrip.com/contact/support) mit der Liste der Stationen, die Sie priorisieren möchten.
+Wenden Sie sich zunächst einfach mit der Liste der Stationen, die Sie priorisieren möchten, an den [Support](https://www.chargetrip.com/contact/support).
 
-Sobald Ihre Gruppe eingerichtet und für Ihr Projekt aktiviert wurde, wird sie bei allen mit [createRoute](/api-reference/route/mutation-create-route) berechneten Routen automatisch im Hintergrund berücksichtigt, es sind keine Änderungen oder zusätzlichen Parameter in Ihren API-Anfragen erforderlich.
+Sobald Ihre Gruppe eingerichtet und für Ihr Projekt aktiviert ist, verwenden alle mit [createRoute](/api-reference/core/route/mutation-create-route) berechneten Routen sie automatisch im Hintergrund, sodass in Ihren API-Anfragen keine Änderungen oder zusätzlichen Parameter erforderlich sind.
 
-## Funktionsweise
+## So funktioniert es
 
-Boosting Groups unterstützen ausschließlich eine positive Priorisierung. Sie können damit Stationen hervorheben, jedoch nicht vermeiden oder ausschließen. Werden sie allein verwendet, erhalten hervorgehobene Stationen Vorrang vor allen anderen Stationen entlang der Route.
+Boosting Groups unterstützen nur positive Priorisierung. Sie können Stationen damit fördern, aber nicht meiden oder ausschließen. Bei alleiniger Verwendung werden geboostete Stationen gegenüber allen anderen Stationen entlang der Route priorisiert.
 
-In Kombination mit Betreiberpräferenzen priorisiert der Routenplaner die Stationen in der folgenden Reihenfolge (von der höchsten zur niedrigsten Priorität):
+In Kombination mit Betreiberpräferenzen priorisiert der Routenplaner Stationen in der folgenden Reihenfolge (von der höchsten zur niedrigsten Priorität):
 
-- Aktive Boosting Groups sind einzeln hervorgehobene Stationen. Sie überschreiben alle Betreiberpräferenzen, selbst wenn der Betreiber der Station auf `avoid` oder `excluded` gesetzt ist.
+- Aktive Boosting Groups sind einzelne geboostete Stationen. Sie überschreiben alle Betreiberpräferenzen, selbst wenn der Betreiber der Station auf `avoid` oder `excluded` gesetzt ist.
 - Bevorzugte Betreiber (`high`, `medium`, `low`) sind Stationen, die zu bevorzugten Ladenetzwerken gehören.
-- Nicht eingestufte Stationen sind Standardstationen, auf die weder eine Boosting Group noch eine Betreiberpräferenz angewendet wurde.
-- Herabgestufte Betreiber (`avoid`) sind Stationen von Betreibern, die als zu vermeiden markiert sind. Sie werden nur genutzt, wenn keine besseren Optionen verfügbar sind.
+- Nicht eingestufte Stationen sind Standardstationen, für die weder eine Boosting Group noch eine Betreiberpräferenz gilt.
+- Herabgestufte Betreiber (`avoid`) sind Stationen von Betreibern, die als zu meiden markiert sind. Sie werden nur verwendet, wenn keine besseren Optionen existieren.
 
-Wie die Betreiberpräferenzen arbeitet auch die Stationspriorisierung nach dem Best-Effort-Prinzip. Der Routenplaner wägt die Stationspriorität gegen die Stationsdichte und den Umwegaufwand ab, sodass die Auswahl einer priorisierten Station niemals zu einer ineffizienten Route führt.
+Wie bei Betreiberpräferenzen erfolgt das Boosten von Stationen nach dem Best-Effort-Prinzip. Der Routenplaner wägt die Stationspriorität gegen die Stationsdichte und den Umwegeinfluss ab, sodass die Wahl einer geboosteten Station nie zu einer ineffizienten Route führt.
 
 ## Beispiele
 
 <details>
-  <summary>Eine Route mit aktiven Boosting Groups berechnen</summary>
+  <summary>Route mit aktiven Boosting Groups berechnen</summary>
 
-  Da Boosting Groups automatisch auf Projektebene angewendet werden, müssen Sie lediglich eine reguläre `createRoute`-Mutation senden. Alle aktiven Boosting Groups werden automatisch priorisiert.
+  Da Boosting Groups automatisch auf Projektebene angewendet werden, müssen Sie nur eine Standard-Mutation `createRoute` senden. Alle aktiven Boosting Groups werden automatisch priorisiert.
 
 ```graphql Example request
 mutation CreateRoute {
@@ -57,7 +57,7 @@ mutation CreateRoute {
 <details>
   <summary>Prüfen, ob empfohlene Stationen zu einer Boosting Group gehören</summary>
 
-  Wenn Sie die berechnete Route über `getRoute` oder das `route`-Abonnement (Subscription) abrufen, fragen Sie `boosting_group_ids` bei der Station des Routenabschnitts (Leg) ab, um zu sehen, welche aktiven Boosting Groups mit diesem Ladestopp übereinstimmen.
+  Wenn Sie die berechnete Route mit `getRoute` oder der Subscription `route` abrufen, fordern Sie `boosting_group_ids` an der Station des Abschnitts (Leg) an, um zu sehen, welche aktiven Boosting Groups auf diesen Stopp zutrafen.
 
 ```graphql Example request {{ mark: [11] }}
 query GetRoute {

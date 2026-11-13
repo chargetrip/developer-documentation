@@ -1,0 +1,13 @@
+---
+title: Mutation crea percorso camion
+heading: Crea percorso camion
+description: "Crea un percorso camion con la mutation createTruckRoute per calcolare soste di ricarica, consumo energetico e tempo di guida di un camion elettrico."
+schemaName: createTruckRoute
+schemaType: Mutation
+---
+
+Crea un nuovo percorso camion utilizzando la mutation createTruckRoute. È utile quando vuoi calcolare soste di ricarica, consumo energetico e tempo di guida di un camion elettrico tra un'origine e una destinazione.
+
+## Mutation
+
+Per creare un percorso camion sono necessari un `vehicle`, un `origin` e un `destination`. Facoltativamente, aggiungi punti `via`, `operators`, `weather` o altre preferenze per affinare il calcolo. La mutation restituisce un `id` del percorso camion, che può essere utilizzato per recuperare i dettagli del percorso o per sottoscrivere gli aggiornamenti.

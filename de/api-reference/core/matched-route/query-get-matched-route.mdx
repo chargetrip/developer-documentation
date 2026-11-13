@@ -1,0 +1,13 @@
+---
+title: "Zugeordnete Route Query"
+heading: "Zugeordnete Route"
+description: "Rufen Sie mit der Query getMatchedRoute eine zuvor berechnete zugeordnete Route erneut ab, ohne eine neue Subscription zu öffnen."
+schemaName: getMatchedRoute
+schemaType: Query
+---
+
+Rufen Sie die Details einer zuvor berechneten zugeordneten Route mit der Query getMatchedRoute ab. Das ist nützlich, wenn Sie eine zugeordnete Route erneut abrufen möchten, ohne eine neue Subscription zu öffnen.
+
+## Query
+
+Zum Abrufen der Routendetails ist die `id` einer zugeordneten Route erforderlich. Die `id` erhalten Sie über die [Mutation createMatchedRoute](/api-reference/core/matched-route/mutation-create-matched-route).

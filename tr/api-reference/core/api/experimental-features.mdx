@@ -1,0 +1,95 @@
+---
+title: Deneysel özellikler
+description: "Alpha ve beta programı aracılığıyla yaklaşan API yeteneklerine erken erişim sağlayın ve deneysel özelliklerin kararlı olanlardan nasıl farklılaştığını öğrenin."
+---
+
+Chargetrip, önemli yeni yetenekleri yapılandırılmış bir deneysel program aracılığıyla sunar. Şemalar ve sözleşmeler kalıcı hale gelmeden önce yaklaşan özellikleri değerlendirmeniz ve tasarımlarını etkilemeniz için size erken erişim sağlar.
+
+> [!WARNING] 12 aylık kullanımdan kaldırma politikasından muafiyet
+> Alpha ve beta aşamasındaki özellikler [12 aylık kullanımdan kaldırma politikasından](/api-reference/core/api/lifecycle#kullanımdan-kaldırma-zaman-çizelgesi) muaftır ve daha erken değiştirilebilir veya kullanımdan kaldırılabilir.
+
+## Deneysel özellik türleri
+
+- Yeni işlemler: Tamamen yeni sorgular, mutation'lar veya subscription'lar.
+- Mevcut işlemlerin uzantıları: Mevcut kararlı işlemlere eklenen yeni isteğe bağlı argümanlar veya çıktı alanları.
+
+## Deneysel özellik aşamaları
+
+| Boyut | Alpha | Beta |
+ | ----- | ----- | ----- |
+| **Üretime hazır olma** | Üretim ortamları için kesinlikle önerilmez. | Kontrollü pilot uygulamalar için uygundur. Kritik öneme sahip akışlar için önerilmez. |
+| **Etkinleştirme** | Varsayılan olarak devre dışıdır. Dashboard'da açıkça katılım gerektirir. | Tüm istemciler için varsayılan olarak etkindir. |
+| **Kararlılık** | Kararlıdır ancak sık şema değişikliklerine tabidir.| Kararlıdır. Küçük şema değişiklikleri olabilir. |
+| **Şema göstergesi** | Şema alanı açıklamalarında `[ALPHA]` ile etiketlenir. | Şema alanı açıklamalarında `[BETA]` ile etiketlenir. |
+| **Sonlandırma bildirimi** | Yoktur. Anında değiştirilebilir veya kullanımdan kaldırılabilir. | Etkin olarak entegrasyon yapan müşterilerle proaktif doğrudan iletişim kurulur. |
+
+Kararlı özelliklerin neleri garanti ettiğini öğrenmek için [API yaşam döngüsü](/api-reference/core/api/lifecycle) sayfasına bakın.
+
+
+## En iyi uygulamalar
+
+ - Alpha özelliklerini sandbox değerlendirmesi, kavram kanıtları ve geri bildirim için kullanın. Yine de birini canlıya alırsanız, değiştiğinde bildirim almazsınız ve uyumluluk koruması sağlanmaz.
+ - Beta yeteneklerini son kullanıcılara sunarsanız, yeteneğin hâlâ kararlı hale geldiğini bilmeleri için bir "beta" rozeti gösterin.
+
+
+## Kararlı hale geçiş yaşam döngüsü
+
+1. **Alpha'dan Beta'ya** İşlevsellik ve şema yeterli olgunluğa ulaştığında özellik beta aşamasına geçer. Açıklama etiketi `[ALPHA]` yerine `[BETA]` olur, erişim tüm müşteriler için varsayılan olarak etkinleştirilir ve değişiklikler Sürüm Notları'nda duyurulur.
+
+2. **Beta'dan Kararlı'ya** Güvenilirlik ve olgunluk birden fazla istemcide doğrulandığında `[BETA]` açıklama etiketi ve çalışma zamanı uyarıları kaldırılır ve özellik [kararlı yaşam döngüsüne](/api-reference/core/api/lifecycle) geçer.
+
+
+## Fiyatlandırma
+- Deneysel olarak etiketlenmiş işlemlere yapılan istekler **ücretsizdir**.
+- İsteğe bağlı deneysel girdi argümanları veya çıktı alanları içeren kararlı uç noktalara yapılan istekler, abonelik planınıza göre **ücretlendirilir**.
+
+## Programatik uyarılar
+Geliştirme ekibinizi etkin trafikteki deneysel bağımlılıklardan haberdar etmek için, alpha veya beta yetenekleri kullanan API yanıtları GraphQL `extensions` bloğunda uyarı meta verileri döndürür:
+
+<details>
+  <summary>Bir alpha özelliği için örnek uyarı</summary>
+
+```json Example request and response
+{
+  "data": {
+    "getTruckRoute": {
+      "id": "dd07b4d0-6b79-11f0-bf8f-e6b813282ac3",
+      "status": "done"
+    }
+  },
+  "extensions": {
+    "warnings": [
+      {
+        "code": "ALPHA_FEATURE",
+        "path": ["getTruckRoute"],
+        "message": "This feature is currently in ALPHA. Visit https://developers.chargetrip.com/api-reference for more information."
+      }
+    ]
+  }
+}
+```
+</details>
+
+
+<details>
+  <summary>Bir beta özelliği için örnek uyarı</summary>
+
+```json Example request and response
+{
+  "data": {
+    "vehicleMakes": {
+      "name": "Opel"
+    }
+  },
+  "extensions": {
+    "warnings": [
+      {
+        "code": "BETA_FEATURE",
+        "path": ["vehicleMakes"],
+        "message": "This feature is currently in BETA. Visit https://developers.chargetrip.com/api-reference for more information."
+      }
+    ]
+  }
+}
+```
+</details>

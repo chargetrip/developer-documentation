@@ -1,0 +1,13 @@
+---
+title: "Navigationsetappe fortschreiten Mutation"
+heading: "Navigationsetappe fortschreiten"
+description: "Setzen Sie eine aktive Navigationssitzung mit der Mutation advanceNavigationLeg auf die nächste Routenetappe fort, zum Beispiel nach einem Ladestopp."
+schemaName: advanceNavigationLeg
+schemaType: Mutation
+---
+
+Setzen Sie eine aktive Navigationssitzung mit der Mutation advanceNavigationLeg auf die nächste Routenetappe fort. Das ist nützlich, wenn ein Fahrer eine Etappe abschließt, etwa einen Ladestopp beendet, und zur nächsten weiterfährt.
+
+## Mutation
+
+Zum Fortschreiten auf die nächste Etappe sind die `id` einer Navigationssitzung und `current_location` erforderlich. Optional können Sie `state_of_charge` angeben, um den Ladestand des Fahrzeugs am aktuellen Standort festzulegen. Die `id` erhalten Sie über die [Mutation startNavigation](/api-reference/core/navigation/mutation-start-navigation).

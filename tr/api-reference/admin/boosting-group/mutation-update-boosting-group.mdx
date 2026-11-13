@@ -1,0 +1,29 @@
+---
+title: Güçlendirme grubu güncelleme mutation'ı
+heading: Güçlendirme grubunu güncelle
+description: "updateBoostingGroup mutation'ı ile bir güçlendirme grubunun adını, açıklamasını veya durumunu değiştirin."
+schemaName: updateBoostingGroup
+schemaType: Mutation
+---
+
+updateBoostingGroup mutation'ını kullanarak bir güçlendirme grubunu güncelleyin. Bir grubu silmeden açıp kapatmak istediğinizde kullanışlıdır.
+
+## Mutation
+
+Bir güçlendirme grubu `id` değeri zorunludur. `id` değerini [createBoostingGroup mutation'ı](/api-reference/admin/boosting-group/mutation-create-boosting-group) ile alabilirsiniz. Yalnızca değiştirmek istediğiniz alanları gönderin. Bu mutation, bir grubun istasyonlarını değiştirmez.
+
+<details>
+  <summary>Bir güçlendirme grubunu devre dışı bırakın.</summary>
+  Etkin olmayan bir grup artık rota hesaplamalarında kullanılmaz.
+
+```graphql Example request
+mutation UpdateBoostingGroup {
+  updateBoostingGroup(
+    input: { id: "6527e1f1a8b4c2d3e4f5a6b7", status: inactive }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>

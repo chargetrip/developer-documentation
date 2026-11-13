@@ -1,0 +1,13 @@
+---
+title: Mutation de création d'itinéraire camion
+heading: Créer un itinéraire camion
+description: "Créez un itinéraire camion avec la mutation createTruckRoute pour calculer les arrêts de recharge, la consommation d'énergie et le temps de conduite d'un camion électrique."
+schemaName: createTruckRoute
+schemaType: Mutation
+---
+
+Créez un nouvel itinéraire camion avec la mutation createTruckRoute. C'est utile lorsque vous souhaitez calculer les arrêts de recharge, la consommation d'énergie et le temps de conduite d'un camion électrique entre une origine et une destination.
+
+## Mutation
+
+Un `vehicle`, une `origin` et une `destination` sont requis pour créer un itinéraire camion. Ajoutez éventuellement des points `via`, des `operators`, la `weather` ou d'autres préférences pour affiner le calcul. La mutation renvoie un `id` d'itinéraire camion, qui peut servir à récupérer les détails de l'itinéraire ou à s'abonner aux mises à jour.

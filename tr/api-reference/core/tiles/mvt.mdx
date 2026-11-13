@@ -1,0 +1,64 @@
+---
+title: MVT
+description: "Verimli harita oluşturma için, istasyonla ilgili coğrafi verilere Protocol Buffers ile kodlanmış Mapbox Vector Tiles (MVT) olarak erişin."
+tag: Rest
+---
+
+MVT (Mapbox Vector Tile) servisi, istasyonlarla ilgili coğrafi verilere karo tabanlı bir formatta erişim sağlar. Vektör karoları Protocol Buffers (PBF) olarak kodlanır ve bu da yapılandırılmış verilerin verimli şekilde serileştirilmesine olanak tanır.
+
+## Kurulum
+
+İstasyon verilerine MVT formatında erişmek için aşağıdaki uç noktaya bir istek gönderin:
+
+```bash Tile / MVT / Base URL
+https://api.chargetrip.io/v2/station/{z}/{x}/{y}/tile.mvt
+```
+
+MVT URL'si aşağıdaki yol parametrelerini kullanır:
+
+- `z`: Karonun yakınlaştırma seviyesi.
+- `x`: Karonun x koordinatı.
+- `y`: Karonun y koordinatı.
+
+Çoğu harita sağlayıcısı, enlem ve boylamı piksel koordinatlarına dönüştürmek için yerleşik yöntemlere sahiptir. Enlem ve boylam koordinatlarını x ve y'ye elle dönüştürmek için [Web Mercator Projeksiyonu](https://en.wikipedia.org/wiki/Web_Mercator_projection) kullanın.
+
+### Filtreleme
+Döndürülen istasyonları belirli ölçütlere göre filtrelemek için `filter` sorgu parametresini kullanın. Daha fazla bilgi için [filtreler belgelerine](/api-reference/core/tiles/filters) bakın.
+
+### Seçiciler
+Her istasyon özelliği için döndürülecek alanları belirtmek üzere `station_properties[]` sorgu parametresini kullanın. Daha fazla bilgi için [seçiciler belgelerine](/api-reference/core/tiles/selectors) bakın.
+
+## Yanıt
+
+MVT yanıtları, vektör nokta özellikleri içeren ikili Protocol Buffer verileridir. Her özellik ya tek bir istasyonu (`count: 1`) ya da bir istasyon kümesini (`count > 1`) temsil eder.
+
+Her özellikte kodlanan nitelikler tamamen özellik türüne ve sağlanan seçicilere bağlıdır:
+
+- Küme özellikleri: her zaman `{ "count": N, "expansion_zoom": Z }` döndürür.
+
+- İstasyon özellikleri: seçici sağlanmadıysa `{ "count": 1, "id": ID}`, [seçiciler](/api-reference/core/tiles/selectors) sağlandıysa yalnızca istenen alanları döndürür.
+
+
+
+<details>
+  <summary>Varsayılan çözümlenmiş MVT karo yanıtı</summary>
+
+
+```json Example response
+// Station feature
+{
+  "count": 1
+  "id": "64997cc0fbca5dbf88ef1fae"
+
+}
+
+// Cluster feature
+{
+  "count": 4,
+  "expansion_zoom": 14
+}
+```
+
+</details>
+### Para birimi
+Döndürülen ve filtrelemede kullanılan enerji fiyatlarının para birimini belirlemek için `currency` sorgu parametresini kullanın. Daha fazla bilgi için [para birimi dönüşümü belgelerine](/api-reference/core/tiles/filters) bakın.

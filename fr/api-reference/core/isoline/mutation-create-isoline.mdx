@@ -1,0 +1,13 @@
+---
+title: "Mutation de création d'isoline"
+heading: "Créer une isoline"
+description: "Créez une isoline basée sur la consommation avec la mutation createIsoline pour visualiser la zone qu'un véhicule peut atteindre depuis un point donné."
+schemaName: createIsoline
+schemaType: Mutation
+---
+
+Créez une isoline basée sur la consommation en utilisant la mutation createIsoline. Elle est utile lorsque vous souhaitez visualiser la zone qu'un véhicule peut atteindre depuis un point donné, par exemple sous forme de carte d'autonomie. Le [guide de l'autonomie du véhicule](/docs/getting-started/vehicle-range) montre comment transformer le résultat en formes que vous pouvez placer sur une carte.
+
+## Mutation
+
+Un `vehicle_id` et un `origin` sont obligatoires pour créer une isoline. Ajoutez éventuellement `state_of_charge`, `polygon_count` ou d'autres préférences pour affiner le calcul. La mutation renvoie un `id` d'isoline, qui peut servir à récupérer les détails de l'isoline ou à souscrire aux mises à jour.

@@ -1,0 +1,13 @@
+---
+title: Mutation Crea rotta abbinata
+heading: Crea rotta abbinata
+description: "Crea una rotta da una sequenza di punti GPS con la mutation createMatchedRoute, poi aggiungi soste di ricarica e consumo energetico."
+schemaName: createMatchedRoute
+schemaType: Mutation
+---
+
+Crea una rotta da una sequenza di punti GPS utilizzando la mutation createMatchedRoute. È particolarmente utile quando hai già una rotta basata sulle tue regole di business e vuoi aggiungere soste di ricarica e calcolare il consumo energetico su di essa.
+
+## Mutation
+
+Per creare una rotta abbinata sono obbligatori un `vehicle` e almeno due `points` in ordine cronologico. Facoltativamente aggiungi punti `via`, `departure_time`, `weather`, `driving_preferences`, `operators` o `alternative_station_radius` per affinare il calcolo. Imposta `plan_charging_stops` per trovare e pianificare soste di ricarica se lo stato di carica del veicolo raggiunge la soglia in un qualsiasi punto della rotta. La mutation restituisce l'`id` di una rotta abbinata, che può essere usato per recuperare i dettagli della rotta o sottoscriversi agli aggiornamenti.

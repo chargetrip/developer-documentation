@@ -1,0 +1,25 @@
+---
+title: Anzahl
+description: "Rufen Sie über den Endpunkt für die Stationsanzahl die Gesamtzahl der Ladestationen ab, optional mit Filtern eingegrenzt."
+tag: Rest
+---
+
+Der Endpunkt für die Stationsanzahl gibt die Gesamtzahl der Ladestationen zurück.
+
+## Einrichtung
+Um die Stationsanzahl abzurufen, senden Sie eine `GET`-Anfrage an die folgende URL:
+
+```bash Count / Base URL
+https://api.chargetrip.io/v2/station/count
+```
+
+### Filtern
+Verwenden Sie den Query-Parameter `filter`, um die Anzahl anhand bestimmter Kriterien einzugrenzen. Weitere Informationen finden Sie in der [Dokumentation zu Filtern](/api-reference/core/tiles/filters).
+
+
+## Antwort
+
+Der Endpunkt gibt ein JSON-Objekt mit der Gesamtanzahl der passenden Stationen zurück:
+
+`count` · `integer`
+: Gesamtzahl der Ladestationen, die den Filtern der Anfrage entsprechen (oder aller verfügbaren Stationen, wenn keine Filter angegeben sind).

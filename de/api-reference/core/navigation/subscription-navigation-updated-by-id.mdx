@@ -1,0 +1,16 @@
+---
+title: "Navigation nach ID aktualisiert Subscription"
+heading: "Navigation nach ID aktualisiert"
+description: "Abonnieren Sie eine Navigationssitzung, um Echtzeit-Status und Updates zu erhalten, während ein Fahrer auf einer Route vorankommt."
+schemaName: navigation
+schemaType: Subscription
+---
+
+Sobald Sie über die [Mutation startNavigation](/api-reference/core/navigation/mutation-start-navigation) die `id` einer Navigationssitzung haben, abonnieren Sie sie, um Echtzeit-Status und Update-Details zu erhalten, während der Fahrer auf der Route vorankommt.
+
+> [!TIP] Abonniert bleiben
+> Verwenden Sie diese Subscription jederzeit, um keine Updates der Navigationssitzung zu verpassen.
+
+## Subscription
+
+Zum Abonnieren der Updates ist die `id` einer Navigationssitzung erforderlich. Die `id` erhalten Sie über die [Mutation startNavigation](/api-reference/core/navigation/mutation-start-navigation). Mit `last_change.type` sehen Sie, warum eine Sitzung aktualisiert wurde, zum Beispiel `route_updated` oder `next_station_availability_updated`. `meta.updated_at` ändert sich, sobald die Route neu dargestellt werden muss, etwa nach einem Aufruf der [Mutation recalculateNavigation](/api-reference/core/navigation/mutation-recalculate-navigation).

@@ -1,0 +1,34 @@
+---
+title: "Boosting Group erstellen Mutation"
+heading: "Boosting Group erstellen"
+description: "Erstellen Sie mit der Mutation createBoostingGroup eine Gruppe von Stationen, die bei der Routenplanung priorisiert werden."
+schemaName: createBoostingGroup
+schemaType: Mutation
+---
+
+Erstellen Sie eine Boosting Group mit der Mutation createBoostingGroup. Das ist nützlich, wenn Sie Routen gezielt zu bestimmten Ladestationen lenken möchten, etwa wegen eines besseren Geschäftsabkommens. Aktive Gruppen werden automatisch bei jeder Route berücksichtigt, die Sie mit [createRoute](/api-reference/core/route/mutation-create-route) berechnen. Mehr dazu im [Leitfaden zu Boosting Groups](/docs/getting-started/route-boosting-groups).
+
+## Mutation
+
+Erforderlich sind ein `name`, eine `client_id` und eine Liste von `stations`. Identifizieren Sie jede Station entweder über ihre `id` oder über die `external_id`, die Ihr Stationsanbieter verwendet. Setzen Sie `status` auf `inactive`, um die Gruppe zu erstellen, ohne sie schon für die Routenplanung zu nutzen.
+
+<details>
+  <summary>Eine inaktive Boosting Group mit zwei Stationen erstellen.</summary>
+  Eine Station wird über ihre interne `id` identifiziert, die andere über die `external_id` Ihres Anbieters.
+
+```graphql Example request
+mutation CreateBoostingGroup {
+  createBoostingGroup(
+    input: {
+      name: "Preferred stations"
+      client_id: "60b8d5a2f1c8e9001b9e2831"
+      status: inactive
+      stations: [{ id: "5f6a1b2c3d4e5f6a7b8c9d0e" }, { external_id: "NL-AMS-0001" }]
+    }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>

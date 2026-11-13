@@ -1,0 +1,94 @@
+---
+title: JSON
+description: "İstek yolundaki yakınlaştırma düzeyi ve karo koordinatlarıyla, JSON karo servisi üzerinden istasyonla ilgili coğrafi verilere JSON biçiminde erişin."
+tag: Rest
+---
+
+JSON karo servisi, istasyonlarla ilgili coğrafi verilere JSON formatında erişim sağlar.
+
+## Kurulum
+
+İstasyon verilerine JSON formatında erişmek için aşağıdaki uç noktaya bir istek gönderin:
+
+```bash Tile / JSON / Base URL
+https://api.chargetrip.io/v2/station/{z}/{x}/{y}/tile.json
+```
+
+JSON URL'si aşağıdaki yol parametrelerini kullanır:
+
+- `z`: Karonun yakınlaştırma seviyesi.
+- `x`: Karonun x koordinatı.
+- `y`: Karonun y koordinatı.
+
+Çoğu harita sağlayıcısı, enlem ve boylamı piksel koordinatlarına dönüştürmek için yerleşik yöntemlere sahiptir. Enlem ve boylam koordinatlarını x ve y'ye elle dönüştürmek için [Web Mercator Projeksiyonu](https://en.wikipedia.org/wiki/Web_Mercator_projection) kullanın.
+
+### Filtreleme
+Döndürülen istasyonları belirli ölçütlere göre filtrelemek için `filter` sorgu parametresini kullanın. Daha fazla bilgi için [filtreler belgelerine](/api-reference/core/tiles/filters) bakın.
+
+### Seçiciler
+Her istasyon özelliği için döndürülecek alanları belirtmek üzere `station_properties[]` sorgu parametresini kullanın. Daha fazla bilgi için [seçiciler belgelerine](/api-reference/core/tiles/selectors) bakın.
+
+## Yanıt
+API, zorunlu GeoJSON alanlarını (id, type, geometry ve properties) içeren bir GeoJSON `FeatureCollection` döndürür. `features` içindeki her öğe ya tek bir istasyonu (`count: 1`) ya da bir istasyon kümesini (`count > 1`) temsil eder.
+
+
+
+`id` · `string` · <span class="text-accent">zorunlu</span>
+: İstasyonun benzersiz tanımlayıcısı. Yalnızca tekil istasyon özelliklerinde döndürülür.
+
+`type` · `string` · <span class="text-accent">zorunlu</span>
+: Her zaman `"Feature"` olarak ayarlanır.
+
+`geometry` · `object` · <span class="text-accent">zorunlu</span>
+: `[longitude, latitude]` koordinatlarını içeren standart GeoJSON `Point` geometrisi.
+
+`properties` · `object` · <span class="text-accent">zorunlu</span>
+: Özellik nitelikleri. Varsayılan olarak istasyon özellikleri `{ "count": 1 }`, küme özellikleri ise `{ "count": N, "expansion_zoom": Z }` döndürür. Ek istasyon alanları [seçiciler](/api-reference/core/tiles/selectors) kullanılarak istenebilir.
+
+`properties` içinde döndürülen alanlar, özellik türüne ve sağlanan seçicilere bağlıdır:
+
+- Küme özellikleri: her zaman `{ "count": N, "expansion_zoom": Z }` döndürür.
+
+- İstasyon özellikleri: seçici sağlanmadıysa `{ "count": 1 }`, [seçiciler](/api-reference/core/tiles/selectors) sağlandıysa yalnızca istenen alanları döndürür.
+
+
+<details>
+  <summary>Varsayılan JSON karo yanıtı</summary>
+
+
+
+```json Example response
+{
+  "type": "FeatureCollection",
+  "features": [
+    // Station feature
+    {
+      "id": "5e5f3e8f8e0c1a0012345678",
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [4.895168, 52.370216]
+      },
+      "properties": {
+        "count": 1
+      }
+    },
+    // Cluster feature
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [5.1214, 52.0907]
+      },
+      "properties": {
+        "count": 4,
+        "expansion_zoom": 14
+      }
+    }
+  ]
+}
+```
+
+</details>
+### Para birimi
+Döndürülen ve filtrelemede kullanılan enerji fiyatlarının para birimini belirlemek için `currency` sorgu parametresini kullanın. Daha fazla bilgi için [para birimi dönüşümü belgelerine](/api-reference/core/tiles/filters) bakın.

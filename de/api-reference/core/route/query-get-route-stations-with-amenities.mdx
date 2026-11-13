@@ -1,0 +1,16 @@
+---
+title: "Servicestation auf Route Query"
+heading: "Servicestation auf Route"
+description: "Finden Sie mit der Query getRouteStationsWithAmenities Ladestationen mit Ausstattungen an einem bestimmten Punkt entlang einer Route."
+schemaName: getRouteStationsWithAmenities
+schemaType: Query
+---
+
+Suchen Sie mit der Query getRouteStationsWithAmenities nach Ladestationen mit Ausstattungen an einem bestimmten Punkt entlang einer Route. Das ist nützlich, wenn Sie einen Ladestopp in der Nähe von Restaurants, Geschäften oder anderen Ausstattungen planen möchten.
+
+## Query
+
+Für die Suche nach Stationen entlang einer Route sind `route_id`, `route_details_id`, `time_window` und `amenity_types` erforderlich. Beide IDs erhalten Sie über die [Query getRoute](/api-reference/core/route/query-get-route). Mit dem Argument `filter` grenzen Sie die Ergebnisse anhand bestimmter Kriterien ein, und mit den Argumenten `first` und `after` [paginieren](/api-reference/core/api/pagination) Sie sie.
+
+> [!WARNING] Limits
+> `first` darf für diese Query nicht größer als 10 sein.

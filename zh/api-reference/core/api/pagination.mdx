@@ -1,0 +1,62 @@
+---
+title: 分页
+description: "使用基于游标和基于偏移量的分页来遍历列表查询，包括适用于每页的限制。"
+---
+
+为了保持 API 快速响应，列表查询会限制单次请求返回的数据量。API 中使用两种分页类型：
+
+- 基于游标（当前）：用于新开发的列表查询。
+- 基于偏移量（旧版）：用于大多数现有的列表查询。这些查询最终将被基于游标的版本取代。
+
+> [!WARNING] 分页限制
+> 无论分页类型如何，列表查询每页最多返回 100 项，但 `getRouteStationsWithAmenities` 查询除外，其限制为 10 项。
+
+## 基于游标的分页
+
+基于游标的分页是当前的标准。它让您使用游标（结果集中某个位置的唯一标识符）来定义请求的起点。
+
+### 参数
+
+`first` · <span class="text-muted">Integer</span>
+: 要返回的项目数量。
+
+`after` · <span class="text-muted">String</span>
+: 起始游标。省略此参数或将其设置为 `null` 即可获取第一页。对于后续页面，请使用上一次响应中的 `page_info.end_cursor` 值。
+
+### 响应
+
+响应通过 `nodes` 数组直接返回结果，同时附带分页元数据。
+
+`nodes` · <span class="text-muted">Array</span>
+: 当前页的数据对象列表。
+
+`total_count` · <span class="text-muted">Integer</span>
+: 所有页面中与查询匹配的项目总数。
+
+`page_info.has_next_page` · <span class="text-muted">Boolean</span>
+: 当前页之后是否还有更多结果。
+
+`page_info.has_previous_page` · <span class="text-muted">Boolean</span>
+: 当前页之前是否还有更多结果。
+
+`page_info.start_cursor` · <span class="text-muted">String</span>
+: `nodes` 中第一个节点的游标。
+
+`page_info.end_cursor` · <span class="text-muted">String</span>
+: `nodes` 中最后一个节点的游标。请将此值用作下一次查询中的 `after` 参数。
+
+## 基于偏移量的分页（旧版）
+
+基于偏移量的分页是旧版标准，大多数列表查询仍在使用。它使用 `page` 跳过一定数量的记录，并使用 `size` 返回固定大小的结果窗口。
+
+### 参数
+
+`size` · <span class="text-muted">Integer</span>
+: 每页要返回的项目数量。
+
+`page` · <span class="text-muted">Integer</span>
+: 要获取的页码。省略此参数或将其设置为 `0` 即可获取第一页。
+
+### 响应
+
+响应直接返回数据对象列表，数量受 `size` 值限制。

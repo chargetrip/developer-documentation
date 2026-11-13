@@ -1,0 +1,13 @@
+---
+title: "Bewertungsliste Query"
+heading: "Bewertungsliste"
+description: "Rufen Sie mit der Query reviewList die Nutzerbewertungen einer Station ab, einschließlich Bewertung, Nachricht und Details zum Elektrofahrzeug, mit dem geladen wurde."
+schemaName: reviewList
+schemaType: Query
+---
+
+Zu jeder Station können Nutzerbewertungen vorliegen. Fragen Sie Eigenschaften wie Bewertung und Nachricht ab oder erhalten Sie Daten zum Elektrofahrzeug, mit dem geladen wurde. Bewertungen gelten für eine einzelne Stationsdatenbank und können nicht projektübergreifend verwendet werden.
+
+## Query
+
+Zum Abrufen der Bewertungen ist die `id` einer Station erforderlich. Die `id` erhalten Sie entweder über eine [Route](/api-reference/core/route/query-get-route), den [Tile-Service](/api-reference/core/tiles/mvt) oder die [Query stationAround](/api-reference/core/station/query-station-around). Mit den Argumenten `size` und `page` [paginieren](/api-reference/core/api/pagination) Sie die Ergebnisse.

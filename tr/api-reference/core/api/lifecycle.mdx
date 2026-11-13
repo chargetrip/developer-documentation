@@ -1,0 +1,112 @@
+---
+title: Yaşam döngüsü
+description: "API'nin kararlılık düzeylerini, geriye dönük uyumsuz ve uyumlu değişiklikler arasındaki farkı ve kullanımdan kaldırmaların nasıl yönetildiğini öğrenin."
+---
+
+API, tek ve gelişen bir GraphQL uç noktası etrafında inşa edilmiştir. Bu mimari, yeni yeteneklerin ve performans iyileştirmelerinin API sürümleri arasında geçiş gerektirmeden sürekli olarak sunulmasını sağlar.
+
+Bu sayfa, API genelindeki farklı kararlılık düzeylerini, kararlı API'nin kararlılık garantilerini, değişiklik türlerini (geriye dönük uyumsuz ve uyumlu) ve kullanımdan kaldırmaların nasıl yönetildiğini özetler. Şu anda önizlemede olan özellikler için [deneysel özellikler](/api-reference/core/api/experimental-features) sayfasına bakın.
+
+## Özellik yaşam döngüsü
+
+Her özellik üç kararlılık düzeyinden birinde yer alır: alpha, beta veya kararlı. Çoğu özellik bu düzeylerden sırayla geçer ve kararlı özellikler yalnızca bir kullanımdan kaldırma süreciyle sonlandırılabilir.
+
+```text Lifecycle
+[ ALPHA ] ──> [ BETA ] ──> [ STABLE ] ──> [ DEPRECATED ] ──> [ REMOVED ]
+ Opt-in        Enabled                      12+ month
+               by default                   notice window
+```
+
+
+## Kararlı API
+Kararlı işlevler, API'nin üretime hazır çekirdeğini oluşturur. Değişiklikler, geriye dönük uyumlu ve uyumsuz olmak üzere iki kategoriye ayrılır.
+
+### Geriye dönük uyumlu değişiklikler
+Mevcut entegrasyonları aksatmayan, geriye dönük uyumlu eklemelerdir. Bunlar önceden bildirim veya kullanımdan kaldırma olmadan sürekli olarak yayımlanır.
+
+Geriye dönük uyumlu değişiklikler şunlardır:
+
+- Yeni bir sorgu, mutation veya subscription eklemek.
+- Mevcut bir işleme yeni bir isteğe bağlı girdi argümanı eklemek.
+- Mevcut davranışı koruyan bir varsayılan değere sahip yeni bir argüman eklemek.
+- Mevcut bir işlemin çıktısına yeni bir alan eklemek.
+- Zorunlu bir girdi argümanını isteğe bağlı hale getirmek.
+- Mevcut bir enum türüne yeni bir değer eklemek.
+
+
+#### Geriye dönük uyumlu değişiklikler için geliştirme
+
+Geriye dönük uyumlu değişiklikler de katı varsayımlarda bulunan istemcileri etkileyebilir. Entegrasyonları dayanıklı tutmak için:
+
+- Yüklerde fazladan özellikler göründüğünde başarısız olan katı nesne seri durumdan çıkarmadan kaçının.
+- GraphQL `enum` türleri kapsayıcı değildir ve zamanla genişler. İstemci mantığında her zaman bir yedek varsayılan durum uygulayın.
+- Hata `extensions.exception.code` değerlerini inceleyin; insanlar tarafından okunabilir hata dizeleriyle eşleştirme yapmayın.
+
+### Geriye dönük uyumsuz değişiklikler ve kullanımdan kaldırmalar
+
+Geriye dönük uyumsuz bir değişiklik, mevcut etkin entegrasyonları bozabilir. Bu nedenle her geriye dönük uyumsuz değişiklik önce 12 aylık bir kullanımdan kaldırma sürecinden geçmelidir.
+
+Geriye dönük uyumsuz değişiklikler şunlardır:
+
+- Mevcut bir sorguyu, mutation'ı, subscription'ı, alanı veya girdi argümanını kaldırmak ya da yeniden adlandırmak.
+- Enum değerlerini kaldırmak veya yeniden adlandırmak.
+- Mevcut bir alanın veya girdi argümanının veri türünü değiştirmek.
+- Yeni bir zorunlu girdi argümanı eklemek.
+- İsteğe bağlı bir girdi argümanını zorunlu hale getirmek.
+- Mevcut bir alanın iş mantığını veya davranışını değiştirmek.
+- Bir çıktı alanını null olamaz (!) durumundan null olabilir durumuna getirmek.
+- Bir girdi argümanının veya alanın varsayılan değerini değiştirmek.
+- Sayfalandırma varsayılanlarını, en büyük sayfa boyutlarını veya belgelenmiş sıralama düzenini değiştirmek.
+
+
+#### Kullanımdan kaldırma zaman çizelgesi
+
+Geriye dönük uyumsuz bir değişiklik, kararlı bir yeteneğin kaldırılmasını veya değiştirilmesini gerektirdiğinde, katı üç aşamalı bir zaman çizelgesini izler:
+
+1. **Kullanımdan kaldırma duyurusu**
+    İşlev, GraphQL şemasında `@deprecated` yönergesiyle etiketlenir. Uygunsa bir geçiş yolu sağlanır. Kullanımdan kaldırma ve ilgili kaldırma tarihi, [üç izleme kanalında](#kullanımdan-kaldırmaları-izleme) aynı anda duyurulur.
+2. **Etkin bildirim süresi (1–12. aylar)**
+    Kullanımdan kaldırılan işlev tamamen çalışır durumda kalır. Bir geçiş yolu sağlanmışsa, entegratörler uygulamalarını güncellemeli ve yeni alanları bu 12 aylık süre içinde benimsemelidir.
+3. **Kalıcı kaldırma**
+    Kaldırma tarihinde işlev kalıcı olarak kaldırılır. İşlevi kullanan sonraki istekler, bir GraphQL hatasıyla şema doğrulamasında başarısız olur.
+
+> [!TIP] Geçişleri erken planlayın
+> Hataları ve hizmet kesintilerini önlemek için geçişlerinizi planlanan kaldırma tarihinden önce tamamlayın.
+
+#### Kullanımdan kaldırmaları izleme
+
+Planlanan kullanımdan kaldırmaları üç kanal üzerinden belirleyin ve takip edin:
+
+- Şema araçlarınızda `@deprecated(reason: "...")` yönergelerini inceleyin.
+- API'nin eski bölümünde veya [kullanımdan kaldırma portalında](/deprecations) sonlandırma tarihlerini ve geçiş kılavuzlarını gözden geçirin.
+- API yanıtlarında doğrudan döndürülen `DEPRECATED_FEATURE` uyarılarını izleyin.
+
+
+<details>
+  <summary>Yanıt örneği</summary>
+
+```graphql Example request and response
+{
+  "data": {
+    "station": {
+      "id": "5e8c22366f9c5f23ab0eff39",
+      "amenityList": [
+        {
+          "name": "Coffee Shop",
+          "foursquareUrl": "https://foursquare.com/v/example"
+        }
+      ]
+    }
+  },
+  "extensions": {
+    "warnings": [
+      {
+        "code": "DEPRECATED_FEATURE",
+        "path": ["amenityList", "foursquareUrl"],
+        "message": "This feature is deprecated and will be removed. To prevent errors and service disruptions, migrate to the recommended alternative before the scheduled removal date. Visit https://developers.chargetrip.com/deprecations for more information."
+      }
+    ]
+  }
+}
+```
+</details>

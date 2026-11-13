@@ -1,0 +1,45 @@
+---
+title: "Umgebung"
+description: "Rufen Sie die Basis-URL der Admin-API ab, erstellen Sie im Dashboard einen Admin-Schlüssel und senden Sie Ihre erste autorisierte Anfrage mit dem Header x-token."
+---
+
+Die Admin-API ist eine GraphQL-API mit eigener, dedizierter Umgebung. Sie hat einen separaten Endpunkt und verwendet eigene Admin-Schlüssel zur Autorisierung, sodass Sie sie unabhängig vom Rest der API einrichten.
+
+## Endpunkt
+
+Anfragen werden als HTTP-POST-Anfragen an den GraphQL-Endpunkt der Admin-API gesendet.
+
+```bash Admin API endpoint URL
+https://admin.chargetrip.io/graphql
+```
+
+## Autorisierungs-Header
+
+Fügen Sie jeder Anfrage den folgenden Header hinzu.
+
+`x-token` · <span class="text-accent">required</span>
+: Ein Admin-Schlüssel, der Ihren Workspace identifiziert. Jede Ressource, die Sie erstellen oder abrufen, gehört zu diesem Workspace.
+
+### Admin-Schlüssel abrufen
+
+Admin-Schlüssel sind nur für Premium-Kunden verfügbar. Gehen Sie wie folgt vor, um einen zu erstellen.
+
+1. **Workspace öffnen**
+   Melden Sie sich im Chargetrip-Dashboard an und wählen Sie den Workspace aus, den Sie verwalten möchten.
+2. **Zu Admin-Schlüssel wechseln**
+   Öffnen Sie in Ihrem Workspace **Admin-Schlüssel**.
+3. **Schlüssel erstellen**
+   Erstellen Sie einen neuen Schlüssel und kopieren Sie ihn. Senden Sie ihn mit jeder Anfrage als Header `x-token`.
+
+> [!TIP] Schlüssel schützen
+> Für maximale Sicherheit beschränken Sie Ihre Anwendung auf Machine-to-Machine-Zugriff (M2M) und bewahren Sie Zugangsdaten auf Ihrem eigenen Server hinter Ihrer eigenen Authentifizierung auf, statt sie einem Browser oder Gerät preiszugeben.
+
+## Autorisierte Anfrage senden
+
+```bash Example request
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "x-token: YOUR_KEY_HERE" \
+  -d '{ "query": "{ boostingGroups { nodes { id } } }" }' \
+  https://admin.chargetrip.io/graphql
+```

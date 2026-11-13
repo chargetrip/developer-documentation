@@ -1,0 +1,16 @@
+---
+title: Rota olanaklı durak sorgusu
+heading: Rota olanaklı durak
+description: "getRouteStationsWithAmenities sorgusuyla bir rota boyunca belirli bir noktada olanaklara sahip şarj istasyonlarını bulun."
+schemaName: getRouteStationsWithAmenities
+schemaType: Query
+---
+
+getRouteStationsWithAmenities sorgusunu kullanarak bir rota boyunca belirli bir noktada olanaklara sahip şarj istasyonlarını arayın. Restoranların, mağazaların veya diğer olanakların yakınında bir şarj durağı planlamak istediğinizde kullanışlıdır.
+
+## Sorgu
+
+Bir rota boyunca istasyon aramak için bir `route_id`, `route_details_id`, `time_window` ve `amenity_types` gerekir. Her iki kimliği de [getRoute sorgusu](/api-reference/core/route/query-get-route) ile alabilirsiniz. Sonuçları belirli ölçütlere göre daraltmak için `filter` argümanını, sonuçlar arasında [sayfalandırmak](/api-reference/core/api/pagination) için `first` ve `after` argümanlarını kullanın.
+
+> [!WARNING] Sınırlar
+> Bu sorgu için `first` değeri 10'u aşamaz.

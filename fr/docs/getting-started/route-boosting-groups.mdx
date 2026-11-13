@@ -2,35 +2,35 @@
 title: Prioriser des stations de recharge individuelles
 ---
 
-Les groupes de mise en avant (Boosting Groups) vous permettent d'orienter la sélection des stations vers des emplacements de recharge spécifiques selon vos propres règles commerciales.
+Les Boosting Groups vous permettent d'orienter la sélection des stations vers des lieux de recharge spécifiques en fonction de vos propres règles métier.
 
-Alors que les [préférences d'opérateurs](/docs/getting-started/route-operators) vous permettent de prioriser des réseaux de recharge entiers, les Boosting Groups vous offrent un contrôle granulaire au niveau de chaque station. Quelle que soit la raison pour laquelle vous privilégiez ces stations (tarifs plus avantageux, faible taux d'occupation ou meilleur accord commercial), vous pouvez les placer tout en haut de la hiérarchie des stations.
+Alors que les [préférences d'opérateurs](/docs/getting-started/route-operators) permettent de prioriser des réseaux de recharge entiers, les Boosting Groups vous offrent un contrôle granulaire au niveau de la station. Quelle que soit votre raison de favoriser ces stations, comme des tarifs plus bas, une faible utilisation ou un meilleur accord commercial, vous pouvez les placer en haut de la hiérarchie des stations.
 
-## Comment mettre en avant des stations
+## Comment booster des stations
 
 Pour commencer, contactez simplement le [support](https://www.chargetrip.com/contact/support) avec la liste des stations que vous souhaitez prioriser.
 
-Une fois votre groupe configuré et activé sur votre projet, tous les itinéraires calculés avec [createRoute](/api-reference/route/mutation-create-route) l'utiliseront automatiquement en arrière-plan : aucune modification ni aucun paramètre supplémentaire n'est requis dans vos requêtes API.
+Une fois votre groupe configuré et activé sur votre projet, tous les itinéraires calculés avec [createRoute](/api-reference/core/route/mutation-create-route) l'utiliseront automatiquement en arrière-plan, sans aucune modification ni paramètre supplémentaire dans vos requêtes d'API.
 
-## Fonctionnement
+## Comment ça fonctionne
 
-Les Boosting Groups prennent uniquement en charge la priorisation positive : vous pouvez les utiliser pour promouvoir des stations, mais pas pour les éviter ou les exclure. Lorsqu'ils sont utilisés seuls, les stations mises en avant sont priorisées par rapport à toutes les autres stations situées le long de l'itinéraire.
+Les Boosting Groups ne prennent en charge que la priorisation positive. Vous pouvez les utiliser pour promouvoir des stations, mais pas pour les éviter ou les exclure. Utilisées seules, les stations boostées sont prioritaires sur toutes les autres stations le long de l'itinéraire.
 
-Lorsqu'ils sont combinés avec des préférences d'opérateurs, le planificateur d'itinéraire priorise les stations dans l'ordre suivant (du plus élevé au plus faible) :
+Lorsqu'ils sont combinés aux préférences d'opérateurs, le planificateur d'itinéraire priorise les stations selon l'ordre de priorité suivant (du plus élevé au plus faible) :
 
-- Les Boosting Groups actifs sont des stations individuelles mises en avant. Ils prévalent sur toutes les préférences d'opérateurs, même si l'opérateur de la station est défini sur `avoid` ou `excluded`.
-- Les opérateurs préférés (`high`, `medium`, `low`) sont les stations appartenant aux réseaux de recharge préférés.
-- Les stations non classées sont des stations standard auxquelles aucun groupe de mise en avant ni aucune préférence d'opérateur n'est appliqué.
-- Les opérateurs dépriorisés (`avoid`) sont les stations appartenant à des opérateurs marqués comme étant à éviter. Elles sont utilisées uniquement lorsqu'aucune meilleure option n'existe.
+- Les Boosting Groups actifs sont des stations boostées individuellement. Ils remplacent toutes les préférences d'opérateurs, même si l'opérateur de la station est défini sur `avoid` ou `excluded`.
+- Les opérateurs préférés (`high`, `medium`, `low`) sont les stations appartenant à des réseaux de recharge préférés.
+- Les stations non classées sont des stations standard auxquelles aucun groupe de boost ni aucune préférence d'opérateur ne s'applique.
+- Les opérateurs dépriorisés (`avoid`) sont les stations appartenant à des opérateurs marqués comme à éviter. Elles ne sont utilisées que lorsqu'il n'existe aucune meilleure option.
 
-Tout comme les préférences d'opérateurs, la mise en avant de stations fonctionne sur le principe du meilleur effort (best-effort). Le planificateur d'itinéraire équilibre la priorité de la station par rapport à la densité des stations et à l'impact du détour, afin que la sélection d'une station mise en avant n'entraîne jamais un itinéraire inefficace.
+Comme les préférences d'opérateurs, le boost de stations fonctionne au mieux. Le planificateur d'itinéraire équilibre la priorité des stations avec la densité de stations et l'impact du détour, de sorte que la sélection d'une station boostée n'aboutisse jamais à un itinéraire inefficace.
 
 ## Exemples
 
 <details>
-  <summary>Calculer un itinéraire avec des groupes de mise en avant actifs</summary>
+  <summary>Calculer un itinéraire avec des Boosting Groups actifs</summary>
 
-  Étant donné que les Boosting Groups sont appliqués automatiquement au niveau du projet, il vous suffit d'envoyer une mutation `createRoute` standard. Tous les Boosting Groups actifs sont priorisés automatiquement.
+  Comme les Boosting Groups sont appliqués automatiquement au niveau du projet, il vous suffit d'envoyer une mutation `createRoute` standard. Tous les Boosting Groups actifs sont priorisés automatiquement.
 
 ```graphql Example request
 mutation CreateRoute {
@@ -55,9 +55,9 @@ mutation CreateRoute {
 </details>
 
 <details>
-  <summary>Vérifier si les stations recommandées appartiennent à un groupe de mise en avant</summary>
+  <summary>Vérifier si les stations recommandées appartiennent à un Boosting Group</summary>
 
-Lors de la récupération de l'itinéraire calculé avec `getRoute` ou la souscription `route`, demandez le champ `boosting_group_ids` sur la station de l'étape (leg) pour voir quels Boosting Groups actifs correspondent à cet arrêt.
+  Lors de la récupération de l'itinéraire calculé avec `getRoute` ou la souscription `route`, demandez `boosting_group_ids` sur la station du tronçon pour voir quels Boosting Groups actifs correspondent à cet arrêt.
 
 ```graphql Example request {{ mark: [11] }}
 query GetRoute {

@@ -1,0 +1,13 @@
+---
+title: 周边充电站查询
+heading: 周边充电站
+description: "使用 stationAround 查询获取 GeoJSON 点位指定半径内的充电站，以提供多种充电选择。"
+schemaName: stationAround
+schemaType: Query
+---
+
+使用 stationAround 查询，您可以获取 GeoJSON 点位指定半径范围内的充电站。当某个充电站繁忙，或您希望提供多种充电选择时，这会很有用。
+
+## 查询
+
+按点位搜索周边充电站需要提供 `location`（GeoJSON 点）和以米为单位的 `distance`。使用 `filter` 和 `search` 参数缩小结果范围，并使用 `size` 和 `page` 参数对结果进行[分页](/api-reference/core/api/pagination)。

@@ -1,0 +1,13 @@
+---
+title: Requête de station
+heading: Requête de station
+description: "Obtenez les détails d'une station avec la requête station, y compris ses bornes, son emplacement et toute autre information disponible."
+schemaName: station
+schemaType: Query
+---
+
+Obtenez les détails d'une station avec la requête station. C'est utile lorsque vous souhaitez afficher le type et le nombre de bornes, l'emplacement, le coût de la recharge ou tout autre détail actuellement disponible pour une station. Le [guide de tarification des stations](/docs/getting-started/station-pricing) détaille l'aspect tarifaire.
+
+## Requête
+
+Un `id` ou un `evse_id` de station est requis pour obtenir les détails d'une station. L'`id` peut être obtenu via un [itinéraire](/api-reference/core/route/query-get-route), le [service de tuiles](/api-reference/core/tiles/mvt) ou la [requête de stations à proximité](/api-reference/core/station/query-station-around).

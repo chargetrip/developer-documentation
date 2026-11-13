@@ -1,0 +1,13 @@
+---
+title: 创建联网车辆 mutation
+heading: 创建联网车辆
+description: "使用 createConnectedVehicle mutation 将车辆连接到连接提供商，以直接从车辆获取实时车辆数据。"
+schemaName: createConnectedVehicle
+schemaType: Mutation
+---
+
+使用 createConnectedVehicle mutation 将车辆连接到连接提供商。当您希望直接从车辆而不是通过路线计算获取实时车辆数据时，这会很有用。
+
+## Mutation
+
+创建联网车辆需要提供 `vehicle_id` 和 `provider`，以及特定于提供商的 `options`。该 mutation 返回联网车辆的 `id` 和 `authorization_url`，后者可用于通过 [authorizeConnectedVehicle mutation](/api-reference/core/connected-vehicle/mutation-authorize-connected-vehicle) 完成授权。

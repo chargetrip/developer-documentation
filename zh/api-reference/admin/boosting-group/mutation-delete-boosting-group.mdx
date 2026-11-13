@@ -1,0 +1,13 @@
+---
+title: 删除增强组 mutation
+heading: 删除增强组
+description: "当您不再希望增强某个组中的充电站时，使用 deleteBoostingGroup mutation 删除该增强组。"
+schemaName: deleteBoostingGroup
+schemaType: Mutation
+---
+
+使用 deleteBoostingGroup mutation 删除增强组。当您不再希望增强某个组中的充电站时，这会很有用。如果只是想暂时停止使用某个组，请改为[将其状态设置为 inactive](/api-reference/admin/boosting-group/mutation-update-boosting-group)。
+
+## Mutation
+
+必须提供增强组的 `id`。该 mutation 返回一个布尔值。

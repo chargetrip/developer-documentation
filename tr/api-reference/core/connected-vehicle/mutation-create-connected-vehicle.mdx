@@ -1,0 +1,13 @@
+---
+title: Bağlı araç oluşturma mutation'ı
+heading: Bağlı araç oluştur
+description: "Araçtan doğrudan canlı araç verisi almak için createConnectedVehicle mutation'ı ile bir aracı bağlantı sağlayıcısına bağlayın."
+schemaName: createConnectedVehicle
+schemaType: Mutation
+---
+
+createConnectedVehicle mutation'ını kullanarak bir aracı bağlantı sağlayıcısına bağlayın. Bir rota hesaplaması yerine canlı araç verilerini doğrudan araçtan almak istediğinizde kullanışlıdır.
+
+## Mutation
+
+Bir bağlı araç oluşturmak için sağlayıcıya özel `options` ile birlikte bir `vehicle_id` ve `provider` gerekir. Mutation, bir bağlı araç `id` değeri ve [authorizeConnectedVehicle mutation'ı](/api-reference/core/connected-vehicle/mutation-authorize-connected-vehicle) ile yetkilendirmeyi tamamlamak için kullanılabilecek bir `authorization_url` döndürür.

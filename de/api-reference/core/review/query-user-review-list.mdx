@@ -1,0 +1,13 @@
+---
+title: "Nutzerbewertungsliste Query"
+heading: "Nutzerbewertungsliste"
+description: "Rufen Sie mit der Query userReviewList alle Bewertungen ab, die der authentifizierte Nutzer für Stationen hinzugefügt hat. Dies ist eine Premium-Funktion."
+schemaName: userReviewList
+schemaType: Query
+---
+
+Rufen Sie mit der Query userReviewList alle Bewertungen ab, die der authentifizierte Nutzer für Stationen hinzugefügt hat. Das ist nützlich, wenn Sie den eigenen Bewertungsverlauf eines Nutzers anzeigen möchten. Dies ist eine Premium-Funktion. Kontaktieren Sie uns für weitere Informationen.
+
+## Query
+
+Zur Autorisierung des Nutzers, dessen Bewertungen Sie abrufen möchten, ist ein `x-token`-Header erforderlich. Mit den Argumenten `size` und `page` [paginieren](/api-reference/core/api/pagination) Sie die Ergebnisse.

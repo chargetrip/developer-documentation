@@ -1,0 +1,13 @@
+---
+title: Eşleştirilmiş rota oluşturma mutation'ı
+heading: Eşleştirilmiş rota oluştur
+description: "createMatchedRoute mutation'ı ile bir GPS noktaları dizisinden rota oluşturun, ardından üzerine şarj duraklarını ve enerji tüketimini ekleyin."
+schemaName: createMatchedRoute
+schemaType: Mutation
+---
+
+createMatchedRoute mutation'ını kullanarak bir GPS noktaları dizisinden rota oluşturun. Kendi iş kurallarınıza dayanan bir rotanız olduğunda ve üzerine şarj durakları eklemek ve enerji tüketimini hesaplamak istediğinizde en kullanışlı olanıdır.
+
+## Mutation
+
+Bir eşleştirilmiş rota oluşturmak için bir `vehicle` ve kronolojik sırada en az iki `points` gerekir. İsteğe bağlı olarak hesaplamayı iyileştirmek için `via` noktaları, `departure_time`, `weather`, `driving_preferences`, `operators` veya `alternative_station_radius` ekleyin. Aracın şarj durumu rota boyunca herhangi bir noktada eşiğe ulaşırsa şarj duraklarını bulup planlamak için `plan_charging_stops` değerini ayarlayın. Mutation, rota ayrıntılarını almak veya güncellemelere abone olmak için kullanılabilecek bir eşleştirilmiş rota `id` değeri döndürür.

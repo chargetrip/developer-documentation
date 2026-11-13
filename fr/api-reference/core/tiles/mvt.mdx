@@ -1,0 +1,64 @@
+---
+title: MVT
+description: "Accédez aux données géographiques des stations sous forme de Mapbox Vector Tiles (MVT) encodées en Protocol Buffers, pour un rendu de carte efficace."
+tag: Rest
+---
+
+Le service MVT (Mapbox Vector Tile) donne accès aux données géographiques liées aux stations dans un format basé sur des tuiles. Les tuiles vectorielles sont encodées en Protocol Buffers (PBF), ce qui permet une sérialisation efficace des données structurées.
+
+## Configuration
+
+Pour accéder aux données des stations au format MVT, envoyez une requête au endpoint suivant :
+
+```bash Tile / MVT / Base URL
+https://api.chargetrip.io/v2/station/{z}/{x}/{y}/tile.mvt
+```
+
+L'URL MVT utilise les paramètres de chemin suivants :
+
+- `z` : le niveau de zoom de la tuile.
+- `x` : la coordonnée x de la tuile.
+- `y` : la coordonnée y de la tuile.
+
+La plupart des fournisseurs de cartes disposent de méthodes intégrées pour convertir la latitude et la longitude en coordonnées en pixels. Pour convertir manuellement les coordonnées de latitude et de longitude en x et y, utilisez la [projection Web Mercator](https://en.wikipedia.org/wiki/Web_Mercator_projection).
+
+### Filtrage
+Utilisez le paramètre de requête `filter` pour filtrer les stations renvoyées selon des critères précis. Consultez la [documentation des filtres](/api-reference/core/tiles/filters) pour plus d'informations.
+
+### Sélecteurs
+Utilisez le paramètre de requête `station_properties[]` pour indiquer les champs renvoyés pour chaque entité station. Consultez la [documentation des sélecteurs](/api-reference/core/tiles/selectors) pour plus d'informations.
+
+## Réponse
+
+Les réponses MVT sont des charges utiles binaires Protocol Buffer contenant des entités ponctuelles vectorielles. Chaque entité représente soit une station individuelle (`count: 1`), soit un regroupement de stations (`count > 1`).
+
+Les propriétés encodées sur chaque entité dépendent entièrement du type d'entité et des sélecteurs fournis :
+
+- Entités de regroupement : renvoient toujours `{ "count": N, "expansion_zoom": Z }`.
+
+- Entités de station : renvoient `{ "count": 1, "id": ID}` si aucun sélecteur n'est fourni, ou uniquement les champs demandés si des [sélecteurs](/api-reference/core/tiles/selectors) sont fournis.
+
+
+
+<details>
+  <summary>Réponse décodée par défaut de la tuile MVT</summary>
+
+
+```json Example response
+// Station feature
+{
+  "count": 1
+  "id": "64997cc0fbca5dbf88ef1fae"
+
+}
+
+// Cluster feature
+{
+  "count": 4,
+  "expansion_zoom": 14
+}
+```
+
+</details>
+### Devise
+Utilisez le paramètre de requête `currency` pour définir la devise des prix de l'énergie renvoyés et filtrés. Consultez la [documentation sur la conversion de devise](/api-reference/core/tiles/filters) pour plus d'informations.

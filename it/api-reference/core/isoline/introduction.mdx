@@ -1,0 +1,23 @@
+---
+title: Introduzione alle isoline
+heading: Introduzione
+description: Mostra l'area che un veicolo elettrico può raggiungere da un determinato punto e regolala in base a batteria iniziale, meteo, riserva e livello di dettaglio.
+---
+
+Un'isolina, nota anche come range spider, mostra l'area che un veicolo elettrico può raggiungere da un determinato punto con l'energia che ha a bordo. Seleziona un veicolo e un'origine e l'API calcola le isoline che segnano il limite della distanza percorribile, come forme che puoi posizionare su una mappa. Il calcolo usa come riferimento la rete stradale reale: trova i punti più lontani che il veicolo può raggiungere su strada e il contorno collega quei punti. Il risultato è un'area piena, non una linea che segue le strade, quindi i tratti tra una strada e l'altra, come boschi o campi, possono rientrarvi.
+
+## Ottimizza un'isolina per il tuo obiettivo
+
+La stessa richiesta può produrre isoline diverse a seconda di ciò che ottimizzi. Questi sono gli obiettivi più comuni e le opzioni che modellano ciascuno.
+
+Mappa dell'autonomia
+: Mostra fino a dove può arrivare un veicolo da un punto, ad esempio intorno a una città, come area su una mappa. Scegli quanti poligoni ottenere, fino a 20, da una semplice rappresentazione dell'autonomia del veicolo a passaggi più fini per un gradiente. Bilancia precisione e velocità con `quality` e includi i traghetti con `ferry_connections`, che aumentano il tempo di calcolo e il numero di poligoni. Consulta [visualizzare l'autonomia del veicolo](/docs/getting-started/vehicle-range).
+
+Verifica di raggiungibilità
+: Rispondi alla domanda "posso arrivarci senza ricaricare?" per uno specifico veicolo, il che aiuta ad affrontare l'ansia da autonomia. Parti dal livello effettivo della batteria con `state_of_charge`, mantieni una riserva con `final_state_of_charge` oppure usa `round_trip` per includere solo i punti da cui il veicolo può anche tornare all'origine.
+
+Stazioni raggiungibili
+: Filtra le stazioni di ricarica in modo da mantenere quelle che un veicolo può effettivamente raggiungere da dove si trova. Combinalo con `final_state_of_charge` in modo che una stazione venga considerata solo quando il veicolo arriva con carica residua.
+
+Condizioni realistiche
+: Tieni conto di ciò che modifica il consumo: meteo o stagione, il peso trasportato dal veicolo e il riscaldamento e raffreddamento con il climatizzatore. Senza un livello della batteria, l'isolina usa l'intera capacità utilizzabile della batteria del veicolo e il meteo è impostato per impostazione predefinita sui dati in tempo reale.

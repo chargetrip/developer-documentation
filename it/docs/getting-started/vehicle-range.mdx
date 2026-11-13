@@ -1,44 +1,44 @@
 ---
 title: Visualizza autonomia veicolo
-description: "Visualizza l'area che un EV può raggiungere da un dato punto con un'isoline, usando la rete stradale reale e l'energia a bordo."
+description: "Visualizza l'area che un veicolo elettrico può raggiungere da un dato punto con un'isoline, usando la rete stradale reale e l'energia a bordo."
 tag: Guida
 ---
 
-Un'isolina mostra l'area che un EV può raggiungere da un determinato punto con l'energia che ha a bordo. Risponde a una domanda semplice, fin dove può arrivare questo veicolo da qui, e disegna la risposta come forme che puoi posizionare su una mappa.
+Un'isoline mostra l'area che un veicolo elettrico può raggiungere da un dato punto con l'energia che ha a bordo. Risponde a una domanda semplice, fino a dove può arrivare questo veicolo da qui, e disegna la risposta come forme che puoi posizionare su una mappa.
 
-Gli usi tipici sono una mappa dell'autonomia attorno a una città, un controllo del tipo "ci arrivo senza ricaricare?" o un filtro che mostra solo le stazioni che un veicolo può effettivamente raggiungere.
+Gli usi tipici sono una mappa dell'autonomia attorno a una città, un controllo del tipo "riesco ad arrivarci senza ricaricare?" o un filtro che mostra solo le stazioni che un veicolo può effettivamente raggiungere.
 
-Un'isolina usa la rete stradale reale come riferimento. Il calcolo individua i punti più lontani che il veicolo può raggiungere su strada e il contorno collega questi punti tra loro. Il risultato è un'area piena, non una linea che segue le strade, quindi i tratti tra una strada e l'altra, come boschi o campi, possono rientrarvi. Fiumi, montagne, sistemi a senso unico e lacune nella rete influenzano comunque il contorno, perché stabiliscono fin dove le strade permettono al veicolo di arrivare.
+Un'isoline usa come riferimento la rete stradale reale. Il calcolo trova i punti più lontani che il veicolo può raggiungere su strada e il contorno collega tra loro quei punti. Il risultato è un'area piena, non una linea che segue le strade, quindi i tratti tra le strade, come boschi o campi, possono rientrarvi. Fiumi, montagne, sistemi a senso unico e interruzioni nella rete influenzano comunque il contorno, perché decidono fin dove le strade permettono di arrivare al veicolo.
 
 ## Come funziona
 
-Come i percorsi, le isoline vengono calcolate in modo asincrono, seguendo lo stesso [pattern asincrono](/api-reference/api/async-operations) utilizzato in tutta l'API. La creazione e il recupero di un'isolina avvengono in passaggi separati.
+Come i percorsi, le isoline vengono calcolate in modo asincrono, seguendo lo stesso [pattern asincrono](/api-reference/core/api/async-operations) usato in tutta l'API. La creazione e il recupero di un'isoline avvengono in passaggi separati.
 
-1. **Crea un'isolina**
-   Chiama la mutation `createIsoline` con almeno un `vehicle_id` e un `origin`. La mutation restituisce subito l'`id` dell'isolina, che userai nel passaggio successivo. Gli input opzionali, come il livello della batteria o il meteo, sono trattati in [personalizza la tua isolina](#personalizza-la-tua-isolina).
+1. **Crea un'isoline**
+   Chiama la mutation `createIsoline` con almeno un `vehicle_id` e un `origin`. La mutation restituisce subito un `id` dell'isoline, che userai nel passaggio successivo. Gli input opzionali, come il livello della batteria o il meteo, sono descritti in [personalizza la tua isoline](#personalizza-la-tua-isoline).
 2. **Apri una subscription**
-   Sottoscrivi la subscription `isoline` usando l'`id` del passaggio precedente. Mentre l'isolina viene calcolata, lo stato è `pending`. Usalo per gestire uno stato di caricamento nella tua interfaccia.
+   Sottoscrivi la subscription `isoline` usando l'`id` del passaggio precedente. Mentre l'isoline viene calcolata, lo stato è `pending`. Usalo per gestire uno stato di caricamento nella tua interfaccia.
 3. **Mostra il risultato**
-   Quando lo `status` diventa `done` o `error`, mostra l'interfaccia corrispondente. Un'isolina `done` contiene i `polygons` da disegnare sulla mappa.
+   Quando lo `status` si risolve in `done` o `error`, mostra l'interfaccia corrispondente. Un'isoline `done` contiene i `polygons` da disegnare sulla mappa.
 4. **Recupera di nuovo su richiesta**
-   Un'isolina completata viene memorizzata con tutti i suoi dettagli. Per mostrarla di nuovo in seguito, usa la query `isoline` con lo stesso `id` invece di aprire una nuova subscription.
+   Un'isoline completata viene memorizzata con tutti i suoi dettagli. Per mostrarla di nuovo in seguito, usa la query `isoline` con lo stesso `id` invece di aprire una nuova subscription.
 
 ## Poligoni
 
-Il risultato è un elenco di poligoni. Insieme descrivono l'area raggiungibile per gradi, dalla vicinanza all'origine fino al punto più lontano che il veicolo può raggiungere guidando.
+Il risultato è un elenco di poligoni. Insieme descrivono l'area raggiungibile per gradi, da vicino all'origine fino al punto più lontano che il veicolo può raggiungere guidando.
 
 Usa `polygon_count` per scegliere quanti poligoni ottenere, fino a un massimo di 20.
 
-- **Meno poligoni** ti offrono un quadro semplice e approssimativo dell'autonomia del veicolo. Sono più rapidi da disegnare e più facili da leggere a colpo d'occhio.
-- **Più poligoni** ti offrono passaggi più fini tra l'origine e l'autonomia massima, utili per un gradiente o per una mappa dell'autonomia più dettagliata.
+- **Meno poligoni** ti danno un quadro semplice e approssimativo dell'autonomia del veicolo. Sono più veloci da disegnare e più facili da leggere a colpo d'occhio.
+- **Più poligoni** ti danno passaggi più fini tra l'origine e l'autonomia massima, utili per un gradiente o per una mappa dell'autonomia più dettagliata.
 
-Ogni poligono ha un `index` nelle sue `properties` per distinguerli e `maximum_distance` indica la distanza dall'origine al punto più lontano raggiungibile.
+Ogni poligono ha un `index` nelle sue `properties` per distinguerli e `maximum_distance` indica la distanza dall'origine al punto raggiungibile più lontano.
 
-## Crea la tua prima isolina
+## Crea la tua prima isoline
 
-Bastano un `vehicle_id` e un `origin` per creare un'isolina. Questo esempio imposta anche il livello della batteria, il numero di poligoni e il meteo, così puoi vedere come si combinano le opzioni principali.
+Bastano un `vehicle_id` e un `origin` per creare un'isoline. Questo esempio imposta anche il livello della batteria, il numero di poligoni e il meteo, così puoi vedere come si combinano le opzioni principali.
 
-```graphql Crea un'isolina
+```graphql Create an isoline
 mutation CreateIsoline {
   createIsoline(
     input: {
@@ -55,9 +55,9 @@ mutation CreateIsoline {
 }
 ```
 
-La mutation restituisce l'`id` dell'isolina. Passalo alla subscription `isoline` per seguire il calcolo e ricevere il risultato:
+La mutation restituisce l'`id` dell'isoline. Passalo alla subscription `isoline` per seguire il calcolo e ricevere il risultato:
 
-```graphql Sottoscrivi l'isolina
+```graphql Subscribe to the isoline
 subscription Isoline {
   isoline(id: "65f1a2b3c4d5e6f7a8b9c0d1") {
     id
@@ -78,23 +78,23 @@ subscription Isoline {
 
 In questa richiesta:
 
-- `state_of_charge` fa partire il veicolo con la batteria all'80%. Senza questo parametro, l'isolina usa l'intera capacità utilizzabile della batteria del veicolo.
-- `polygon_count` restituisce cinque poligoni, dalla vicinanza all'origine fino all'autonomia massima.
-- `weather` usa il preset `winter`, che presuppone condizioni di freddo e in genere produce un'area raggiungibile più piccola rispetto al valore predefinito del meteo in tempo reale.
+- `state_of_charge` fa partire il veicolo con l'80% di batteria. Senza di esso, l'isoline usa l'intera capacità utilizzabile della batteria del veicolo.
+- `polygon_count` restituisce cinque poligoni, da vicino all'origine fino all'autonomia massima.
+- `weather` usa il preset `winter`, che presuppone condizioni fredde e in genere produce un'area raggiungibile più piccola rispetto al valore predefinito del meteo in tempo reale.
 
-## Personalizza la tua isolina
+## Personalizza la tua isoline
 
-`createIsoline` accetta una serie di input opzionali per perfezionare il calcolo. Maggiori dettagli su ciascun campo sono disponibili nel [riferimento API](/api-reference/isoline/mutation-create-isoline).
+`createIsoline` accetta una serie di input opzionali per perfezionare il calcolo. Maggiori dettagli su ciascun campo sono disponibili nel [riferimento API](/api-reference/core/isoline/mutation-create-isoline).
 
 | Funzionalità | Descrizione |
 | --- | --- |
-| [Livello della batteria](/api-reference/isoline/mutation-create-isoline#arg-input-state_of_charge) | Imposta la batteria iniziale con `state_of_charge`, come percentuale, kilowattora, chilometri o miglia. Per impostazione predefinita usa la capacità utilizzabile della batteria del veicolo. |
-| [Carica finale minima](/api-reference/isoline/mutation-create-isoline#arg-input-final_state_of_charge) | Mantieni una riserva con `final_state_of_charge`. L'isolina include solo i punti che il veicolo può raggiungere rimanendo al di sopra di tale valore. Il valore predefinito è 0. |
-| [Numero di poligoni](/api-reference/isoline/mutation-create-isoline#arg-input-polygon_count) | Scegli il numero di poligoni, fino a 20. |
-| [Andata e ritorno](/api-reference/isoline/mutation-create-isoline#arg-input-round_trip) | Includi solo i punti da cui il veicolo può anche tornare all'origine, usando `round_trip`. |
-| [Qualità](/api-reference/isoline/mutation-create-isoline#arg-input-quality) | Scambia precisione con velocità tramite `quality`, impostato su `high` o `low`. |
-| [Collegamenti in traghetto](/api-reference/isoline/mutation-create-isoline#arg-input-ferry_connections) | Includi i traghetti con `ferry_connections`, impostato su `none` o `single`. I traghetti aumentano il tempo di calcolo e il numero di poligoni. |
-| [Meteo](/api-reference/isoline/mutation-create-isoline#arg-input-weather) | Applica un preset meteo `summer`, `winter` o `actual`, oppure condizioni personalizzate. Per impostazione predefinita usa i dati meteo in tempo reale. |
-| [Stagione](/api-reference/isoline/mutation-create-isoline#arg-input-season) | Presuppone condizioni `summer`, `winter` o `current`, come alternativa più semplice a `weather`. |
-| [Carico del veicolo](/api-reference/isoline/mutation-create-isoline#arg-input-occupants) | Imposta `occupants`, `total_occupant_weight` e `total_cargo_weight` per tenere conto del peso trasportato dal veicolo. |
-| [Climatizzazione](/api-reference/isoline/mutation-create-isoline#arg-input-climate_control) | Attiva `climate_control` e descrivi la configurazione di `heat_pump` e `cabin` per includere riscaldamento e raffreddamento nel consumo. |
+| [Livello della batteria](/api-reference/core/isoline/mutation-create-isoline#arg-input-state_of_charge) | Imposta la batteria iniziale con `state_of_charge`, come percentuale, kilowattora, chilometri o miglia. Il valore predefinito è la capacità utilizzabile della batteria del veicolo. |
+| [Carica finale minima](/api-reference/core/isoline/mutation-create-isoline#arg-input-final_state_of_charge) | Mantieni una riserva con `final_state_of_charge`. L'isoline include solo i punti che il veicolo può raggiungere restando al di sopra di essa. Il valore predefinito è 0. |
+| [Numero di poligoni](/api-reference/core/isoline/mutation-create-isoline#arg-input-polygon_count) | Scegli il numero di poligoni, fino a 20. |
+| [Andata e ritorno](/api-reference/core/isoline/mutation-create-isoline#arg-input-round_trip) | Includi solo i punti da cui il veicolo può anche tornare all'origine, usando `round_trip`. |
+| [Qualità](/api-reference/core/isoline/mutation-create-isoline#arg-input-quality) | Scambia precisione con velocità tramite `quality`, impostato su `high` o `low`. |
+| [Collegamenti in traghetto](/api-reference/core/isoline/mutation-create-isoline#arg-input-ferry_connections) | Includi i traghetti con `ferry_connections`, impostato su `none` o `single`. I traghetti aumentano il tempo di calcolo e il numero di poligoni. |
+| [Meteo](/api-reference/core/isoline/mutation-create-isoline#arg-input-weather) | Applica un preset meteo `summer`, `winter` o `actual`, oppure condizioni personalizzate. Per impostazione predefinita usa i dati meteo in tempo reale. |
+| [Stagione](/api-reference/core/isoline/mutation-create-isoline#arg-input-season) | Presupponi condizioni `summer`, `winter` o `current`, come alternativa più semplice a `weather`. |
+| [Carico del veicolo](/api-reference/core/isoline/mutation-create-isoline#arg-input-occupants) | Imposta `occupants`, `total_occupant_weight` e `total_cargo_weight` per tenere conto del peso trasportato dal veicolo. |
+| [Climatizzazione](/api-reference/core/isoline/mutation-create-isoline#arg-input-climate_control) | Attiva `climate_control` e descrivi la configurazione di `heat_pump` e `cabin` per includere riscaldamento e raffreddamento nel consumo. |

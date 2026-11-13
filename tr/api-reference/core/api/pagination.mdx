@@ -1,0 +1,62 @@
+---
+title: Sayfalandırma
+description: "Liste sorgularında imleç tabanlı ve offset tabanlı sayfalandırma ile sayfalar arasında gezinin; her sayfa için geçerli sınırlar dahil."
+---
+
+API'yi hızlı ve yanıt verebilir tutmak için liste sorguları tek bir istekte döndürülen veri miktarını sınırlar. API genelinde iki sayfalandırma türü kullanılır:
+
+- İmleç tabanlı (güncel): yeni geliştirilen liste sorguları tarafından kullanılır.
+- Offset tabanlı (eski): mevcut liste sorgularının çoğu tarafından kullanılır. Bunlar zamanla imleç tabanlı sürümlerle değiştirilecektir.
+
+> [!WARNING] Sayfalandırma sınırları
+> Sayfalandırma türünden bağımsız olarak liste sorguları sayfa başına en fazla 100 öğe döndürür; 10 ile sınırlı olan `getRouteStationsWithAmenities` sorgusu bunun dışındadır.
+
+## İmleç tabanlı sayfalandırma
+
+İmleç tabanlı sayfalandırma güncel standarttır. Sonuç kümesindeki bir konumun benzersiz tanımlayıcısı olan bir imleç kullanarak bir isteğin başlangıç noktasını belirlemenizi sağlar.
+
+### Argümanlar
+
+`first` · <span class="text-muted">Integer</span>
+: Döndürülecek öğe sayısı.
+
+`after` · <span class="text-muted">String</span>
+: Başlanacak imleç. İlk sayfayı almak için bu argümanı atlayın veya `null` olarak ayarlayın. Sonraki sayfalar için önceki yanıttaki `page_info.end_cursor` değerini kullanın.
+
+### Yanıt
+
+Yanıt, sonuçları sayfalandırma meta verileriyle birlikte doğrudan bir `nodes` dizisi aracılığıyla döndürür.
+
+`nodes` · <span class="text-muted">Array</span>
+: Geçerli sayfa için veri nesnelerinin listesi.
+
+`total_count` · <span class="text-muted">Integer</span>
+: Tüm sayfalar genelinde sorguyla eşleşen toplam öğe sayısı.
+
+`page_info.has_next_page` · <span class="text-muted">Boolean</span>
+: Geçerli sayfadan sonra daha fazla sonuç olup olmadığı.
+
+`page_info.has_previous_page` · <span class="text-muted">Boolean</span>
+: Geçerli sayfadan önce daha fazla sonuç olup olmadığı.
+
+`page_info.start_cursor` · <span class="text-muted">String</span>
+: `nodes` içindeki ilk düğümün imleci.
+
+`page_info.end_cursor` · <span class="text-muted">String</span>
+: `nodes` içindeki son düğümün imleci. Bu değeri bir sonraki sorgunuzda `after` argümanı olarak kullanın.
+
+## Offset tabanlı sayfalandırma (eski)
+
+Offset tabanlı sayfalandırma eski standarttır ve hâlâ çoğu liste sorgusu tarafından kullanılır. Belirli sayıda kaydı atlamak için `page`, sabit boyutlu bir sonuç penceresi döndürmek için `size` kullanır.
+
+### Argümanlar
+
+`size` · <span class="text-muted">Integer</span>
+: Sayfa başına döndürülecek öğe sayısı.
+
+`page` · <span class="text-muted">Integer</span>
+: Alınacak sayfa numarası. İlk sayfayı almak için bu argümanı atlayın veya `0` olarak ayarlayın.
+
+### Yanıt
+
+Yanıt, `size` değeriyle sınırlı olarak veri nesnelerinin bir listesini doğrudan döndürür.

@@ -1,0 +1,48 @@
+---
+title: Introduction aux véhicules
+heading: Introduction
+description: "Ce que contient la base de données de véhicules, comment les propriétés des véhicules électriques influencent le calcul d'itinéraire et la recharge, et quelles requêtes utiliser pour y accéder."
+---
+
+Calculer l'itinéraire d'un véhicule électrique est différent de celui d'une voiture à essence. La distance qu'un véhicule peut parcourir, les bornes qu'il peut utiliser et sa vitesse de recharge dépendent tous du véhicule lui-même. La base de données de véhicules vous fournit ces informations, afin que vous n'ayez pas à les collecter et à les maintenir vous-même.
+
+Chaque requête d'itinéraire et d'isoline nécessite un `id` de véhicule, et les mêmes données vous permettent de créer des sélecteurs de véhicules, d'afficher des spécifications et de filtrer les stations de recharge pour ne garder que celles que le conducteur peut utiliser.
+
+## Notions de base sur les véhicules électriques
+
+Quelques propriétés des véhicules électriques expliquent pourquoi les données de véhicule sont importantes.
+
+### Motorisations
+
+Un véhicule thermique (ICE, moteur à combustion interne) brûle du carburant. Un véhicule électrique fonctionne à l'électricité fournie par une batterie rechargée dans une station de recharge. La base de données couvre quatre types de motorisation :
+
+| Motorisation | Description |
+|:---|:---|
+| BEV | Véhicule électrique à batterie. Fonctionne uniquement sur batterie. |
+| PHEV | Véhicule hybride rechargeable. Associe une batterie rechargeable sur secteur à un moteur thermique. |
+| EREV | Véhicule électrique à prolongateur d'autonomie. Propulsé par la batterie, avec un moteur thermique qui prolonge l'autonomie. |
+| HEV | Véhicule hybride électrique. Associe un moteur thermique et une batterie non rechargeable sur secteur. |
+
+### Recharge
+
+Les véhicules électriques se rechargent à l'aide de l'un des nombreux types de prises, de sorte qu'une borne n'est utile que si le véhicule prend en charge son connecteur. La vitesse de recharge se répartit en trois niveaux. Les niveaux 1 et 2 utilisent le courant alternatif (AC) et prennent plusieurs heures. Le niveau 3, aussi appelé recharge rapide, utilise le courant continu (DC) et peut recharger un véhicule en moins d'une heure. La vitesse de recharge réelle d'un véhicule dépend de sa courbe de recharge, dont le service de calcul d'itinéraire tient compte.
+
+### Ce qui influence l'autonomie
+
+Les performances de la batterie varient selon la météo, l'utilisation de la climatisation et les spécifications du véhicule, un peu comme la batterie d'un téléphone se décharge plus vite par temps froid. C'est pourquoi une seule valeur d'autonomie ne suffit pas pour planifier un trajet. L'autonomie dépend des conditions, et le service de calcul d'itinéraire en tient compte pour prédire l'énergie qu'un véhicule consomme entre deux points. Cette prédiction permet à une application de [recommander des arrêts de recharge](/docs/getting-started/route) le long d'un trajet, et d'afficher la zone qu'un véhicule peut atteindre avec une [isoline](/api-reference/core/isoline/mutation-create-isoline). Elle répond à l'anxiété de l'autonomie, la crainte de tomber en panne de charge avant d'atteindre une destination ou une borne.
+
+## Base de données de véhicules
+
+La base de données contient des modèles BEV, PHEV, HEV et EREV. De nouveaux modèles sont ajoutés à mesure de leur commercialisation. Un aperçu de chaque véhicule :
+
+<VehicleList />
+
+Tous les BEV et EREV sont fournis avec un modèle de consommation validé. Il tient compte de propriétés telles que le coefficient de traînée et la résistance au roulement en fonction de la vitesse, de l'altitude, de la vitesse de recharge, de la température de recharge et de la température de la batterie. C'est ce qui rend les prédictions d'autonomie et d'itinéraire spécifiques au véhicule conduit.
+
+### Données premium
+
+[Véhicule premium](/api-reference/core/vehicle/query-vehicle-premium) est un module complémentaire qui fournit des données étendues sur la batterie, la carrosserie du véhicule, la disponibilité, le prix, l'efficacité, la sécurité et plus encore. [Contactez les ventes](https://www.chargetrip.com/contact/sales) pour passer aux données de véhicule premium.
+
+### Images
+
+Des images de véhicules libres de droits sont disponibles en module complémentaire. Elles sont de meilleure qualité que les images incluses par défaut. [Contactez les ventes](https://www.chargetrip.com/contact/sales) pour les activer pour votre projet.

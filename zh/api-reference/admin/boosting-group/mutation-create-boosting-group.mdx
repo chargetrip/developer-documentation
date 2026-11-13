@@ -1,0 +1,34 @@
+---
+title: 创建增强组 mutation
+heading: 创建增强组
+description: "使用 createBoostingGroup mutation 创建一组在路线规划中获得增强的充电站。"
+schemaName: createBoostingGroup
+schemaType: Mutation
+---
+
+使用 createBoostingGroup mutation 创建增强组。当您希望引导路线前往特定充电站时，例如因为有更好的商业协议，这会很有用。处于激活状态的组会自动应用于您使用 [createRoute](/api-reference/core/route/mutation-create-route) 计算的每条路线。要了解具体方式，请参阅[增强组指南](/docs/getting-started/route-boosting-groups)。
+
+## Mutation
+
+必须提供 `name`、`client_id` 和 `stations` 列表。可以通过充电站的 `id`，或通过您的充电站提供商使用的 `external_id` 来标识每个充电站。将 `status` 设置为 `inactive`，即可创建该组但暂不将其用于路线规划。
+
+<details>
+  <summary>创建包含两个充电站的未激活增强组。</summary>
+  一个充电站通过其内部 `id` 标识，另一个通过您的提供商的 `external_id` 标识。
+
+```graphql Example request
+mutation CreateBoostingGroup {
+  createBoostingGroup(
+    input: {
+      name: "Preferred stations"
+      client_id: "60b8d5a2f1c8e9001b9e2831"
+      status: inactive
+      stations: [{ id: "5f6a1b2c3d4e5f6a7b8c9d0e" }, { external_id: "NL-AMS-0001" }]
+    }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>

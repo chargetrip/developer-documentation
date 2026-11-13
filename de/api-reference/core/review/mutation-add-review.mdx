@@ -1,0 +1,13 @@
+---
+title: "Stationsbewertung hinzufügen Mutation"
+heading: "Stationsbewertung hinzufügen"
+description: "Fügen Sie mit der Mutation addReview eine Stationsbewertung hinzu, einschließlich Bewertung, Nachricht sowie dem verwendeten Elektrofahrzeug und Steckertyp."
+schemaName: addReview
+schemaType: Mutation
+---
+
+Fügen Sie mit der Mutation addReview eine Bewertung für eine Station hinzu. Geben Sie eine Bewertung und eine Nachricht an, zusammen mit dem verwendeten Elektrofahrzeug und Steckertyp, um anderen Nutzern mehr Kontext zu geben. Wird für einen gültigen Nutzer ein `x-token`-Header gesendet, gehört die Bewertung diesem Nutzer, andernfalls wird sie anonym hinzugefügt.
+
+## Mutation
+
+Ein `review`-Objekt ist erforderlich und enthält die Stations-`id`, `rating` und `message`. Optional können Sie `ev`, `plugType`, `locale`, `properties` und `tags` des Besuchs angeben.

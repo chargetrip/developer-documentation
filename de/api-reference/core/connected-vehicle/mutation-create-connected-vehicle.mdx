@@ -1,0 +1,13 @@
+---
+title: "Verbundenes Fahrzeug erstellen Mutation"
+heading: "Verbundenes Fahrzeug erstellen"
+description: "Verbinden Sie ein Fahrzeug mit der Mutation createConnectedVehicle mit einem Konnektivitätsanbieter, um Live-Fahrzeugdaten direkt vom Fahrzeug abzurufen."
+schemaName: createConnectedVehicle
+schemaType: Mutation
+---
+
+Verbinden Sie ein Fahrzeug mit der Mutation createConnectedVehicle mit einem Konnektivitätsanbieter. Das ist nützlich, wenn Sie Live-Fahrzeugdaten direkt vom Fahrzeug abrufen möchten, statt eine Routenberechnung zu verwenden.
+
+## Mutation
+
+Zum Erstellen eines verbundenen Fahrzeugs sind eine `vehicle_id` und ein `provider` erforderlich, zusammen mit anbieterspezifischen `options`. Die Mutation gibt eine `id` des verbundenen Fahrzeugs und eine `authorization_url` zurück, mit der Sie die Autorisierung über die [Mutation authorizeConnectedVehicle](/api-reference/core/connected-vehicle/mutation-authorize-connected-vehicle) abschließen können.

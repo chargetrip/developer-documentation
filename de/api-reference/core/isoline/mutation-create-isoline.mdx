@@ -1,0 +1,13 @@
+---
+title: "Isoline erstellen Mutation"
+heading: "Isoline erstellen"
+description: "Erstellen Sie mit der Mutation createIsoline eine verbrauchsbasierte Isoline, um das Gebiet darzustellen, das ein Fahrzeug von einem Punkt aus erreichen kann."
+schemaName: createIsoline
+schemaType: Mutation
+---
+
+Erstellen Sie eine verbrauchsbasierte Isoline mit der Mutation createIsoline. Das ist nützlich, wenn Sie das Gebiet visualisieren möchten, das ein Fahrzeug von einem bestimmten Punkt aus erreichen kann, zum Beispiel als Reichweitenkarte. Der [Leitfaden zur Fahrzeugreichweite](/docs/getting-started/vehicle-range) zeigt, wie Sie das Ergebnis in Formen umwandeln, die Sie auf einer Karte platzieren können.
+
+## Mutation
+
+Zum Erstellen einer Isoline sind eine `vehicle_id` und ein `origin` erforderlich. Optional können Sie `state_of_charge`, `polygon_count` oder weitere Präferenzen hinzufügen, um die Berechnung zu verfeinern. Die Mutation gibt eine Isoline-`id` zurück, mit der Sie Isolinien-Details abrufen oder Updates abonnieren können.

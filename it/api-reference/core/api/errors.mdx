@@ -1,0 +1,38 @@
+---
+title: Gestione degli errori
+description: "Scopri come l'API restituisce gli errori insieme ai dati parziali e perché devi controllare il corpo della risposta invece di affidarti al codice di stato HTTP."
+---
+
+L'API restituisce gli errori come parte di una normale risposta, insieme a tutti i dati che sono stati comunque risolti. Una richiesta può riuscire solo in parte, quindi controllare solo il codice di stato HTTP non basta per rilevare un errore.
+
+> [!WARNING] Risposte parziali
+> L'API restituisce HTTP 200 per la maggior parte delle richieste, anche quando includono errori. Controlla sempre il corpo della risposta per cercare un array `errors`, anziché affidarti al codice di stato HTTP, poiché `data` ed `errors` possono essere restituiti insieme.
+
+## Errori
+
+Ogni errore viene restituito nell'array `errors` di primo livello, insieme a `data`.
+
+`message` · <span class="text-muted">String</span>
+: Una descrizione leggibile dell'errore.
+
+`locations` · <span class="text-muted">Array</span>
+: La riga e la colonna della richiesta in cui si è verificato l'errore.
+
+`path` · <span class="text-muted">Array</span>
+: Il percorso del campo che ha causato l'errore, ad esempio `["vehicleList"]`.
+
+`extensions.exception.code` · <span class="text-muted">String</span>
+: Un codice di errore leggibile dalle macchine. Usa questo campo per gestire gli errori a livello di programmazione, anziché confrontare `message`.
+
+`extensions.exception.status` · <span class="text-muted">Integer</span>
+: Il codice di stato HTTP corrispondente all'errore, ad esempio `403`.
+
+`extensions.exception.message` · <span class="text-muted">String</span>
+: Una descrizione leggibile dell'errore, corrispondente al campo `message` di primo livello.
+
+`extensions.exception.response` · <span class="text-muted">String</span>
+: Il corpo della risposta dell'eccezione sottostante, spesso uguale a `message`.
+
+### Localizzazione
+
+Per gestire e localizzare correttamente i messaggi di errore, usa `extensions.exception.code` anziché `message`. Per la descrizione del significato di ogni codice, consulta la pagina dell'operazione nel riferimento API. `message` deve essere usato solo come contesto per gli sviluppatori e non va mostrato agli utenti finali.

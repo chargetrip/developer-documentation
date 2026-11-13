@@ -1,0 +1,14 @@
+---
+title: 完成导航 mutation
+heading: 完成导航
+description: "当驾驶员到达目的地或取消行程时，使用 finishNavigation mutation 结束进行中的导航会话。"
+schemaName: finishNavigation
+schemaType: Mutation
+---
+
+使用 finishNavigation mutation 结束进行中的导航会话。当驾驶员到达目的地或行程被取消时，这会很有用。
+
+## Mutation
+
+完成导航会话需要提供其 `id` 和 `current_location`。`id` 可以通过 [startNavigation mutation](/api-reference/core/navigation/mutation-start-navigation) 获取。
+

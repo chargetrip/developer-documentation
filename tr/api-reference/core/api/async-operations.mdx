@@ -1,0 +1,27 @@
+---
+title: Eşzamansız işlemler
+description: "API'de eşzamansız işlemlerin nasıl çalıştığını öğrenin: bir mutation ile oluşturun, ardından sonucu bir subscription veya sorgu ile takip edip alın."
+---
+
+Bir rota veya eşleştirilmiş rota oluşturmak gibi bazı işlemler, API'nin yanıt verebilirliğini korumak için eşzamansız çalışır. Bir mutation'ın tam sonucu döndürmesini beklemek yerine hemen bir `id` alır, ardından sonucu takip edip almak için devam edersiniz.
+
+## Nasıl çalışır
+
+1. **Oluşturun**
+   Mutation'ı çağırın. Sonraki adımda sonucu takip etmek ve almak için kullanacağınız bir `id` hemen döndürülür.
+2. **Bir subscription açın**
+   Önceki adımdaki `id` ile abone olun. Sonuç hesaplanırken subscription, arayüzünüzde eşzamansız yükleme durumunu yönetmek için kullanabileceğiniz durum güncellemeleri gönderir.
+3. **Sonucu gösterin**
+   `status` son bir değere ulaştığında, o sonuca karşılık gelen arayüzü gösterin.
+4. **Tamamlanmış bir sonucu yeniden alın**
+   Bir sonuç son duruma ulaştığında zaten önceden hesaplanmıştır. Daha sonra, örneğin ona geri dönüldüğünde yeniden ihtiyaç duyarsanız, yeni bir subscription açmak yerine ilgili sorguyu kullanın.
+
+## Nerede geçerlidir
+
+| Özellik | Mutation | Subscription | Sorgu |
+| --- | --- | --- | --- |
+| [Rota](/docs/getting-started/route) | `createRoute` | `route` | `getRoute` |
+| [Eşleştirilmiş rota](/api-reference/core/matched-route/mutation-create-matched-route) | `createMatchedRoute` | `matchedRoute` | `getMatchedRoute` |
+| [İzoline](/api-reference/core/isoline/mutation-create-isoline) | `createIsoline` | `isoline` | `isoline` |
+| [Kamyon rotası](/api-reference/core/truck-route/mutation-create-truck-route) | `createTruckRoute` | `truckRoute` | `getTruckRoute` |
+| [Navigasyon](/api-reference/core/navigation/mutation-start-navigation) | `startNavigation` | `navigation` | `navigation` |

@@ -6,22 +6,22 @@ migrateBefore: 01-01-2027
 
 # routePath
 
-Migra entro: Q1 2027
+Esegui la migrazione entro: Q1 2027
 
-Esegui la migrazione dal servizio Route legacy all'ultima versione. Il nuovo servizio offre uno schema riorganizzato, preferenze degli operatori per paese, un calcolo del percorso più veloce e una maggiore manutenibilità.
+Passa dal servizio Route legacy alla versione più recente. Il nuovo servizio offre uno schema riorganizzato, preferenze degli operatori per paese, un calcolo del percorso più rapido e maggiore manutenibilità.
 
 ## Operazioni
 
 | Precedente  | Nuovo                                                 |
 | ----------- | ------------------------------------------------------|
-| `routePath` | [`getRoute`](/api-reference/route/query-get-route)    |
+| `routePath` | [`getRoute`](/api-reference/core/route/query-get-route)    |
 
 ## Modifiche generali allo schema
 
-- **Tipizzazione esplicita**: i campi JSON in precedenza flessibili ora sono tipizzati esplicitamente nello schema per migliorare struttura e validazione.
+- **Tipizzazione esplicita**: i campi JSON in precedenza flessibili sono ora tipizzati esplicitamente nello schema per migliorare struttura e validazione.
 - **Convenzioni di denominazione**: i campi ora usano `snake_case` invece di `camelCase`.
-- **Supporto delle unità**: gli input numerici ora supportano diversi tipi di unità, espressi come oggetto con `value`, `type` e un `source` facoltativo (`manual`, `telemetry` o `default`).
+- **Supporto delle unità**: gli input numerici ora supportano diversi tipi di unità, espressi come oggetto con `value`, `type` e un `source` opzionale (`manual`, `telemetry` o `default`).
 
-## Modifiche alle query
+## Modifiche alla query
 
 Il tracciato del percorso è ora già incluso nella risposta di `getRoute` come `recommended.path_plot`, quindi non è più necessaria una query separata per recuperarlo.

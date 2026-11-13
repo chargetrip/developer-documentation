@@ -7,13 +7,13 @@ date: 01-04-2026
 
 ![Routenalternativen](../../../assets/changelog/2026/april.jpg)
 
-Sie können bei der Routenberechnung jetzt zusätzlich zur empfohlenen Route geografisch unterschiedliche alternative Routen anfordern. So können Fahrer und Disponenten alternative Strecken anhand ihrer Präferenzen bewerten, während dieselben Fahrtbeschränkungen erhalten bleiben. Sie können bis zu 2 alternative Routen angeben.
+Sie können bei der Routenberechnung jetzt zusätzlich zur empfohlenen Route geografisch unterschiedliche alternative Routen anfordern. So können Fahrer und Disponenten alternative Strecken anhand ihrer Präferenzen bewerten, bei gleichbleibenden Fahrtbedingungen. Sie können bis zu 2 alternative Routen angeben.
 
 
 
 <details>
   <summary>Fehlerbehebungen</summary>
 
-    - Es wurde ein Problem behoben, bei dem leere `via`-Wegpunkte ohne Geometrie, Standort oder Stations-IDs in `createRoute` stillschweigend mit dem Status `not_found` fehlschlugen, anstatt einen `ROUTE_VIA_LOCATION_MISSING`-Validierungsfehler zurückzugeben.
-    - Es wurde ein Problem in `operatorList` behoben, bei dem Abfragen mit Ranking-Filtern leere Ergebnisse lieferten, wenn für das Projekt keine ausgeschlossenen Länder konfiguriert waren. Betreiber, die den Ranking-Präferenzen entsprechen, werden nun korrekt zurückgegeben.
+    - Es wurde ein Problem behoben, bei dem leere `via`-Wegpunkte ohne Geometrie, Standort oder Stations-IDs in `createRoute` stillschweigend mit dem Status `not_found` fehlschlugen, anstatt einen Validierungsfehler `ROUTE_VIA_LOCATION_MISSING` zurückzugeben.
+    - Es wurde ein Problem in `operatorList` behoben, bei dem Queries mit Ranking-Filtern leere Ergebnisse lieferten, wenn für das Projekt keine ausgeschlossenen Länder konfiguriert waren. Betreiber, die den Ranking-Präferenzen entsprechen, werden nun korrekt zurückgegeben.
 </details>

@@ -1,48 +1,48 @@
 ---
-title: Operatör tercihli rota planlama
-description: "Panelde veya istek bazında operatör tercihlerini ayarlayarak rota servisinin hangi şarj ağlarını tercih edeceğini kontrol edin."
+title: "Operatör tercihli rota planlama"
+description: "Panelde veya istek başına operatör tercihlerini ayarlayarak rota planlama hizmetinin hangi şarj ağlarını tercih edeceğini kontrol edin."
 ---
-Operatör tercihleri, bir EV rotası hesaplanırken rota planlama hizmetinin hangi şarj ağlarını tercih edeceğini kontrol etmenizi sağlar.
+Operatör tercihleri, bir elektrikli araç rotası hesaplanırken rota planlama hizmetinin hangi şarj ağlarını tercih edeceğini kontrol etmenizi sağlar.
 
-Tercihleri iki yerde yapılandırabilirsiniz:
-- [Chargetrip panosu](https://account.chargetrip.io/projects): Projeniz için genel operatör tercihleri yapılandırmasını proje / gelişmiş / istasyon operatörü tercihleri altında ayarlayın.
-- [Rota oluşturma isteği](/api-reference/route/mutation-create-route#arg-input-operators): `createRoute` mutasyonundaki `input.operators` alanını kullanarak tercihleri dinamik olarak tanımlayın veya pano operatör tercihleri yapılandırmasını istek başına geçersiz kılın.
+Tercihleri iki yerden yapılandırabilirsiniz:
+- [Chargetrip paneli](https://account.chargetrip.io/projects): Projeniz için genel operatör tercihleri yapılandırmasını project / advanced / station operator preferences altında ayarlayın.
+- [Rota oluşturma isteği](/api-reference/core/route/mutation-create-route#arg-input-operators): `createRoute` mutasyonundaki `input.operators` alanını kullanarak tercihleri dinamik olarak tanımlayın veya panelde yapılandırılan operatör tercihlerini istek başına geçersiz kılın.
 
 ---
 
 ### 1. Tercih türleri ve rota davranışı
 
 
-Operatör tercihleri dört türde gelir ve her biri belirli ülkelerle sınırlandırılabilir:
+Operatör tercihleri dört türdedir ve her biri belirli ülkelerle sınırlandırılabilir:
 
 | Tercih | Rota planlama davranışı |
 |:---|:---|
-| Hariç tutulan | Bu operatörlerin istasyonları hiçbir koşulda kesinlikle hariç tutulur. |
-| Kaçınılan  |  Daha iyi bir alternatif yoksa bu operatörlerin istasyonlarından kaçınılır. |
-| Tercih edilen | Bu operatörlerin istasyonlarına sıralamalarına (yüksek, orta, düşük) göre öncelik verilir. Katman ne kadar yüksekse, istasyonun seçilme olasılığı o kadar yüksektir. Daha iyi bir alternatif yoksa rota yine de sıralanmamış veya kaçınılan istasyonları kullanır.|
-| Zorunlu  | Yalnızca bu operatörlerin istasyonları kullanılır. İzin verilen bu havuz içinde sıralama katmanları yine geçerlidir; yani yüksek sıralı operatörler orta ve düşük sıralı operatörlere tercih edilir. Araç varış noktasına yalnızca sıralanmış istasyonları kullanarak ulaşamazsa rota hesaplaması başarısız olur.|
+| Hariç tutulan | Bu operatörlerin istasyonları her koşulda kesinlikle hariç tutulur. |
+| Kaçınılan  |  Bu operatörlerin istasyonlarından, daha iyi bir alternatif yoksa kaçınılır. |
+| Tercih edilen | Bu operatörlerin istasyonları sıralamalarına (high, medium, low) göre önceliklendirilir. Kademe yükseldikçe istasyonun seçilme olasılığı artar. Daha iyi bir alternatif yoksa rota yine de sıralanmamış veya kaçınılan istasyonları kullanır.|
+| Zorunlu  | Yalnızca bu operatörlerin istasyonları kullanılır. İzin verilen bu havuz içinde sıralama kademeleri yine geçerlidir; yani high sıralı operatörler medium ve low sıralı operatörlere tercih edilir. Araç, yalnızca sıralanmış istasyonları kullanarak varış noktasına ulaşamıyorsa rota hesaplaması başarısız olur.|
 
 
 ---
 
-### 2. Pano düzeyindeki tercihler nasıl uygulanır
+### 2. Panel düzeyindeki tercihler nasıl uygulanır
 
-İstek düzeyindeki girdilerin pano ayarlarıyla nasıl etkileşime girdiğini anlamak, öngörülebilir rota planlama davranışı sağlar:
+İstek düzeyindeki girdilerin panel ayarlarıyla nasıl etkileşime girdiğini anlamak, rota planlamanın öngörülebilir olmasını sağlar:
 
-- **Panodaki Hariç tutulan ve Kaçınılan operatörler otomatik olarak uygulanır**:
-Panoda Hariç tutulan veya Kaçınılan olarak yapılandırılan operatörler, `createRoute` isteğinizde herhangi bir parametre gerektirmeden her rota hesaplamasına uygulanır.
-- **Panodaki sıralama katmanları, sıralama türü olmadan etkin olmaz**:
-Sıralama katmanlarında yapılandırılan operatörler, `createRoute` isteğinizde `input.operators.ranking.type` ayarlanarak etkinleştirilmelidir; aksi halde istasyon seçimini etkilemezler.
-- **İstek düzeyindeki operatörler, ilgili pano tercihlerinin yerini alır**:
-`createRoute` isteğinde operatör kimliklerini belirtmek, yalnızca panodaki ilgili yapılandırmanın yerini alır. Örneğin `input.operators.exclude[]` sağlamak panonun hariç tutulan operatörler yapılandırmasının tamamının yerini alırken, pano düzeyindeki kaçınılan operatörler uygulanmaya devam eder.
+- **Paneldeki Hariç tutulan ve Kaçınılan operatörler otomatik olarak uygulanır**:
+Panelde Hariç tutulan veya Kaçınılan olarak yapılandırılan operatörler, `createRoute` isteğinizde herhangi bir parametre gerektirmeden her rota hesaplamasına uygulanır.
+- **Paneldeki sıralama kademeleri, bir sıralama türü olmadan etkin olmaz**:
+Sıralama kademelerinde yapılandırılan operatörlerin `createRoute` isteğinizde `input.operators.ranking.type` ayarlanarak etkinleştirilmesi gerekir; aksi takdirde istasyon seçimini etkilemezler.
+- **İstek düzeyindeki operatörler, panelde yapılandırılan ilgili tercihlerin yerini alır**:
+`createRoute` isteğinde operatör kimlikleri belirtmek, panelden yalnızca ilgili yapılandırmanın yerini alır. Örneğin `input.operators.exclude[]` sağlamak panelin hariç tutulan operatörler yapılandırmasının tamamının yerini alırken, panel düzeyindeki avoid operatörleri uygulanmaya devam eder.
 ---
 ### 3. Uygulama örnekleri
 
 <details>
-  <summary>Yalnızca pano hariç tutmalarını ve kaçınmalarını kullanın</summary>
-  Panoda ayarlanan hariç tutulan ve kaçınılan operatör yapılandırmalarını uygular. `input.operators.ranking.type` belirtilmediği için panonun sıralama ayarları etkin değildir.
+  <summary>Yalnızca panel düzeyindeki hariç tutma ve kaçınma ayarlarını kullanın</summary>
+  Panelde ayarlanan hariç tutulan ve kaçınılan operatör yapılandırmalarını uygular. `input.operators.ranking.type` belirtilmediği için paneldeki sıralama ayarları etkin değildir.
 
-```graphql Örnek istek
+```graphql Example request
 createRoute(
   input: {
     vehicle: { id: "607823b2c246f9001b97b1a2" }
@@ -60,10 +60,10 @@ createRoute(
 </details>
 
 <details>
-  <summary>Panoda sıralanan operatörleri "Tercih edilen" olarak kullanın</summary>
-  Panodaki hariç tutulan ve kaçınılan operatör yapılandırmalarını uygular ve pano sıralama katmanlarına ait istasyonları tercih eder.
+  <summary>Paneldeki sıralı operatörleri "Tercih edilen" olarak kullanın</summary>
+  Paneldeki hariç tutulan ve kaçınılan operatör yapılandırmalarını uygular ve panel sıralama kademelerine ait istasyonları tercih eder.
 
-```graphql Örnek istek {{ mark: [14] }}
+```graphql Example request {{ mark: [14] }}
 createRoute(
   input: {
     vehicle: { id: "607823b2c246f9001b97b1a2" }
@@ -86,10 +86,10 @@ createRoute(
 </details>
 
 <details>
-  <summary>Panoda sıralanan operatörleri "Zorunlu" olarak kullanın</summary>
-  Rotayı yalnızca pano sıralama katmanlarında yapılandırılan operatörlere ait istasyonlarda şarj olacak şekilde kısıtlar.
+  <summary>Paneldeki sıralı operatörleri "Zorunlu" olarak kullanın</summary>
+  Rotanın yalnızca panel sıralama kademelerinde yapılandırılan operatörlere ait istasyonlarda şarj etmesini kısıtlar.
 
-```graphql Örnek istek {{ mark: [14] }}
+```graphql Example request {{ mark: [14] }}
 createRoute(
   input: {
     vehicle: { id: "607823b2c246f9001b97b1a2" }
@@ -112,10 +112,10 @@ createRoute(
 </details>
 
 <details>
-  <summary>Özel tercihler tanımlayın ve pano ayarlarını geçersiz kılın</summary>
-  Tam operatör yapılandırmalarını doğrudan API çağrısında sağlayın. Belirtilen her alan (ranking, avoid veya exclude), o istek için panodaki ilgili yapılandırmayı geçersiz kılar.
+  <summary>Özel tercihler tanımlayın ve panel ayarlarını geçersiz kılın</summary>
+  Tam operatör yapılandırmalarını doğrudan API çağrısında sağlayın. Belirtilen herhangi bir alan (ranking, avoid veya exclude), o istek için panelde yapılandırılan ilgili yapılandırmanın yerini alır.
 
-```graphql Örnek istek  {{ mark: [13,14,15,16,17,18,19,20,21] }}
+```graphql Example request  {{ mark: [13,14,15,16,17,18,19,20,21] }}
 createRoute(
   input: {
     vehicle: { id: "607823b2c246f9001b97b1a2" }
@@ -145,9 +145,9 @@ createRoute(
 
 <details>
   <summary>Belirli ülkeler için özel tercihler tanımlayın</summary>
-  Tam operatör yapılandırmalarını doğrudan API çağrısında sağlayın. Belirtilen her alan (ranking, avoid veya exclude), o istek için panodaki ilgili yapılandırmayı geçersiz kılar.
+  Tam operatör yapılandırmalarını doğrudan API çağrısında sağlayın. Belirtilen herhangi bir alan (ranking, avoid veya exclude), o istek için panelde yapılandırılan ilgili yapılandırmanın yerini alır.
 
-```graphql Örnek istek  {{ mark: [13,14,15,16,17,18,19,20,21] }}
+```graphql Example request  {{ mark: [13,14,15,16,17,18,19,20,21] }}
 createRoute(
   input: {
     vehicle: { id: "607823b2c246f9001b97b1a2" }

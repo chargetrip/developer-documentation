@@ -1,0 +1,13 @@
+---
+title: Query Elenco recensioni
+heading: Elenco recensioni
+description: "Ottieni le recensioni degli utenti per una stazione con la query reviewList, incluse valutazione, messaggio e dettagli del veicolo elettrico usato per la ricarica."
+schemaName: reviewList
+schemaType: Query
+---
+
+Ogni stazione può essere accompagnata da recensioni degli utenti. Interroga proprietà come valutazione e messaggio, oppure ricevi dati sul veicolo elettrico usato per la ricarica. Le recensioni sono limitate a un singolo database di stazioni e non possono essere usate in progetti diversi.
+
+## Query
+
+Per ottenere le recensioni di una stazione è obbligatorio il suo `id`. L'`id` può essere ottenuto tramite una [rotta](/api-reference/core/route/query-get-route), il [servizio di tile](/api-reference/core/tiles/mvt) oppure la [query station around](/api-reference/core/station/query-station-around). Usa gli argomenti `size` e `page` per [paginarle](/api-reference/core/api/pagination).

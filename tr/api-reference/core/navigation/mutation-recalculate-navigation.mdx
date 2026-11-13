@@ -1,0 +1,13 @@
+---
+title: Navigasyonu yeniden hesaplama mutation'ı
+heading: Navigasyonu yeniden hesapla
+description: "Bir sürücü rotadan saptığında veya koşullar değiştiğinde recalculateNavigation mutation'ı ile etkin bir navigasyon oturumunun rotasını yeniden hesaplayın."
+schemaName: recalculateNavigation
+schemaType: Mutation
+---
+
+recalculateNavigation mutation'ını kullanarak etkin bir navigasyon oturumunun rotasını yeniden hesaplayın. Bir sürücü asıl rotadan saptığında veya yol boyunca koşullar değiştiğinde kullanışlıdır.
+
+## Mutation
+
+Rotayı yeniden hesaplamak için bir navigasyon oturumu `id` değeri ve `current_location` gerekir. İsteğe bağlı olarak yeni rotayı iyileştirmek için `state_of_charge`, `via` veya `telemetry` ekleyin. `id` değerini [startNavigation mutation'ı](/api-reference/core/navigation/mutation-start-navigation) ile alabilirsiniz.

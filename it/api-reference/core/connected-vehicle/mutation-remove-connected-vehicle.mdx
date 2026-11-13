@@ -1,0 +1,13 @@
+---
+title: Mutation Rimuovi veicolo connesso
+heading: Rimuovi veicolo connesso
+description: "Rimuovi un veicolo connesso e revoca il suo accesso con la mutation removeConnectedVehicle quando un utente finale scollega il proprio veicolo."
+schemaName: removeConnectedVehicle
+schemaType: Mutation
+---
+
+Rimuovi un veicolo connesso e revoca il suo accesso utilizzando la mutation removeConnectedVehicle. È utile quando un utente finale scollega il proprio veicolo dal provider di connettività.
+
+## Mutation
+
+Per rimuovere un veicolo connesso è obbligatorio un `id`. L'`id` può essere ottenuto tramite la [mutation createConnectedVehicle](/api-reference/core/connected-vehicle/mutation-create-connected-vehicle).

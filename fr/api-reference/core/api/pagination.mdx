@@ -1,0 +1,62 @@
+---
+title: "Pagination"
+description: "Parcourez les requêtes de liste avec la pagination par curseur et par décalage, y compris les limites qui s'appliquent à chaque page."
+---
+
+Pour garder l'API rapide et réactive, les requêtes de liste limitent la quantité de données renvoyées en une seule requête. Deux types de pagination sont utilisés dans l'API :
+
+- Par curseur (actuelle) : utilisée par les requêtes de liste récemment développées.
+- Par décalage (héritée) : utilisée par la plupart des requêtes de liste existantes. Elles seront à terme remplacées par des versions par curseur.
+
+> [!WARNING] Limites de pagination
+> Quel que soit le type de pagination, les requêtes de liste renvoient au maximum 100 éléments par page, sauf la requête `getRouteStationsWithAmenities`, qui est limitée à 10.
+
+## Pagination par curseur
+
+La pagination par curseur est la norme actuelle. Elle vous permet de définir le point de départ d'une requête à l'aide d'un curseur, un identifiant unique d'une position dans l'ensemble des résultats.
+
+### Arguments
+
+`first` · <span class="text-muted">Integer</span>
+: Le nombre d'éléments à renvoyer.
+
+`after` · <span class="text-muted">String</span>
+: Le curseur à partir duquel commencer. Omettez cet argument, ou définissez-le sur `null`, pour obtenir la première page. Pour les pages suivantes, utilisez la valeur `page_info.end_cursor` de la réponse précédente.
+
+### Réponse
+
+La réponse renvoie les résultats directement via un tableau `nodes`, accompagné de métadonnées de pagination.
+
+`nodes` · <span class="text-muted">Array</span>
+: La liste des objets de données de la page courante.
+
+`total_count` · <span class="text-muted">Integer</span>
+: Le nombre total d'éléments correspondant à la requête, toutes pages confondues.
+
+`page_info.has_next_page` · <span class="text-muted">Boolean</span>
+: Indique si d'autres résultats sont disponibles après la page courante.
+
+`page_info.has_previous_page` · <span class="text-muted">Boolean</span>
+: Indique si d'autres résultats sont disponibles avant la page courante.
+
+`page_info.start_cursor` · <span class="text-muted">String</span>
+: Le curseur du premier nœud de `nodes`.
+
+`page_info.end_cursor` · <span class="text-muted">String</span>
+: Le curseur du dernier nœud de `nodes`. Utilisez cette valeur comme argument `after` dans votre requête suivante.
+
+## Pagination par décalage (héritée)
+
+La pagination par décalage est la norme héritée, encore utilisée par la plupart des requêtes de liste. Elle utilise `page` pour ignorer un nombre défini d'enregistrements et `size` pour renvoyer une fenêtre fixe de résultats.
+
+### Arguments
+
+`size` · <span class="text-muted">Integer</span>
+: Le nombre d'éléments à renvoyer par page.
+
+`page` · <span class="text-muted">Integer</span>
+: Le numéro de la page à récupérer. Omettez cet argument, ou définissez-le sur `0`, pour obtenir la première page.
+
+### Réponse
+
+La réponse renvoie directement une liste d'objets de données, limitée par la valeur de `size`.

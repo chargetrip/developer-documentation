@@ -1,0 +1,13 @@
+---
+title: Navigasyonu bitirme mutation'ı
+heading: Navigasyonu bitir
+description: "Bir sürücü varış noktasına ulaştığında veya yolculuğu iptal ettiğinde finishNavigation mutation'ı ile etkin bir navigasyon oturumunu sonlandırın."
+schemaName: finishNavigation
+schemaType: Mutation
+---
+
+finishNavigation mutation'ını kullanarak etkin bir navigasyon oturumunu sonlandırın. Bir sürücü varış noktasına ulaştığında veya yolculuk iptal edildiğinde kullanışlıdır.
+
+## Mutation
+
+Bir navigasyon oturumunu bitirmek için oturum `id` değeri ve `current_location` gerekir. `id` değerini [startNavigation mutation'ı](/api-reference/core/navigation/mutation-start-navigation) ile alabilirsiniz.

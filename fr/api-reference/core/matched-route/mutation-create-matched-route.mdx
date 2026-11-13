@@ -1,0 +1,13 @@
+---
+title: "Mutation de création d'itinéraire concordant"
+heading: "Créer un itinéraire concordant"
+description: "Créez un itinéraire à partir d'une séquence de points GPS avec la mutation createMatchedRoute, puis ajoutez des arrêts de recharge et la consommation d'énergie."
+schemaName: createMatchedRoute
+schemaType: Mutation
+---
+
+Créez un itinéraire à partir d'une séquence de points GPS en utilisant la mutation createMatchedRoute. Elle est surtout utile lorsque vous disposez déjà d'un itinéraire basé sur vos propres règles métier et souhaitez y ajouter des arrêts de recharge et calculer la consommation d'énergie.
+
+## Mutation
+
+Un `vehicle` et au moins deux `points` chronologiques sont obligatoires pour créer un itinéraire concordant. Ajoutez éventuellement des points `via`, `departure_time`, `weather`, `driving_preferences`, `operators` ou `alternative_station_radius` pour affiner le calcul. Définissez `plan_charging_stops` pour trouver et planifier des arrêts de recharge si l'état de charge du véhicule atteint le seuil à un moment quelconque de l'itinéraire. La mutation renvoie un `id` d'itinéraire concordant, qui peut servir à récupérer les détails de l'itinéraire ou à souscrire aux mises à jour.

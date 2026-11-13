@@ -1,0 +1,29 @@
+---
+title: 更新增强组 mutation
+heading: 更新增强组
+description: "使用 updateBoostingGroup mutation 更改增强组的名称、描述或状态。"
+schemaName: updateBoostingGroup
+schemaType: Mutation
+---
+
+使用 updateBoostingGroup mutation 更新增强组。当您想在不删除某个组的情况下将其开启或关闭时，这会很有用。
+
+## Mutation
+
+必须提供增强组的 `id`。`id` 可以通过 [createBoostingGroup mutation](/api-reference/admin/boosting-group/mutation-create-boosting-group) 获取。仅发送您想要更改的字段。此 mutation 不会更改组中的充电站。
+
+<details>
+  <summary>停用增强组。</summary>
+  未激活的组不再用于路线计算。
+
+```graphql Example request
+mutation UpdateBoostingGroup {
+  updateBoostingGroup(
+    input: { id: "6527e1f1a8b4c2d3e4f5a6b7", status: inactive }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>

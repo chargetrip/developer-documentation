@@ -1,0 +1,13 @@
+---
+title: 评价列表查询
+heading: 评价列表
+description: "使用 reviewList 查询获取充电站的用户评价，包括评分、留言以及用于充电的电动汽车的详细信息。"
+schemaName: reviewList
+schemaType: Query
+---
+
+每个充电站都可以附带用户评价。您可以查询评分和留言等属性，或获取有关用于充电的电动汽车的数据。评价仅限于单个充电站数据库，不能跨不同项目使用。
+
+## 查询
+
+获取充电站的评价需要提供充电站 `id`。`id` 可以通过[路线](/api-reference/core/route/query-get-route)、[瓦片服务](/api-reference/core/tiles/mvt)或[周边充电站查询](/api-reference/core/station/query-station-around)获取。使用 `size` 和 `page` 参数对结果进行[分页](/api-reference/core/api/pagination)。

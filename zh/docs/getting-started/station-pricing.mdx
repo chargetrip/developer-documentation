@@ -1,34 +1,34 @@
 ---
-title: 充电站定价
-description: "通过瓦片服务在地图上显示充电价格，或通过连接器的定价获取完整详情。"
+title: 充电站价格
+description: "通过 Tile 服务在地图上显示充电价格，或通过连接器的价格查看完整详情。"
 ---
 
-充电价格可以在两个层级展示：通过 Tile 服务直接显示在地图上，或通过连接器的定价查看完整详情。
+充电价格可以在两个层面显示：通过瓦片服务直接显示在地图上，或通过连接器的价格查看完整详情。
 
-## Tile 服务
+## 瓦片服务
 
-Tile 服务同时支持将价格用作筛选条件和选择器。
+瓦片服务支持将价格同时用作筛选条件和选择器。
 
-- 作为[筛选条件](/api-reference/tiles/filters)时，传入 `minimum_energy_price` 和 `maximum_energy_price`，并配合 `currency` 将价格范围转换为正确的货币，即可动态包含或排除价格落在该范围内的充电站。
-- 作为[选择器](/api-reference/tiles/selectors)时，请求 `connector_minimum_energy_price`、`connector_maximum_energy_price`、`price_vat`、`price_valid_until`、`price_original_currency` 和 `price_conversion_rate`，以显示价格详情。它们会在充电站 feature 属性中返回（`properties.count == 1`）。价格始终为充电站价格，您可以使用 `price_original_currency` 和 `price_conversion_rate` 按自己的换算方式进行调整。
+- 作为[筛选条件](/api-reference/core/tiles/filters)时，传入 `minimum_energy_price` 和 `maximum_energy_price`，并附带 `currency` 以将范围转换为正确的货币，从而动态包含或排除价格落在该范围内的充电站。
+- 作为[选择器](/api-reference/core/tiles/selectors)时，请求 `connector_minimum_energy_price`、`connector_maximum_energy_price`、`price_vat`、`price_valid_until`、`price_original_currency` 和 `price_conversion_rate` 以显示价格详情。它们会在充电站要素属性（`properties.count == 1`）中返回。价格始终是充电站价格，您可以使用 `price_original_currency` 和 `price_conversion_rate` 按自己的换算进行调整。
 
-## 充电站定价
+## 充电站价格
 
-定价详情的来源取决于充电站背后所使用的充电站数据库。
+价格详情的来源取决于充电站背后的充电站数据库。
 
-- 如果使用 Ecomovement，可在充电站连接器的定价对象中找到价格，路径为 `evses[].connectors[].prices`。
-- 对于任何其他充电站数据库，请改用专用的 [tariffList](/api-reference/tariff/query-tariff-list) 和 [tariff](/api-reference/tariff/query-tariff) 查询。
+- 如果使用 Ecomovement，价格可在充电站连接器的价格对象中找到，位于 `evses[].connectors[].prices`。
+- 对于任何其他充电站数据库，请改用专用的 [tariffList](/api-reference/core/tariff/query-tariff-list) 和 [tariff](/api-reference/core/tariff/query-tariff) 查询。
 
-一个连接器可以有多个在不同时间生效的价格元素。请按顺序逐个处理，以呈现正确的价格。
+一个连接器可以有多个在不同时间生效的价格元素。请按顺序处理它们，以渲染正确的价格。
 
-1. **找到当前生效的价格元素**
-   每个价格元素都有 `restrictions`，例如 `day_of_week`、`start_time`/`end_time`，或最小和最大 kWh、功率或时长。利用这些条件来确定当前适用哪个价格元素。
+1. **找到生效的价格元素**
+   每个价格元素都有 `restrictions`，例如 `day_of_week`、`start_time`/`end_time`，或最小和最大 kWh、功率或时长。使用这些来确定当前适用的价格元素。
 2. **显示所有价格组成部分**
-   一个价格元素可以同时包含多个组成部分。`energy` 组成部分给出每 kWh 的价格。`time` 组成部分给出每个时间间隔的价格，按其 `step_size` 定义的区块计费。例如，`time` 组成部分的 `step_size` 为 `300` 时，按 5 分钟为一个区块计费。`flat` 组成部分会为该次会话增加一笔固定金额，与所用电量或花费的时间无关。
+   一个价格元素可以同时包含多个组成部分。`energy` 组成部分给出每 kWh 的价格。`time` 组成部分给出每个时间间隔的价格，按其 `step_size` 定义的区块计费。例如，`time` 组成部分的 `step_size` 为 `300`，则按 5 分钟为一个区块计费。`flat` 组成部分会为该次充电增加一笔固定金额，与所用能量或花费的时间无关。
 3. **考虑超时占用费**
-   `parking_time` 组成部分会对充电结束后仍保持连接的行为收取闲置费，因为在此期间其他人无法使用该连接器。当满足连接器的超时占用限制条件（例如 `overstay_time` 或 `overstay_battery_percentage`）时，该费用即开始适用。
+   `parking_time` 组成部分会对充电结束后仍保持连接收取闲置费，因为在此期间没有其他人可以使用该连接器。一旦满足连接器的超时占用限制，例如 `overstay_time` 或 `overstay_battery_percentage`，该费用即适用。
 
-每个连接器都可以有自己的价格，并且运营商可以随时动态更改价格。
+每个连接器可以有自己的价格，并且运营商可以随时动态更改价格。
 
-> [!WARNING] 请依赖 last_updated
-> 由于价格可能随时变化，在缓存或复用价格之前，请务必检查价格对象的 `last_updated` 字段，而不要假定价格一直有效。
+> [!WARNING] 依赖 last_updated
+> 由于价格可能随时变化，在缓存或重复使用价格之前，请务必检查价格对象的 `last_updated` 字段，而不要假定价格一直有效。

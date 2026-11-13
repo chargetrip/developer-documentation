@@ -1,0 +1,13 @@
+---
+title: Query stazione
+heading: Query stazione
+description: "Ottieni i dettagli di una stazione con la query station, inclusi i connettori, la posizione e ogni altra informazione disponibile."
+schemaName: station
+schemaType: Query
+---
+
+Ottieni i dettagli di una stazione specifica utilizzando la query station. È utile quando vuoi mostrare il tipo e il numero di connettori, la posizione, il costo della ricarica o qualsiasi altro dettaglio attualmente disponibile per una stazione. La [guida ai prezzi delle stazioni](/docs/getting-started/station-pricing) tratta in dettaglio l'aspetto dei prezzi.
+
+## Query
+
+Per ottenere i dettagli di una stazione è necessario un `id` o un `evse_id` della stazione. L'`id` può essere ottenuto tramite un [percorso](/api-reference/core/route/query-get-route), il [servizio di tile](/api-reference/core/tiles/mvt) oppure la [query stazioni nelle vicinanze](/api-reference/core/station/query-station-around).

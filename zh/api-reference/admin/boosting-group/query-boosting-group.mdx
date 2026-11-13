@@ -1,0 +1,13 @@
+---
+title: 增强组查询
+heading: 增强组
+description: "使用 boostingGroup 查询获取单个增强组，以检查其状态及其包含的充电站。"
+schemaName: boostingGroup
+schemaType: Query
+---
+
+使用 boostingGroup 查询获取增强组。当您想检查某个组是否处于激活状态，或它当前增强了哪些充电站时，这会很有用。要了解增强组如何影响路线，请参阅[增强组指南](/docs/getting-started/route-boosting-groups)。
+
+## 查询
+
+必须提供增强组的 `id`。`id` 可以通过 [createBoostingGroup mutation](/api-reference/admin/boosting-group/mutation-create-boosting-group) 或 [boostingGroups 查询](/api-reference/admin/boosting-group/query-boosting-groups)获取。

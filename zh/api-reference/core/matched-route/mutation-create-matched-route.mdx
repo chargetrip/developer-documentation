@@ -1,0 +1,13 @@
+---
+title: 创建匹配路线 mutation
+heading: 创建匹配路线
+description: "使用 createMatchedRoute mutation 根据一系列 GPS 点创建路线，然后在其基础上添加充电停靠点和能耗。"
+schemaName: createMatchedRoute
+schemaType: Mutation
+---
+
+使用 createMatchedRoute mutation 根据一系列 GPS 点创建路线。当您已经有一条基于自身业务规则的路线，并希望在其基础上添加充电停靠点和计算能耗时，这最为有用。
+
+## Mutation
+
+创建匹配路线需要提供 `vehicle` 以及至少两个按时间顺序排列的 `points`。还可以选择性地添加 `via` 点、`departure_time`、`weather`、`driving_preferences`、`operators` 或 `alternative_station_radius` 来优化计算。设置 `plan_charging_stops`，以便在车辆电量状态在路线沿途任何位置达到阈值时查找并规划充电停靠点。该 mutation 返回匹配路线 `id`，可用于获取路线详情或订阅更新。

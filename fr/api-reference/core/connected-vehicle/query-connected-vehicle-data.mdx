@@ -1,0 +1,13 @@
+---
+title: "Requête de données de véhicule connecté"
+heading: "Données de véhicule connecté"
+description: "Obtenez des données en temps réel, comme l'état de charge ou la position, directement depuis un véhicule connecté avec la requête connectedVehicleData."
+schemaName: connectedVehicleData
+schemaType: Query
+---
+
+Obtenez des données de véhicule en direct en utilisant la requête connectedVehicleData. Elle est utile lorsque vous souhaitez récupérer des données en temps réel directement depuis un véhicule connecté, comme son état de charge ou sa position.
+
+## Requête
+
+Un `id` de véhicule connecté est obligatoire pour obtenir ses données en direct. L'`id` peut être obtenu via la [mutation createConnectedVehicle](/api-reference/core/connected-vehicle/mutation-create-connected-vehicle).

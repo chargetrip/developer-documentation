@@ -1,0 +1,64 @@
+---
+title: MVT
+description: "以编码为 Protocol Buffers 的 Mapbox 矢量瓦片（MVT）形式获取与充电站相关的地理数据，实现高效的地图渲染。"
+tag: Rest
+---
+
+MVT（Mapbox Vector Tile）服务以基于瓦片的格式提供与充电站相关的地理数据访问。矢量瓦片以 Protocol Buffers（PBF）编码，可实现结构化数据的高效序列化。
+
+## 设置
+
+要以 MVT 格式访问充电站数据，请向以下端点发送请求：
+
+```bash Tile / MVT / Base URL
+https://api.chargetrip.io/v2/station/{z}/{x}/{y}/tile.mvt
+```
+
+MVT URL 使用以下路径参数：
+
+- `z`：瓦片的缩放级别。
+- `x`：瓦片的 x 坐标。
+- `y`：瓦片的 y 坐标。
+
+大多数地图提供商都内置了将纬度和经度转换为像素坐标的方法。要手动将纬度和经度坐标转换为 x 和 y，请使用[Web 墨卡托投影](https://en.wikipedia.org/wiki/Web_Mercator_projection)。
+
+### 筛选
+使用 `filter` 查询参数按特定条件筛选返回的充电站。更多信息请参阅[筛选文档](/api-reference/core/tiles/filters)。
+
+### 选择器
+使用 `station_properties[]` 查询参数指定每个充电站要素返回的字段。更多信息请参阅[选择器文档](/api-reference/core/tiles/selectors)。
+
+## 响应
+
+MVT 响应是包含矢量点要素的二进制 Protocol Buffer 载荷。每个要素代表单个充电站（`count: 1`）或充电站聚合点（`count > 1`）。
+
+每个要素中编码的属性完全取决于要素类型和提供的选择器：
+
+- 聚合要素：始终返回 `{ "count": N, "expansion_zoom": Z }`。
+
+- 充电站要素：如果未提供选择器，则返回 `{ "count": 1, "id": ID}`；如果提供了[选择器](/api-reference/core/tiles/selectors)，则仅返回请求的字段。
+
+
+
+<details>
+  <summary>默认的已解码 MVT 瓦片响应</summary>
+
+
+```json Example response
+// Station feature
+{
+  "count": 1
+  "id": "64997cc0fbca5dbf88ef1fae"
+
+}
+
+// Cluster feature
+{
+  "count": 4,
+  "expansion_zoom": 14
+}
+```
+
+</details>
+### 货币
+使用 `currency` 查询参数设置返回及筛选所用的能源价格的货币。更多信息请参阅[货币转换文档](/api-reference/core/tiles/filters)。

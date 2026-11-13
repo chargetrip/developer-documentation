@@ -1,0 +1,13 @@
+---
+title: Fahrzeugliste Query
+heading: Fahrzeugliste
+description: "Durchsuchen und filtern Sie die vollständige Fahrzeugdatenbank mit der vehicleList-Query, mit lokalisierten Namen und Steckertypen je Region."
+schemaName: vehicleList
+schemaType: Query
+---
+
+Greifen Sie mit der `vehicleList`-Query auf die vollständige Fahrzeugdatenbank zu. Standardmäßig verwendet die Fahrzeugdatenbank die EU-Bezeichnungen für Fahrzeuge und Steckertypen.
+
+## Query
+
+Zur Ausführung der `vehicleList`-Query ist keine Eingabe erforderlich. Mit `filter` und `search` grenzen Sie die Ergebnisse ein und passen sie an. Verwenden Sie den Parameter country in Kombination mit dem Regionsfilter, um hier die in Ihrer Region verfügbaren Fahrzeuge mit lokal bekannten Namen und Steckertypen zurückzugeben. Mit den Argumenten `size` und `page` [paginieren](/api-reference/core/api/pagination) Sie die Ergebnisse.

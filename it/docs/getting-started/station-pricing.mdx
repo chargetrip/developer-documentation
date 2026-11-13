@@ -1,34 +1,34 @@
 ---
 title: Tariffe delle stazioni
-description: "Mostra i prezzi di ricarica su una mappa tramite il servizio Tile, o nel dettaglio completo tramite la tariffa di un connettore."
+description: "Mostra i prezzi di ricarica su una mappa tramite il servizio Tile, oppure nel dettaglio completo tramite i prezzi di un connettore."
 ---
 
-I prezzi di ricarica possono essere mostrati a due livelli: direttamente su una mappa tramite il servizio Tile, oppure nel dettaglio completo tramite i prezzi di un connettore.
+I prezzi di ricarica possono essere mostrati a due livelli: direttamente su una mappa tramite il servizio tile, oppure nel dettaglio completo tramite i prezzi di un connettore.
 
 ## Servizio Tile
 
-Il servizio Tile supporta i prezzi sia come filtri sia come selettori.
+Il servizio tile supporta i prezzi sia come filtri sia come selettori.
 
-- Come [filtro](/api-reference/tiles/filters), passa `minimum_energy_price` e `maximum_energy_price`, insieme a `currency` per convertire l'intervallo nella valuta corretta, per includere o escludere dinamicamente le stazioni il cui prezzo rientra in quell'intervallo.
-- Come [selettore](/api-reference/tiles/selectors), richiedi `connector_minimum_energy_price`, `connector_maximum_energy_price`, `price_vat`, `price_valid_until`, `price_original_currency` e `price_conversion_rate` per mostrare i dettagli di prezzo. Vengono restituiti nelle proprietà della feature della stazione (`properties.count == 1`). Il prezzo è sempre quello della stazione e puoi usare `price_original_currency` e `price_conversion_rate` per adattarlo alla tua conversione.
+- Come [filtro](/api-reference/core/tiles/filters), passa `minimum_energy_price` e `maximum_energy_price`, insieme a `currency` per convertire l'intervallo nella valuta corretta, per includere o escludere dinamicamente le stazioni il cui prezzo rientra in quell'intervallo.
+- Come [selettore](/api-reference/core/tiles/selectors), richiedi `connector_minimum_energy_price`, `connector_maximum_energy_price`, `price_vat`, `price_valid_until`, `price_original_currency` e `price_conversion_rate` per mostrare i dettagli del prezzo. Vengono restituiti nelle proprietà della feature della stazione (`properties.count == 1`). Il prezzo è sempre il prezzo della stazione e puoi usare `price_original_currency` e `price_conversion_rate` per adattarlo alla tua conversione.
 
-## Tariffe delle stazioni
+## Prezzi delle stazioni
 
-L'origine dei dettagli sui prezzi dipende dal database di stazioni che sta dietro una stazione.
+L'origine dei dettagli sui prezzi dipende dal database delle stazioni su cui si basa una stazione.
 
-- Se viene utilizzato Ecomovement, i prezzi si trovano nell'oggetto dei prezzi dei connettori di una stazione, in `evses[].connectors[].prices`.
-- Per qualsiasi altro database di stazioni, usa invece le query dedicate [tariffList](/api-reference/tariff/query-tariff-list) e [tariff](/api-reference/tariff/query-tariff).
+- Se viene usato Ecomovement, i prezzi si trovano nell'oggetto dei prezzi dei connettori di una stazione, in `evses[].connectors[].prices`.
+- Per qualsiasi altro database di stazioni, usa invece le query dedicate [tariffList](/api-reference/core/tariff/query-tariff-list) e [tariff](/api-reference/core/tariff/query-tariff).
 
-Un connettore può avere diversi elementi di prezzo attivi in momenti diversi. Esaminali in ordine per mostrare il prezzo corretto.
+Un connettore può avere più elementi di prezzo attivi in momenti diversi. Scorrili in ordine per mostrare il prezzo corretto.
 
 1. **Trova l'elemento di prezzo attivo**
-   Ogni elemento di prezzo ha delle `restrictions`, come `day_of_week`, `start_time`/`end_time`, oppure kWh, potenza o durata minimi e massimi. Usale per determinare quale elemento di prezzo si applica in questo momento.
-2. **Mostra tutti i componenti di prezzo**
-   Un elemento di prezzo può combinare più componenti contemporaneamente. Un componente `energy` indica il prezzo per kWh. Un componente `time` indica il prezzo per intervallo, fatturato in blocchi definiti dal suo `step_size`. Ad esempio, uno `step_size` di `300` su un componente `time` fattura in blocchi di 5 minuti. Un componente `flat` aggiunge alla sessione un importo fisso, indipendente dall'energia utilizzata o dal tempo trascorso.
-3. **Tieni conto della penale di sosta**
-   Un componente `parking_time` addebita una tariffa di inattività per la permanenza collegati dopo il termine della ricarica, dato che nel frattempo nessun altro può usare il connettore. Si applica quando le restrizioni di sosta del connettore, come `overstay_time` o `overstay_battery_percentage`, sono soddisfatte.
+   Ogni elemento di prezzo ha delle `restrictions`, come `day_of_week`, `start_time`/`end_time`, oppure kWh, potenza o durata minimi e massimi. Usale per stabilire quale elemento di prezzo si applica in questo momento.
+2. **Mostra tutti i componenti del prezzo**
+   Un elemento di prezzo può combinare più componenti contemporaneamente. Un componente `energy` indica il prezzo per kWh. Un componente `time` indica il prezzo per intervallo, fatturato in blocchi definiti dal suo `step_size`. Ad esempio, uno `step_size` di `300` su un componente `time` fattura a blocchi di 5 minuti. Un componente `flat` aggiunge alla sessione un importo fisso, indipendente dall'energia utilizzata o dal tempo trascorso.
+3. **Tieni conto della penale di sosta prolungata**
+   Un componente `parking_time` addebita una tariffa di inattività per la permanenza collegati dopo il termine della ricarica, dato che nel frattempo nessun altro può usare il connettore. Si applica quando vengono soddisfatte le restrizioni di sosta prolungata del connettore, come `overstay_time` o `overstay_battery_percentage`.
 
-Ogni connettore può avere il proprio prezzo e i prezzi possono essere modificati dinamicamente dall'operatore in qualsiasi momento.
+Ogni connettore può avere un proprio prezzo e i prezzi possono essere modificati dinamicamente dall'operatore in qualsiasi momento.
 
 > [!WARNING] Affidati a last_updated
-> Poiché i prezzi possono cambiare in qualsiasi momento, controlla sempre il campo `last_updated` di un oggetto di prezzo prima di memorizzare nella cache o riutilizzare un prezzo, anziché presumere che rimanga valido.
+> Poiché i prezzi possono cambiare in qualsiasi momento, controlla sempre il campo `last_updated` di un oggetto prezzo prima di memorizzare o riutilizzare un prezzo, invece di dare per scontato che rimanga valido.

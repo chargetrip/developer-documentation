@@ -1,0 +1,13 @@
+---
+title: "Route erstellen Mutation"
+heading: "Route erstellen"
+description: "Erstellen Sie mit der Mutation createRoute eine Route und berechnen Sie Ladestopps, Energieverbrauch und Fahrzeit zwischen Start und Ziel."
+schemaName: createRoute
+schemaType: Mutation
+---
+
+Erstellen Sie mit der Mutation createRoute eine neue Route. Das ist nützlich, wenn Sie Ladestopps, Energieverbrauch und Fahrzeit zwischen einem Start und einem Ziel berechnen möchten. Wenn Sie neu im Routing sind, führt Sie der [Routenleitfaden](/docs/getting-started/route) von der ersten Anfrage bis zu einer angepassten Route. Von dort aus können Sie mit Betreiberpräferenzen [steuern, welche Ladenetze eine Route bevorzugt](/docs/getting-started/route-operators), oder mit Via-Stopps [die Fahrt um Ihre eigenen Wegpunkte gestalten](/docs/getting-started/route-stop).
+
+## Mutation
+
+Zum Erstellen einer Route sind ein `vehicle`, ein `origin` und eine `destination` erforderlich. Optional können Sie `via`-Punkte, `operators`, `weather` oder weitere Präferenzen hinzufügen, um die Berechnung zu verfeinern. Die Mutation gibt eine Routen-`id` zurück, mit der Sie Routendetails, Emissionen oder Ausstattungen entlang der Strecke abrufen können.

@@ -1,44 +1,44 @@
 ---
-title: 可视化车辆续航里程
-description: "使用等值线，基于真实路网和车上剩余电量，可视化电动汽车从某一点出发可到达的区域。"
+title: 可视化车辆续航范围
+description: "使用等值线，基于真实路网和车上剩余能量，可视化电动汽车从给定地点出发能够到达的区域。"
 tag: 指南
 ---
 
-等值线显示 EV 以其车载能量从给定地点出发可到达的区域。它回答了一个简单的问题：这辆车从这里出发能走多远，并将答案绘制成可放置在地图上的形状。
+等值线显示电动汽车凭借车上现有能量，从给定地点出发能够到达的区域。它回答了一个简单的问题，即这辆车从这里出发能行驶多远，并将答案绘制成可以放置在地图上的形状。
 
-典型用途包括：以某个城市为中心的续航地图、“我不充电能到那里吗？”的检查，或仅显示车辆实际可到达充电站的筛选。
+典型用途包括城市周围的续航范围地图、“我不充电能到那里吗？”的检查，或者仅显示车辆实际可到达的充电站的筛选。
 
-等值线以真实的道路网络为参照。计算会找出车辆通过道路可到达的最远点，轮廓则将这些点相互连接。结果是一个填充的区域，而不是沿着道路延伸的线，因此道路之间的区域（例如森林或田野）也可能落在其中。河流、山脉、单行系统和路网中的缺口仍会影响轮廓，因为它们决定了道路能让车辆走多远。
+等值线以真实路网作为参照。计算会找出车辆通过道路能到达的最远点，轮廓线再将这些点相互连接。结果是一个填充区域，而不是沿着道路的线，因此道路之间的地带，例如森林或田野，也可能落在其中。河流、山脉、单行道系统和路网中的缺口仍然会塑造轮廓，因为它们决定了道路能让车辆走多远。
 
 ## 工作原理
 
-与路线一样，等值线也以异步方式计算，遵循整个 API 通用的[异步模式](/api-reference/api/async-operations)。创建等值线和获取等值线分为不同的步骤进行。
+与路线一样，等值线以异步方式计算，遵循整个 API 中使用的相同[异步模式](/api-reference/core/api/async-operations)。创建和获取等值线是分开的步骤。
 
 1. **创建等值线**
-   调用 `createIsoline` 变更，至少提供 `vehicle_id` 和 `origin`。该变更会立即返回等值线 `id`，您将在下一步中使用它。电池电量或天气等可选输入请参阅[自定义等值线](#自定义等值线)。
-2. **打开订阅**
-   使用上一步得到的 `id` 订阅 `isoline` 订阅。在等值线计算期间，状态为 `pending`。可据此在界面中驱动加载状态。
-3. **呈现结果**
-   当 `status` 变为 `done` 或 `error` 时，呈现相应的界面。状态为 `done` 的等值线包含要绘制在地图上的 `polygons`。
+   至少使用 `vehicle_id` 和 `origin` 调用 `createIsoline` mutation。该 mutation 会立即返回等值线 `id`，您将在下一步中使用它。电池电量或天气等可选输入请参阅[自定义等值线](#自定义等值线)。
+2. **打开 subscription**
+   使用上一步中的 `id` 订阅 `isoline` subscription。在等值线计算期间，状态为 `pending`。可以用它来驱动 UI 中的加载状态。
+3. **渲染结果**
+   当 `status` 变为 `done` 或 `error` 时，渲染对应的 UI。状态为 `done` 的等值线包含要绘制在地图上的 `polygons`。
 4. **按需重新获取**
-   已完成的等值线会连同其完整详情一并存储。如需之后再次显示，请使用相同 `id` 的 `isoline` 查询，而不是打开新的订阅。
+   已完成的等值线会连同完整详情一起存储。如需稍后再次显示，请使用相同 `id` 的 `isoline` 查询，而不是打开新的 subscription。
 
 ## 多边形
 
-结果是一个多边形列表。它们共同分步描述了可到达的区域，从靠近起点处一直到车辆可行驶的最远点。
+结果是一个多边形列表。它们共同分步描述可到达的区域，从靠近起点一直到车辆能够行驶到的最远点。
 
-使用 `polygon_count` 选择获得多少个多边形，最多 20 个。
+使用 `polygon_count` 选择获得的多边形数量，最多为 20 个。
 
-- **较少的多边形**让您得到车辆可达范围的简单、粗略的概览。它们绘制更快，也更便于一目了然地阅读。
-- **较多的多边形**在起点与最大续航里程之间提供更精细的层级，适用于渐变效果或更详细的续航地图。
+- **较少的多边形**能给您一个简单、粗略的车辆续航范围图景。它们绘制更快，也更便于一目了然地阅读。
+- **较多的多边形**能在起点和最大续航范围之间提供更精细的步进，适用于渐变或更详细的续航范围地图。
 
-每个多边形的 `properties` 中都有一个 `index` 用于区分它们，而 `maximum_distance` 给出从起点到最远可达点的距离。
+每个多边形的 `properties` 中都有一个 `index` 用于区分它们，`maximum_distance` 则给出从起点到最远可到达点的距离。
 
-## 创建您的第一条等值线
+## 创建您的第一个等值线
 
-只需 `vehicle_id` 和 `origin` 即可创建等值线。此示例还设置了电池电量、多边形数量和天气，以便您了解主要选项是如何配合使用的。
+只需 `vehicle_id` 和 `origin` 就足以创建等值线。此示例还设置了电池电量、多边形数量和天气，以便您了解主要选项如何配合使用。
 
-```graphql 创建等值线
+```graphql Create an isoline
 mutation CreateIsoline {
   createIsoline(
     input: {
@@ -55,9 +55,9 @@ mutation CreateIsoline {
 }
 ```
 
-该变更会返回等值线 `id`。将其传给 `isoline` 订阅，即可跟踪计算进度并接收结果：
+该 mutation 返回等值线 `id`。将其传递给 `isoline` subscription，以跟踪计算过程并接收结果：
 
-```graphql 订阅等值线
+```graphql Subscribe to the isoline
 subscription Isoline {
   isoline(id: "65f1a2b3c4d5e6f7a8b9c0d1") {
     id
@@ -79,22 +79,22 @@ subscription Isoline {
 在此请求中：
 
 - `state_of_charge` 让车辆以 80% 的电量出发。如果不设置，等值线将使用车辆的全部可用电池容量。
-- `polygon_count` 返回五个多边形，从靠近起点处到最大续航里程。
-- `weather` 使用 `winter` 预设，它假定为寒冷条件，通常得到的可达区域比默认的实时天气更小。
+- `polygon_count` 返回五个多边形，从靠近起点到最大续航范围。
+- `weather` 使用 `winter` 预设，它假定寒冷条件，通常会得到比默认的实时天气更小的可到达区域。
 
 ## 自定义等值线
 
-`createIsoline` 接受一系列可选输入，用于微调计算。有关每个字段的更多详情，请参阅 [API 参考](/api-reference/isoline/mutation-create-isoline)。
+`createIsoline` 接受一系列可选输入，用于微调计算。有关每个字段的更多详细信息，请参阅 [API 参考](/api-reference/core/isoline/mutation-create-isoline)。
 
 | 功能 | 描述 |
 | --- | --- |
-| [电池电量](/api-reference/isoline/mutation-create-isoline#arg-input-state_of_charge) | 使用 `state_of_charge` 设置起始电量，单位可以是百分比、千瓦时、公里或英里。默认为车辆的可用电池容量。 |
-| [最低剩余电量](/api-reference/isoline/mutation-create-isoline#arg-input-final_state_of_charge) | 使用 `final_state_of_charge` 保留一部分电量。等值线仅包含车辆在保持高于该值的情况下可到达的点。默认为 0。 |
-| [多边形数量](/api-reference/isoline/mutation-create-isoline#arg-input-polygon_count) | 选择多边形的数量，最多 20 个。 |
-| [往返](/api-reference/isoline/mutation-create-isoline#arg-input-round_trip) | 使用 `round_trip`，仅包含车辆也能从该点驾驶返回起点的点。 |
-| [质量](/api-reference/isoline/mutation-create-isoline#arg-input-quality) | 使用 `quality` 在精度与速度之间权衡，可设置为 `high` 或 `low`。 |
-| [渡轮连接](/api-reference/isoline/mutation-create-isoline#arg-input-ferry_connections) | 使用 `ferry_connections` 包含渡轮，可设置为 `none` 或 `single`。渡轮会增加计算时间和多边形数量。 |
-| [天气](/api-reference/isoline/mutation-create-isoline#arg-input-weather) | 应用 `summer`、`winter` 或 `actual` 天气预设，或自定义条件。默认使用实时天气数据。 |
-| [季节](/api-reference/isoline/mutation-create-isoline#arg-input-season) | 假定 `summer`、`winter` 或 `current` 条件，作为 `weather` 的更简单替代方案。 |
-| [车辆载重](/api-reference/isoline/mutation-create-isoline#arg-input-occupants) | 设置 `occupants`、`total_occupant_weight` 和 `total_cargo_weight`，以考虑车辆所承载的重量。 |
-| [空调控制](/api-reference/isoline/mutation-create-isoline#arg-input-climate_control) | 开启 `climate_control`，并描述 `heat_pump` 和 `cabin` 配置，以便将制热和制冷计入能耗。 |
+| [电池电量](/api-reference/core/isoline/mutation-create-isoline#arg-input-state_of_charge) | 使用 `state_of_charge` 设置起始电量，可以是百分比、千瓦时、公里或英里。默认为车辆的可用电池容量。 |
+| [最低剩余电量](/api-reference/core/isoline/mutation-create-isoline#arg-input-final_state_of_charge) | 使用 `final_state_of_charge` 保留一定的储备电量。等值线仅包含车辆在保持高于该值的前提下能够到达的点。默认为 0。 |
+| [多边形数量](/api-reference/core/isoline/mutation-create-isoline#arg-input-polygon_count) | 选择多边形的数量，最多 20 个。 |
+| [往返行程](/api-reference/core/isoline/mutation-create-isoline#arg-input-round_trip) | 使用 `round_trip`，仅包含车辆也能从该处驶回起点的点。 |
+| [质量](/api-reference/core/isoline/mutation-create-isoline#arg-input-quality) | 使用 `quality` 在精度与速度之间取舍，可设置为 `high` 或 `low`。 |
+| [渡轮连接](/api-reference/core/isoline/mutation-create-isoline#arg-input-ferry_connections) | 使用 `ferry_connections` 包含渡轮，可设置为 `none` 或 `single`。渡轮会增加计算时间和多边形数量。 |
+| [天气](/api-reference/core/isoline/mutation-create-isoline#arg-input-weather) | 应用 `summer`、`winter` 或 `actual` 天气预设，或自定义条件。默认使用实时天气数据。 |
+| [季节](/api-reference/core/isoline/mutation-create-isoline#arg-input-season) | 假设 `summer`、`winter` 或 `current` 条件，作为 `weather` 的更简单替代方案。 |
+| [车辆载荷](/api-reference/core/isoline/mutation-create-isoline#arg-input-occupants) | 设置 `occupants`、`total_occupant_weight` 和 `total_cargo_weight`，以考虑车辆所载的重量。 |
+| [空调控制](/api-reference/core/isoline/mutation-create-isoline#arg-input-climate_control) | 开启 `climate_control`，并描述 `heat_pump` 和 `cabin` 设置，以便在能耗中计入制热和制冷。 |

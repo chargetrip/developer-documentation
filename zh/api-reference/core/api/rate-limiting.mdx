@@ -1,0 +1,64 @@
+---
+title: 速率限制
+description: "了解 API 如何使用漏桶算法对请求进行速率限制，以及请求成本和限制在 GraphQL 和 REST API 中如何运作。"
+---
+
+API 使用<a href="https://en.wikipedia.org/wiki/Leaky_bucket" target="_blank" rel="noopener noreferrer">漏桶算法</a>对请求进行速率限制。每个请求会消耗一定数量的单位，这些单位以恒定速率从桶中流出。这样可以保持流量以稳定的速率通过，同时仍允许短时突发。
+
+## GraphQL API
+
+GraphQL API 的速率限制基于每个请求的成本，而不是固定的请求数量。以下各节介绍了降低成本的最佳实践，以及如何读取您当前的速率限制状态。
+
+### 最佳实践
+
+- 使用 subscription 而不是通过查询轮询来获知数据何时发生变化。
+- 仅查询您需要的字段，并使用 `filter` 缩小列表查询的范围。
+- 列表查询每页最多返回 100 条记录，但较大的页面比较小的页面成本更高。一次请求获取 100 条记录的成本高于获取 10 条，因此请请求更少而不是更多的记录。详情请参阅[分页](/api-reference/core/api/pagination)。
+- 如果请求因 `429` 错误被拒绝，说明您的桶已满。请停止发送请求，并仅在 `reset` 给出的时间过后再发出新请求。
+
+### 速率限制
+
+为了保护 API 免受过于复杂或资源消耗过大的查询影响，每个请求都会根据所请求的数据量分配一个成本。对有效请求或未通过业务验证的请求的每个响应，都包含一个 `extensions.cost` 对象，其中有该请求的成本以及您的速率限制状态。当请求未通过 GraphQL schema 验证时，该对象会被完全省略。
+
+`cost` · <span class="text-muted">Integer</span>
+: 当前请求的成本，以单位计。
+
+`limit` · <span class="text-muted">Integer</span>
+: 当前速率限制窗口内允许的最大成本，以单位计。
+
+`used` · <span class="text-muted">Integer</span>
+: 此窗口中已消耗的单位数。
+
+`remaining` · <span class="text-muted">Integer</span>
+: 在达到限制之前您仍可使用的单位数。
+
+`reset` · <span class="text-muted">Integer</span>
+: UNIX 时间戳（以秒为单位），表示配额何时刷新。
+
+## REST API
+
+REST API 的速率限制适用于[瓦片服务](/api-reference/core/tiles/mvt)。与 GraphQL API 不同，速率限制状态通过 HTTP 响应头返回，且每个请求的固定成本为 1 个单位。每个请求都会返回这些请求头，包括失败的请求。
+
+`x-ratelimit-cost` · <span class="text-muted">Integer</span>
+: 当前请求的成本，以单位计。对于 REST 请求始终为 `1`。
+
+`x-ratelimit-limit` · <span class="text-muted">Integer</span>
+: 当前速率限制窗口内允许的最大成本，以单位计。
+
+`x-ratelimit-used` · <span class="text-muted">Integer</span>
+: 此窗口中已消耗的单位数。
+
+`x-ratelimit-remaining` · <span class="text-muted">Integer</span>
+: 在达到限制之前您仍可使用的单位数。
+
+`x-ratelimit-reset` · <span class="text-muted">Integer</span>
+: UNIX 时间戳（以秒为单位），表示配额何时刷新。
+
+## 当前限制
+
+速率限制按客户应用，时间窗口为一分钟。目前尚未设置默认限制。在 2027 年引入默认限制之前，限制将针对每个客户单独配置。
+
+某些查询和 mutation 还有单独的限制，低于您的总体限制。这些限制按产品设置，有时按请求设置，而不是全局设置。
+
+> [!WARNING] 未设置限制
+> 如果您的账户未设置限制，则 `limit`、`remaining` 和 `reset` 将返回为 `null`。`cost` 和 `used` 仍会被跟踪并返回。

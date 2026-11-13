@@ -1,0 +1,45 @@
+---
+title: Ambiente
+description: "Ottieni l'URL di base della Admin API, crea una chiave admin nella dashboard e invia la tua prima richiesta autorizzata con l'header x-token."
+---
+
+La Admin API è un'API GraphQL con un ambiente dedicato. Ha un endpoint separato e utilizza proprie chiavi admin per l'autorizzazione, quindi la configuri in modo indipendente dal resto dell'API.
+
+## Endpoint
+
+Le richieste vengono inviate come richieste HTTP POST all'endpoint GraphQL della Admin API.
+
+```bash Admin API endpoint URL
+https://admin.chargetrip.io/graphql
+```
+
+## Header di autorizzazione
+
+Aggiungi il seguente header a ogni richiesta.
+
+`x-token` · <span class="text-accent">obbligatorio</span>
+: Una chiave admin che identifica il tuo workspace. Ogni risorsa che crei o leggi appartiene a quel workspace.
+
+### Ottenere una chiave admin
+
+Le chiavi admin sono disponibili solo per i clienti premium. Segui questi passaggi per crearne una.
+
+1. **Apri il tuo workspace**
+   Accedi alla dashboard di Chargetrip e seleziona il workspace che vuoi gestire.
+2. **Vai a Chiavi admin**
+   Apri **Chiavi admin** dal tuo workspace.
+3. **Crea una chiave**
+   Crea una nuova chiave e copiala. Inviala come header `x-token` con ogni richiesta.
+
+> [!TIP] Proteggi le tue chiavi
+> Per la massima sicurezza, limita la tua applicazione all'accesso machine-to-machine (M2M) e conserva le credenziali sul tuo server, dietro la tua autenticazione, anziché esporle a un browser o a un dispositivo.
+
+## Inviare una richiesta autorizzata
+
+```bash Example request
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "x-token: YOUR_KEY_HERE" \
+  -d '{ "query": "{ boostingGroups { nodes { id } } }" }' \
+  https://admin.chargetrip.io/graphql
+```

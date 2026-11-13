@@ -1,0 +1,23 @@
+---
+title: "Einführung in Isolinien"
+heading: "Einführung"
+description: "Zeigen Sie das Gebiet, das ein Elektrofahrzeug von einem bestimmten Punkt aus erreichen kann, und passen Sie es an Startladung, Wetter, Reserve und Detailgrad an."
+---
+
+Eine Isoline, auch Reichweitenspinne genannt, zeigt das Gebiet, das ein Elektrofahrzeug mit der an Bord befindlichen Energie von einem bestimmten Punkt aus erreichen kann. Wählen Sie ein Fahrzeug und einen Startpunkt, und die API berechnet die Isolinien, die die Fahrstreckengrenze markieren, als Formen, die Sie auf einer Karte platzieren können. Die Berechnung verwendet das reale Straßennetz als Referenz: Sie ermittelt die am weitesten entfernten Punkte, die das Fahrzeug auf der Straße erreichen kann, und die Umrisslinie verbindet diese Punkte. Das Ergebnis ist eine gefüllte Fläche und keine Linie, die den Straßen folgt, daher können auch Bereiche zwischen Straßen, etwa Wälder oder Felder, darin liegen.
+
+## Eine Isoline auf Ihr Ziel optimieren
+
+Dieselbe Anfrage kann je nach Optimierungsziel unterschiedliche Isolinien erzeugen. Dies sind die häufigsten Ziele und die Optionen, die sie jeweils bestimmen.
+
+Reichweitenkarte
+: Zeigen Sie, wie weit ein Fahrzeug von einem Punkt aus fahren kann, zum Beispiel rund um eine Stadt, als Fläche auf einer Karte. Legen Sie fest, wie viele Polygone Sie erhalten, bis zu 20, von einem einfachen Bild der Fahrzeugreichweite bis zu feineren Stufen für einen Verlauf. Tauschen Sie mit `quality` Präzision gegen Geschwindigkeit, und beziehen Sie mit `ferry_connections` Fähren ein, was die Berechnungszeit und die Anzahl der Polygone erhöht. Siehe [Fahrzeugreichweite visualisieren](/docs/getting-started/vehicle-range).
+
+Erreichbarkeitsprüfung
+: Beantworten Sie für ein bestimmtes Fahrzeug die Frage „Komme ich dort ohne Laden an?“, was gegen Reichweitenangst hilft. Starten Sie mit `state_of_charge` vom tatsächlichen Ladestand, halten Sie mit `final_state_of_charge` eine Reserve vor, oder nutzen Sie `round_trip`, um nur Punkte einzubeziehen, von denen das Fahrzeug auch zum Startpunkt zurückfahren kann.
+
+Erreichbare Stationen
+: Filtern Sie Ladestationen auf diejenigen, die ein Fahrzeug von seinem aktuellen Standort aus tatsächlich erreichen kann. Kombinieren Sie dies mit `final_state_of_charge`, sodass eine Station nur zählt, wenn das Fahrzeug mit Restladung ankommt.
+
+Realistische Bedingungen
+: Berücksichtigen Sie, was den Verbrauch verändert: Wetter oder Jahreszeit, das Gewicht, das das Fahrzeug trägt, sowie Heizen und Kühlen mit der Klimaanlage. Ohne Ladestand verwendet die Isoline die volle nutzbare Batteriekapazität des Fahrzeugs, und das Wetter verwendet standardmäßig Echtzeitdaten.

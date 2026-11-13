@@ -1,0 +1,13 @@
+---
+title: "Zugeordnete Route erstellen Mutation"
+heading: "Zugeordnete Route erstellen"
+description: "Erstellen Sie mit der Mutation createMatchedRoute eine Route aus einer Folge von GPS-Punkten und ergänzen Sie darauf Ladestopps und Energieverbrauch."
+schemaName: createMatchedRoute
+schemaType: Mutation
+---
+
+Erstellen Sie eine Route aus einer Folge von GPS-Punkten mit der Mutation createMatchedRoute. Das ist vor allem nützlich, wenn Sie bereits eine Route auf Basis Ihrer eigenen Geschäftsregeln haben und darauf Ladestopps ergänzen und den Energieverbrauch berechnen möchten.
+
+## Mutation
+
+Zum Erstellen einer zugeordneten Route sind ein `vehicle` und mindestens zwei chronologische `points` erforderlich. Optional können Sie `via`-Punkte, `departure_time`, `weather`, `driving_preferences`, `operators` oder `alternative_station_radius` hinzufügen, um die Berechnung zu verfeinern. Setzen Sie `plan_charging_stops`, um Ladestopps zu finden und zu planen, wenn der Ladezustand des Fahrzeugs an einer beliebigen Stelle der Route den Schwellenwert erreicht. Die Mutation gibt eine `id` der zugeordneten Route zurück, mit der Sie Routendetails abrufen oder Updates abonnieren können.

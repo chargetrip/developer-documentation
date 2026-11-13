@@ -1,0 +1,13 @@
+---
+title: Query stazioni nelle vicinanze
+heading: Stazioni nelle vicinanze
+description: "Trova le stazioni entro un raggio specifico da un punto GeoJSON con la query stationAround per offrire diverse opzioni di ricarica."
+schemaName: stationAround
+schemaType: Query
+---
+
+Con la query stationAround puoi recuperare le stazioni entro un raggio specifico da un punto GeoJSON. Può essere utile quando una stazione è occupata o quando vuoi offrire diverse opzioni di ricarica.
+
+## Query
+
+Per cercare le stazioni intorno a un punto sono necessari una `location` (punto GeoJSON) e una `distance` in metri. Usa gli argomenti `filter` e `search` per restringere i risultati e gli argomenti `size` e `page` per [paginare](/api-reference/core/api/pagination) i risultati.

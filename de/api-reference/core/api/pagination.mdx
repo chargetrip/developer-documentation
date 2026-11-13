@@ -1,0 +1,62 @@
+---
+title: "Pagination"
+description: "Blättern Sie mit cursorbasierter und offsetbasierter Pagination durch Listen-Queries, einschließlich der Limits, die für jede Seite gelten."
+---
+
+Damit die API schnell und reaktionsfähig bleibt, begrenzen Listen-Queries die Datenmenge, die in einer einzelnen Anfrage zurückgegeben wird. In der API werden zwei Pagination-Typen verwendet:
+
+- Cursorbasiert (aktuell): wird von neu entwickelten Listen-Queries verwendet.
+- Offsetbasiert (Legacy): wird von den meisten bestehenden Listen-Queries verwendet. Diese werden irgendwann durch cursorbasierte Versionen ersetzt.
+
+> [!WARNING] Pagination-Limits
+> Unabhängig vom Pagination-Typ geben Listen-Queries höchstens 100 Elemente pro Seite zurück, mit Ausnahme der Query `getRouteStationsWithAmenities`, die auf 10 begrenzt ist.
+
+## Cursorbasierte Pagination
+
+Die cursorbasierte Pagination ist der aktuelle Standard. Mit einem Cursor, einer eindeutigen Kennung für eine Position in der Ergebnismenge, legen Sie den Startpunkt einer Anfrage fest.
+
+### Argumente
+
+`first` · <span class="text-muted">Integer</span>
+: Die Anzahl der zurückzugebenden Elemente.
+
+`after` · <span class="text-muted">String</span>
+: Der Cursor, ab dem begonnen wird. Lassen Sie dieses Argument weg oder setzen Sie es auf `null`, um die erste Seite abzurufen. Für weitere Seiten verwenden Sie den Wert `page_info.end_cursor` aus der vorherigen Antwort.
+
+### Antwort
+
+Die Antwort liefert die Ergebnisse direkt über ein `nodes`-Array, zusammen mit Pagination-Metadaten.
+
+`nodes` · <span class="text-muted">Array</span>
+: Die Liste der Datenobjekte der aktuellen Seite.
+
+`total_count` · <span class="text-muted">Integer</span>
+: Die Gesamtzahl der Elemente, die der Query entsprechen, über alle Seiten hinweg.
+
+`page_info.has_next_page` · <span class="text-muted">Boolean</span>
+: Ob nach der aktuellen Seite weitere Ergebnisse verfügbar sind.
+
+`page_info.has_previous_page` · <span class="text-muted">Boolean</span>
+: Ob vor der aktuellen Seite weitere Ergebnisse verfügbar sind.
+
+`page_info.start_cursor` · <span class="text-muted">String</span>
+: Der Cursor des ersten Knotens in `nodes`.
+
+`page_info.end_cursor` · <span class="text-muted">String</span>
+: Der Cursor des letzten Knotens in `nodes`. Verwenden Sie diesen Wert als Argument `after` in Ihrer nächsten Query.
+
+## Offsetbasierte Pagination (Legacy)
+
+Die offsetbasierte Pagination ist der ältere Standard und wird noch von den meisten Listen-Queries verwendet. Sie nutzt `page`, um eine bestimmte Anzahl von Datensätzen zu überspringen, und `size`, um ein Fenster fester Größe an Ergebnissen zurückzugeben.
+
+### Argumente
+
+`size` · <span class="text-muted">Integer</span>
+: Die Anzahl der Elemente, die pro Seite zurückgegeben werden.
+
+`page` · <span class="text-muted">Integer</span>
+: Die Seitennummer, die abgerufen werden soll. Lassen Sie dieses Argument weg oder setzen Sie es auf `0`, um die erste Seite abzurufen.
+
+### Antwort
+
+Die Antwort liefert direkt eine Liste von Datenobjekten, begrenzt durch den Wert `size`.

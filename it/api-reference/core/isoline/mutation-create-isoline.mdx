@@ -1,0 +1,13 @@
+---
+title: Mutation Crea isoline
+heading: Crea isoline
+description: "Crea un'isolina basata sul consumo con la mutation createIsoline per visualizzare l'area che un veicolo può raggiungere da un determinato punto."
+schemaName: createIsoline
+schemaType: Mutation
+---
+
+Crea un'isolina basata sul consumo utilizzando la mutation createIsoline. È utile quando vuoi visualizzare l'area che un veicolo può raggiungere da un determinato punto, ad esempio come mappa dell'autonomia. La [guida all'autonomia del veicolo](/docs/getting-started/vehicle-range) mostra come trasformare il risultato in forme da posizionare su una mappa.
+
+## Mutation
+
+Per creare un'isolina sono obbligatori un `vehicle_id` e un `origin`. Facoltativamente aggiungi `state_of_charge`, `polygon_count` o altre preferenze per affinare il calcolo. La mutation restituisce l'`id` di un'isolina, che può essere usato per recuperare i dettagli dell'isolina o sottoscriversi agli aggiornamenti.

@@ -1,18 +1,18 @@
 ---
-title: Route matching
+title: Abbinamento del percorso
 date: 01-09-2026
 ---
 
-## Route matching
+## Abbinamento del percorso
 
-![Route matching](../../../assets/changelog/2026/september.jpg)
+![Abbinamento del percorso](../../../assets/changelog/2026/september.jpg)
 
-Abbiamo introdotto le operazioni di Route Matching, che ti consentono di associare alla mappa tracce GPS esterne (map-matching) e di elaborarle con il nostro motore di instradamento per calcolare il consumo energetico e inserire tappe di ricarica ottimali.
+Abbiamo introdotto le operazioni di Route Matching, che ti permettono di abbinare alla mappa tracce GPS esterne e di elaborarle con il nostro motore di routing per calcolare il consumo energetico e inserire soste di ricarica ottimali.
 
-- Calcola percorsi associati a partire da sequenze di coordinate usando la nuova mutation `createMatchedRoute`;
-- Definisci soste intermedie usando `vias` definiti tramite l'indice nell'array di coordinate (`via.index`), con supporto per l'aggiornamento dinamico del numero di passeggeri e del peso del carico lungo il viaggio;
-- Abilita `plan_charging_stops: true` per valutare il consumo energetico del veicolo lungo il tragitto predeterminato e inserire automaticamente tappe di ricarica compatibili quando necessario;
-- Interroga i profili completi delle emissioni di CO₂ per i percorsi associati completati usando `getRouteEmissions`.
+- Calcola percorsi abbinati a partire da sequenze di coordinate con la nuova mutation `createMatchedRoute`;
+- Indica le soste intermedie con `vias` definiti tramite l'indice nell'array di coordinate (`via.index`), con supporto per aggiornare dinamicamente lungo il viaggio il numero di passeggeri e il peso del carico del veicolo;
+- Abilita `plan_charging_stops: true` per valutare il consumo energetico del veicolo lungo il tracciato predeterminato e inserire automaticamente soste di ricarica compatibili quando necessario;
+- Interroga i profili completi delle emissioni di CO₂ per i percorsi abbinati completati con `getRouteEmissions`.
 
 <details>
   <summary>Miglioramenti</summary>
@@ -23,6 +23,6 @@ Abbiamo introdotto le operazioni di Route Matching, che ti consentono di associa
 <details>
   <summary>Correzioni</summary>
 
-    - Risolto un problema per cui la registrazione alla dashboard con un indirizzo e-mail contenente lettere maiuscole impediva la visualizzazione degli inviti in sospeso al workspace all'accesso.
+    - Risolto un problema per cui la registrazione alla dashboard con un indirizzo email contenente lettere maiuscole impediva di visualizzare gli inviti in sospeso agli spazi di lavoro al momento dell'accesso.
     - Risolta una discrepanza di calcolo e arrotondamento per cui la somma delle durate di guida delle sezioni delle tratte non corrispondeva alle durate totali di guida (`durations.driving`) nei dettagli del percorso.
 </details>

@@ -1,0 +1,45 @@
+---
+title: Environment
+description: "Get the base URL of the Admin API, create an admin key in the dashboard, and send your first authorized request with the x-token header."
+---
+
+The Admin API is a GraphQL API with its own dedicated environment. It has a separate endpoint and uses its own admin keys for authorization, so you set it up independently of the rest of the API.
+
+## Endpoint
+
+Requests are sent as HTTP POST requests to the Admin API GraphQL endpoint.
+
+```bash Admin API endpoint URL
+https://admin.chargetrip.io/graphql
+```
+
+## Authorization headers
+
+Add the following header to each request.
+
+`x-token` · <span class="text-accent">required</span>
+: An admin key that identifies your workspace. Every resource you create or read belongs to that workspace.
+
+### Getting an admin key
+
+Admin keys are available to premium customers only. Follow these steps to create one.
+
+1. **Open your workspace**
+   Sign in to the Chargetrip dashboard and select the workspace you want to manage.
+2. **Go to Admin keys**
+   Open **Admin keys** from your workspace.
+3. **Create a key**
+   Create a new key and copy it. Send it as the `x-token` header with every request.
+
+> [!TIP] Secure your keys
+> For maximum security, restrict your application to machine-to-machine (M2M) access and keep credentials on your own server behind your own authentication, rather than exposing them to a browser or device.
+
+## Sending an authorized request
+
+```bash Example request
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "x-token: YOUR_KEY_HERE" \
+  -d '{ "query": "{ boostingGroups { nodes { id } } }" }' \
+  https://admin.chargetrip.io/graphql
+```

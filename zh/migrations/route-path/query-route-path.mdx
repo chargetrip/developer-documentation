@@ -6,20 +6,20 @@ migrateBefore: 01-01-2027
 
 # routePath
 
-迁移截止时间：2027 年第一季度
+迁移截止期：2027 年第一季度
 
-从旧版路线服务迁移到最新版本。新服务提供了重新组织的 schema、按国家设置的运营商偏好、更快的路线计算以及更好的可维护性。
+从旧版 Route 服务迁移到最新版本。新服务提供重新组织的 schema、按国家/地区设置的运营商偏好、更快的路线计算以及更好的可维护性。
 
 ## 操作
 
-| 旧版        | 新版                                                  |
+| 旧         | 新                                                   |
 | ----------- | ------------------------------------------------------|
-| `routePath` | [`getRoute`](/api-reference/route/query-get-route)    |
+| `routePath` | [`getRoute`](/api-reference/core/route/query-get-route)    |
 
 ## 通用 schema 变更
 
-- **显式类型**：以前灵活的 JSON 字段现在在 schema 中有了明确的类型，以改进结构和验证。
-- **命名约定**：字段现在使用 `snake_case`，而不是 `camelCase`。
+- **显式类型**：之前灵活的 JSON 字段现在已在 schema 中显式定义类型，以改进结构和验证。
+- **命名约定**：字段现在使用 `snake_case` 而不是 `camelCase`。
 - **单位支持**：数值输入现在支持不同的单位类型，以包含 `value`、`type` 和可选 `source`（`manual`、`telemetry` 或 `default`）的对象表示。
 
 ## 查询变更

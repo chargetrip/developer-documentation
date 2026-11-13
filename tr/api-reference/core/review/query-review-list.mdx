@@ -1,0 +1,13 @@
+---
+title: İnceleme listesi sorgusu
+heading: İnceleme listesi
+description: "reviewList sorgusuyla bir istasyonun kullanıcı incelemelerini; puan, mesaj ve şarj için kullanılan elektrikli aracın ayrıntıları dahil alın."
+schemaName: reviewList
+schemaType: Query
+---
+
+Her istasyona kullanıcı incelemeleri eşlik edebilir. Puan ve mesaj gibi özellikleri sorgulayın veya şarj için kullanılan elektrikli araca ilişkin verileri alın. İncelemeler tek bir istasyon veritabanıyla sınırlıdır ve farklı projeler arasında kullanılamaz.
+
+## Sorgu
+
+İncelemelerini almak için bir istasyon `id` değeri gerekir. `id` değerini bir [rota](/api-reference/core/route/query-get-route), [tile hizmeti](/api-reference/core/tiles/mvt) veya [yakındaki istasyonlar sorgusu](/api-reference/core/station/query-station-around) üzerinden alabilirsiniz. Sonuçlar arasında [sayfalandırmak](/api-reference/core/api/pagination) için `size` ve `page` argümanlarını kullanın.

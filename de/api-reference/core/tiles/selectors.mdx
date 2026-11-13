@@ -1,0 +1,199 @@
+---
+title: Selektoren
+description: "Nehmen Sie mit Selektoren zusätzliche Datenpunkte in die MVT- und JSON-Kachelantworten auf und halten Sie die Kachel-Nutzdaten dabei klein und schnell."
+tag: Rest
+---
+
+Um Netzwerklatenz und Rendering-Leistung zu optimieren, geben die MVT- und JSON-Tile-Services von Chargetrip standardmäßig nur minimale Nutzdaten zurück. Diese Standard-Nutzdaten enthalten die wesentlichen Geometrie- und Clusterdaten, die für das schnelle Rendern von Kartenkacheln benötigt werden.
+
+Mit Selektoren fordern Sie gezielt die Stationsdatenattribute an, die Ihre Client-Anwendung benötigt, ohne unnötigen Overhead bei den Nutzdaten zu verursachen.
+
+
+
+## Implementierung
+
+Um bestimmte Stationsattribute anzufordern, hängen Sie den Query-Parameter `station_properties[]` an die URL Ihrer Kachelanfrage an. Wiederholen Sie den Parameter für jeden Selektor, den Sie aufnehmen möchten:
+
+```bash Tile / Selectors / Example
+https://api.chargetrip.io/v2/station/...?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
+```
+
+## Verfügbare Selektoren
+Selektoren gelten nur für **Stations-Features**. Cluster-Features bleiben unberührt und geben immer `count` und `expansion_zoom` zurück.
+
+
+`count` · `integer` · <span class="text-accent">default</span>
+: Die Anzahl der Stationen innerhalb eines Clusters. Ein Wert von 1 kennzeichnet ein Stations-Feature, ein Wert größer als 1 ein Cluster-Feature.
+
+`id` · `string` · <span class="text-accent">default</span>
+: Die eindeutige Chargetrip-Kennung der Station. Gilt nur für [MVT-Kacheln](/api-reference/core/tiles/mvt).
+
+`lng` · `float`
+: Der Längengrad der Station. Gilt nur für [MVT-Kacheln](/api-reference/core/tiles/mvt).
+
+`lat` · `float`
+: Der Breitengrad der Station. Gilt nur für [MVT-Kacheln](/api-reference/core/tiles/mvt).
+
+`operator_id` · `string`
+: Die eindeutige Chargetrip-Kennung des Betreibers der Station. Wird nicht zurückgegeben, wenn der Betreiber unbekannt ist.
+
+`station_maximum_power` · `integer`
+: Die maximale Ladeleistung (in kW), die an der Station verfügbar ist. Dieser Wert ist statisch und spiegelt unabhängig von Anschlussfiltern immer die höchste Leistungsfähigkeit der Station wider.
+
+`connector_maximum_power` · `integer`
+: Die maximale Ladeleistung (in kW), die von den Anschlüssen bereitgestellt wird, die dem Filter `connectors[]` entsprechen. Ist kein Filter angegeben, werden alle Anschlüsse berücksichtigt und der Wert entspricht `station_maximum_power`.
+
+`preferred_operator` · `boolean`
+: Gibt an, ob der Betreiber einer Station ein bevorzugter Betreiber ist. Die Betreiberpräferenzen können im [Dashboard von Chargetrip](https://account.chargetrip.io/projects) verwaltet werden.
+
+`connector_minimum_energy_price` · `float` · [beta](tip:Beta;;Dieses Feld befindet sich in der Beta-Phase und kann sich ändern, bevor es stabil wird.)
+: Der niedrigste Energiepreis unter den Anschlüssen der Station. Wird nicht zurückgegeben, wenn nicht verfügbar. Nur anwendbar, wenn die Eco-Movement-Stationsdatenbank verwendet wird, andernfalls wird er ignoriert.
+
+`connector_maximum_energy_price` · `float` · [beta](tip:Beta;;Dieses Feld befindet sich in der Beta-Phase und kann sich ändern, bevor es stabil wird.)
+: Der höchste Energiepreis unter den Anschlüssen der Station. Wird nicht zurückgegeben, wenn nicht verfügbar. Nur anwendbar, wenn die Eco-Movement-Stationsdatenbank verwendet wird, andernfalls wird er ignoriert.
+
+`price_vat` · `float` · [beta](tip:Beta;;Dieses Feld befindet sich in der Beta-Phase und kann sich ändern, bevor es stabil wird.)
+: Die auf den Preis angewendete Mehrwertsteuer. Wird nicht zurückgegeben, wenn nicht verfügbar. Nur anwendbar, wenn die Eco-Movement-Stationsdatenbank verwendet wird, andernfalls wird er ignoriert.
+
+`price_valid_until` · `string` · [beta](tip:Beta;;Dieses Feld befindet sich in der Beta-Phase und kann sich ändern, bevor es stabil wird.)
+: Datum und Uhrzeit, bis zu denen der Preis gültig ist. Wird nicht zurückgegeben, wenn nicht verfügbar. Nur anwendbar, wenn die Eco-Movement-Stationsdatenbank verwendet wird, andernfalls wird er ignoriert.
+
+`price_original_currency` · `string` · [beta](tip:Beta;;Dieses Feld befindet sich in der Beta-Phase und kann sich ändern, bevor es stabil wird.)
+: Die Währung, in der der Preis ursprünglich definiert war, vor der Umrechnung in `currency`. Wird nicht zurückgegeben, wenn nicht verfügbar. Nur anwendbar, wenn die Eco-Movement-Stationsdatenbank verwendet wird, andernfalls wird er ignoriert.
+
+`price_conversion_rate` · `float` · [beta](tip:Beta;;Dieses Feld befindet sich in der Beta-Phase und kann sich ändern, bevor es stabil wird.)
+: Der Kurs, mit dem der Preis von seiner ursprünglichen Währung in `currency` umgerechnet wurde. Wird nicht zurückgegeben, wenn nicht verfügbar. Nur anwendbar, wenn die Eco-Movement-Stationsdatenbank verwendet wird, andernfalls wird er ignoriert.
+
+`evses_blocked` · `integer`
+: Anzahl der EVSEs, die physisch oder elektronisch blockiert sind. Wenn ein Filter `connectors[]` angegeben ist, werden nur blockierte EVSEs gezählt, die mindestens einen der ausgewählten Anschlusstypen haben.
+
+`evses_planned` · `integer`
+: Anzahl der EVSEs im Status „planned“. Wenn ein Filter `connectors[]` angegeben ist, werden nur geplante EVSEs gezählt, die mindestens einen der ausgewählten Anschlusstypen haben.
+
+`evses_available` · `integer`
+: Anzahl der EVSEs im Status „available“. Wenn ein Filter `connectors[]` angegeben ist, werden nur verfügbare EVSEs gezählt, die mindestens einen der ausgewählten Anschlusstypen haben.
+
+`evses_charging` · `integer`
+: Anzahl der EVSEs, die derzeit belegt sind. Wenn ein Filter `connectors[]` angegeben ist, werden nur ladende EVSEs gezählt, die mindestens einen der ausgewählten Anschlusstypen haben.
+
+`evses_unknown` · `integer`
+: Anzahl der EVSEs, deren Echtzeitstatus derzeit unbekannt ist. Wenn ein Filter `connectors[]` angegeben ist, werden nur EVSEs mit unbekanntem Status gezählt, die mindestens einen der ausgewählten Anschlusstypen haben.
+
+`evses_reserved` · `integer`
+: Anzahl der EVSEs, die für einen Fahrer reserviert sind. Wenn ein Filter `connectors[]` angegeben ist, werden nur reservierte EVSEs gezählt, die mindestens einen der ausgewählten Anschlusstypen haben.
+
+`evses_out_of_order` · `integer`
+: Anzahl der EVSEs, die als außer Betrieb markiert sind. Wenn ein Filter `connectors[]` angegeben ist, werden nur außer Betrieb befindliche EVSEs gezählt, die mindestens einen der ausgewählten Anschlusstypen haben.
+
+`evses_inoperative` · `integer`
+: Anzahl der EVSEs, die vorübergehend nicht betriebsbereit sind. Wenn ein Filter `connectors[]` angegeben ist, werden nur nicht betriebsbereite EVSEs gezählt, die mindestens einen der ausgewählten Anschlusstypen haben.
+
+## Beispiele
+
+<details>
+  <summary>Stationsleistung und Betreiberpräferenz in JSON-Kacheln anfordern</summary>
+
+In JSON-Kacheln bleibt die obligatorische Feature-Struktur (`type`, `geometry`, `id`) bei Stations-Features immer erhalten, während `properties` nur die angeforderten Selektoren enthält (die Standardeigenschaft `count` entfällt, da sie nicht angefordert wurde). Cluster-Features bleiben von Selektoren unberührt und geben weiterhin `count` und `expansion_zoom` zurück.
+
+```bash Example request {{ mark: [2,3] }}
+https://api.chargetrip.io/v2/station/10/582/325/tile.json
+  ?station_properties[]=station_maximum_power
+  &station_properties[]=preferred_operator
+```
+
+```json Example response {{ mark: [13,14,15,16] }}
+{
+  "type": "FeatureCollection",
+  "features": [
+    // Station feature (count = 1)
+    {
+      "id": "5e5f3e8f8e0c1a0012345678",
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [4.895168, 52.370216]
+      },
+      "properties": {
+        "station_maximum_power": 350,
+        "preferred_operator": true
+      }
+    },
+   // Cluster feature (unaffected by selectors)
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [5.1214, 52.0907]
+      },
+      "properties": {
+        "count": 4,
+        "expansion_zoom": 14
+      }
+    }
+  ]
+}
+```
+
+</details>
+
+<details>
+  <summary>Stations-ID, Leistung und Betreiberpräferenz in MVT-Vektorkacheln anfordern</summary>
+
+ In MVT-Kacheln werden nur explizit angeforderte Selektoren in das Stations-Feature kodiert (die Standardeigenschaft `count` entfällt), während Cluster-Features von Selektoren unberührt bleiben und immer `count` und `expansion_zoom` behalten.
+
+```bash Example request {{ mark: [2,3,4] }}
+https://api.chargetrip.io/v2/station/10/582/325/tile.mvt
+  ?station_properties[]=id
+  &station_properties[]=station_maximum_power
+  &station_properties[]=preferred_operator
+```
+
+```json Example response {{ mark: [2,3,4,5,6] }}
+// Station feature ('count' is omitted because it wasn't requested as a selector)
+{
+  "id": "5e5f3e8f8e0c1a0012345678",
+  "preferred_operator": true,
+  "station_maximum_power": 350
+}
+
+// Cluster feature (unaffected by selectors)
+{
+  "count": 4,
+  "expansion_zoom": 14
+}
+```
+
+</details>
+
+<details>
+  <summary>Selektoren mit Anschlussfiltern für den Echtzeit-EVSE-Status kombinieren</summary>
+
+  Beim Filtern nach einem bestimmten Anschlusstyp (z. B. CCS / `IEC_62196_T2_COMBO`) berücksichtigen `connector_maximum_power` und die Anzahl `evses_available` nur EVSEs, die diesem Anschlussfilter entsprechen.
+
+```bash Example request {{ mark: [2,3,4] }}
+https://api.chargetrip.io/v2/station/10/582/325/tile.json
+  ?connectors[]=IEC_62196_T2_COMBO
+  &station_properties[]=connector_maximum_power
+  &station_properties[]=evses_available
+```
+
+```json Example response {{ mark: [12,13,14,15] }}
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "id": "5e5f3e8f8e0c1a0012345678",
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [4.895168, 52.370216]
+      },
+      "properties": {
+        "connector_maximum_power": 300,
+        "evses_available": 2
+      }
+    }
+  ]
+}
+```
+</details>

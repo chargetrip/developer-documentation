@@ -1,0 +1,38 @@
+---
+title: 错误处理
+description: "了解 API 如何在返回部分数据的同时返回错误，以及为什么应检查响应正文，而不是依赖 HTTP 状态码。"
+---
+
+API 将错误作为正常响应的一部分返回，并同时返回仍然成功解析的数据。请求可能部分成功，因此仅检查 HTTP 状态码不足以发现错误。
+
+> [!WARNING] 部分响应
+> 对于大多数请求，即使包含错误，API 也会返回 HTTP 200。请始终检查响应正文中是否有 `errors` 数组，而不是依赖 HTTP 状态码，因为 `data` 和 `errors` 可能同时返回。
+
+## 错误
+
+每个错误都会在顶层 `errors` 数组中返回，与 `data` 并列。
+
+`message` · <span class="text-muted">String</span>
+: 对错误的可读描述。
+
+`locations` · <span class="text-muted">Array</span>
+: 请求中发生错误的行和列。
+
+`path` · <span class="text-muted">Array</span>
+: 导致错误的字段的路径，例如 `["vehicleList"]`。
+
+`extensions.exception.code` · <span class="text-muted">String</span>
+: 机器可读的错误代码。请使用此字段以编程方式处理错误，而不是匹配 `message`。
+
+`extensions.exception.status` · <span class="text-muted">Integer</span>
+: 与该错误对应的 HTTP 状态码，例如 `403`。
+
+`extensions.exception.message` · <span class="text-muted">String</span>
+: 对错误的可读描述，与顶层 `message` 字段一致。
+
+`extensions.exception.response` · <span class="text-muted">String</span>
+: 底层异常的响应正文，通常与 `message` 相同。
+
+### 本地化
+
+要正确处理和本地化错误消息，请使用 `extensions.exception.code` 而不是 `message`。有关每个代码含义的说明，请参阅 API 参考中对应操作的页面。`message` 仅应用于为开发者提供上下文，不应向最终用户显示。

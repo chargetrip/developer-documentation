@@ -11,16 +11,16 @@ La velocità di guida influisce direttamente sul consumo energetico dei veicoli 
 
 Gli stili di guida modificano l'orario di arrivo stimato e il consumo energetico.
 
-- **Eco** presume un ritmo più rilassato ed efficiente per risparmiare batteria;
-- **Sport** presume velocità più elevate e consumi maggiori per un arrivo più rapido.
+- **Eco** ipotizza un ritmo più rilassato ed efficiente per risparmiare la batteria;
+- **Sport** ipotizza velocità più elevate e consumi maggiori per un arrivo più rapido.
 
-Queste funzionalità ti consentono di regolare i calcoli di instradamento in base a come viene effettivamente guidato un veicolo, ottenendo stime di consumo e orari di arrivo più precisi.
+Queste funzionalità ti permettono di adattare i calcoli del percorso a come il veicolo viene effettivamente guidato, ottenendo stime di consumo e orari di arrivo più precisi.
 
 
 ### Schema aggiornato di getRouteStationsWithAmenities
 
-Abbiamo aggiornato la query `getRouteStationsWithAmenities` per semplificare gli input e supportare il filtro multi-servizio.
+Abbiamo aggiornato la query `getRouteStationsWithAmenities` per semplificare gli input e supportare il filtraggio per più servizi.
 
-- **Ricerca multi-servizio**: interroga più categorie di servizi contemporaneamente con filtro logico OR;
+- **Ricerca per più servizi**: interroga più categorie di servizi contemporaneamente con un filtro logico OR;
 - **Input di tempo diretti**: passa le finestre temporali direttamente in secondi dall'origine del percorso;
-- **ID esterno della stazione**: accedi a `external_id` sui nodi delle stazioni.
+- **ID esterno della stazione**: accedi a `external_id` sui nodi della stazione.

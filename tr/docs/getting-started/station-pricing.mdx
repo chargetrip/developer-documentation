@@ -1,34 +1,34 @@
 ---
 title: İstasyon fiyatlandırması
-description: "Şarj fiyatlarını Tile servisi üzerinden haritada veya bir konektörün fiyatlandırması üzerinden tüm ayrıntılarıyla gösterin."
+description: "Şarj fiyatlarını Tile hizmeti aracılığıyla haritada veya bir konnektörün fiyatlandırması aracılığıyla tüm ayrıntılarıyla gösterin."
 ---
 
-Şarj fiyatları iki düzeyde gösterilebilir: doğrudan haritada Tile hizmeti aracılığıyla veya bir konnektörün fiyatlandırması üzerinden tüm ayrıntılarıyla.
+Şarj fiyatları iki düzeyde gösterilebilir: doğrudan bir harita üzerinde tile hizmeti aracılığıyla veya bir konnektörün fiyatlandırması aracılığıyla tüm ayrıntılarıyla.
 
 ## Tile hizmeti
 
-Tile hizmeti, fiyatları hem filtre hem de seçici olarak destekler.
+Tile hizmeti fiyatlandırmayı hem filtre hem de seçici olarak destekler.
 
-- Bir [filtre](/api-reference/tiles/filters) olarak, fiyatı bu aralığa düşen istasyonları dinamik olarak dahil etmek veya hariç tutmak için `minimum_energy_price` ve `maximum_energy_price` değerlerini, aralığı doğru para birimine dönüştürmek üzere `currency` ile birlikte gönderin.
-- Bir [seçici](/api-reference/tiles/selectors) olarak `connector_minimum_energy_price`, `connector_maximum_energy_price`, `price_vat`, `price_valid_until`, `price_original_currency` ve `price_conversion_rate` değerlerini isteyin. Bunlar istasyon feature özelliklerinde (`properties.count == 1`) döndürülür. Fiyat her zaman istasyon fiyatıdır ve kendi dönüşümünüze göre ayarlamak için `price_original_currency` ve `price_conversion_rate` değerlerini kullanabilirsiniz.
+- Bir [filtre](/api-reference/core/tiles/filters) olarak, fiyatı bu aralığa düşen istasyonları dinamik olarak dahil etmek veya hariç tutmak için `minimum_energy_price` ve `maximum_energy_price` değerlerini, aralığı doğru para birimine dönüştürmek için de `currency` ile birlikte iletin.
+- Bir [seçici](/api-reference/core/tiles/selectors) olarak, fiyat ayrıntılarını göstermek için `connector_minimum_energy_price`, `connector_maximum_energy_price`, `price_vat`, `price_valid_until`, `price_original_currency` ve `price_conversion_rate` alanlarını isteyin. Bunlar istasyon özelliği (feature) özelliklerinde (`properties.count == 1`) döndürülür. Fiyat her zaman istasyon fiyatıdır ve kendi dönüşümünüze göre ayarlama yapmak için `price_original_currency` ve `price_conversion_rate` alanlarını kullanabilirsiniz.
 
 ## İstasyon fiyatlandırması
 
 Fiyatlandırma ayrıntılarının nereden geldiği, bir istasyonun arkasındaki istasyon veritabanına bağlıdır.
 
-- Ecomovement kullanılıyorsa, fiyatlandırma bir istasyonun konnektörlerinin fiyatlandırma nesnesinde, `evses[].connectors[].prices` konumunda bulunabilir.
-- Diğer tüm istasyon veritabanları için bunun yerine özel [tariffList](/api-reference/tariff/query-tariff-list) ve [tariff](/api-reference/tariff/query-tariff) sorgularını kullanın.
+- Ecomovement kullanılıyorsa fiyatlandırma, bir istasyonun konnektörlerinin fiyatlandırma nesnesinde, `evses[].connectors[].prices` altında bulunabilir.
+- Diğer tüm istasyon veritabanları için bunun yerine özel [tariffList](/api-reference/core/tariff/query-tariff-list) ve [tariff](/api-reference/core/tariff/query-tariff) sorgularını kullanın.
 
-Bir konnektörün farklı zamanlarda etkin olan birden fazla fiyat öğesi olabilir. Doğru fiyatı göstermek için bunları sırayla değerlendirin.
+Bir konnektörün farklı zamanlarda etkin olan birkaç fiyat öğesi olabilir. Doğru fiyatı göstermek için bunları sırayla inceleyin.
 
 1. **Etkin fiyat öğesini bulun**
-   Her fiyat öğesinin `day_of_week`, `start_time`/`end_time` veya minimum ve maksimum kWh, güç ya da süre gibi `restrictions` kısıtlamaları vardır. Şu anda hangi fiyat öğesinin geçerli olduğunu belirlemek için bunları kullanın.
+   Her fiyat öğesinin `day_of_week`, `start_time`/`end_time` veya asgari ve azami kWh, güç ya da süre gibi `restrictions` alanları vardır. Şu anda hangi fiyat öğesinin geçerli olduğunu belirlemek için bunları kullanın.
 2. **Tüm fiyat bileşenlerini gösterin**
-   Bir fiyat öğesi aynı anda birden fazla bileşeni birleştirebilir. Bir `energy` bileşeni size kWh başına fiyatı verir. Bir `time` bileşeni size aralık başına fiyatı verir ve `step_size` ile tanımlanan bloklar halinde faturalandırılır. Örneğin, bir `time` bileşenindeki `300` değerindeki `step_size`, 5 dakikalık bloklar halinde faturalandırır. Bir `flat` bileşeni, kullanılan enerjiden veya geçirilen süreden bağımsız olarak oturuma sabit bir tutar ekler.
-3. **Park aşım ücretini hesaba katın**
-   Bir `parking_time` bileşeni, şarj bittikten sonra bağlı kalma için bir bekleme ücreti uygular; çünkü bu sürede konnektörü kimse kullanamaz. Konnektörün `overstay_time` veya `overstay_battery_percentage` gibi park aşım kısıtlamaları karşılandığında devreye girer.
+   Bir fiyat öğesi aynı anda birkaç bileşeni birleştirebilir. Bir `energy` bileşeni kWh başına fiyatı verir. Bir `time` bileşeni, `step_size` ile tanımlanan bloklar halinde faturalandırılan aralık başına fiyatı verir. Örneğin bir `time` bileşeninde `300` değerindeki `step_size`, 5 dakikalık bloklar halinde faturalandırır. Bir `flat` bileşeni, kullanılan enerjiden veya geçirilen süreden bağımsız olarak oturuma sabit bir tutar ekler.
+3. **Aşırı kalma ücretini hesaba katın**
+   Bir `parking_time` bileşeni, şarj bittikten sonra bağlı kalmak için boşta bekleme ücreti uygular; çünkü bu sürede başka kimse konnektörü kullanamaz. Konnektörün `overstay_time` veya `overstay_battery_percentage` gibi aşırı kalma kısıtlamaları karşılandığında uygulanır.
 
-Her konnektörün kendi fiyatı olabilir ve fiyatlar operatör tarafından istenen zamanda dinamik olarak değiştirilebilir.
+Her konnektörün kendi fiyatı olabilir ve fiyatlar operatör tarafından istediği zaman dinamik olarak değiştirilebilir.
 
 > [!WARNING] last_updated alanına güvenin
-> Fiyatlar her an değişebileceğinden, geçerli kalacağını varsaymak yerine bir fiyatı önbelleğe almadan veya yeniden kullanmadan önce her zaman fiyat nesnesinin `last_updated` alanını kontrol edin.
+> Fiyatlar istediği zaman değişebileceğinden, bir fiyatı önbelleğe almadan veya yeniden kullanmadan önce, geçerli kalacağını varsaymak yerine her zaman fiyat nesnesinin `last_updated` alanını kontrol edin.

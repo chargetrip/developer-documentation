@@ -1,0 +1,13 @@
+---
+title: Lkw-Route erstellen Mutation
+heading: Lkw-Route erstellen
+description: "Erstellen Sie mit der createTruckRoute-Mutation eine Lkw-Route, um Ladestopps, Energieverbrauch und Fahrzeit für einen E-Lkw zu berechnen."
+schemaName: createTruckRoute
+schemaType: Mutation
+---
+
+Erstellen Sie mit der createTruckRoute-Mutation eine neue Lkw-Route. Das ist nützlich, wenn Sie Ladestopps, Energieverbrauch und Fahrzeit eines E-Lkw zwischen einem Start und einem Ziel berechnen möchten.
+
+## Mutation
+
+Zum Erstellen einer Lkw-Route sind `vehicle`, `origin` und `destination` erforderlich. Optional fügen Sie `via`-Punkte, `operators`, `weather` oder weitere Präferenzen hinzu, um die Berechnung zu verfeinern. Die Mutation gibt die `id` einer Lkw-Route zurück, mit der Sie Routendetails abrufen oder Updates abonnieren können.

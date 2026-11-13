@@ -1,0 +1,28 @@
+---
+title: "Einführung in Routen"
+heading: "Einführung"
+description: "Wie Routen für Elektrofahrzeuge berechnet werden und wie Sie sie auf schnellste Ankunft, Ihr eigenes Ladenetz, Ausstattungsstopps oder Ihre eigene Reiseroute abstimmen."
+---
+
+Die Routenplanung für Elektrofahrzeuge bringt besondere Herausforderungen mit sich. Faktoren wie Batteriekapazität, realer Energieverbrauch, Topografie, Wetter und die Verfügbarkeit von Ladenetzen entscheiden alle darüber, ob ein Fahrzeug sein Ziel erreicht.
+
+Der Routing-Service berücksichtigt alle diese Variablen, um optimale Routen für Elektrofahrzeuge zu finden. Mit einem erstklassigen Energieverbrauchsmodell platziert er Ladestopps automatisch genau dort und dann, wo sie benötigt werden. Routen sind außerdem vollständig anpassbar, sodass Sie sie an die Geschäftsregeln, Netze und Fahrerpräferenzen anpassen können, die für Sie wichtig sind.
+
+> [!WARNING] Hybridfahrzeuge
+> Hybrid- und Plug-in-Hybridfahrzeuge sind nicht allein auf ihre Batterie angewiesen, daher enthalten ihre Routen keine Ladestopps.
+
+## Eine Route auf Ihr Ziel optimieren
+
+Dieselbe Anfrage kann je nach Optimierungsziel unterschiedliche Routen erzeugen. Dies sind die häufigsten Ziele und die Leitfäden, die jedes im Detail behandeln.
+
+Schnellste Ankunft
+: Passen Sie den Fahrstil mit `speed_factor`, `maximum_speed` oder einem `style` von `eco` oder `sport` an. Fügen Sie Echtzeit-Verkehrsdaten und eine Abfahrtszeit für genaue Ankunftszeiten hinzu und bevorzugen Sie Stationen direkt an der Autobahn, um Umwege zu vermeiden. Siehe [Route erstellen](/docs/getting-started/route).
+
+Ihr eigenes Netz oder die Ladekarte eines Fahrers
+: Lenken Sie Fahrer zu den Netzen, die sie nutzen sollen. Bevorzugen oder verlangen Sie bestimmte Betreiber, ordnen Sie sie als `high`, `medium` oder `low` ein, legen Sie Rankings pro Land fest oder schließen Sie Betreiber ganz aus oder meiden Sie sie. Legen Sie Standardwerte für Ihr Projekt im Dashboard fest und überschreiben Sie sie pro Anfrage. Siehe [Betreiberbasiertes Routing](/docs/getting-started/route-operators).
+
+Laden in der Nähe von Ausstattungen
+: Finden Sie Stationen entlang einer Route, die zu Fuß von Restaurants, Cafés oder Geschäften erreichbar sind, damit Fahrer einen Ladestopp um das herum planen können, was sie vorhaben. Siehe [Ausstattungsstopps entlang der Route](/docs/getting-started/route-amenity-stops).
+
+Ihre eigene Reiseroute
+: Fügen Sie Wegpunkte hinzu, entweder als einfache Standortstopps wie eine Lieferung oder Abholung oder als Ladestopps an einer bestimmten Station. Legen Sie fest, wie lange das Fahrzeug an jedem Stopp bleibt und welche Ladung es von dort an trägt. Siehe [Route mit Stopps](/docs/getting-started/route-stop).

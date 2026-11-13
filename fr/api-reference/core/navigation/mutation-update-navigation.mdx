@@ -1,0 +1,14 @@
+---
+title: "Mutation de mise à jour de navigation"
+heading: "Mettre à jour la navigation"
+description: "Transmettez la position d'un conducteur le long d'un itinéraire avec la mutation updateNavigation pour maintenir à jour une session de navigation active."
+schemaName: updateNavigation
+schemaType: Mutation
+---
+
+Mettez à jour une session de navigation active en utilisant la mutation updateNavigation. Elle est utile lorsque vous souhaitez transmettre la position d'un conducteur au fil de sa progression sur un itinéraire.
+
+## Mutation
+
+Un `id` de session de navigation et des `location_data` sont obligatoires pour la mettre à jour. L'`id` peut être obtenu via la [mutation startNavigation](/api-reference/core/navigation/mutation-start-navigation).
+

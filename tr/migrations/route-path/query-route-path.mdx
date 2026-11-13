@@ -6,22 +6,22 @@ migrateBefore: 01-01-2027
 
 # routePath
 
-Şu tarihten önce geçiş yapın: 2027 Q1
+Şu tarihten önce geçiş yapın: 2027 1. Çeyrek
 
-Eski Rota hizmetinden en son sürüme geçin. Yeni hizmet; yeniden düzenlenmiş bir şema, ülke bazlı operatör tercihleri, daha hızlı rota hesaplama ve daha kolay sürdürülebilirlik sunar.
+Eski Rota hizmetinden en son sürüme geçin. Yeni hizmet yeniden düzenlenmiş bir şema, ülke bazında operatör tercihleri, daha hızlı rota hesaplama ve daha iyi sürdürülebilirlik sunar.
 
 ## İşlemler
 
-| Eski        | Yeni                                                  |
+| Eski         | Yeni                                                   |
 | ----------- | ------------------------------------------------------|
-| `routePath` | [`getRoute`](/api-reference/route/query-get-route)    |
+| `routePath` | [`getRoute`](/api-reference/core/route/query-get-route)    |
 
 ## Genel şema değişiklikleri
 
-- **Açık tür tanımlama**: daha önce esnek olan JSON alanları, yapıyı ve doğrulamayı iyileştirmek için artık şemada açıkça türlendirilmiştir.
+- **Açık tür tanımları**: daha önce esnek olan JSON alanları, yapıyı ve doğrulamayı iyileştirmek için artık şemada açıkça türlendirilmiştir.
 - **Adlandırma kuralları**: alanlar artık `camelCase` yerine `snake_case` kullanır.
-- **Birim desteği**: sayısal girdiler artık farklı birim türlerini destekler; bunlar `value`, `type` ve isteğe bağlı bir `source` (`manual`, `telemetry` veya `default`) içeren bir nesne olarak ifade edilir.
+- **Birim desteği**: sayısal girdiler artık farklı birim türlerini destekler ve `value`, `type` ile isteğe bağlı bir `source` (`manual`, `telemetry` veya `default`) içeren bir nesne olarak ifade edilir.
 
 ## Sorgu değişiklikleri
 
-Rotanın yolu artık `getRoute` yanıtına `recommended.path_plot` olarak dahil edilmiştir; bu nedenle onu almak için ayrı bir sorguya gerek yoktur.
+Rotanın yolu artık `getRoute` yanıtında `recommended.path_plot` olarak zaten yer aldığından, bunu almak için ayrı bir sorguya gerek kalmamıştır.

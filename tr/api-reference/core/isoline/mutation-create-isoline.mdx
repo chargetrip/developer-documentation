@@ -1,0 +1,13 @@
+---
+title: İzoline oluşturma mutation'ı
+heading: İzoline oluştur
+description: "Bir aracın belirli bir noktadan ulaşabileceği alanı görselleştirmek için createIsoline mutation'ı ile tüketim tabanlı bir izoline oluşturun."
+schemaName: createIsoline
+schemaType: Mutation
+---
+
+createIsoline mutation'ını kullanarak tüketim tabanlı bir izoline oluşturun. Bir aracın belirli bir noktadan ulaşabileceği alanı, örneğin bir menzil haritası olarak görselleştirmek istediğinizde kullanışlıdır. [Araç menzili kılavuzu](/docs/getting-started/vehicle-range), sonucu harita üzerine yerleştirebileceğiniz şekillere nasıl dönüştüreceğinizi gösterir.
+
+## Mutation
+
+Bir izoline oluşturmak için bir `vehicle_id` ve `origin` gerekir. İsteğe bağlı olarak hesaplamayı iyileştirmek için `state_of_charge`, `polygon_count` veya diğer tercihleri ekleyin. Mutation, izoline ayrıntılarını almak veya güncellemelere abone olmak için kullanılabilecek bir izoline `id` değeri döndürür.

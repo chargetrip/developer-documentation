@@ -6,16 +6,16 @@ migrateBefore: 01-01-2027
 
 # Routendetails
 
-Migrieren vor: Q1 2027
+Migrieren bis: Q1 2027
 
-Migrieren Sie vom veralteten Route-Service auf die neueste Version. Der neue Service bietet ein neu organisiertes Schema, länderspezifische Betreiberpräferenzen, eine schnellere Routenberechnung und bessere Wartbarkeit.
+Migrieren Sie vom veralteten Route-Dienst auf die neueste Version. Der neue Dienst bietet ein neu organisiertes Schema, Betreiberpräferenzen pro Land, eine schnellere Routenberechnung und bessere Wartbarkeit.
 
 ## Operationen
 
 | Alt                | Neu                                                   |
 | ------------------ | ------------------------------------------------------|
-| `route`            | [`getRoute`](/api-reference/route/query-get-route)     |
-| `routeUpdatedById`  | [`route`](/api-reference/route/subscription-route)     |
+| `route`            | [`getRoute`](/api-reference/core/route/query-get-route)     |
+| `routeUpdatedById`  | [`route`](/api-reference/core/route/subscription-route)     |
 
 ## Allgemeine Schemaänderungen
 
@@ -23,13 +23,13 @@ Migrieren Sie vom veralteten Route-Service auf die neueste Version. Der neue Ser
 - **Namenskonventionen**: Felder verwenden jetzt `snake_case` statt `camelCase`.
 - **Einheitenunterstützung**: Numerische Eingaben unterstützen jetzt verschiedene Einheitentypen, ausgedrückt als Objekt mit `value`, `type` und einer optionalen `source` (`manual`, `telemetry` oder `default`).
 
-## Änderungen an Abfrage und Subscription
+## Änderungen an Query und Subscription
 
-Benennung und Gruppierung der Felder wurden überarbeitet, und redundante Felder wurden entfernt. Die Antwort enthält jetzt die ursprüngliche Eingabe, angereichert um Standardwerte, sodass sie für spätere Routenneuberechnungen wiederverwendet werden kann.
+Benennung und Gruppierung der Felder wurden überarbeitet, und redundante Felder wurden entfernt. Die Antwort enthält jetzt die ursprüngliche Eingabe, angereichert um Standardwerte, sodass sie für künftige Neuberechnungen der Route wiederverwendet werden kann.
 
 ### Oberste Ebene
 
-Auf der obersten Ebene werden die meisten Felder unter `recommended` verschoben, und die Eingaben `ev`, `telemetry` und `routeRequest` werden in einem einzigen Objekt `request_input` zusammengeführt.
+Auf der obersten Ebene werden die meisten Felder unter `recommended` verschoben, und die Eingaben `ev`, `telemetry` und `routeRequest` werden in einem einzigen Objekt `request_input` zusammengefasst.
 
 | Feld           | Verschoben nach        |
 | -------------- | ---------------------- |
@@ -43,7 +43,7 @@ Auf der obersten Ebene werden die meisten Felder unter `recommended` verschoben,
 
 ### Route
 
-Auf Routenebene werden die meisten Felder unter `recommended` verschoben und behalten ihre Namen, zusammen mit einigen expliziten Umbenennungen.
+Auf Routenebene werden die meisten Felder unter `recommended` verschoben und behalten ihre Namen, dazu kommen einige explizite Umbenennungen.
 
 | Feld                  | Verschoben nach                      |
 | --------------------- | ------------------------------------ |
@@ -61,9 +61,9 @@ Auf Routenebene werden die meisten Felder unter `recommended` verschoben und beh
 | `amenityRanking`      | Entfernt                             |
 | `stationsAlongRoute`  | `recommended.alternative_stations`   |
 
-### Etappen
+### Abschnitte (Legs)
 
-Auf Etappenebene folgen die Reichweiten derselben Umbenennung wie bei der Route, und Details zu Insassen und Ladung wandern in die Standorteigenschaften `origin` und `via` jeder Etappe.
+Auf Abschnittsebene folgen die Reichweiten derselben Umbenennung wie bei der Route, und Details zu Insassen und Ladung wandern in die Standorteigenschaften `origin` und `via` jedes Abschnitts.
 
 | Feld          | Verschoben nach                         |
 | ------------- | --------------------------------------- |
@@ -72,17 +72,17 @@ Auf Etappenebene folgen die Reichweiten derselben Umbenennung wie bei der Route,
 | `steps`       | `sections`                              |
 | `stationId`   | `recommended.legs.station.station_id`   |
 
-Etappen erhalten außerdem ein neues Feld `range_after_charge`.
+Abschnitte erhalten außerdem ein neues Feld `range_after_charge`.
 
 ## Hervorgehobene Änderungen
 
-Die Antwort führt außerdem eine neue, stärker strukturierte Form für Routenabschnitte ein. Sie wird unten ausführlicher behandelt.
+Die Antwort führt außerdem eine neue, stärker strukturierte Form für Routenabschnitte ein. Sie wird weiter unten ausführlicher beschrieben.
 
-### Abschnitte
+### Sections
 
-Schritte (`steps`) wurden durch Abschnitte (`sections`) ersetzt, die detailliertere Informationen liefern, einschließlich Start- und Zieldetails für jeden Abschnitt.
+Steps wurden durch Sections ersetzt, die detailliertere Informationen liefern, einschließlich Start- und Zieldetails für jede Section.
 
-```graphql Abschnitte {{ mark: [1,13,14,26,27] }}
+```graphql Sections {{ mark: [1,13,14,26,27] }}
 sections {
   type
   tags

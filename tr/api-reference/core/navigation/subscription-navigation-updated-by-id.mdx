@@ -1,0 +1,16 @@
+---
+title: Kimliğe göre güncellenen navigasyon subscription'ı
+heading: Kimliğe göre güncellenen navigasyon
+description: "Bir sürücü rota üzerinde ilerledikçe gerçek zamanlı durum ve güncellemeleri almak için bir navigasyon oturumuna abone olun."
+schemaName: navigation
+schemaType: Subscription
+---
+
+[startNavigation mutation'ından](/api-reference/core/navigation/mutation-start-navigation) bir navigasyon oturumu `id` değeri aldıktan sonra, sürücü rota üzerinde ilerledikçe gerçek zamanlı durum ve güncelleme ayrıntılarını almak için oturuma abone olun.
+
+> [!TIP] Abone kalın
+> Navigasyon oturumu güncellemelerini kaçırmamak için bu subscription'ı her zaman kullanın.
+
+## Subscription
+
+Güncellemelerine abone olmak için bir navigasyon oturumu `id` değeri gerekir. `id` değerini [startNavigation mutation'ı](/api-reference/core/navigation/mutation-start-navigation) ile alabilirsiniz. Bir oturumun neden güncellendiğini görmek için `last_change.type` kullanın, örneğin `route_updated` veya `next_station_availability_updated`. `meta.updated_at`, rotanın yeniden çizilmesi gerektiğinde, örneğin bir [recalculateNavigation mutation'ı](/api-reference/core/navigation/mutation-recalculate-navigation) çağrısından sonra, değişir.

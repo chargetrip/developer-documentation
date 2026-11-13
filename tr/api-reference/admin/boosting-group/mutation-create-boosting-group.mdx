@@ -1,0 +1,34 @@
+---
+title: Güçlendirme grubu oluşturma mutation'ı
+heading: Güçlendirme grubu oluştur
+description: "createBoostingGroup mutation'ı ile rotalama sırasında öne çıkarılacak bir istasyon grubu oluşturun."
+schemaName: createBoostingGroup
+schemaType: Mutation
+---
+
+createBoostingGroup mutation'ını kullanarak bir güçlendirme grubu oluşturun. Rotaları, örneğin daha iyi bir ticari anlaşma nedeniyle belirli şarj istasyonlarına yönlendirmek istediğinizde kullanışlıdır. Etkin gruplar, [createRoute](/api-reference/core/route/mutation-create-route) ile hesapladığınız her rotaya otomatik olarak uygulanır. Nasıl çalıştığını öğrenmek için [güçlendirme grupları kılavuzuna](/docs/getting-started/route-boosting-groups) bakın.
+
+## Mutation
+
+Bir `name`, bir `client_id` ve bir `stations` listesi zorunludur. Her istasyonu ya `id` ile ya da istasyon sağlayıcınızın kullandığı `external_id` ile tanımlayın. Grubu henüz rotalamada kullanmadan oluşturmak için `status` değerini `inactive` olarak ayarlayın.
+
+<details>
+  <summary>İki istasyonlu etkin olmayan bir güçlendirme grubu oluşturun.</summary>
+  Bir istasyon dahili `id` ile, diğeri sağlayıcınızın `external_id` değeriyle tanımlanır.
+
+```graphql Example request
+mutation CreateBoostingGroup {
+  createBoostingGroup(
+    input: {
+      name: "Preferred stations"
+      client_id: "60b8d5a2f1c8e9001b9e2831"
+      status: inactive
+      stations: [{ id: "5f6a1b2c3d4e5f6a7b8c9d0e" }, { external_id: "NL-AMS-0001" }]
+    }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>

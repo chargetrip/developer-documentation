@@ -1,0 +1,14 @@
+---
+title: Mutation Termina navigazione
+heading: Termina navigazione
+description: "Termina una sessione di navigazione attiva con la mutation finishNavigation quando un conducente raggiunge la destinazione o annulla il viaggio."
+schemaName: finishNavigation
+schemaType: Mutation
+---
+
+Termina una sessione di navigazione attiva utilizzando la mutation finishNavigation. È utile quando un conducente raggiunge la destinazione o il viaggio viene annullato.
+
+## Mutation
+
+Per terminare una sessione di navigazione sono obbligatori il suo `id` e `current_location`. L'`id` può essere ottenuto tramite la [mutation startNavigation](/api-reference/core/navigation/mutation-start-navigation).
+

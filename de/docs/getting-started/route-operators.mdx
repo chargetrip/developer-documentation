@@ -1,48 +1,48 @@
 ---
-title: "Routing mit Betreiberpräferenzen"
-description: "Steuern Sie, welche Ladenetzwerke der Routing-Service bevorzugt, indem Sie Betreiberpräferenzen im Dashboard oder pro Anfrage festlegen."
+title: "Routing nach Betreiberpräferenz"
+description: "Steuern Sie, welche Ladenetzwerke der Routing-Dienst bevorzugt, indem Sie Betreiberpräferenzen im Dashboard oder pro Anfrage festlegen."
 ---
-Mit Betreiberpräferenzen steuern Sie, welche Ladenetze der Routing-Dienst bei der Berechnung einer EV-Route bevorzugt.
+Mit Betreiberpräferenzen steuern Sie, welche Ladenetzwerke der Routing-Dienst bei der Berechnung einer E-Fahrzeug-Route bevorzugt.
 
 Sie können Präferenzen an zwei Stellen konfigurieren:
-- [Chargetrip-Dashboard](https://account.chargetrip.io/projects): Legen Sie die globale Konfiguration der Betreiberpräferenzen für Ihr Projekt unter Projekt / Erweitert / Präferenzen für Stationsbetreiber fest.
-- [Create-Route-Anfrage](/api-reference/route/mutation-create-route#arg-input-operators): Definieren Sie Präferenzen dynamisch oder überschreiben Sie die Dashboard-Konfiguration der Betreiberpräferenzen pro Anfrage über das Feld `input.operators` in der Mutation `createRoute`.
+- [Chargetrip-Dashboard](https://account.chargetrip.io/projects): Legen Sie globale Betreiberpräferenzen für Ihr Projekt unter Projekt / Erweitert / Stationsbetreiber-Präferenzen fest.
+- [Create-Route-Anfrage](/api-reference/core/route/mutation-create-route#arg-input-operators): Definieren Sie Präferenzen dynamisch oder überschreiben Sie die Betreiberpräferenzen aus dem Dashboard pro Anfrage über das Feld `input.operators` in der Mutation `createRoute`.
 
 ---
 
 ### 1. Präferenztypen und Routenverhalten
 
 
-Betreiberpräferenzen gibt es in vier Typen, und jede lässt sich auf bestimmte Länder eingrenzen:
+Betreiberpräferenzen gibt es in vier Typen, und jede kann auf bestimmte Länder begrenzt werden:
 
 | Präferenz | Routing-Verhalten |
 |:---|:---|
 | Ausgeschlossen | Stationen dieser Betreiber werden unter allen Umständen strikt ausgeschlossen. |
-| Vermieden  |  Stationen dieser Betreiber werden vermieden, es sei denn, es gibt keine bessere Alternative. |
-| Bevorzugt | Stationen dieser Betreiber werden entsprechend ihrem Ranking (hoch, mittel, niedrig) priorisiert. Je höher die Stufe, desto wahrscheinlicher wird die Station ausgewählt. Die Route nutzt weiterhin Stationen ohne Ranking oder vermiedene Stationen, wenn es keine bessere Alternative gibt.|
-| Erforderlich  | Es werden nur Stationen dieser Betreiber genutzt. Innerhalb dieses zulässigen Pools gelten weiterhin die Ranking-Stufen, das heißt, hoch eingestufte Betreiber werden gegenüber mittel und niedrig eingestuften bevorzugt. Kann das Fahrzeug das Ziel nur mit Stationen aus dem Ranking nicht erreichen, schlägt die Routenberechnung fehl.|
+| Gemieden  |  Stationen dieser Betreiber werden gemieden, sofern keine bessere Alternative existiert. |
+| Bevorzugt | Stationen dieser Betreiber werden nach ihrem Ranking (high, medium, low) priorisiert. Je höher die Stufe, desto wahrscheinlicher wird die Station ausgewählt. Die Route nutzt weiterhin nicht eingestufte oder gemiedene Stationen, wenn keine bessere Alternative existiert.|
+| Erforderlich  | Es werden nur Stationen dieser Betreiber verwendet. Innerhalb dieses zulässigen Pools gelten die Ranking-Stufen weiterhin, das heißt, hoch eingestufte Betreiber werden gegenüber mittel und niedrig eingestuften bevorzugt. Wenn das Fahrzeug das Ziel nicht allein mit eingestuften Stationen erreichen kann, schlägt die Routenberechnung fehl.|
 
 
 ---
 
-### 2. Wie Präferenzen auf Dashboard-Ebene angewendet werden
+### 2. Anwendung der Präferenzen auf Dashboard-Ebene
 
-Wenn Sie verstehen, wie Eingaben auf Anfrageebene mit den Dashboard-Einstellungen zusammenwirken, erhalten Sie ein vorhersehbares Routing-Verhalten:
+Wenn Sie verstehen, wie Eingaben auf Anfrageebene mit den Dashboard-Einstellungen zusammenwirken, bleibt das Routing-Verhalten vorhersehbar:
 
-- **Im Dashboard ausgeschlossene und vermiedene Betreiber gelten automatisch**:
-Im Dashboard als Ausgeschlossen oder Vermieden konfigurierte Betreiber gelten für jede Routenberechnung, ohne dass Parameter in Ihrer `createRoute`-Anfrage erforderlich sind.
-- **Ranking-Stufen aus dem Dashboard bleiben ohne Ranking-Typ inaktiv**:
-In Ranking-Stufen konfigurierte Betreiber müssen durch Setzen von `input.operators.ranking.type` in Ihrer `createRoute`-Anfrage aktiviert werden, andernfalls beeinflussen sie die Stationsauswahl nicht.
+- **Im Dashboard ausgeschlossene und gemiedene Betreiber gelten automatisch**:
+Betreiber, die im Dashboard als ausgeschlossen oder gemieden konfiguriert sind, gelten für jede Routenberechnung, ohne dass Parameter in Ihrer `createRoute`-Anfrage erforderlich sind.
+- **Ranking-Stufen im Dashboard bleiben ohne Ranking-Typ inaktiv**:
+Betreiber, die in Ranking-Stufen konfiguriert sind, müssen durch Setzen von `input.operators.ranking.type` in Ihrer `createRoute`-Anfrage aktiviert werden, andernfalls beeinflussen sie die Stationsauswahl nicht.
 - **Betreiber auf Anfrageebene ersetzen die jeweiligen Dashboard-Präferenzen**:
-Die Angabe von Betreiber-IDs in der `createRoute`-Anfrage ersetzt nur die entsprechende Konfiguration aus dem Dashboard. Wenn Sie beispielsweise `input.operators.exclude[]` angeben, wird die gesamte im Dashboard konfigurierte Liste ausgeschlossener Betreiber ersetzt, während die im Dashboard vermiedenen Betreiber weiterhin gelten.
+Die Angabe von Betreiber-IDs in der `createRoute`-Anfrage ersetzt nur die entsprechende Konfiguration aus dem Dashboard. Wenn Sie beispielsweise `input.operators.exclude[]` angeben, ersetzt das die gesamte Konfiguration der ausgeschlossenen Betreiber im Dashboard, während die Dashboard-Betreiber zum Meiden weiterhin gelten.
 ---
 ### 3. Implementierungsbeispiele
 
 <details>
   <summary>Nur Dashboard-Ausschlüsse und -Vermeidungen verwenden</summary>
-  Wendet die im Dashboard festgelegten Konfigurationen für ausgeschlossene und vermiedene Betreiber an. Die Ranking-Einstellungen aus dem Dashboard sind inaktiv, da kein `input.operators.ranking.type` angegeben ist.
+  Wendet die im Dashboard festgelegten Konfigurationen für ausgeschlossene und gemiedene Betreiber an. Die Ranking-Einstellungen des Dashboards sind inaktiv, da kein `input.operators.ranking.type` angegeben ist.
 
-```graphql Beispielanfrage
+```graphql Example request
 createRoute(
   input: {
     vehicle: { id: "607823b2c246f9001b97b1a2" }
@@ -60,10 +60,10 @@ createRoute(
 </details>
 
 <details>
-  <summary>Im Dashboard eingestufte Betreiber als „Bevorzugt“ verwenden</summary>
-  Wendet die Dashboard-Konfigurationen für ausgeschlossene und vermiedene Betreiber an und bevorzugt Stationen, die zu den Ranking-Stufen im Dashboard gehören.
+  <summary>Ranking-Betreiber aus dem Dashboard als „Bevorzugt“ verwenden</summary>
+  Wendet die Dashboard-Konfigurationen für ausgeschlossene und gemiedene Betreiber an und bevorzugt Stationen, die zu den Ranking-Stufen des Dashboards gehören.
 
-```graphql Beispielanfrage {{ mark: [14] }}
+```graphql Example request {{ mark: [14] }}
 createRoute(
   input: {
     vehicle: { id: "607823b2c246f9001b97b1a2" }
@@ -86,10 +86,10 @@ createRoute(
 </details>
 
 <details>
-  <summary>Im Dashboard eingestufte Betreiber als „Erforderlich“ verwenden</summary>
-  Beschränkt die Route darauf, ausschließlich an Stationen von Betreibern zu laden, die in den Ranking-Stufen im Dashboard konfiguriert sind.
+  <summary>Ranking-Betreiber aus dem Dashboard als „Erforderlich“ verwenden</summary>
+  Beschränkt die Route darauf, ausschließlich an Stationen von Betreibern zu laden, die in den Ranking-Stufen des Dashboards konfiguriert sind.
 
-```graphql Beispielanfrage {{ mark: [14] }}
+```graphql Example request {{ mark: [14] }}
 createRoute(
   input: {
     vehicle: { id: "607823b2c246f9001b97b1a2" }
@@ -113,9 +113,9 @@ createRoute(
 
 <details>
   <summary>Eigene Präferenzen definieren und Dashboard-Einstellungen überschreiben</summary>
-  Übergeben Sie vollständige Betreiberkonfigurationen direkt im API-Aufruf. Jedes angegebene Feld (ranking, avoid oder exclude) überschreibt für diese Anfrage die entsprechende Dashboard-Konfiguration.
+  Geben Sie die vollständigen Betreiberkonfigurationen direkt im API-Aufruf an. Jedes angegebene Feld (ranking, avoid oder exclude) überschreibt für diese Anfrage die entsprechende Dashboard-Konfiguration.
 
-```graphql Beispielanfrage  {{ mark: [13,14,15,16,17,18,19,20,21] }}
+```graphql Example request  {{ mark: [13,14,15,16,17,18,19,20,21] }}
 createRoute(
   input: {
     vehicle: { id: "607823b2c246f9001b97b1a2" }
@@ -145,9 +145,9 @@ createRoute(
 
 <details>
   <summary>Eigene Präferenzen für bestimmte Länder definieren</summary>
-  Übergeben Sie vollständige Betreiberkonfigurationen direkt im API-Aufruf. Jedes angegebene Feld (ranking, avoid oder exclude) überschreibt für diese Anfrage die entsprechende Dashboard-Konfiguration.
+  Geben Sie die vollständigen Betreiberkonfigurationen direkt im API-Aufruf an. Jedes angegebene Feld (ranking, avoid oder exclude) überschreibt für diese Anfrage die entsprechende Dashboard-Konfiguration.
 
-```graphql Beispielanfrage  {{ mark: [13,14,15,16,17,18,19,20,21] }}
+```graphql Example request  {{ mark: [13,14,15,16,17,18,19,20,21] }}
 createRoute(
   input: {
     vehicle: { id: "607823b2c246f9001b97b1a2" }

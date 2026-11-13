@@ -1,36 +1,36 @@
 ---
-title: Bireysel şarj istasyonlarına öncelik verin
+title: Tek tek şarj istasyonlarına öncelik verin
 ---
 
-Öne Çıkarma Grupları (Boosting Groups), kendi iş kurallarınıza göre istasyon seçimini belirli şarj noktalarına yönlendirmenize olanak tanır.
+Boosting Group'lar (güçlendirme grupları), istasyon seçimini kendi iş kurallarınıza göre belirli şarj noktalarına yönlendirmenizi sağlar.
 
-[Operatör tercihleri](/docs/getting-started/route-operators) tüm şarj ağlarına öncelik vermenizi sağlarken, Boosting Groups size istasyon düzeyinde ayrıntılı kontrol sunar. Bu istasyonları tercih etme nedeniniz ne olursa olsun, daha düşük fiyatlandırma, düşük kullanım oranı veya daha iyi bir ticari anlaşma gibi, bunları istasyon hiyerarşisinin en üstüne taşıyabilirsiniz.
+[Operatör tercihleri](/docs/getting-started/route-operators) tüm şarj ağlarına öncelik vermenize olanak tanırken, Boosting Group'lar size istasyon düzeyinde ayrıntılı kontrol sağlar. Daha düşük fiyatlandırma, düşük kullanım oranı veya daha iyi bir ticari anlaşma gibi bu istasyonları tercih etme nedeniniz ne olursa olsun, onları istasyon hiyerarşisinin en üstüne çıkarabilirsiniz.
 
-## İstasyonlar nasıl öne çıkarılır
+## İstasyonlar nasıl güçlendirilir
 
-Başlamak için önceliklendirmek istediğiniz istasyonların listesiyle birlikte [destek](https://www.chargetrip.com/contact/support) ekibiyle iletişime geçmeniz yeterlidir.
+Başlamak için öncelik vermek istediğiniz istasyonların listesiyle [destek](https://www.chargetrip.com/contact/support) ekibiyle iletişime geçmeniz yeterlidir.
 
-Grubunuz projenizde kurulup etkinleştirildikten sonra, [createRoute](/api-reference/route/mutation-create-route) ile hesaplanan tüm rotalar bunu arka planda otomatik olarak kullanacaktır; API isteklerinizde herhangi bir değişiklik veya ek parametre gerekmez.
+Grubunuz kurulup projenizde etkinleştirildikten sonra, [createRoute](/api-reference/core/route/mutation-create-route) ile hesaplanan tüm rotalar bunu arka planda otomatik olarak kullanır; dolayısıyla API isteklerinizde herhangi bir değişikliğe veya ek parametreye gerek yoktur.
 
 ## Nasıl çalışır
 
-Boosting Groups yalnızca pozitif önceliklendirmeyi destekler; bunları istasyonları öne çıkarmak için kullanabilirsiniz ancak istasyonlardan kaçınmak veya onları hariç tutmak için kullanamazsınız. Tek başına kullanıldığında, öne çıkarılan istasyonlara rota üzerindeki diğer tüm istasyonlara kıyasla öncelik verilir.
+Boosting Group'lar yalnızca olumlu önceliklendirmeyi destekler. Bunları istasyonları öne çıkarmak için kullanabilirsiniz, ancak istasyonlardan kaçınmak veya onları hariç tutmak için kullanamazsınız. Tek başına kullanıldığında, güçlendirilmiş istasyonlar rota boyunca diğer tüm istasyonlardan önce önceliklendirilir.
 
-Operatör tercihleriyle birlikte kullanıldığında rota planlayıcı, istasyonları aşağıdaki öncelik sırasına göre (en yüksekten en düşüğe doğru) değerlendirir:
+Operatör tercihleriyle birlikte kullanıldığında rota planlayıcı istasyonları şu öncelik sırasına göre (en yüksekten en düşüğe) önceliklendirir:
 
-- Aktif Boosting Groups, bireysel öne çıkarılmış istasyonlardır. Bunlar, istasyonun operatörü `avoid` veya `excluded` olarak ayarlanmış olsa bile tüm operatör tercihlerini geçersiz kılar.
+- Etkin Boosting Group'lar, tek tek güçlendirilmiş istasyonlardır. İstasyonun operatörü `avoid` veya `excluded` olarak ayarlanmış olsa bile tüm operatör tercihlerini geçersiz kılarlar.
 - Tercih edilen operatörler (`high`, `medium`, `low`), tercih edilen şarj ağlarına ait istasyonlardır.
-- Sıralanmamış istasyonlar, herhangi bir öne çıkarma grubu veya operatör tercihi uygulanmamış standart istasyonlardır.
-- Önceliği düşürülmüş operatörler (`avoid`), kaçınılması gereken olarak işaretlenmiş operatörlere ait istasyonlardır. Bunlar yalnızca daha iyi bir seçenek olmadığında kullanılır.
+- Sıralanmamış istasyonlar, hiçbir güçlendirme grubu veya operatör tercihi uygulanmamış standart istasyonlardır.
+- Önceliği düşürülmüş operatörler (`avoid`), kaçınılacak olarak işaretlenmiş operatörlere ait istasyonlardır. Yalnızca daha iyi bir seçenek olmadığında kullanılırlar.
 
-Operatör tercihlerinde olduğu gibi, istasyon öne çıkarma işlemi de en iyi çaba (best-effort) esasına göre çalışır. Rota planlayıcı, öne çıkarılan bir istasyonu seçmenin hiçbir zaman verimsiz bir rotayla sonuçlanmaması için istasyon önceliğini istasyon yoğunluğu ve sapma etkisiyle dengeler.
+Operatör tercihleri gibi, istasyon güçlendirme de en iyi çaba esasına göre çalışır. Rota planlayıcı, güçlendirilmiş bir istasyonun seçilmesinin hiçbir zaman verimsiz bir rotayla sonuçlanmaması için istasyon önceliğini istasyon yoğunluğu ve yol sapması etkisiyle dengeler.
 
 ## Örnekler
 
 <details>
-  <summary>Aktif öne çıkarma gruplarıyla bir rota hesaplayın</summary>
+  <summary>Etkin Boosting Group'larla bir rota hesaplayın</summary>
 
-  Boosting Groups proje düzeyinde otomatik olarak uygulandığından, yalnızca standart bir `createRoute` mutasyonu göndermeniz yeterlidir. Aktif olan tüm Boosting Groups otomatik olarak önceliklendirilir.
+  Boosting Group'lar proje düzeyinde otomatik olarak uygulandığından, yalnızca standart bir `createRoute` mutasyonu göndermeniz yeterlidir. Etkin tüm Boosting Group'lar otomatik olarak önceliklendirilir.
 
 ```graphql Example request
 mutation CreateRoute {
@@ -55,9 +55,9 @@ mutation CreateRoute {
 </details>
 
 <details>
-  <summary>Önerilen istasyonların bir öne çıkarma grubuna ait olup olmadığını kontrol edin</summary>
+  <summary>Önerilen istasyonların bir Boosting Group'a ait olup olmadığını kontrol edin</summary>
 
-Hesaplanan rotayı `getRoute` veya `route` aboneliği ile alırken, ilgili durakla hangi aktif Boosting Groups'un eşleştiğini görmek için rota bacağı (leg) istasyonunda `boosting_group_ids` alanını sorgulayın.
+  Hesaplanan rotayı `getRoute` veya `route` aboneliği ile alırken, hangi etkin Boosting Group'ların o durakla eşleştiğini görmek için bölüm istasyonunda `boosting_group_ids` alanını isteyin.
 
 ```graphql Example request {{ mark: [11] }}
 query GetRoute {

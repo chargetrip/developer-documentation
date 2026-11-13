@@ -1,0 +1,13 @@
+---
+title: "Navigation aktualisieren Mutation"
+heading: "Navigation aktualisieren"
+description: "Melden Sie den Standort eines Fahrers entlang einer Route mit der Mutation updateNavigation, um eine aktive Navigationssitzung aktuell zu halten."
+schemaName: updateNavigation
+schemaType: Mutation
+---
+
+Aktualisieren Sie eine aktive Navigationssitzung mit der Mutation updateNavigation. Das ist nützlich, wenn Sie den Standort eines Fahrers melden möchten, während er auf einer Route vorankommt.
+
+## Mutation
+
+Zum Aktualisieren sind die `id` einer Navigationssitzung und `location_data` erforderlich. Die `id` erhalten Sie über die [Mutation startNavigation](/api-reference/core/navigation/mutation-start-navigation).

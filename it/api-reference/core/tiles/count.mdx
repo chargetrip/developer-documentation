@@ -1,0 +1,25 @@
+---
+title: Conteggio
+description: "Ottieni il numero totale di stazioni di ricarica dall'endpoint di conteggio delle stazioni, con la possibilità di restringerlo tramite filtri."
+tag: Rest
+---
+
+L'endpoint di conteggio delle stazioni restituisce il numero totale di stazioni di ricarica.
+
+## Configurazione
+Per recuperare il conteggio delle stazioni, effettua una richiesta `GET` al seguente URL:
+
+```bash Count / Base URL
+https://api.chargetrip.io/v2/station/count
+```
+
+### Filtri
+Usa il parametro di query `filter` per restringere il conteggio in base a criteri specifici. Consulta la [documentazione sui filtri](/api-reference/core/tiles/filters) per maggiori informazioni.
+
+
+## Risposta
+
+L'endpoint restituisce un oggetto JSON contenente il numero totale di stazioni corrispondenti:
+
+`count` · `integer`
+: Numero totale di stazioni di ricarica che corrispondono ai filtri della richiesta (o tutte le stazioni disponibili se non vengono forniti filtri).

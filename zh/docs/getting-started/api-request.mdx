@@ -1,45 +1,44 @@
 ---
 title: 发送您的第一个请求
-description: "使用基础 URL、用于订阅的 WebSocket 端点以及所需的身份验证请求头，向 API 发送您的第一个请求。"
+description: "使用基础 URL、用于 subscription 的 WebSocket 端点以及所需的身份验证请求头，向 API 发送您的第一个请求。"
 tag: 设置
 ---
 
-在 Chargetrip Dashboard 中创建凭据后，您就可以使用我们的基础 URL 和所需的身份验证请求头发起授权请求。
+在 Chargetrip 控制台中创建凭据后，您就可以使用我们的基础 URL 和所需的身份验证请求头发起授权请求。
 
 ## 设置
 
+Chargetrip API 根据操作类型使用两个不同的端点：用于查询和 mutation 的 HTTPS URL，以及用于 subscription 的 WebSocket (WSS) URL。您可以在 [GraphQL API 参考](/api-reference/core)中找到有关该 API 的更多信息。
 
-Chargetrip API 根据操作类型使用两个不同的端点：用于查询和变更的 HTTPS URL，以及用于订阅的 WebSocket (WSS) URL。您可以在 [GraphQL API 参考](/api-reference)中找到有关该 API 的更多信息。
-
-### 查询和变更
-查询和变更通过 HTTP POST 请求发送到主 GraphQL 端点。
+### 查询和 mutation
+查询和 mutation 通过 HTTP POST 请求发送到主 GraphQL 端点。
 
 
-```bash GraphQL 查询和变更端点 URL
+```bash GraphQL queries and mutations endpoint URL
 https://api.chargetrip.io/graphql
 ```
 
-### 订阅
-订阅需要通过 WebSocket 保持持久连接，可使用 `graphql-transport-ws` 协议实现。有关如何使用 WebSocket 的详细信息，请参阅[这里](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications)。
+### Subscription
+Subscription 需要通过 WebSocket 保持持久连接，可以使用 `graphql-transport-ws` 协议来实现。有关如何使用 WebSocket 的详细信息，请参阅[此处](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications)。
 
 
-```bash GraphQL 订阅 URL
+```bash GraphQL Subscription URL
 wss://api.chargetrip.io/subscription
 ```
 
 > [!WARNING] graphql-ws 协议已弃用
-> 旧版 graphql-ws 订阅协议已弃用，并将在不久后移除。请迁移到 graphql-transport-ws 协议，以避免订阅错误和服务中断。
+> 旧版 graphql-ws subscription 协议已弃用，即将被移除。请迁移到 graphql-transport-ws 协议，以避免 subscription 错误和服务中断。
 
 
 ## 授权请求头
 
 获取基础 URL 后，请在每个请求中添加以下请求头。标记为必填的请求头必须始终发送。
 
-`x-client-id` · <span class="text-accent">必填</span>
+`x-client-id` · <span class="text-accent">required</span>
 : 包含项目配置的项目 ID。
 
-`x-app-id` · <span class="text-accent">必填</span>
-: 用于安全防护和拆分分析数据的应用 ID。
+`x-app-id` · <span class="text-accent">required</span>
+: 用于安全和拆分分析的应用 ID。
 
 `x-app-identifier`
 : iOS 或 Android 的 bundle 标识符。
@@ -48,13 +47,13 @@ wss://api.chargetrip.io/subscription
 : Android SHA 指纹。
 
 > [!TIP] 保护您的密钥
-> 为获得最高安全性，请将您的应用限制为机器对机器 (M2M) 访问，并将凭据保存在您自己的服务器上、置于您自己的身份验证之后，而不是将其暴露给浏览器或设备。有关所有可用的限制类型，请参阅[安全](/api-reference/api/security)。
+> 为获得最高安全性，请将应用限制为机器对机器 (M2M) 访问，并将凭据保存在您自己的服务器上、置于您自己的身份验证之后，而不是将其暴露给浏览器或设备。有关所有可用的限制类型，请参阅[安全](/api-reference/core/api/security)。
 
 ## 发送授权请求
 
 要与 API 通信，您必须使用请求头 `x-client-id` 和 `x-app-id` 对每个请求进行身份验证。默认情况下，每个项目都会生成一个唯一的 `x-app-id`。
 
-```bash 示例请求
+```bash Example request
 curl -X POST \
   -H "Content-Type: application/json" \
   -H "x-client-id: YOUR_KEY_HERE" \

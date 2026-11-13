@@ -1,36 +1,36 @@
 ---
-title: Dare priorità a singole stazioni di ricarica
+title: Dai priorità alle singole stazioni di ricarica
 ---
 
-I Boosting Groups ti consentono di orientare la selezione delle stazioni verso specifiche posizioni di ricarica in base alle tue regole aziendali.
+I Boosting Group ti permettono di orientare la selezione delle stazioni verso specifiche località di ricarica in base alle tue regole aziendali.
 
-Mentre le [preferenze operatore](/docs/getting-started/route-operators) ti permettono di dare priorità a intere reti di ricarica, i Boosting Groups ti offrono un controllo granulare a livello di singola stazione. Qualunque sia il motivo per cui desideri favorire determinate stazioni, come prezzi più bassi, minore utilizzo o un accordo commerciale migliore, puoi promuoverle in cima alla gerarchia delle stazioni.
+Mentre le [preferenze degli operatori](/docs/getting-started/route-operators) permettono di dare priorità a intere reti di ricarica, i Boosting Group offrono un controllo granulare a livello di singola stazione. Qualunque sia il motivo per cui favorisci queste stazioni, come prezzi più bassi, scarso utilizzo o un accordo commerciale più vantaggioso, puoi portarle in cima alla gerarchia delle stazioni.
 
-## Come promuovere le stazioni
+## Come potenziare le stazioni
 
-Per iniziare, contatta semplicemente il [supporto](https://www.chargetrip.com/contact/support) inviando l'elenco delle stazioni a cui desideri dare priorità.
+Per iniziare, contatta il [supporto](https://www.chargetrip.com/contact/support) con l'elenco delle stazioni a cui vuoi dare priorità.
 
-Una volta che il tuo gruppo è stato configurato e abilitato sul tuo progetto, tutti i percorsi calcolati con [createRoute](/api-reference/route/mutation-create-route) lo utilizzeranno automaticamente in background, senza bisogno di modifiche o parametri aggiuntivi nelle tue richieste API.
+Una volta configurato e abilitato il gruppo sul tuo progetto, tutti i percorsi calcolati con [createRoute](/api-reference/core/route/mutation-create-route) lo useranno automaticamente in background, quindi non servono modifiche né parametri aggiuntivi nelle tue richieste API.
 
 ## Come funziona
 
-I Boosting Groups supportano solo la prioritizzazione positiva: puoi usarli per promuovere le stazioni, ma non per evitarle o escluderle. Quando vengono utilizzati da soli, le stazioni promosse hanno la priorità su tutte le altre stazioni lungo il percorso.
+I Boosting Group supportano solo la prioritizzazione positiva. Puoi usarli per promuovere le stazioni, ma non per evitarle o escluderle. Quando sono usati da soli, le stazioni potenziate hanno la priorità su tutte le altre stazioni lungo il percorso.
 
-Quando vengono combinati con le preferenze operatore, il pianificatore di percorso assegna la priorità alle stazioni nel seguente ordine (dal più alto al più basso):
+Se combinato con le preferenze degli operatori, il pianificatore di percorso dà priorità alle stazioni nel seguente ordine di priorità (dalla più alta alla più bassa):
 
-- I Boosting Groups attivi sono singole stazioni promosse. Prevalgono su tutte le preferenze operatore, anche se l'operatore della stazione è impostato su `avoid` o `excluded`.
-- Gli operatori preferiti (`high`, `medium`, `low`) sono stazioni appartenenti a reti di ricarica preferite.
-- Le stazioni non classificate sono stazioni standard a cui non è applicato alcun Boosting Group o preferenza operatore.
-- Gli operatori penalizzati (`avoid`) sono stazioni appartenenti a operatori contrassegnati come da evitare. Vengono utilizzate solo quando non esistono opzioni migliori.
+- I Boosting Group attivi sono singole stazioni potenziate. Prevalgono su tutte le preferenze degli operatori, anche se l'operatore della stazione è impostato su `avoid` o `excluded`.
+- Gli operatori preferiti (`high`, `medium`, `low`) sono stazioni che appartengono a reti di ricarica preferite.
+- Le stazioni senza classificazione sono stazioni standard a cui non è applicato alcun boosting group né alcuna preferenza di operatore.
+- Gli operatori con priorità ridotta (`avoid`) sono stazioni che appartengono a operatori contrassegnati da evitare. Vengono usate solo quando non esistono opzioni migliori.
 
-Come per le preferenze operatore, la promozione delle stazioni funziona secondo il principio del best-effort. Il pianificatore di percorso bilancia la priorità della stazione con la densità delle stazioni e l'impatto della deviazione, in modo che la selezione di una stazione promossa non generi mai un percorso inefficiente.
+Come le preferenze degli operatori, il potenziamento delle stazioni opera secondo il principio del best effort. Il pianificatore di percorso bilancia la priorità delle stazioni con la densità delle stazioni e l'impatto della deviazione, in modo che la scelta di una stazione potenziata non produca mai un percorso inefficiente.
 
 ## Esempi
 
 <details>
-  <summary>Calcolare un percorso con Boosting Groups attivi</summary>
+  <summary>Calcola un percorso con boosting group attivi</summary>
 
-  Poiché i Boosting Groups vengono applicati automaticamente a livello di progetto, è sufficiente inviare una normale mutation `createRoute`. Tutti i Boosting Groups attivi ricevono automaticamente la priorità.
+  Poiché i Boosting Group vengono applicati automaticamente a livello di progetto, devi solo inviare una mutation `createRoute` standard. Tutti i Boosting Group attivi vengono prioritizzati automaticamente.
 
 ```graphql Example request
 mutation CreateRoute {
@@ -55,9 +55,9 @@ mutation CreateRoute {
 </details>
 
 <details>
-  <summary>Verificare se le stazioni consigliate appartengono a un Boosting Group</summary>
+  <summary>Verifica se le stazioni consigliate appartengono a un boosting group</summary>
 
-Quando recuperi il percorso calcolato con `getRoute` o con la subscription `route`, richiedi `boosting_group_ids` sulla stazione della tratta (leg) per vedere quali Boosting Groups attivi corrispondono a quella sosta.
+  Quando recuperi il percorso calcolato con `getRoute` o con la subscription `route`, richiedi `boosting_group_ids` sulla stazione della tratta per vedere quali Boosting Group attivi corrispondono a quella fermata.
 
 ```graphql Example request {{ mark: [11] }}
 query GetRoute {

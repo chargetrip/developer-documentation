@@ -1,0 +1,29 @@
+---
+title: "Sicherheit"
+description: "Verhindern Sie die unbefugte Nutzung Ihrer Anwendungen, indem Sie einschränken, welche Plattform oder welcher Ursprung Anfragen mit Ihrer App-ID senden darf."
+---
+
+Mit einer Anfrage gesendete Header, einschließlich `x-app-id`, sind für jeden sichtbar, der den Netzwerkverkehr untersucht. Um die unbefugte Nutzung Ihrer Anwendungen zu verhindern, wenden Sie eine Beschränkung an, die festlegt, welche Plattform oder welcher Ursprung sie verwenden darf.
+
+> [!WARNING] Eine Beschränkung pro Anwendung
+> Pro Anwendung kann nur eine Beschränkung angewendet werden. Um Beschränkungen zu kombinieren, zum Beispiel für einen Web- und einen Mobile-Client, erstellen Sie für jeden eine eigene Anwendung.
+
+## Beschränkungstypen
+
+Es stehen vier Beschränkungstypen zur Verfügung, jeweils für eine andere Plattform oder ein anderes Kommunikationsmuster geeignet.
+
+### Web
+
+Beschränken Sie eine Webanwendung über den HTTP-Referrer, der auf den Header `x-app-id` angewendet wird. Einer einzelnen Anwendung können mehrere URLs hinzugefügt werden.
+
+### Machine-to-Machine (M2M)
+
+Beschränken Sie die Server-zu-Server-Kommunikation über die IP-Adresse (IPv4 und IPv6 werden unterstützt), konfiguriert im App-Dashboard. Dies ist die sicherste Option, da Zugangsdaten nie einen Browser oder ein Gerät erreichen.
+
+### Android
+
+Beschränken Sie eine Android-Anwendung über die Header `x-app-identifier` und `x-app-fingerprint`, die mit jeder Anfrage gesendet werden.
+
+### iOS
+
+Beschränken Sie eine iOS-Anwendung über den Header `x-app-identifier`, der den Bundle-Identifier der App enthält.

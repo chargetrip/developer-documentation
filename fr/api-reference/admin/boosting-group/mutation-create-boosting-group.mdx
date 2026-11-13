@@ -1,0 +1,34 @@
+---
+title: "Mutation de création de groupe de boost"
+heading: "Créer un groupe de boost"
+description: "Créez un groupe de stations à favoriser lors du calcul d'itinéraire avec la mutation createBoostingGroup."
+schemaName: createBoostingGroup
+schemaType: Mutation
+---
+
+Créez un groupe de boost en utilisant la mutation createBoostingGroup. Elle est utile lorsque vous souhaitez orienter les itinéraires vers certaines stations de recharge, par exemple en raison d'un meilleur accord commercial. Les groupes actifs sont appliqués automatiquement à chaque itinéraire que vous calculez avec [createRoute](/api-reference/core/route/mutation-create-route). Pour en savoir plus, consultez le [guide des groupes de boost](/docs/getting-started/route-boosting-groups).
+
+## Mutation
+
+Un `name`, un `client_id` et une liste de `stations` sont obligatoires. Identifiez chaque station soit par son `id`, soit par l'`external_id` utilisé par votre fournisseur de stations. Définissez `status` sur `inactive` pour créer le groupe sans l'utiliser encore pour le calcul d'itinéraire.
+
+<details>
+  <summary>Créer un groupe de boost inactif avec deux stations.</summary>
+  Une station est identifiée par son `id` interne, l'autre par l'`external_id` de votre fournisseur.
+
+```graphql Example request
+mutation CreateBoostingGroup {
+  createBoostingGroup(
+    input: {
+      name: "Preferred stations"
+      client_id: "60b8d5a2f1c8e9001b9e2831"
+      status: inactive
+      stations: [{ id: "5f6a1b2c3d4e5f6a7b8c9d0e" }, { external_id: "NL-AMS-0001" }]
+    }
+  ) {
+    id
+    status
+  }
+}
+```
+</details>

@@ -1,0 +1,45 @@
+---
+title: "Environnement"
+description: "Obtenez l'URL de base de l'API Admin, créez une clé d'administration dans le tableau de bord et envoyez votre première requête autorisée avec l'en-tête x-token."
+---
+
+L'API Admin est une API GraphQL dotée de son propre environnement dédié. Elle possède un point de terminaison distinct et utilise ses propres clés d'administration pour l'autorisation, de sorte que vous la configurez indépendamment du reste de l'API.
+
+## Point de terminaison
+
+Les requêtes sont envoyées sous forme de requêtes HTTP POST au point de terminaison GraphQL de l'API Admin.
+
+```bash Admin API endpoint URL
+https://admin.chargetrip.io/graphql
+```
+
+## En-têtes d'autorisation
+
+Ajoutez l'en-tête suivant à chaque requête.
+
+`x-token` · <span class="text-accent">required</span>
+: Une clé d'administration qui identifie votre espace de travail. Chaque ressource que vous créez ou lisez appartient à cet espace de travail.
+
+### Obtenir une clé d'administration
+
+Les clés d'administration sont réservées aux clients premium. Suivez ces étapes pour en créer une.
+
+1. **Ouvrez votre espace de travail**
+   Connectez-vous au tableau de bord Chargetrip et sélectionnez l'espace de travail que vous souhaitez gérer.
+2. **Accédez aux clés d'administration**
+   Ouvrez **Admin keys** depuis votre espace de travail.
+3. **Créez une clé**
+   Créez une nouvelle clé et copiez-la. Envoyez-la dans l'en-tête `x-token` avec chaque requête.
+
+> [!TIP] Protégez vos clés
+> Pour une sécurité maximale, limitez votre application à un accès de machine à machine (M2M) et conservez les identifiants sur votre propre serveur, derrière votre propre authentification, plutôt que de les exposer à un navigateur ou à un appareil.
+
+## Envoyer une requête autorisée
+
+```bash Example request
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "x-token: YOUR_KEY_HERE" \
+  -d '{ "query": "{ boostingGroups { nodes { id } } }" }' \
+  https://admin.chargetrip.io/graphql
+```

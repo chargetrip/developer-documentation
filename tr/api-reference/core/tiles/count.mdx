@@ -1,0 +1,25 @@
+---
+title: Sayı
+description: "İsteğe bağlı olarak filtrelerle daraltarak, istasyon sayısı uç noktasından toplam şarj istasyonu sayısını alın."
+tag: Rest
+---
+
+İstasyon sayısı uç noktası, şarj istasyonlarının toplam sayısını döndürür.
+
+## Kurulum
+İstasyon sayısını almak için aşağıdaki URL'ye bir `GET` isteği yapın:
+
+```bash Count / Base URL
+https://api.chargetrip.io/v2/station/count
+```
+
+### Filtreleme
+Sayımı belirli ölçütlere göre daraltmak için `filter` sorgu parametresini kullanın. Daha fazla bilgi için [filtreler belgelerine](/api-reference/core/tiles/filters) bakın.
+
+
+## Yanıt
+
+Uç nokta, eşleşen istasyonların toplam sayısını içeren bir JSON nesnesi döndürür:
+
+`count` · `integer`
+: İstek filtreleriyle eşleşen şarj istasyonlarının toplam sayısı (filtre sağlanmazsa mevcut tüm istasyonlar).

@@ -7,22 +7,22 @@ date: 01-09-2026
 
 ![路线匹配](../../../assets/changelog/2026/september.jpg)
 
-我们引入了路线匹配（Route Matching）操作，让您可以对外部 GPS 轨迹进行地图匹配，并将其送入我们的路线引擎，以计算能耗并插入最优的充电停靠点。
+我们引入了路线匹配（Route Matching）操作，让您可以对外部 GPS 轨迹进行地图匹配，并通过我们的路线规划引擎计算能耗并插入最优充电停靠点。
 
-- 使用新的 `createMatchedRoute` mutation，根据坐标序列计算匹配路线；
-- 使用按坐标数组索引定义的 `vias`（`via.index`）指定中途停靠点，并支持在行程中动态更新车辆乘客数量和载货重量；
-- 启用 `plan_charging_stops: true`，评估车辆沿预定路径的能耗，并在需要时自动插入兼容的充电停靠点；
+- 使用新的 `createMatchedRoute` mutation 根据坐标序列计算匹配路线；
+- 使用按坐标数组索引定义的 `vias`（`via.index`）指定中途停靠点，并支持在行程中动态更新车辆乘客数量和货物重量；
+- 启用 `plan_charging_stops: true` 以评估车辆沿预定路径的能耗，并在需要时自动插入兼容的充电停靠点；
 - 使用 `getRouteEmissions` 查询已完成的匹配路线的完整 CO₂ 排放概况。
 
 <details>
   <summary>改进</summary>
 
-    - 更新了 operator 查询，除内部 id 外，还接受 external_id。
+    - 更新了 operator 查询，使其在内部 id 之外还接受 external_id。
 </details>
 
 <details>
   <summary>修复</summary>
 
-    - 修复了使用包含大写字母的电子邮箱地址注册 dashboard 后，登录时无法显示待处理的工作区邀请的问题。
-    - 修复了路线详情中各路段分段行驶时长之和与总行驶时长（`durations.driving`）不一致的计算和舍入差异问题。
+    - 修复了使用包含大写字母的电子邮件地址注册 Dashboard 时，登录后无法显示待处理的工作区邀请的问题。
+    - 修复了路线详情中各路段分段行驶时长之和与总行驶时长（`durations.driving`）不一致的计算和取整差异。
 </details>

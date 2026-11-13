@@ -1,0 +1,13 @@
+---
+title: Amenity-Liste Query
+heading: Amenity-Liste
+description: "Listen Sie die Ausstattungen rund um eine Station mit der amenityList-Query auf, etwa Restaurants und Geschäfte, die Sie während des Ladevorgangs eines Fahrzeugs besuchen können."
+schemaName: amenityList
+schemaType: Query
+---
+
+Rufen Sie mit der amenityList-Query eine Liste der Ausstattungen in der Umgebung einer bestimmten Station ab. Das ist nützlich, wenn Sie Restaurants, Geschäfte oder andere Einrichtungen in der Nähe anzeigen möchten, während ein Fahrzeug lädt.
+
+## Query
+
+Um die Ausstattungen einer Station abzurufen, ist deren `id` erforderlich. Die `id` erhalten Sie entweder über eine [Route](/api-reference/core/route/query-get-route), den [Tile-Service](/api-reference/core/tiles/mvt) oder die [Station-Around-Query](/api-reference/core/station/query-station-around). Mit dem Argument `filter` grenzen Sie die Ergebnisse anhand bestimmter Kriterien ein, mit den Argumenten `size` und `page` [paginieren](/api-reference/core/api/pagination) Sie sie.

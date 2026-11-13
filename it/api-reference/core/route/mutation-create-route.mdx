@@ -1,0 +1,14 @@
+---
+title: Mutation Crea rotta
+heading: Crea rotta
+description: "Crea una rotta con la mutation createRoute per calcolare soste di ricarica, consumo energetico e tempo di guida tra un'origine e una destinazione."
+schemaName: createRoute
+schemaType: Mutation
+---
+
+Crea una nuova rotta utilizzando la mutation createRoute. È utile quando vuoi calcolare soste di ricarica, consumo energetico e tempo di guida tra un'origine e una destinazione. Se non hai mai usato il routing, la [guida alle rotte](/docs/getting-started/route) ti accompagna da una prima richiesta fino a una rotta personalizzata. Da lì puoi [orientare le reti di ricarica che una rotta preferisce](/docs/getting-started/route-operators) con le preferenze sugli operatori, oppure [modellare il viaggio attorno alle tue tappe](/docs/getting-started/route-stop) con le soste via.
+
+## Mutation
+
+Per creare una rotta sono obbligatori `vehicle`, `origin` e `destination`. Facoltativamente aggiungi punti `via`, `operators`, `weather` o altre preferenze per affinare il calcolo. La mutation restituisce l'`id` di una rotta, che può essere usato per recuperare i dettagli della rotta, le emissioni o i servizi lungo il percorso.
+

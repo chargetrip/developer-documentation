@@ -1,0 +1,13 @@
+---
+title: İnceleme ekleme mutation'ı
+heading: İnceleme ekle
+description: "addReview mutation'ı ile puan, mesaj ve kullanılan elektrikli araç ile fiş tipi dahil bir istasyon incelemesi ekleyin."
+schemaName: addReview
+schemaType: Mutation
+---
+
+addReview mutation'ını kullanarak bir istasyon için inceleme ekleyin. Diğer kullanıcılara daha fazla bağlam sağlamak için bir puan ve mesajın yanı sıra kullanılan elektrikli aracı ve fiş tipini de ekleyin. Geçerli bir kullanıcı için bir `x-token` başlığı gönderilirse inceleme o kullanıcıya ait olur, aksi halde anonim olarak eklenir.
+
+## Mutation
+
+İstasyon `id`, `rating` ve `message` değerlerini içeren bir `review` nesnesi gereklidir. İsteğe bağlı olarak ziyaret sırasında kullanılan `ev`, `plugType`, `locale`, `properties` ve `tags` değerlerini ekleyin.
