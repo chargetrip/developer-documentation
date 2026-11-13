@@ -14,4 +14,12 @@ https://api.chargetrip.io/v2/station/count
 ```
 
 ### Filtern
-Verwenden Sie den Query-Parameter `filter`, um die Anzahl anhand bestimmter Kriterien einzugrenzen. Weitere Informationen finden Sie in der [Dokumentation zu Filtern](/api-reference/tiles/filters).
+Verwenden Sie den Query-Parameter `filter`, um die Anzahl anhand bestimmter Kriterien einzugrenzen. Weitere Informationen finden Sie in der [Dokumentation zu Filtern](/api-reference/core/tiles/filters).
+
+
+## Antwort
+
+Der Endpunkt gibt ein JSON-Objekt mit der Gesamtanzahl der passenden Stationen zurück:
+
+`count` · `integer`
+: Gesamtzahl der Ladestationen, die den Filtern der Anfrage entsprechen (oder aller verfügbaren Stationen, wenn keine Filter angegeben sind).

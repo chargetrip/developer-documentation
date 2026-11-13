@@ -9,74 +9,6 @@ tag: Rest
 通过使用选择器，您可以只请求客户端应用所需的特定充电站数据属性，而不会产生不必要的载荷开销。
 
 
-`count` · `integer` · <span class="text-accent">default</span>
-: 聚合点内的充电站数量。数量为 1 表示 Station 要素，数量大于 1 表示 Cluster 要素。
-
-`expansion_zoom` · `integer` · <span class="text-accent">default</span>
-: 聚合点拆分为多个更小的聚合点或充电站时的缩放级别。
-
-`id` · `string`
-: 充电站的标识符。
-
-`lng` · `float`
-: 充电站的经度。
-
-`lat` · `float`
-: 充电站的纬度。
-
-`operator_id` · `string`
-: 充电站运营商的唯一 Chargetrip 标识符。如果运营商未知，则不会返回。
-
-`station_maximum_power` · `integer`
-: 充电站可提供的最大充电功率（单位 kW）。此值是静态的，始终反映充电站的最高能力，与连接器筛选无关。
-
-`connector_maximum_power` · `integer`
-: 与 `connectors[]` 筛选匹配的连接器可提供的最大充电功率（单位 kW）。如果未提供筛选，则会考虑所有连接器，并且该值与 `station_maximum_power` 相同。
-
-`preferred_operator` · `boolean`
-: 表示充电站的运营商是否为首选运营商。可以在 Dashboard 的项目级别管理首选运营商。
-
-`connector_minimum_energy_price` · `float` · [beta](tip:Beta;;此字段处于 Beta 阶段，在稳定之前可能会发生变化。)
-: 充电站各充电接口中的最低能源价格。如果不可用，则不会返回。仅在使用 Eco-Movement 充电站数据库时适用；否则将被忽略。
-
-`connector_maximum_energy_price` · `float` · [beta](tip:Beta;;此字段处于 Beta 阶段，在稳定之前可能会发生变化。)
-: 充电站各充电接口中的最高能源价格。如果不可用，则不会返回。仅在使用 Eco-Movement 充电站数据库时适用；否则将被忽略。
-
-`price_vat` · `float` · [beta](tip:Beta;;此字段处于 Beta 阶段，在稳定之前可能会发生变化。)
-: 适用于该价格的增值税。如果不可用，则不会返回。仅在使用 Eco-Movement 充电站数据库时适用；否则将被忽略。
-
-`price_valid_until` · `string` · [beta](tip:Beta;;此字段处于 Beta 阶段，在稳定之前可能会发生变化。)
-: 价格的有效截止日期和时间。如果不可用，则不会返回。仅在使用 Eco-Movement 充电站数据库时适用；否则将被忽略。
-
-`price_original_currency` · `string` · [beta](tip:Beta;;此字段处于 Beta 阶段，在稳定之前可能会发生变化。)
-: 价格最初定义时使用的货币，即转换为 `currency` 之前的货币。如果不可用，则不会返回。仅在使用 Eco-Movement 充电站数据库时适用；否则将被忽略。
-
-`price_conversion_rate` · `float` · [beta](tip:Beta;;此字段处于 Beta 阶段，在稳定之前可能会发生变化。)
-: 将价格从原始货币转换为 `currency` 所使用的汇率。如果不可用，则不会返回。仅在使用 Eco-Movement 充电站数据库时适用；否则将被忽略。
-
-`evses_blocked` · `integer`
-: 处于 blocked 状态的 EVSE 数量。如果提供了 `connectors[]` 筛选，则只统计与所选连接器类型匹配的 blocked EVSE。
-
-`evses_planned` · `integer`
-: 处于 planned 状态的 EVSE 数量。如果提供了 `connectors[]` 筛选，则只统计至少具有一种所选连接器类型的 planned EVSE。
-
-`evses_available` · `integer`
-: 处于 available 状态的 EVSE 数量。如果提供了 `connectors[]` 筛选，则只统计至少具有一种所选连接器类型的 available EVSE。
-
-`evses_charging` · `integer`
-: 处于 charging 状态的 EVSE 数量。如果提供了 `connectors[]` 筛选，则只统计至少具有一种所选连接器类型的 charging EVSE。
-
-`evses_unknown` · `integer`
-: 处于 unknown 状态的 EVSE 数量。如果提供了 `connectors[]` 筛选，则只统计至少具有一种所选连接器类型的 unknown EVSE。
-
-`evses_reserved` · `integer`
-: 处于 reserved 状态的 EVSE 数量。如果提供了 `connectors[]` 筛选，则只统计至少具有一种所选连接器类型的 reserved EVSE。
-
-`evses_out_of_order` · `integer`
-: 处于 out_of_order 状态的 EVSE 数量。如果提供了 `connectors[]` 筛选，则只统计至少具有一种所选连接器类型的 out of order EVSE。
-
-`evses_inoperative` · `integer`
-: 处于 inoperative 状态的 EVSE 数量。如果提供了 `connectors[]` 筛选，则只统计至少具有一种所选连接器类型的 inoperative EVSE。
 
 ## 实现
 
@@ -101,6 +33,9 @@ https://api.chargetrip.io/v2/station/...?station_properties[]={selector1}&statio
 
 `lat` · `float`
 : 充电站的纬度。仅适用于 [MVT 瓦片](/api-reference/core/tiles/mvt)。
+
+`operator_id` · `string`
+: 充电站运营商的唯一 Chargetrip 标识符。如果运营商未知，则不会返回。
 
 `station_maximum_power` · `integer`
 : 充电站可提供的最大充电功率（单位 kW）。此值是静态的，始终反映充电站的最高能力，不受连接器筛选影响。
@@ -129,29 +64,29 @@ https://api.chargetrip.io/v2/station/...?station_properties[]={selector1}&statio
 `price_conversion_rate` · `float` · [beta](tip:Beta;;此字段处于 Beta 阶段，在稳定之前可能会发生变化。)
 : 将价格从其原始货币转换为 `currency` 所使用的汇率。如果不可用则不返回。
 
-`evse_status_blocked` · `integer`
-: 被物理或电子方式阻塞的 EVSE 数量。如果提供了 `connectors[]` 筛选，则仅统计至少拥有一种所选连接器类型的已阻塞 EVSE。
+`evses_blocked` · `integer`
+: 被物理或电子方式阻断的 EVSE 数量。 如果提供了 `connectors[]` 筛选，则只统计至少具有一种所选连接器类型的已阻断的 EVSE。
 
-`evse_status_planned` · `integer`
-: 处于计划中状态的 EVSE 数量。如果提供了 `connectors[]` 筛选，则仅统计至少拥有一种所选连接器类型的计划中 EVSE。
+`evses_planned` · `integer`
+: 处于 planned 状态的 EVSE 数量。 如果提供了 `connectors[]` 筛选，则只统计至少具有一种所选连接器类型的planned EVSE。
 
-`evse_status_available` · `integer`
-: 处于可用状态的 EVSE 数量。如果提供了 `connectors[]` 筛选，则仅统计至少拥有一种所选连接器类型的可用 EVSE。
+`evses_available` · `integer`
+: 处于 available 状态的 EVSE 数量。 如果提供了 `connectors[]` 筛选，则只统计至少具有一种所选连接器类型的available EVSE。
 
-`evse_status_charging` · `integer`
-: 当前被占用的 EVSE 数量。如果提供了 `connectors[]` 筛选，则仅统计至少拥有一种所选连接器类型的充电中 EVSE。
+`evses_charging` · `integer`
+: 当前被占用的 EVSE 数量。 如果提供了 `connectors[]` 筛选，则只统计至少具有一种所选连接器类型的正在充电的 EVSE。
 
-`evse_status_unknown` · `integer`
-: 当前实时状态未知的 EVSE 数量。如果提供了 `connectors[]` 筛选，则仅统计至少拥有一种所选连接器类型的未知状态 EVSE。
+`evses_unknown` · `integer`
+: 实时状态当前未知的 EVSE 数量。 如果提供了 `connectors[]` 筛选，则只统计至少具有一种所选连接器类型的状态未知的 EVSE。
 
-`evse_status_reserved` · `integer`
-: 已为驾驶员预留的 EVSE 数量。如果提供了 `connectors[]` 筛选，则仅统计至少拥有一种所选连接器类型的已预留 EVSE。
+`evses_reserved` · `integer`
+: 已为驾驶员预留的 EVSE 数量。 如果提供了 `connectors[]` 筛选，则只统计至少具有一种所选连接器类型的已预留的 EVSE。
 
-`evse_status_out_of_order` · `integer`
-: 被标记为故障的 EVSE 数量。如果提供了 `connectors[]` 筛选，则仅统计至少拥有一种所选连接器类型的故障 EVSE。
+`evses_out_of_order` · `integer`
+: 被标记为故障的 EVSE 数量。 如果提供了 `connectors[]` 筛选，则只统计至少具有一种所选连接器类型的故障的 EVSE。
 
-`evse_status_inoperative` · `integer`
-: 暂时无法运行的 EVSE 数量。如果提供了 `connectors[]` 筛选，则仅统计至少拥有一种所选连接器类型的无法运行的 EVSE。
+`evses_inoperative` · `integer`
+: 暂时无法运行的 EVSE 数量。 如果提供了 `connectors[]` 筛选，则只统计至少具有一种所选连接器类型的暂时无法运行的 EVSE。
 
 ## 示例
 
@@ -233,13 +168,13 @@ https://api.chargetrip.io/v2/station/10/582/325/tile.mvt
 <details>
   <summary>将选择器与连接器筛选结合，获取实时 EVSE 状态</summary>
 
-  按特定连接器类型（例如 CCS / `IEC_62196_T2_COMBO`）筛选时，`connector_maximum_power` 和 `evse_status_available` 的数量仅反映与该连接器筛选匹配的 EVSE。
+  按特定连接器类型（例如 CCS / `IEC_62196_T2_COMBO`）筛选时，`connector_maximum_power` 和 `evses_available` 的数量仅反映与该连接器筛选匹配的 EVSE。
 
 ```bash Example request {{ mark: [2,3,4] }}
 https://api.chargetrip.io/v2/station/10/582/325/tile.json
   ?connectors[]=IEC_62196_T2_COMBO
   &station_properties[]=connector_maximum_power
-  &station_properties[]=evse_status_available
+  &station_properties[]=evses_available
 ```
 
 ```json Example response {{ mark: [12,13,14,15] }}
@@ -255,7 +190,7 @@ https://api.chargetrip.io/v2/station/10/582/325/tile.json
       },
       "properties": {
         "connector_maximum_power": 300,
-        "evse_status_available": 2
+        "evses_available": 2
       }
     }
   ]

@@ -65,17 +65,10 @@ Filtri che valutano le specifiche capacità di ricarica della stazione. Questi f
 : Filtra per includere solo le stazioni in cui la potenza di ricarica massima di ogni connettore non supera il valore di potenza specificato (in kW). Accetta un numero intero maggiore di 0.
 
 `minimum_energy_price` · `number` · [beta](tip:Beta;;Questo filtro è in beta e potrebbe cambiare prima di diventare stabile.) · [Mostra URL di esempio](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?minimum_energy_price=0.2&currency=EUR)
-<<<<<<< HEAD
 : Filtra per includere solo le stazioni i cui connettori compatibili hanno almeno un prezzo attivo maggiore o uguale al valore specificato, valutato nella valuta impostata da `currency`. Vedi [tariffe delle stazioni](/docs/getting-started/station-pricing). Applicabile solo se viene utilizzato il database di stazioni Eco-Movement; in caso contrario viene ignorato.
 
 `maximum_energy_price` · `number` · [beta](tip:Beta;;Questo filtro è in beta e potrebbe cambiare prima di diventare stabile.) · [Mostra URL di esempio](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?maximum_energy_price=0.5&currency=EUR)
 : Filtra per includere solo le stazioni i cui connettori compatibili hanno almeno un prezzo attivo minore o uguale al valore specificato, valutato nella valuta impostata da `currency`. Vedi [tariffe delle stazioni](/docs/getting-started/station-pricing). Applicabile solo se viene utilizzato il database di stazioni Eco-Movement; in caso contrario viene ignorato.
-=======
-: Filtra per includere solo le stazioni i cui connettori compatibili hanno almeno un prezzo attivo maggiore o uguale al valore specificato, valutato nella valuta impostata da `currency`. Consulta i [prezzi delle stazioni](/docs/getting-started/station-pricing).
-
-`maximum_energy_price` · `number` · [beta](tip:Beta;;Questo filtro è in beta e potrebbe cambiare prima di diventare stabile.) · [Mostra URL di esempio](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?maximum_energy_price=0.5&currency=EUR)
-: Filtra per includere solo le stazioni i cui connettori compatibili hanno almeno un prezzo attivo minore o uguale al valore specificato, valutato nella valuta impostata da `currency`. Consulta i [prezzi delle stazioni](/docs/getting-started/station-pricing).
->>>>>>> 62c2441 (fix: translation sync)
 
 `connectors` · `enum` · [Mostra URL di esempio](tip:https://api.chargetrip.io/v2/station/10/516/352/tile.mvt?connectors[]=CHADEMO)
 : Filtra per includere solo le stazioni che hanno EVSE con i tipi di connettore specificati. Accetta un array di stringhe con qualsiasi valore di connettore OCPI 2.2.1.

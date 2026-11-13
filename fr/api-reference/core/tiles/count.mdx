@@ -14,4 +14,12 @@ https://api.chargetrip.io/v2/station/count
 ```
 
 ### Filtrage
-Utilisez le paramètre de requête `filter` pour affiner le comptage selon des critères spécifiques. Consultez la [documentation des filtres](/api-reference/tiles/filters) pour plus d'informations.
+Utilisez le paramètre de requête `filter` pour affiner le comptage selon des critères spécifiques. Consultez la [documentation des filtres](/api-reference/core/tiles/filters) pour plus d'informations.
+
+
+## Réponse
+
+Le endpoint renvoie un objet JSON contenant le nombre total de stations correspondantes :
+
+`count` · `integer`
+: Nombre total de stations de recharge correspondant aux filtres de la requête (ou toutes les stations disponibles si aucun filtre n'est fourni).

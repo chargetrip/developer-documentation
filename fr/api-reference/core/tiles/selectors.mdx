@@ -12,72 +12,7 @@ Grâce aux sélecteurs, vous pouvez demander les attributs de données de statio
 
 ## Mise en œuvre
 
-`id` · `string`
-: L'identifiant de la station.
-
-`lng` · `float`
-: La longitude de la station.
-
-`lat` · `float`
-: La latitude de la station.
-
-`operator_id` · `string`
-: L'identifiant Chargetrip unique de l'opérateur de la station. Non renvoyé si l'opérateur est inconnu.
-
-`station_maximum_power` · `integer`
-: La puissance de charge maximale de la station (en kW) disponible à la station. Cette valeur est statique et reflète toujours la capacité maximale de la station, quels que soient les filtres de connecteurs.
-
-`connector_maximum_power` · `integer`
-: La puissance de charge maximale (en kW) disponible sur les connecteurs correspondant au filtre `connectors[]`. Si aucun filtre n'est fourni, tous les connecteurs sont pris en compte et elle est égale à `station_maximum_power`.
-
-`preferred_operator` · `boolean`
-: Indique si l'opérateur d'une station est un opérateur préféré. Les opérateurs préférés peuvent être gérés au niveau du projet dans le Dashboard.
-
-`connector_minimum_energy_price` · `float` · [beta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
-: Le prix de l'énergie le plus bas parmi les connecteurs de la station. Non renvoyé s'il n'est pas disponible. Applicable uniquement si la base de données de stations Eco-Movement est utilisée ; sinon, il est ignoré.
-
-`connector_maximum_energy_price` · `float` · [beta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
-: Le prix de l'énergie le plus élevé parmi les connecteurs de la station. Non renvoyé s'il n'est pas disponible. Applicable uniquement si la base de données de stations Eco-Movement est utilisée ; sinon, il est ignoré.
-
-`price_vat` · `float` · [beta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
-: La TVA appliquée au prix. Non renvoyé s'il n'est pas disponible. Applicable uniquement si la base de données de stations Eco-Movement est utilisée ; sinon, il est ignoré.
-
-`price_valid_until` · `string` · [beta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
-: La date et l'heure jusqu'auxquelles le prix est valable. Non renvoyé s'il n'est pas disponible. Applicable uniquement si la base de données de stations Eco-Movement est utilisée ; sinon, il est ignoré.
-
-`price_original_currency` · `string` · [beta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
-: La devise dans laquelle le prix était initialement défini, avant conversion en `currency`. Non renvoyé s'il n'est pas disponible. Applicable uniquement si la base de données de stations Eco-Movement est utilisée ; sinon, il est ignoré.
-
-`price_conversion_rate` · `float` · [beta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
-: Le taux utilisé pour convertir le prix de sa devise d'origine en `currency`. Non renvoyé s'il n'est pas disponible. Applicable uniquement si la base de données de stations Eco-Movement est utilisée ; sinon, il est ignoré.
-
-`evses_blocked` · `integer`
-: Le nombre d'EVSE au statut bloqué. Si un filtre `connectors[]` est fourni, seuls les EVSE bloqués correspondant aux types de connecteurs sélectionnés sont comptés.
-
-`evses_planned` · `integer`
-: Nombre d'EVSE au statut planifié. Si un filtre `connectors[]` est fourni, seuls les EVSE planifiés ayant au moins un des types de connecteurs sélectionnés sont comptés.
-
-`evses_available` · `integer`
-: Nombre d'EVSE au statut disponible. Si un filtre `connectors[]` est fourni, seuls les EVSE disponibles ayant au moins un des types de connecteurs sélectionnés sont comptés.
-
-`evses_charging` · `integer`
-: Nombre d'EVSE au statut en charge. Si un filtre `connectors[]` est fourni, seuls les EVSE en charge ayant au moins un des types de connecteurs sélectionnés sont comptés.
-
-`evses_unknown` · `integer`
-: Nombre d'EVSE au statut inconnu. Si un filtre `connectors[]` est fourni, seuls les EVSE inconnus ayant au moins un des types de connecteurs sélectionnés sont comptés.
-
-`evses_reserved` · `integer`
-: Nombre d'EVSE au statut réservé. Si un filtre `connectors[]` est fourni, seuls les EVSE réservés ayant au moins un des types de connecteurs sélectionnés sont comptés.
-
-`evses_out_of_order` · `integer`
-: Nombre d'EVSE au statut out_of_order. Si un filtre `connectors[]` est fourni, seuls les EVSE hors service ayant au moins un des types de connecteurs sélectionnés sont comptés.
-
-`evses_inoperative` · `integer`
-: Nombre d'EVSE au statut inoperative. Si un filtre `connectors[]` est fourni, seuls les EVSE inopérants ayant au moins un des types de connecteurs sélectionnés sont comptés.
-
-## Implémentation
-
-Pour demander des propriétés spécifiques, ajoutez le paramètre de requête `station_properties[]` à l'URL de la requête de tuile.
+Pour demander des attributs de station spécifiques, ajoutez le paramètre de requête `station_properties[]` à l'URL de votre requête de tuile. Répétez le paramètre pour chaque sélecteur que vous souhaitez inclure :
 
 ```bash Tile / Selectors / Example
 https://api.chargetrip.io/v2/station/...?station_properties[]={selector1}&station_properties[]={selector2}&station_properties[]={selector3}
@@ -98,6 +33,9 @@ Les sélecteurs s'appliquent uniquement aux **entités de station** ; les entit�
 
 `lat` · `float`
 : La latitude de la station. S'applique uniquement aux [tuiles MVT](/api-reference/core/tiles/mvt).
+
+`operator_id` · `string`
+: L'identifiant Chargetrip unique de l'opérateur de la station. Non renvoyé si l'opérateur est inconnu.
 
 `station_maximum_power` · `integer`
 : La puissance de recharge maximale de la station (en kW) disponible à la station. Cette valeur est statique et reflète toujours la capacité maximale de la station, quels que soient les filtres de connecteurs.
@@ -126,29 +64,29 @@ Les sélecteurs s'appliquent uniquement aux **entités de station** ; les entit�
 `price_conversion_rate` · `float` · [bêta](tip:Bêta;;Ce champ est en bêta et peut changer avant de devenir stable.)
 : Le taux utilisé pour convertir le prix de sa devise d'origine vers `currency`. Non renvoyé s'il n'est pas disponible.
 
-`evse_status_blocked` · `integer`
-: Nombre d'EVSE bloqués physiquement ou électroniquement. Si un filtre `connectors[]` est fourni, seuls sont comptés les EVSE bloqués qui possèdent au moins l'un des types de connecteurs sélectionnés.
+`evses_blocked` · `integer`
+: Nombre d'EVSE physiquement ou électroniquement bloqués. Si un filtre `connectors[]` est fourni, seuls les EVSE bloqués ayant au moins un des types de connecteurs sélectionnés sont comptés.
 
-`evse_status_planned` · `integer`
-: Nombre d'EVSE au statut planifié. Si un filtre `connectors[]` est fourni, seuls sont comptés les EVSE planifiés qui possèdent au moins l'un des types de connecteurs sélectionnés.
+`evses_planned` · `integer`
+: Nombre d'EVSE au statut planifié. Si un filtre `connectors[]` est fourni, seuls les EVSE planifiés ayant au moins un des types de connecteurs sélectionnés sont comptés.
 
-`evse_status_available` · `integer`
-: Nombre d'EVSE au statut disponible. Si un filtre `connectors[]` est fourni, seuls sont comptés les EVSE disponibles qui possèdent au moins l'un des types de connecteurs sélectionnés.
+`evses_available` · `integer`
+: Nombre d'EVSE au statut disponible. Si un filtre `connectors[]` est fourni, seuls les EVSE disponibles ayant au moins un des types de connecteurs sélectionnés sont comptés.
 
-`evse_status_charging` · `integer`
-: Nombre d'EVSE actuellement occupés. Si un filtre `connectors[]` est fourni, seuls sont comptés les EVSE en cours de recharge qui possèdent au moins l'un des types de connecteurs sélectionnés.
+`evses_charging` · `integer`
+: Nombre d'EVSE actuellement occupés. Si un filtre `connectors[]` est fourni, seuls les EVSE en charge ayant au moins un des types de connecteurs sélectionnés sont comptés.
 
-`evse_status_unknown` · `integer`
-: Nombre d'EVSE dont le statut en temps réel est actuellement inconnu. Si un filtre `connectors[]` est fourni, seuls sont comptés les EVSE au statut inconnu qui possèdent au moins l'un des types de connecteurs sélectionnés.
+`evses_unknown` · `integer`
+: Nombre d'EVSE dont le statut en temps réel est actuellement inconnu. Si un filtre `connectors[]` est fourni, seuls les EVSE inconnus ayant au moins un des types de connecteurs sélectionnés sont comptés.
 
-`evse_status_reserved` · `integer`
-: Nombre d'EVSE réservés pour un conducteur. Si un filtre `connectors[]` est fourni, seuls sont comptés les EVSE réservés qui possèdent au moins l'un des types de connecteurs sélectionnés.
+`evses_reserved` · `integer`
+: Nombre d'EVSE réservés pour un conducteur. Si un filtre `connectors[]` est fourni, seuls les EVSE réservés ayant au moins un des types de connecteurs sélectionnés sont comptés.
 
-`evse_status_out_of_order` · `integer`
-: Nombre d'EVSE marqués comme hors service. Si un filtre `connectors[]` est fourni, seuls sont comptés les EVSE hors service qui possèdent au moins l'un des types de connecteurs sélectionnés.
+`evses_out_of_order` · `integer`
+: Nombre d'EVSE marqués comme hors service. Si un filtre `connectors[]` est fourni, seuls les EVSE hors service ayant au moins un des types de connecteurs sélectionnés sont comptés.
 
-`evse_status_inoperative` · `integer`
-: Nombre d'EVSE temporairement inopérants. Si un filtre `connectors[]` est fourni, seuls sont comptés les EVSE inopérants qui possèdent au moins l'un des types de connecteurs sélectionnés.
+`evses_inoperative` · `integer`
+: Nombre d'EVSE temporairement inopérants. Si un filtre `connectors[]` est fourni, seuls les EVSE inopérants ayant au moins un des types de connecteurs sélectionnés sont comptés.
 
 ## Exemples
 
@@ -230,13 +168,13 @@ https://api.chargetrip.io/v2/station/10/582/325/tile.mvt
 <details>
   <summary>Combiner les sélecteurs avec les filtres de connecteurs pour obtenir le statut des EVSE en temps réel</summary>
 
-  Lors d'un filtrage par type de connecteur spécifique (par exemple CCS / `IEC_62196_T2_COMBO`), les valeurs `connector_maximum_power` et `evse_status_available` ne reflètent que les EVSE correspondant à ce filtre de connecteur.
+  Lors d'un filtrage par type de connecteur spécifique (par exemple CCS / `IEC_62196_T2_COMBO`), les valeurs `connector_maximum_power` et `evses_available` ne reflètent que les EVSE correspondant à ce filtre de connecteur.
 
 ```bash Example request {{ mark: [2,3,4] }}
 https://api.chargetrip.io/v2/station/10/582/325/tile.json
   ?connectors[]=IEC_62196_T2_COMBO
   &station_properties[]=connector_maximum_power
-  &station_properties[]=evse_status_available
+  &station_properties[]=evses_available
 ```
 
 ```json Example response {{ mark: [12,13,14,15] }}
@@ -252,7 +190,7 @@ https://api.chargetrip.io/v2/station/10/582/325/tile.json
       },
       "properties": {
         "connector_maximum_power": 300,
-        "evse_status_available": 2
+        "evses_available": 2
       }
     }
   ]

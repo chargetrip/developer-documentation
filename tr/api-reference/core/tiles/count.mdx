@@ -14,4 +14,12 @@ https://api.chargetrip.io/v2/station/count
 ```
 
 ### Filtreleme
-Sayımı belirli ölçütlere göre daraltmak için `filter` sorgu parametresini kullanın. Daha fazla bilgi için [filtreler belgelerine](/api-reference/tiles/filters) bakın.
+Sayımı belirli ölçütlere göre daraltmak için `filter` sorgu parametresini kullanın. Daha fazla bilgi için [filtreler belgelerine](/api-reference/core/tiles/filters) bakın.
+
+
+## Yanıt
+
+Uç nokta, eşleşen istasyonların toplam sayısını içeren bir JSON nesnesi döndürür:
+
+`count` · `integer`
+: İstek filtreleriyle eşleşen şarj istasyonlarının toplam sayısı (filtre sağlanmazsa mevcut tüm istasyonlar).

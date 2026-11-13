@@ -65,28 +65,28 @@ Seçiciler yalnızca **istasyon özelliklerine** uygulanır; küme özellikleri 
 : Fiyatın özgün para biriminden `currency` birimine dönüştürülmesinde kullanılan kur. Mevcut değilse döndürülmez. Yalnızca Eco-Movement istasyon veritabanı kullanılıyorsa geçerlidir; aksi halde yok sayılır.
 
 `evses_blocked` · `integer`
-: Engellenmiş durumdaki EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türleriyle eşleşen engellenmiş EVSE'leri sayar.
+: Fiziksel veya elektronik olarak engellenmiş EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türlerinden en az birine sahip engellenmiş EVSE'leri sayar.
 
 `evses_planned` · `integer`
 : Planlanmış durumdaki EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türlerinden en az birine sahip planlanmış EVSE'leri sayar.
 
 `evses_available` · `integer`
-: Müsait durumdaki EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türlerinden en az birine sahip müsait EVSE'leri sayar.
+: Kullanılabilir durumdaki EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türlerinden en az birine sahip kullanılabilir EVSE'leri sayar.
 
 `evses_charging` · `integer`
-: Şarj olma durumundaki EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türlerinden en az birine sahip şarj olan EVSE'leri sayar.
+: Şu anda dolu olan EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türlerinden en az birine sahip şarj olan EVSE'leri sayar.
 
 `evses_unknown` · `integer`
-: Bilinmeyen durumdaki EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türlerinden en az birine sahip durumu bilinmeyen EVSE'leri sayar.
+: Gerçek zamanlı durumu şu anda bilinmeyen EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türlerinden en az birine sahip durumu bilinmeyen EVSE'leri sayar.
 
 `evses_reserved` · `integer`
-: Rezerve edilmiş durumdaki EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türlerinden en az birine sahip rezerve edilmiş EVSE'leri sayar.
+: Bir sürücü için rezerve edilmiş EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türlerinden en az birine sahip rezerve edilmiş EVSE'leri sayar.
 
 `evses_out_of_order` · `integer`
-: out_of_order durumundaki EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türlerinden en az birine sahip arızalı EVSE'leri sayar.
+: Arızalı olarak işaretlenmiş EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türlerinden en az birine sahip arızalı EVSE'leri sayar.
 
 `evses_inoperative` · `integer`
-: inoperative durumundaki EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türlerinden en az birine sahip çalışmayan EVSE'leri sayar.
+: Geçici olarak çalışmayan EVSE sayısı. Bir `connectors[]` filtresi verilirse yalnızca seçilen konnektör türlerinden en az birine sahip geçici olarak çalışmayan EVSE'leri sayar.
 
 ## Örnekler
 
@@ -168,13 +168,13 @@ https://api.chargetrip.io/v2/station/10/582/325/tile.mvt
 <details>
   <summary>Gerçek zamanlı EVSE durumu için seçicileri konnektör filtreleriyle birleştirin</summary>
 
-  Belirli bir konnektör türüne göre filtrelerken (ör. CCS / `IEC_62196_T2_COMBO`), `connector_maximum_power` ve `evse_status_available` sayıları yalnızca bu konnektör filtresiyle eşleşen EVSE'leri yansıtır.
+  Belirli bir konnektör türüne göre filtrelerken (ör. CCS / `IEC_62196_T2_COMBO`), `connector_maximum_power` ve `evses_available` sayıları yalnızca bu konnektör filtresiyle eşleşen EVSE'leri yansıtır.
 
 ```bash Example request {{ mark: [2,3,4] }}
 https://api.chargetrip.io/v2/station/10/582/325/tile.json
   ?connectors[]=IEC_62196_T2_COMBO
   &station_properties[]=connector_maximum_power
-  &station_properties[]=evse_status_available
+  &station_properties[]=evses_available
 ```
 
 ```json Example response {{ mark: [12,13,14,15] }}
@@ -190,7 +190,7 @@ https://api.chargetrip.io/v2/station/10/582/325/tile.json
       },
       "properties": {
         "connector_maximum_power": 300,
-        "evse_status_available": 2
+        "evses_available": 2
       }
     }
   ]
