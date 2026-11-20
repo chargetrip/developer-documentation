@@ -1,0 +1,15 @@
+---
+title: 价格产品查询
+heading: 价格产品
+description: "使用 priceProducts 查询获取所有价格产品及其合作伙伴的分页列表，让驾驶员选择他们使用的订阅。"
+schemaName: priceProducts
+schemaType: Query
+---
+
+使用 priceProducts 查询获取所有价格产品（例如订阅方案）及提供这些产品的合作伙伴的分页列表。当您希望让驾驶员选择他们拥有的产品，从而向其展示适用的价格时，此查询非常有用。
+
+## 查询
+
+执行此查询无需任何输入。使用 `search` 参数按合作伙伴或产品名称查找产品。结果采用模糊匹配并按相关性排序。使用 `first` 和 `after` 参数对结果进行[分页](/api-reference/core/api/pagination)。
+
+如果只想获取特定充电站可用的产品，请使用 [stationPriceProducts 查询](/api-reference/core/station-pricing/query-station-price-products)。

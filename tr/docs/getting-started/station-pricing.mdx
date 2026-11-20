@@ -17,7 +17,7 @@ Tile hizmeti fiyatlandırmayı hem filtre hem de seçici olarak destekler.
 Fiyatlandırma ayrıntılarının nereden geldiği, bir istasyonun arkasındaki istasyon veritabanına bağlıdır.
 
 - Ecomovement kullanılıyorsa fiyatlandırma, bir istasyonun konnektörlerinin fiyatlandırma nesnesinde, `evses[].connectors[].prices` altında bulunabilir.
-- Diğer tüm istasyon veritabanları için bunun yerine özel [tariffList](/api-reference/core/tariff/query-tariff-list) ve [tariff](/api-reference/core/tariff/query-tariff) sorgularını kullanın.
+- Diğer tüm istasyon veritabanları için bunun yerine özel [tariff](/api-reference/core/tariff/query-tariff) sorgusunu ve bir konnektörün `tariff_ids` değerlerini kullanın.
 
 Bir konnektörün farklı zamanlarda etkin olan birkaç fiyat öğesi olabilir. Doğru fiyatı göstermek için bunları sırayla inceleyin.
 

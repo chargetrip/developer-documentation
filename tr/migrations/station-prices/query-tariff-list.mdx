@@ -1,0 +1,25 @@
+---
+slug: query-tariff-list
+title: Tarife listesi geçiş rehberi
+migrateBefore: 16-11-2027
+---
+
+# tariffList
+
+Şu tarihten önce geçiş yapın: 2027 4. Çeyrek
+
+Eski `tariffList` sorgusundan istasyon fiyatlandırma sorgularına geçin. Fiyatlar artık istasyon başına istenir ve konnektörleri için geçerli olan ad hoc ve abonelik fiyatlarını içerir.
+
+## İşlemler
+
+| Eski         | Yeni                                                                          |
+| ------------ | ----------------------------------------------------------------------------- |
+| `tariffList` | [`stationPrices`](/api-reference/core/station-pricing/query-station-prices)    |
+
+## Sorgu değişiklikleri
+
+`tariffList` sorgusu tüm tarifelerin sayfalandırılmış bir listesini döndürüyordu ve bunları `tariff_ids` üzerinden konnektörlerle eşleştiriyordunuz. `stationPrices` sorgusu tek bir istasyonun fiyatlarını doğrudan döndürür. Bir `station_id` iletin ve isteğe bağlı olarak sonucu belirli ürünler, konnektörler veya fiyat türleriyle sınırlamak için bir `filter` ekleyin.
+
+Sayfalandırma da değişti. `tariffList` `size` ve `page` argümanlarını kullanırken `stationPrices`, `first` ve `after` argümanlarıyla imleç tabanlı sayfalandırma kullanır.
+
+Sürücülerin kullandıkları abonelikleri seçmesine izin vermek için [priceProducts](/api-reference/core/station-pricing/query-price-products) veya [stationPriceProducts](/api-reference/core/station-pricing/query-station-price-products) sorgularını isteyin ve seçilen kimlikleri `filter.product_id` olarak iletin.

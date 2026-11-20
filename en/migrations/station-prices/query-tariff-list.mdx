@@ -1,0 +1,25 @@
+---
+slug: query-tariff-list
+title: Tariff list migration guide
+migrateBefore: 16-11-2027
+---
+
+# tariffList
+
+Migrate before: Q4 2027
+
+Migrate from the legacy `tariffList` query to the station pricing queries. Prices are now requested per station, and include the ad hoc and subscription prices that apply to its connectors.
+
+## Operations
+
+| Old          | New                                                                           |
+| ------------ | ----------------------------------------------------------------------------- |
+| `tariffList` | [`stationPrices`](/api-reference/core/station-pricing/query-station-prices)    |
+
+## Query changes
+
+The `tariffList` query returned a paginated list of all tariffs, which you then matched to connectors through `tariff_ids`. The `stationPrices` query returns the prices of a single station directly. Pass a `station_id`, and optionally a `filter` to limit the result to specific products, connectors or price types.
+
+Pagination has also changed. `tariffList` uses the `size` and `page` arguments, while `stationPrices` uses cursor-based pagination with the `first` and `after` arguments.
+
+To let drivers pick the subscriptions they use, request the [priceProducts](/api-reference/core/station-pricing/query-price-products) or [stationPriceProducts](/api-reference/core/station-pricing/query-station-price-products) queries and pass the selected IDs as `filter.product_id`.

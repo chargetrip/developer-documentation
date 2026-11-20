@@ -1,0 +1,25 @@
+---
+slug: query-tariff-list
+title: Guide de migration de la liste des tarifs
+migrateBefore: 16-11-2027
+---
+
+# tariffList
+
+Migrer avant : T4 2027
+
+Migrez de l'ancienne requête `tariffList` vers les requêtes de tarification des stations. Les prix sont désormais demandés par station et incluent les prix ad hoc et d'abonnement qui s'appliquent à ses connecteurs.
+
+## Opérations
+
+| Ancien       | Nouveau                                                                       |
+| ------------ | ----------------------------------------------------------------------------- |
+| `tariffList` | [`stationPrices`](/api-reference/core/station-pricing/query-station-prices)    |
+
+## Modifications de la requête
+
+La requête `tariffList` renvoyait une liste paginée de tous les tarifs, que vous associiez ensuite aux connecteurs via `tariff_ids`. La requête `stationPrices` renvoie directement les prix d'une seule station. Transmettez un `station_id` et, si besoin, un `filter` pour limiter le résultat à des produits, des connecteurs ou des types de prix précis.
+
+La pagination a également changé. `tariffList` utilise les arguments `size` et `page`, tandis que `stationPrices` utilise une pagination par curseur avec les arguments `first` et `after`.
+
+Pour permettre aux conducteurs de choisir les abonnements qu'ils utilisent, appelez les requêtes [priceProducts](/api-reference/core/station-pricing/query-price-products) ou [stationPriceProducts](/api-reference/core/station-pricing/query-station-price-products) et transmettez les ID sélectionnés dans `filter.product_id`.

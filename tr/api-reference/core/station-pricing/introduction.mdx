@@ -1,0 +1,22 @@
+---
+title: İstasyon fiyatlandırması giriş
+heading: Giriş
+description: "İstasyon fiyatlandırma sorgularının, abonelikli ve aboneliksiz olarak bir istasyonda şarj maliyetini göstermek için birlikte nasıl çalıştığını öğrenin."
+---
+
+Şarj maliyetleri, fiyatı kimin sunduğuna bağlıdır. Şarj noktası operatörü (CPO) herkesin ödeyebileceği bir ad hoc fiyat sunarken, mobilite hizmet sağlayıcısı (MSP) veya bir CPO aboneliği üyelerine farklı bir fiyat sunabilir. İstasyon fiyatlandırma sorguları, bir istasyonun konnektörleri için tüm bu fiyatları döndürür, böylece bunları yan yana karşılaştırabilirsiniz.
+
+## Sorgular
+
+priceProducts
+: Abonelik planları gibi tüm fiyat ürünlerini, bunları sunan iş ortaklarıyla birlikte listeler. Bir ürünü veya iş ortağını adına göre bulmak için `search` argümanını kullanın. Bkz. [priceProducts sorgusu](/api-reference/core/station-pricing/query-price-products).
+
+stationPriceProducts
+: Belirli bir istasyonda kullanılabilen fiyat ürünlerini listeler. Bkz. [stationPriceProducts sorgusu](/api-reference/core/station-pricing/query-station-price-products).
+
+stationPrices
+: Bir istasyonun konnektörleri için geçerli olan fiyatları, fiyat bileşenleri ve geçerli oldukları kısıtlamalarla birlikte döndürür. Bkz. [stationPrices sorgusu](/api-reference/core/station-pricing/query-station-prices).
+
+## Fiyat türleri
+
+Her fiyatın `type` değeri `ad_hoc` veya `contract_based` olur. `ad_hoc` fiyat, bir ürün veya sözleşme olmadan doğrudan ödenir. `contract_based` fiyat ise abonelik gibi bir ürün gerektirir ve bu ürün fiyatın `product` alanında döndürülür.

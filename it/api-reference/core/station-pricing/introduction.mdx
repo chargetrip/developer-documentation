@@ -1,0 +1,22 @@
+---
+title: Introduzione ai prezzi delle stazioni
+heading: Introduzione
+description: Come funzionano insieme le query sui prezzi delle stazioni per mostrare il costo della ricarica presso una stazione, con e senza abbonamento.
+---
+
+I costi di ricarica dipendono da chi offre il prezzo. Un gestore di punti di ricarica (CPO) offre un prezzo ad hoc che chiunque può pagare, mentre un fornitore di servizi di mobilità (MSP) o un abbonamento CPO può offrire un prezzo diverso ai propri membri. Le query sui prezzi delle stazioni restituiscono tutti questi prezzi per i connettori di una stazione, così puoi confrontarli affiancati.
+
+## Query
+
+priceProducts
+: Elenca tutti i prodotti di prezzo, come i piani di abbonamento, insieme ai partner che li offrono. Usa l'argomento `search` per trovare un prodotto o un partner per nome. Consulta la [query priceProducts](/api-reference/core/station-pricing/query-price-products).
+
+stationPriceProducts
+: Elenca i prodotti di prezzo disponibili presso una stazione specifica. Consulta la [query stationPriceProducts](/api-reference/core/station-pricing/query-station-price-products).
+
+stationPrices
+: Restituisce i prezzi che si applicano ai connettori di una stazione, inclusi i relativi componenti di prezzo e le restrizioni a cui sono soggetti. Consulta la [query stationPrices](/api-reference/core/station-pricing/query-station-prices).
+
+## Tipi di prezzo
+
+Ogni prezzo ha un `type` che può essere `ad_hoc` oppure `contract_based`. Un prezzo `ad_hoc` si paga direttamente, senza prodotto né contratto. Un prezzo `contract_based` richiede un prodotto, come un abbonamento, che viene restituito nel campo `product` del prezzo.

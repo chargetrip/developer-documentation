@@ -1,0 +1,25 @@
+---
+slug: query-tariff-list
+title: Guida alla migrazione dell'elenco tariffe
+migrateBefore: 16-11-2027
+---
+
+# tariffList
+
+Esegui la migrazione entro: Q4 2027
+
+Passa dalla query legacy `tariffList` alle query sui prezzi delle stazioni. I prezzi ora vengono richiesti per stazione e includono i prezzi ad hoc e in abbonamento che si applicano ai suoi connettori.
+
+## Operazioni
+
+| Vecchia      | Nuova                                                                         |
+| ------------ | ----------------------------------------------------------------------------- |
+| `tariffList` | [`stationPrices`](/api-reference/core/station-pricing/query-station-prices)    |
+
+## Modifiche alla query
+
+La query `tariffList` restituiva un elenco paginato di tutte le tariffe, che poi abbinavi ai connettori tramite `tariff_ids`. La query `stationPrices` restituisce direttamente i prezzi di una singola stazione. Passa uno `station_id` e, facoltativamente, un `filter` per limitare il risultato a prodotti, connettori o tipi di prezzo specifici.
+
+Anche la paginazione è cambiata. `tariffList` usa gli argomenti `size` e `page`, mentre `stationPrices` usa la paginazione basata su cursore con gli argomenti `first` e `after`.
+
+Per far scegliere ai conducenti gli abbonamenti che usano, richiedi le query [priceProducts](/api-reference/core/station-pricing/query-price-products) o [stationPriceProducts](/api-reference/core/station-pricing/query-station-price-products) e passa gli ID selezionati come `filter.product_id`.

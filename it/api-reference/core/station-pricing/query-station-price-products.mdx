@@ -1,0 +1,15 @@
+---
+title: Query prodotti di prezzo della stazione
+heading: Prodotti di prezzo della stazione
+description: "Ottieni i prodotti di prezzo e i partner disponibili presso una stazione specifica con la query stationPriceProducts per mostrare quali abbonamenti si applicano."
+schemaName: stationPriceProducts
+schemaType: Query
+---
+
+Ottieni un elenco paginato dei prodotti di prezzo e dei relativi partner disponibili presso una stazione utilizzando la query stationPriceProducts. È utile quando vuoi mostrare solo gli abbonamenti che danno un prezzo presso la stazione che un conducente sta guardando.
+
+## Query
+
+Per ottenere i prodotti di una stazione è necessario uno `station_id`. Usa l'argomento `search` per trovare i prodotti per nome del partner o del prodotto. I risultati vengono abbinati in modo approssimativo e ordinati per rilevanza. Usa gli argomenti `first` e `after` per [paginare](/api-reference/core/api/pagination) i risultati.
+
+Per ottenere i prezzi che questi prodotti danno presso la stazione, usa la [query stationPrices](/api-reference/core/station-pricing/query-station-prices).

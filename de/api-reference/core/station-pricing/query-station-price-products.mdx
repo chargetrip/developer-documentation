@@ -1,0 +1,15 @@
+---
+title: Stationspreisprodukte Query
+heading: Stationspreisprodukte
+description: "Rufen Sie mit der stationPriceProducts-Query die an einer bestimmten Station verfügbaren Preisprodukte und Partner ab, um zu zeigen, welche Abonnements gelten."
+schemaName: stationPriceProducts
+schemaType: Query
+---
+
+Rufen Sie mit der stationPriceProducts-Query eine paginierte Liste der Preisprodukte und ihrer Partner ab, die an einer Station verfügbar sind. Das ist nützlich, wenn Sie nur die Abonnements anzeigen möchten, die an der Station, die sich ein Fahrer gerade ansieht, einen Preis bieten.
+
+## Query
+
+Um die Produkte einer Station abzurufen, ist eine `station_id` erforderlich. Mit dem Argument `search` finden Sie Produkte anhand des Partner- oder Produktnamens. Die Ergebnisse werden unscharf abgeglichen und nach Relevanz sortiert. Mit den Argumenten `first` und `after` [paginieren](/api-reference/core/api/pagination) Sie die Ergebnisse.
+
+Um die Preise abzurufen, die diese Produkte an der Station bieten, verwenden Sie die [stationPrices-Query](/api-reference/core/station-pricing/query-station-prices).

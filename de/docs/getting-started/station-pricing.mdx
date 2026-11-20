@@ -17,7 +17,7 @@ Der Tile-Dienst unterstützt Preise sowohl als Filter als auch als Selektoren.
 Woher die Preisdetails stammen, hängt von der Stationsdatenbank hinter einer Station ab.
 
 - Wird Ecomovement verwendet, finden Sie die Preise im Preisobjekt der Anschlüsse einer Station unter `evses[].connectors[].prices`.
-- Für jede andere Stationsdatenbank verwenden Sie stattdessen die dedizierten Queries [tariffList](/api-reference/core/tariff/query-tariff-list) und [tariff](/api-reference/core/tariff/query-tariff).
+- Für jede andere Stationsdatenbank verwenden Sie stattdessen die dedizierte Query [tariff](/api-reference/core/tariff/query-tariff) und die `tariff_ids` eines Anschlusses.
 
 Ein Anschluss kann mehrere Preiselemente haben, die zu unterschiedlichen Zeiten aktiv sind. Gehen Sie sie der Reihe nach durch, um den richtigen Preis darzustellen.
 

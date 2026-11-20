@@ -1,0 +1,15 @@
+---
+title: İstasyon fiyat ürünleri sorgusu
+heading: İstasyon fiyat ürünleri
+description: "Hangi aboneliklerin geçerli olduğunu göstermek için stationPriceProducts sorgusuyla belirli bir istasyonda kullanılabilen fiyat ürünlerini ve iş ortaklarını alın."
+schemaName: stationPriceProducts
+schemaType: Query
+---
+
+stationPriceProducts sorgusunu kullanarak bir istasyonda kullanılabilen fiyat ürünlerinin ve iş ortaklarının sayfalandırılmış listesini alın. Bu, yalnızca bir sürücünün baktığı istasyonda fiyat sağlayan abonelikleri göstermek istediğinizde kullanışlıdır.
+
+## Sorgu
+
+Bir istasyonun ürünlerini almak için `station_id` gereklidir. Ürünleri iş ortağı veya ürün adına göre bulmak için `search` argümanını kullanın. Sonuçlar bulanık eşleştirmeyle bulunur ve alaka düzeyine göre sıralanır. Sonuçlar arasında [sayfalandırma](/api-reference/core/api/pagination) yapmak için `first` ve `after` argümanlarını kullanın.
+
+Bu ürünlerin istasyonda sağladığı fiyatları almak için [stationPrices sorgusunu](/api-reference/core/station-pricing/query-station-prices) kullanın.

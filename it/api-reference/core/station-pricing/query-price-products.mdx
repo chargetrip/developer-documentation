@@ -1,0 +1,15 @@
+---
+title: Query prodotti di prezzo
+heading: Prodotti di prezzo
+description: "Ottieni un elenco paginato di tutti i prodotti di prezzo e dei relativi partner con la query priceProducts per far scegliere ai conducenti l'abbonamento che usano."
+schemaName: priceProducts
+schemaType: Query
+---
+
+Ottieni un elenco paginato di tutti i prodotti di prezzo, come i piani di abbonamento, e dei partner che li offrono utilizzando la query priceProducts. È utile quando vuoi far selezionare ai conducenti i prodotti che possiedono, così puoi mostrare i prezzi che li riguardano.
+
+## Query
+
+Per eseguire questa query non è richiesto alcun input. Usa l'argomento `search` per trovare i prodotti per nome del partner o del prodotto. I risultati vengono abbinati in modo approssimativo e ordinati per rilevanza. Usa gli argomenti `first` e `after` per [paginare](/api-reference/core/api/pagination) i risultati.
+
+Per ottenere solo i prodotti disponibili presso una stazione specifica, usa la [query stationPriceProducts](/api-reference/core/station-pricing/query-station-price-products).

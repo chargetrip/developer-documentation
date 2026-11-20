@@ -17,7 +17,7 @@ description: "通过 Tile 服务在地图上显示充电价格，或通过连接
 价格详情的来源取决于充电站背后的充电站数据库。
 
 - 如果使用 Ecomovement，价格可在充电站连接器的价格对象中找到，位于 `evses[].connectors[].prices`。
-- 对于任何其他充电站数据库，请改用专用的 [tariffList](/api-reference/core/tariff/query-tariff-list) 和 [tariff](/api-reference/core/tariff/query-tariff) 查询。
+- 对于任何其他充电站数据库，请改用专用的 [tariff](/api-reference/core/tariff/query-tariff) 查询以及连接器的 `tariff_ids`。
 
 一个连接器可以有多个在不同时间生效的价格元素。请按顺序处理它们，以渲染正确的价格。
 

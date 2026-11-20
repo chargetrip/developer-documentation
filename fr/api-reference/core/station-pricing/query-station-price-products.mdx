@@ -1,0 +1,15 @@
+---
+title: Requête de produits tarifaires d'une station
+heading: Produits tarifaires d'une station
+description: "Obtenez les produits tarifaires et les partenaires disponibles dans une station donnée avec la requête stationPriceProducts pour afficher les abonnements applicables."
+schemaName: stationPriceProducts
+schemaType: Query
+---
+
+Obtenez une liste paginée des produits tarifaires et de leurs partenaires disponibles dans une station avec la requête stationPriceProducts. C'est utile lorsque vous souhaitez afficher uniquement les abonnements qui donnent un prix dans la station que consulte un conducteur.
+
+## Requête
+
+Un `station_id` est requis pour obtenir les produits d'une station. Utilisez l'argument `search` pour trouver des produits par nom de partenaire ou de produit. Les résultats sont appariés de manière approximative et triés par pertinence. Utilisez les arguments `first` et `after` pour [paginer](/api-reference/core/api/pagination) les résultats.
+
+Pour obtenir les prix que ces produits donnent dans la station, utilisez la [requête stationPrices](/api-reference/core/station-pricing/query-station-prices).

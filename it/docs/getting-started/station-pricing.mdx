@@ -17,7 +17,7 @@ Il servizio tile supporta i prezzi sia come filtri sia come selettori.
 L'origine dei dettagli sui prezzi dipende dal database delle stazioni su cui si basa una stazione.
 
 - Se viene usato Ecomovement, i prezzi si trovano nell'oggetto dei prezzi dei connettori di una stazione, in `evses[].connectors[].prices`.
-- Per qualsiasi altro database di stazioni, usa invece le query dedicate [tariffList](/api-reference/core/tariff/query-tariff-list) e [tariff](/api-reference/core/tariff/query-tariff).
+- Per qualsiasi altro database di stazioni, usa invece la query dedicata [tariff](/api-reference/core/tariff/query-tariff) e i `tariff_ids` di un connettore.
 
 Un connettore può avere più elementi di prezzo attivi in momenti diversi. Scorrili in ordine per mostrare il prezzo corretto.
 

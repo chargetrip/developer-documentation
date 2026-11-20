@@ -1,0 +1,22 @@
+---
+title: 充电站定价简介
+heading: 简介
+description: 了解充电站定价查询如何协同工作，以展示在充电站充电的费用，包括有订阅和无订阅的情况。
+---
+
+充电费用取决于由谁提供价格。充电桩运营商（CPO）提供任何人都可以支付的临时价格，而移动服务提供商（MSP）或 CPO 订阅可以为其会员提供不同的价格。充电站定价查询会返回充电站连接器的所有这些价格，方便您并排比较。
+
+## 查询
+
+priceProducts
+: 列出所有价格产品（例如订阅方案）以及提供这些产品的合作伙伴。使用 `search` 参数按名称查找产品或合作伙伴。请参阅 [priceProducts 查询](/api-reference/core/station-pricing/query-price-products)。
+
+stationPriceProducts
+: 列出特定充电站可用的价格产品。请参阅 [stationPriceProducts 查询](/api-reference/core/station-pricing/query-station-price-products)。
+
+stationPrices
+: 返回适用于充电站连接器的价格，包括其价格组成部分以及适用的限制条件。请参阅 [stationPrices 查询](/api-reference/core/station-pricing/query-station-prices)。
+
+## 价格类型
+
+每个价格的 `type` 为 `ad_hoc` 或 `contract_based`。`ad_hoc` 价格无需产品或合约，可直接支付。`contract_based` 价格需要产品（例如订阅），该产品会在价格的 `product` 字段中返回。

@@ -1,0 +1,15 @@
+---
+title: Preisprodukte Query
+heading: Preisprodukte
+description: "Rufen Sie mit der priceProducts-Query eine paginierte Liste aller Preisprodukte und ihrer Partner ab, damit Fahrer das Abonnement auswählen können, das sie nutzen."
+schemaName: priceProducts
+schemaType: Query
+---
+
+Rufen Sie mit der priceProducts-Query eine paginierte Liste aller Preisprodukte, etwa Abonnementtarife, und der Partner ab, die sie anbieten. Das ist nützlich, wenn Fahrer die Produkte auswählen sollen, die sie besitzen, damit Sie ihnen die Preise anzeigen können, die für sie gelten.
+
+## Query
+
+Zur Ausführung dieser Query ist keine Eingabe erforderlich. Mit dem Argument `search` finden Sie Produkte anhand des Partner- oder Produktnamens. Die Ergebnisse werden unscharf abgeglichen und nach Relevanz sortiert. Mit den Argumenten `first` und `after` [paginieren](/api-reference/core/api/pagination) Sie die Ergebnisse.
+
+Um nur die Produkte zu erhalten, die an einer bestimmten Station verfügbar sind, verwenden Sie die [stationPriceProducts-Query](/api-reference/core/station-pricing/query-station-price-products).

@@ -1,0 +1,15 @@
+---
+title: Requête de produits tarifaires
+heading: Produits tarifaires
+description: "Obtenez une liste paginée de tous les produits tarifaires et de leurs partenaires avec la requête priceProducts pour permettre aux conducteurs de choisir l'abonnement qu'ils utilisent."
+schemaName: priceProducts
+schemaType: Query
+---
+
+Obtenez une liste paginée de tous les produits tarifaires, comme les formules d'abonnement, et des partenaires qui les proposent avec la requête priceProducts. C'est utile lorsque vous souhaitez permettre aux conducteurs de sélectionner les produits dont ils disposent, afin de leur afficher les prix qui leur sont applicables.
+
+## Requête
+
+Aucune entrée n'est requise pour exécuter cette requête. Utilisez l'argument `search` pour trouver des produits par nom de partenaire ou de produit. Les résultats sont appariés de manière approximative et triés par pertinence. Utilisez les arguments `first` et `after` pour [paginer](/api-reference/core/api/pagination) les résultats.
+
+Pour obtenir uniquement les produits disponibles dans une station donnée, utilisez la [requête stationPriceProducts](/api-reference/core/station-pricing/query-station-price-products).

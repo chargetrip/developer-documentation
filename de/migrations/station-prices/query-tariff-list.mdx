@@ -1,0 +1,25 @@
+---
+slug: query-tariff-list
+title: Migrationsleitfaden Tarifliste
+migrateBefore: 16-11-2027
+---
+
+# tariffList
+
+Migrieren bis: Q4 2027
+
+Migrieren Sie von der veralteten Query `tariffList` auf die Stationspreis-Queries. Preise werden jetzt pro Station angefordert und enthalten die Ad-hoc- und Abonnementpreise, die für ihre Anschlüsse gelten.
+
+## Operationen
+
+| Alt          | Neu                                                                           |
+| ------------ | ----------------------------------------------------------------------------- |
+| `tariffList` | [`stationPrices`](/api-reference/core/station-pricing/query-station-prices)    |
+
+## Änderungen an der Query
+
+Die Query `tariffList` gab eine paginierte Liste aller Tarife zurück, die Sie anschließend über `tariff_ids` den Anschlüssen zuordneten. Die Query `stationPrices` gibt die Preise einer einzelnen Station direkt zurück. Übergeben Sie eine `station_id` und optional einen `filter`, um das Ergebnis auf bestimmte Produkte, Anschlüsse oder Preistypen zu beschränken.
+
+Auch die Paginierung hat sich geändert. `tariffList` verwendet die Argumente `size` und `page`, während `stationPrices` eine cursorbasierte Paginierung mit den Argumenten `first` und `after` verwendet.
+
+Damit Fahrer die Abonnements auswählen können, die sie nutzen, fordern Sie die Queries [priceProducts](/api-reference/core/station-pricing/query-price-products) oder [stationPriceProducts](/api-reference/core/station-pricing/query-station-price-products) an und übergeben die ausgewählten IDs als `filter.product_id`.

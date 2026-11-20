@@ -1,0 +1,25 @@
+---
+slug: query-tariff-list
+title: 费率列表迁移指南
+migrateBefore: 16-11-2027
+---
+
+# tariffList
+
+迁移截止期：2027 年第四季度
+
+从旧版 `tariffList` 查询迁移到充电站定价查询。现在按充电站请求价格，并包含适用于其连接器的临时价格和订阅价格。
+
+## 操作
+
+| 旧版         | 新版                                                                           |
+| ------------ | ------------------------------------------------------------------------------ |
+| `tariffList` | [`stationPrices`](/api-reference/core/station-pricing/query-station-prices)    |
+
+## 查询变更
+
+`tariffList` 查询返回所有费率的分页列表，您还需要通过 `tariff_ids` 将其与连接器匹配。`stationPrices` 查询则直接返回单个充电站的价格。请传入 `station_id`，并可选择传入 `filter`，以将结果限定为特定的产品、连接器或价格类型。
+
+分页方式也有所变化。`tariffList` 使用 `size` 和 `page` 参数，而 `stationPrices` 使用基于游标的分页，参数为 `first` 和 `after`。
+
+要让驾驶员选择他们使用的订阅，请请求 [priceProducts](/api-reference/core/station-pricing/query-price-products) 或 [stationPriceProducts](/api-reference/core/station-pricing/query-station-price-products) 查询，并将所选 ID 作为 `filter.product_id` 传入。

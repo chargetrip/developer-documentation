@@ -1,0 +1,22 @@
+---
+title: Einführung in die Stationspreise
+heading: Einführung
+description: Wie die Stationspreis-Queries zusammenarbeiten, um zu zeigen, was das Laden an einer Station kostet, mit und ohne Abonnement.
+---
+
+Die Ladekosten hängen davon ab, wer den Preis anbietet. Ein Ladestationsbetreiber (CPO) bietet einen Ad-hoc-Preis an, den jeder bezahlen kann, während ein Mobilitätsdienstleister (MSP) oder ein CPO-Abonnement seinen Mitgliedern einen anderen Preis anbieten kann. Die Stationspreis-Queries geben alle diese Preise für die Anschlüsse einer Station zurück, sodass Sie sie nebeneinander vergleichen können.
+
+## Queries
+
+priceProducts
+: Listet alle Preisprodukte, etwa Abonnementtarife, zusammen mit den Partnern auf, die sie anbieten. Mit dem Argument `search` finden Sie ein Produkt oder einen Partner anhand des Namens. Siehe die [priceProducts-Query](/api-reference/core/station-pricing/query-price-products).
+
+stationPriceProducts
+: Listet die Preisprodukte auf, die an einer bestimmten Station verfügbar sind. Siehe die [stationPriceProducts-Query](/api-reference/core/station-pricing/query-station-price-products).
+
+stationPrices
+: Gibt die Preise zurück, die für die Anschlüsse einer Station gelten, einschließlich ihrer Preiskomponenten und der Einschränkungen, unter denen sie gelten. Siehe die [stationPrices-Query](/api-reference/core/station-pricing/query-station-prices).
+
+## Preistypen
+
+Jeder Preis hat einen `type` mit dem Wert `ad_hoc` oder `contract_based`. Ein `ad_hoc`-Preis wird direkt bezahlt, ohne Produkt oder Vertrag. Ein `contract_based`-Preis setzt ein Produkt voraus, etwa ein Abonnement, das im Feld `product` des Preises zurückgegeben wird.

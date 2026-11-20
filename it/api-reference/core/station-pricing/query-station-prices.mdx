@@ -1,0 +1,19 @@
+---
+title: Query prezzi della stazione
+heading: Prezzi della stazione
+description: "Ottieni i prezzi ad hoc e in abbonamento per i connettori di una stazione con la query stationPrices per mostrare il costo di una sessione di ricarica."
+schemaName: stationPrices
+schemaType: Query
+---
+
+Ottieni i prezzi MSP e i prezzi ad hoc e in abbonamento dei CPO per i connettori di una stazione utilizzando la query stationPrices. È utile quando vuoi mostrare o confrontare il costo di una sessione di ricarica presso una stazione. Per scoprire come visualizzare i prezzi, consulta la [guida ai prezzi delle stazioni](/docs/getting-started/station-pricing).
+
+## Query
+
+Per ottenere i prezzi è necessario uno `station_id`. Senza un `filter`, vengono restituiti i prezzi di tutti i connettori della stazione. Usa gli argomenti `first` e `after` per [paginare](/api-reference/core/api/pagination) i risultati.
+
+## Componenti di prezzo e restrizioni
+
+Ogni prezzo è composto da uno o più elementi. Un elemento raggruppa i componenti di prezzo, addebitati per `energy`, `time`, `parking_time` oppure come tariffa `flat`, con le restrizioni a cui sono soggetti. Tutte le restrizioni specificate devono essere soddisfatte perché il prezzo diventi attivo. Le restrizioni possono limitare un elemento a determinati giorni, fasce orarie, date, durate della sessione, quantità di energia, correnti di ricarica, livelli di potenza, costi della sessione, metodi di pagamento, soglie di sosta prolungata o prenotazioni.
+
+I prezzi sono IVA esclusa. Il campo `vat` di un componente contiene la percentuale di IVA. Usa l'argomento opzionale `currency` su `price` e sul `fee` dell'abbonamento per convertire un importo in un'altra valuta.

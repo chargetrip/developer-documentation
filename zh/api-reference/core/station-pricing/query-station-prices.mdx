@@ -1,0 +1,19 @@
+---
+title: 充电站价格查询
+heading: 充电站价格
+description: "使用 stationPrices 查询获取充电站连接器的临时价格和订阅价格，以展示一次充电的费用。"
+schemaName: stationPrices
+schemaType: Query
+---
+
+使用 stationPrices 查询获取充电站连接器的 MSP 价格以及 CPO 的临时价格和订阅价格。当您希望展示或比较在充电站充电一次的费用时，此查询非常有用。要了解如何呈现价格，请参阅[充电站定价指南](/docs/getting-started/station-pricing)。
+
+## 查询
+
+获取价格需要提供 `station_id`。如果不使用 `filter`，则返回该充电站所有连接器的价格。使用 `first` 和 `after` 参数对结果进行[分页](/api-reference/core/api/pagination)。
+
+## 价格组成部分和限制条件
+
+每个价格由一个或多个元素组成。一个元素将价格组成部分归为一组，按 `energy`、`time`、`parking_time` 计费或收取 `flat` 固定费用，并带有其适用的限制条件。只有满足所有指定的限制条件，价格才会生效。限制条件可以将元素限定在特定的星期几、一天中的时段、日期、充电时长、能量、充电电流、功率、充电费用、支付方式、超时占用阈值或预约。
+
+价格不含增值税。组成部分的 `vat` 字段表示增值税百分比。在 `price` 以及订阅 `fee` 上使用可选的 `currency` 参数，可以将金额转换为其他货币。

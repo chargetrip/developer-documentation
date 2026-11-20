@@ -17,7 +17,7 @@ Le service de tuiles prend en charge la tarification à la fois comme filtres et
 L'origine des détails de tarification dépend de la base de données de stations qui se trouve derrière une station.
 
 - Si Ecomovement est utilisé, la tarification se trouve dans l'objet de tarification des connecteurs d'une station, à `evses[].connectors[].prices`.
-- Pour toute autre base de données de stations, utilisez plutôt les requêtes dédiées [tariffList](/api-reference/core/tariff/query-tariff-list) et [tariff](/api-reference/core/tariff/query-tariff).
+- Pour toute autre base de données de stations, utilisez plutôt la requête dédiée [tariff](/api-reference/core/tariff/query-tariff) et les `tariff_ids` d'un connecteur.
 
 Un connecteur peut avoir plusieurs éléments de prix actifs à différents moments. Parcourez-les dans l'ordre pour afficher le bon prix.
 

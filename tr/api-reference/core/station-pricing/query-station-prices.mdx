@@ -1,0 +1,19 @@
+---
+title: İstasyon fiyatları sorgusu
+heading: İstasyon fiyatları
+description: "Bir şarj oturumunun maliyetini göstermek için stationPrices sorgusuyla bir istasyonun konnektörleri için ad hoc ve abonelik fiyatlarını alın."
+schemaName: stationPrices
+schemaType: Query
+---
+
+stationPrices sorgusunu kullanarak bir istasyonun konnektörleri için MSP fiyatlarını ve CPO ad hoc ile abonelik fiyatlarını alın. Bu, bir istasyondaki şarj oturumunun maliyetini göstermek veya karşılaştırmak istediğinizde kullanışlıdır. Fiyatların nasıl gösterileceğini öğrenmek için [istasyon fiyatlandırma kılavuzuna](/docs/getting-started/station-pricing) bakın.
+
+## Sorgu
+
+Fiyatları almak için `station_id` gereklidir. `filter` olmadan istasyonun tüm konnektörlerinin fiyatları döndürülür. Sonuçlar arasında [sayfalandırma](/api-reference/core/api/pagination) yapmak için `first` ve `after` argümanlarını kullanın.
+
+## Fiyat bileşenleri ve kısıtlamalar
+
+Her fiyat bir veya daha fazla öğeden oluşur. Bir öğe, `energy`, `time`, `parking_time` başına veya `flat` ücret olarak tahsil edilen fiyat bileşenlerini, geçerli oldukları kısıtlamalarla birlikte gruplar. Fiyatın etkin olması için belirtilen tüm kısıtlamaların karşılanması gerekir. Kısıtlamalar bir öğeyi belirli günlerle, günün saatleriyle, tarihlerle, oturum sürelerine, enerji miktarlarına, şarj akımlarına, güç seviyelerine, oturum maliyetlerine, ödeme yöntemlerine, aşım eşiklerine veya rezervasyonlara sınırlayabilir.
+
+Fiyatlara KDV dahil değildir. Bir bileşenin `vat` alanı KDV yüzdesini içerir. Bir tutarı başka bir para birimine dönüştürmek için `price` üzerinde ve abonelik `fee` üzerinde isteğe bağlı `currency` argümanını kullanın.

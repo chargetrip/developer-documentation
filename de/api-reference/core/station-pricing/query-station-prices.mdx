@@ -1,0 +1,19 @@
+---
+title: Stationspreise Query
+heading: Stationspreise
+description: "Rufen Sie mit der stationPrices-Query die Ad-hoc- und Abonnementpreise für die Anschlüsse einer Station ab, um zu zeigen, was ein Ladevorgang kostet."
+schemaName: stationPrices
+schemaType: Query
+---
+
+Rufen Sie mit der stationPrices-Query die MSP-Preise sowie die Ad-hoc- und Abonnementpreise des CPO für die Anschlüsse einer Station ab. Das ist nützlich, wenn Sie anzeigen oder vergleichen möchten, was ein Ladevorgang an einer Station kostet. Wie Sie Preise darstellen, erfahren Sie in der [Anleitung zur Stationspreisgestaltung](/docs/getting-started/station-pricing).
+
+## Query
+
+Um Preise abzurufen, ist eine `station_id` erforderlich. Ohne `filter` werden die Preise aller Anschlüsse der Station zurückgegeben. Mit den Argumenten `first` und `after` [paginieren](/api-reference/core/api/pagination) Sie die Ergebnisse.
+
+## Preiskomponenten und Einschränkungen
+
+Jeder Preis besteht aus einem oder mehreren Elementen. Ein Element fasst Preiskomponenten zusammen, die pro `energy`, `time`, `parking_time` oder als pauschale Gebühr (`flat`) abgerechnet werden, sowie die Einschränkungen, unter denen sie gelten. Alle angegebenen Einschränkungen müssen erfüllt sein, bevor der Preis aktiv wird. Einschränkungen können ein Element auf bestimmte Wochentage, Tageszeiten, Daten, Sitzungsdauern, Energiemengen, Ladeströme, Leistungsstufen, Sitzungskosten, Zahlungsmethoden, Overstay-Schwellenwerte oder Reservierungen begrenzen.
+
+Preise verstehen sich ohne MwSt. Das Feld `vat` einer Komponente enthält den MwSt.-Prozentsatz. Mit dem optionalen Argument `currency` bei `price` und bei der Abonnement-`fee` rechnen Sie einen Betrag in eine andere Währung um.

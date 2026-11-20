@@ -1,0 +1,22 @@
+---
+title: Introduction à la tarification des stations
+heading: Introduction
+description: Comment les requêtes de tarification des stations fonctionnent ensemble pour afficher le coût de la recharge dans une station, avec et sans abonnement.
+---
+
+Le coût de la recharge dépend de l'acteur qui propose le prix. Un opérateur de bornes de recharge (CPO) propose un prix ad hoc que tout le monde peut payer, tandis qu'un fournisseur de services de mobilité (MSP) ou un abonnement CPO peut proposer un prix différent à ses membres. Les requêtes de tarification des stations renvoient tous ces prix pour les connecteurs d'une station, afin que vous puissiez les comparer côte à côte.
+
+## Requêtes
+
+priceProducts
+: Liste tous les produits tarifaires, comme les formules d'abonnement, avec les partenaires qui les proposent. Utilisez l'argument `search` pour trouver un produit ou un partenaire par son nom. Consultez la [requête priceProducts](/api-reference/core/station-pricing/query-price-products).
+
+stationPriceProducts
+: Liste les produits tarifaires disponibles dans une station donnée. Consultez la [requête stationPriceProducts](/api-reference/core/station-pricing/query-station-price-products).
+
+stationPrices
+: Renvoie les prix qui s'appliquent aux connecteurs d'une station, y compris leurs composants de prix et les restrictions dans lesquelles ils s'appliquent. Consultez la [requête stationPrices](/api-reference/core/station-pricing/query-station-prices).
+
+## Types de prix
+
+Chaque prix a un `type` égal à `ad_hoc` ou à `contract_based`. Un prix `ad_hoc` se paie directement, sans produit ni contrat. Un prix `contract_based` nécessite un produit, comme un abonnement, qui est renvoyé dans le champ `product` du prix.

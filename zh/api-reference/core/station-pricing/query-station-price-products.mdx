@@ -1,0 +1,15 @@
+---
+title: 充电站价格产品查询
+heading: 充电站价格产品
+description: "使用 stationPriceProducts 查询获取特定充电站可用的价格产品和合作伙伴，以展示适用的订阅。"
+schemaName: stationPriceProducts
+schemaType: Query
+---
+
+使用 stationPriceProducts 查询获取充电站可用的价格产品及其合作伙伴的分页列表。当您只想展示能为驾驶员正在查看的充电站提供价格的订阅时，此查询非常有用。
+
+## 查询
+
+获取充电站的产品需要提供 `station_id`。使用 `search` 参数按合作伙伴或产品名称查找产品。结果采用模糊匹配并按相关性排序。使用 `first` 和 `after` 参数对结果进行[分页](/api-reference/core/api/pagination)。
+
+要获取这些产品在该充电站提供的价格，请使用 [stationPrices 查询](/api-reference/core/station-pricing/query-station-prices)。

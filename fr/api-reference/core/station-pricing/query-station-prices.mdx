@@ -1,0 +1,19 @@
+---
+title: Requête de prix d'une station
+heading: Prix d'une station
+description: "Obtenez les prix ad hoc et d'abonnement des connecteurs d'une station avec la requête stationPrices pour afficher le coût d'une session de recharge."
+schemaName: stationPrices
+schemaType: Query
+---
+
+Obtenez les prix MSP ainsi que les prix ad hoc et d'abonnement des CPO pour les connecteurs d'une station avec la requête stationPrices. C'est utile lorsque vous souhaitez afficher ou comparer le coût d'une session de recharge dans une station. Pour savoir comment afficher la tarification, consultez le [guide de tarification des stations](/docs/getting-started/station-pricing).
+
+## Requête
+
+Un `station_id` est requis pour obtenir les prix. Sans `filter`, les prix de tous les connecteurs de la station sont renvoyés. Utilisez les arguments `first` et `after` pour [paginer](/api-reference/core/api/pagination) les résultats.
+
+## Composants de prix et restrictions
+
+Chaque prix se compose d'un ou plusieurs éléments. Un élément regroupe des composants de prix, facturés par `energy`, `time`, `parking_time` ou sous forme de frais `flat`, avec les restrictions dans lesquelles ils s'appliquent. Toutes les restrictions indiquées doivent être remplies avant que le prix devienne actif. Les restrictions peuvent limiter un élément à certains jours, à certaines heures de la journée, à certaines dates, à des durées de session, à des quantités d'énergie, à des courants de charge, à des niveaux de puissance, à des coûts de session, à des moyens de paiement, à des seuils de stationnement prolongé ou à des réservations.
+
+Les prix s'entendent hors TVA. Le champ `vat` d'un composant contient le pourcentage de TVA. Utilisez l'argument facultatif `currency` sur `price` et sur les `fee` d'abonnement pour convertir un montant dans une autre devise.

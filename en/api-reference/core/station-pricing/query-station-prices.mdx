@@ -1,0 +1,19 @@
+---
+title: Station prices query
+heading: Station prices
+description: "Get the ad hoc and subscription prices for the connectors of a station with the stationPrices query to show what a charging session costs."
+schemaName: stationPrices
+schemaType: Query
+---
+
+Get the MSP prices and the CPO ad hoc and subscription prices for the connectors of a station by using the stationPrices query. This is useful when you want to show or compare what a charging session costs at a station. To learn how to render pricing, see the [station pricing guide](/docs/getting-started/station-pricing).
+
+## Query
+
+A `station_id` is required to get prices. Without a `filter`, the prices of all connectors of the station are returned. Use the `first` and `after` arguments to [paginate](/api-reference/core/api/pagination) through the results.
+
+## Price components and restrictions
+
+Each price consists of one or more elements. An element groups price components, charged per `energy`, `time`, `parking_time` or as a `flat` fee, with the restrictions under which they apply. All specified restrictions must be met before the price becomes active. Restrictions can limit an element to certain days, times of day, dates, session durations, energy amounts, charging currents, power levels, session costs, payment methods, overstay thresholds or reservations.
+
+Prices exclude VAT. The `vat` field of a component holds the VAT percentage. Use the optional `currency` argument on `price` and on the subscription `fee` to convert an amount to another currency.

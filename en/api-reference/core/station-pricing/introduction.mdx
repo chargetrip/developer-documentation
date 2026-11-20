@@ -1,0 +1,22 @@
+---
+title: Station pricing introduction
+heading: Introduction
+description: How the station pricing queries work together to show what it costs to charge at a station, with and without a subscription.
+---
+
+Charging costs depend on who offers the price. A charge point operator (CPO) offers an ad hoc price that anyone can pay, while a mobility service provider (MSP) or a CPO subscription can offer a different price to its members. The station pricing queries return all of these prices for the connectors of a station, so you can compare them side by side.
+
+## Queries
+
+priceProducts
+: Lists all price products, such as subscription plans, together with the partners that offer them. Use the `search` argument to find a product or partner by name. See the [priceProducts query](/api-reference/core/station-pricing/query-price-products).
+
+stationPriceProducts
+: Lists the price products that are available at a specific station. See the [stationPriceProducts query](/api-reference/core/station-pricing/query-station-price-products).
+
+stationPrices
+: Returns the prices that apply to the connectors of a station, including their price components and the restrictions under which they apply. See the [stationPrices query](/api-reference/core/station-pricing/query-station-prices).
+
+## Price types
+
+Every price has a `type` of either `ad_hoc` or `contract_based`. An `ad_hoc` price is paid directly, without a product or contract. A `contract_based` price requires a product, such as a subscription, which is returned in the `product` field of the price.

@@ -1,0 +1,15 @@
+---
+title: Price products query
+heading: Price products
+description: "Get a paginated list of all price products and their partners with the priceProducts query to let drivers pick the subscription they use."
+schemaName: priceProducts
+schemaType: Query
+---
+
+Get a paginated list of all price products, such as subscription plans, and the partners that offer them by using the priceProducts query. This is useful when you want to let drivers select the products they have, so you can show them the prices that apply to them.
+
+## Query
+
+No input is required to execute this query. Use the `search` argument to find products by partner or product name. Results are matched fuzzily and sorted by relevance. Use the `first` and `after` arguments to [paginate](/api-reference/core/api/pagination) through the results.
+
+To get only the products that are available at a specific station, use the [stationPriceProducts query](/api-reference/core/station-pricing/query-station-price-products).

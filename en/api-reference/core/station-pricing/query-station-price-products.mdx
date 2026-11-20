@@ -1,0 +1,15 @@
+---
+title: Station price products query
+heading: Station price products
+description: "Get the price products and partners available at a specific station with the stationPriceProducts query to show which subscriptions apply."
+schemaName: stationPriceProducts
+schemaType: Query
+---
+
+Get a paginated list of the price products and their partners that are available at a station by using the stationPriceProducts query. This is useful when you want to show only the subscriptions that give a price at the station a driver is looking at.
+
+## Query
+
+A `station_id` is required to get the products of a station. Use the `search` argument to find products by partner or product name. Results are matched fuzzily and sorted by relevance. Use the `first` and `after` arguments to [paginate](/api-reference/core/api/pagination) through the results.
+
+To get the prices that these products give at the station, use the [stationPrices query](/api-reference/core/station-pricing/query-station-prices).

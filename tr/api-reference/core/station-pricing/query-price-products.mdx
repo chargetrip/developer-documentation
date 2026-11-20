@@ -1,0 +1,15 @@
+---
+title: Fiyat ürünleri sorgusu
+heading: Fiyat ürünleri
+description: "Sürücülerin kullandıkları aboneliği seçebilmesi için priceProducts sorgusuyla tüm fiyat ürünlerinin ve iş ortaklarının sayfalandırılmış listesini alın."
+schemaName: priceProducts
+schemaType: Query
+---
+
+priceProducts sorgusunu kullanarak abonelik planları gibi tüm fiyat ürünlerinin ve bunları sunan iş ortaklarının sayfalandırılmış listesini alın. Bu, sürücülerin sahip oldukları ürünleri seçmesine izin vermek ve böylece onlara geçerli olan fiyatları göstermek istediğinizde kullanışlıdır.
+
+## Sorgu
+
+Bu sorguyu çalıştırmak için herhangi bir girdi gerekmez. Ürünleri iş ortağı veya ürün adına göre bulmak için `search` argümanını kullanın. Sonuçlar bulanık eşleştirmeyle bulunur ve alaka düzeyine göre sıralanır. Sonuçlar arasında [sayfalandırma](/api-reference/core/api/pagination) yapmak için `first` ve `after` argümanlarını kullanın.
+
+Yalnızca belirli bir istasyonda kullanılabilen ürünleri almak için [stationPriceProducts sorgusunu](/api-reference/core/station-pricing/query-station-price-products) kullanın.
